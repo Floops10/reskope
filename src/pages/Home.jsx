@@ -4,6 +4,7 @@ import Page from '../components/Page';
 import { HeroLogo } from '../components/Logo';
 import NetField from '../components/NetField';
 import CTASection from '../components/CTASection';
+import Marked from '../components/Marked';
 import { Reveal, RevealItem } from '../components/Reveal';
 import { useMediaQuery } from '../hooks/useMediaQuery';
 import { useLang } from '../i18n';
@@ -12,18 +13,21 @@ const CONTENT = {
   fr: {
     metaTitle: 'Conseil & ingénierie numérique',
     metaDesc:
-      'Reskope audite vos outils sur le terrain, salarié par salarié, puis simplifie et construit ce qui manque. Prix affichés, démarche ouverte, gains chiffrés.',
-    eyebrow: 'Audit digital & productivité',
+      'Reskope cartographie et audite vos outils sur le terrain, salarié par salarié, puis relie, simplifie et construit ce qui manque. Prix affichés, démarche ouverte, gains chiffrés.',
+    eyebrow: 'Audit & cartographie numérique',
     heroTitle: 'Vos équipes perdent des heures dans leurs outils.',
-    line1: "Outils dispersés, saisies en double, allers-retours sans fin. Le coût ne se voit pas, mais il est bien réel.",
-    line2: "Reskope remet de l'ordre : on audite le terrain, on simplifie, on construit ce qui manque. Toujours au grand jour, jalon après jalon.",
-    sub: "On audite le terrain, on simplifie, on construit ce qui manque. Toujours au grand jour, jalon après jalon.",
+    line1: "Des outils qui ne se parlent pas, des informations éparpillées, des usages que personne n'a vraiment cartographiés. Le coût ne se voit pas sur une facture, mais il est bien réel.",
+    line2: "Reskope cartographie votre écosystème numérique, outil par outil et usage par usage. Puis on relie, on simplifie et on construit ce qui manque : du site web à l'outil métier, jusqu'aux automatisations. Toujours au grand jour, jalon après jalon.",
+    sub: "On cartographie vos outils et vos usages, on relie, on simplifie, on construit ce qui manque. Toujours au grand jour, jalon après jalon.",
+    mark1: 'cartographiés',
+    mark2: 'construit',
+    markSub: 'cartographie',
     startEyebrow: 'Par où commencer',
     startTitle: 'Explorez à votre rythme.',
     primary: 'Parler de vos outils',
-    ghost: 'Pourquoi',
+    ghost: 'Le constat',
     dest: [
-      { to: '/pourquoi', label: 'Pourquoi', desc: "Le coût caché, et pour qui on agit" },
+      { to: '/pourquoi', label: 'Le constat', desc: "Le coût caché, et pour qui on agit" },
       { to: '/methode', label: 'La méthode', desc: '5 jalons, en toute transparence' },
       { to: '/offres', label: 'Offres & tarifs', desc: 'Prix affichés, devis sur-mesure' },
       { to: '/exemple', label: 'Exemple de bilan', desc: 'Un audit réel, détaillé' },
@@ -36,18 +40,21 @@ const CONTENT = {
   en: {
     metaTitle: 'Consulting & digital engineering',
     metaDesc:
-      'Reskope audits your tools on the ground, employee by employee, then simplifies and builds what is missing. Prices shown, open process, quantified gains.',
-    eyebrow: 'Digital audit & productivity',
+      'Reskope maps and audits your tools on the ground, employee by employee, then connects, simplifies and builds what is missing. Prices shown, open process, quantified gains.',
+    eyebrow: 'Digital audit & mapping',
     heroTitle: 'Your teams lose hours inside their tools.',
-    line1: 'Scattered tools, double data entry, endless back-and-forth. The cost is hidden, but it is very real.',
-    line2: 'Reskope puts things back in order: we audit the ground, simplify, and build what is missing. Always in the open, milestone by milestone.',
-    sub: 'We audit the ground, simplify, and build what is missing. Always in the open, milestone by milestone.',
+    line1: "Tools that don't talk to each other, scattered information, usage no one has really mapped. The cost is hidden, but it is very real.",
+    line2: 'Reskope maps your digital ecosystem, tool by tool and use by use. Then we connect, simplify and build what is missing: from websites to business tools and automations. Always in the open, milestone by milestone.',
+    sub: "We map your tools and how they're used, we connect, simplify and build what is missing. Always in the open, milestone by milestone.",
+    mark1: 'mapped',
+    mark2: 'build',
+    markSub: 'map',
     startEyebrow: 'Where to start',
     startTitle: 'Explore at your own pace.',
     primary: 'Talk about your tools',
-    ghost: 'Why',
+    ghost: 'The findings',
     dest: [
-      { to: '/pourquoi', label: 'Why', desc: 'The hidden cost, and who we act for' },
+      { to: '/pourquoi', label: 'The findings', desc: 'The hidden cost, and who we act for' },
       { to: '/methode', label: 'The method', desc: '5 milestones, in full transparency' },
       { to: '/offres', label: 'Pricing', desc: 'Prices shown, custom quotes' },
       { to: '/exemple', label: 'Example report', desc: 'A real, detailed audit' },
@@ -86,11 +93,15 @@ function HeroPinned({ c }) {
           </Reveal>
 
           <Reveal className="hero__step" amount={0.6}>
-            <RevealItem as="p" className="hero__line">{c.line1}</RevealItem>
+            <RevealItem as="p" className="hero__line">
+              <Marked text={c.line1} word={c.mark1} />
+            </RevealItem>
           </Reveal>
 
           <Reveal className="hero__step" amount={0.6}>
-            <RevealItem as="p" className="hero__line">{c.line2}</RevealItem>
+            <RevealItem as="p" className="hero__line">
+              <Marked text={c.line2} word={c.mark2} />
+            </RevealItem>
           </Reveal>
 
           <Reveal className="hero__step hero__step--final" amount={0.4}>
@@ -122,7 +133,9 @@ function HeroCompact({ c }) {
           </RevealItem>
           <RevealItem as="p" className="eyebrow">{c.eyebrow}</RevealItem>
           <RevealItem as="h1" className="display">{c.heroTitle}</RevealItem>
-          <RevealItem as="p" className="lead hero__sub">{c.sub}</RevealItem>
+          <RevealItem as="p" className="lead hero__sub">
+            <Marked text={c.sub} word={c.markSub} />
+          </RevealItem>
           <RevealItem as="div" className="hero__links">
             <Link to="/contact" className="btn btn--primary">
               {c.primary}

@@ -2,14 +2,13 @@ import { useState, useRef } from 'react';
 import { R_NODES, R_LINKS } from './Logo';
 import { useT } from '../i18n';
 
-/* Carte de visite SVG — 85 × 54 mm (ratio standard) → viewBox 850 × 540 */
+/* Carte de visite SVG — 85 × 54 mm → viewBox 850 × 540 */
 const W = 850;
 const H = 540;
 const FONT = "'Neue Einstellung', 'Helvetica Neue', system-ui, sans-serif";
 const CREAM = '#F0EEE8';
 const INDIGO = '#1c0cb3';
 
-/* Marque « R réseau » (mêmes nœuds que le logo). */
 function RMark({ x, y, scale = 1, color = CREAM, sw = 6, nr = 7 }) {
   return (
     <g transform={`translate(${x}, ${y}) scale(${scale})`}>
@@ -27,21 +26,21 @@ function RMark({ x, y, scale = 1, color = CREAM, sw = 6, nr = 7 }) {
   );
 }
 
-/* Trame « désordre » qui se dissout vers la droite (ADN de marque) :
-   un maillage diffus qui converge visuellement vers le R net. */
+/* Trame originale (12 nœuds) — même composition que la v1 */
 const TRAME = [
-  [300, 82], [418, 110], [520, 88], [360, 180], [470, 198],
-  [560, 178], [300, 252], [432, 268], [540, 292], [500, 384],
-  [560, 446], [430, 402],
+  [300, 82],  [418, 110], [520, 88],  [360, 180],
+  [470, 198], [560, 178], [300, 252], [432, 268],
+  [540, 292], [500, 384], [560, 446], [430, 402],
 ];
 const TRAME_LINKS = [
-  [0, 1], [1, 2], [1, 3], [3, 4], [4, 5], [3, 6],
-  [4, 7], [7, 8], [8, 9], [9, 10], [7, 11], [6, 7], [2, 5],
+  [0, 1], [1, 2], [1, 3], [3, 4], [4, 5],
+  [3, 6], [4, 7], [7, 8], [8, 9], [9, 10],
+  [7, 11], [6, 7], [2, 5],
 ];
 
 function Trame({ color }) {
   return (
-    <g className="bcard-trame" stroke={color} fill={color}>
+    <g stroke={color} fill={color}>
       <g strokeWidth="1.4" opacity="0.5">
         {TRAME_LINKS.map(([a, b], i) => (
           <line key={i} x1={TRAME[a][0]} y1={TRAME[a][1]} x2={TRAME[b][0]} y2={TRAME[b][1]} />
@@ -66,50 +65,64 @@ function CardFront({ pour, t, svgRef }) {
       <g clipPath="url(#bcardClip)">
         <rect width={W} height={H} fill={INDIGO} />
 
-        {/* trame diffuse */}
+        {/* Trame diffuse (composition originale) */}
         <g opacity="0.18">
           <Trame color={CREAM} />
         </g>
-        {/* connecteurs trame → R */}
-        <g stroke={CREAM} strokeWidth="1.4" opacity="0.22">
-          <line x1={560} y1={178} x2={663} y2={181} />
-          <line x1={540} y1={292} x2={663} y2={323} />
-          <line x1={560} y1={446} x2={663} y2={443} />
-        </g>
-        {/* grand R réseau net, à droite */}
-        <RMark x={560} y={95} scale={2.85} color={CREAM} sw={1.7} nr={2.7} />
 
-        {/* wordmark */}
-        <RMark x={58} y={48} scale={0.5} color={CREAM} sw={8} nr={6} />
-        <text x={128} y={92} fill={CREAM} fontSize={36} fontWeight="600" letterSpacing="-0.02em" fontFamily={FONT}>
+        {/* Connecteurs trame → R */}
+        <g stroke={CREAM} strokeWidth="1.4" opacity="0.22">
+          <line x1={560} y1={178} x2={668} y2={180} />
+          <line x1={540} y1={292} x2={668} y2={330} />
+          <line x1={560} y1={446} x2={668} y2={456} />
+        </g>
+
+        {/* Grand R — légèrement plus grand qu'original, saigne à droite */}
+        {/* scale=3.0 : fût à x=668, y=180-456 ; arche/jambe off-card à droite */}
+        <RMark x={560} y={90} scale={3.0} color={CREAM} sw={1.6} nr={2.4} />
+
+        {/* Wordmark */}
+        <RMark x={58} y={46} scale={0.5} color={CREAM} sw={8} nr={6} />
+        <text x={128} y={90} fill={CREAM} fontSize={36} fontWeight="600" letterSpacing="-0.02em" fontFamily={FONT}>
           Reskope
         </text>
+
+        {/* Filet + tagline (comble le vide haut) */}
+        <line x1={58} y1={112} x2={300} y2={112} stroke={CREAM} strokeWidth="1" opacity="0.15" />
+        <text x={58} y={140} fill={CREAM} fontSize={15} letterSpacing="0.04em" opacity="0.48" fontFamily={FONT}>
+          Audit &amp; cartographie numérique
+        </text>
+
+        {/* Personnalisation optionnelle */}
         {pour && (
-          <text x={58} y={140} fill={CREAM} fontSize={18} opacity="0.6" letterSpacing="0.03em" fontFamily={FONT}>
+          <text x={58} y={168} fill={CREAM} fontSize={16} opacity="0.65" fontFamily={FONT}>
             {t.pour} {pour}
           </text>
         )}
 
-        {/* identité */}
-        <text x={58} y={332} fill={CREAM} fontSize={46} fontWeight="600" letterSpacing="-0.025em" fontFamily={FONT}>
+        {/* Identité — remontée de ~40px vs l'original, légèrement plus grande */}
+        <text x={58} y={292} fill={CREAM} fontSize={52} fontWeight="600" letterSpacing="-0.025em" fontFamily={FONT}>
           Florian Bouchart
         </text>
-        <line x1={58} y1={356} x2={300} y2={356} stroke={CREAM} strokeWidth="2" opacity="0.5" />
-        <text x={58} y={388} fill={CREAM} fontSize={19} opacity="0.74" fontFamily={FONT}>
+        <line x1={58} y1={314} x2={390} y2={314} stroke={CREAM} strokeWidth="1.5" opacity="0.22" />
+        <text x={58} y={348} fill={CREAM} fontSize={18} opacity="0.72" fontFamily={FONT}>
           {t.role1}
         </text>
-        <text x={58} y={414} fill={CREAM} fontSize={19} opacity="0.74" fontFamily={FONT}>
+        <text x={58} y={374} fill={CREAM} fontSize={16.5} opacity="0.55" fontFamily={FONT}>
           {t.role2}
         </text>
 
-        {/* contact */}
-        <text x={58} y={476} fill={CREAM} fontSize={19} opacity="0.9" fontFamily={FONT}>
+        {/* Contact */}
+        <line x1={58} y1={414} x2={310} y2={414} stroke={CREAM} strokeWidth="1" opacity="0.10" />
+        <text x={58} y={454} fill={CREAM} fontSize={18} opacity="0.88" fontFamily={FONT}>
           +33 6 20 23 55 22
         </text>
-        <text x={58} y={504} fill={CREAM} fontSize={19} opacity="0.9" fontFamily={FONT}>
+        <text x={58} y={482} fill={CREAM} fontSize={17} opacity="0.82" fontFamily={FONT}>
           florian.bouchart@hotmail.fr
         </text>
-        <text x={W - 48} y={H - 30} textAnchor="end" fill={CREAM} fontSize={16} opacity="0.5" letterSpacing="0.05em" fontFamily={FONT}>
+
+        {/* URL */}
+        <text x={W - 44} y={H - 26} textAnchor="end" fill={CREAM} fontSize={15} letterSpacing="0.06em" opacity="0.38" fontFamily={FONT}>
           reskope.fr
         </text>
       </g>
@@ -118,7 +131,14 @@ function CardFront({ pour, t, svgRef }) {
 }
 
 /* ——— VERSO ——— */
+/* R grand et centré sur fond crème — beaucoup plus présent que l'original (scale 1.5 → 2.7) */
 function CardBack({ t, svgRef }) {
+  /* Centrage horizontal : x_offset = W/2 − midX·scale = 425 − 70·2.7 = 236 */
+  /* Centrage vertical top à y=64 : y_offset = 64 − 30·2.7 = −17            */
+  const SC = 2.7;
+  const RX = W / 2 - 70 * SC;        // 236
+  const RY = 64 - 30 * SC;            // -17  →  R.top = 64, R.bottom = 313
+
   return (
     <svg ref={svgRef} viewBox={`0 0 ${W} ${H}`} xmlns="http://www.w3.org/2000/svg" className="bcard__svg">
       <defs>
@@ -128,20 +148,27 @@ function CardBack({ t, svgRef }) {
       </defs>
       <g clipPath="url(#bcardClipBack)">
         <rect width={W} height={H} fill={CREAM} />
+
+        {/* Trame très subtile */}
         <g opacity="0.07">
           <Trame color={INDIGO} />
         </g>
-        <RMark x={W / 2 - 70} y={104} scale={1.5} color={INDIGO} sw={6} nr={6.5} />
-        <text x={W / 2} y={392} textAnchor="middle" fill={INDIGO} fontSize={56} fontWeight="600" letterSpacing="-0.02em" fontFamily={FONT}>
+
+        {/* Grand R centré — scale 2.7 (vs 1.5 original = 80% plus grand) */}
+        <RMark x={RX} y={RY} scale={SC} color={INDIGO} sw={1.8} nr={2.8} />
+
+        {/* Marque + rôle */}
+        <text x={W / 2} y={378} textAnchor="middle" fill={INDIGO} fontSize={52} fontWeight="600" letterSpacing="-0.02em" fontFamily={FONT}>
           Reskope
         </text>
-        <text x={W / 2} y={430} textAnchor="middle" fill={INDIGO} fontSize={20} opacity="0.64" fontFamily={FONT}>
+        <line x1={220} y1={402} x2={630} y2={402} stroke={INDIGO} strokeWidth="1" opacity="0.18" />
+        <text x={W / 2} y={430} textAnchor="middle" fill={INDIGO} fontSize={19} opacity="0.66" fontFamily={FONT}>
           {t.role1}
         </text>
-        <text x={W / 2} y={458} textAnchor="middle" fill={INDIGO} fontSize={20} opacity="0.64" fontFamily={FONT}>
+        <text x={W / 2} y={456} textAnchor="middle" fill={INDIGO} fontSize={17} opacity="0.50" fontFamily={FONT}>
           {t.role2}
         </text>
-        <text x={W / 2} y={500} textAnchor="middle" fill={INDIGO} fontSize={17} opacity="0.45" letterSpacing="0.06em" fontFamily={FONT}>
+        <text x={W / 2} y={504} textAnchor="middle" fill={INDIGO} fontSize={15} letterSpacing="0.06em" opacity="0.38" fontFamily={FONT}>
           reskope.fr
         </text>
       </g>

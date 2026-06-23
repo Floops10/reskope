@@ -13,11 +13,11 @@ const SHARED = {
   fr: {
     nav: {
       tabs: {
-        '/pourquoi': 'Pourquoi',
-        '/methode': 'Méthode',
-        '/offres': 'Offres',
-        '/exemple': 'Exemple',
-        '/numerique-responsable': 'Écologie',
+        '/pourquoi': 'Le constat',
+        '/methode': 'La méthode',
+        '/offres': 'Offres & tarifs',
+        '/exemple': 'Exemple de bilan',
+        '/numerique-responsable': 'Numérique responsable',
         '/a-propos': 'À propos',
       },
       cta: 'Parlons-en',
@@ -63,11 +63,11 @@ const SHARED = {
   en: {
     nav: {
       tabs: {
-        '/pourquoi': 'Why',
-        '/methode': 'Method',
-        '/offres': 'Pricing',
-        '/exemple': 'Example',
-        '/numerique-responsable': 'Ecology',
+        '/pourquoi': 'The findings',
+        '/methode': 'The method',
+        '/offres': 'Offers & pricing',
+        '/exemple': 'Sample audit',
+        '/numerique-responsable': 'Sustainable IT',
         '/a-propos': 'About',
       },
       cta: "Let's talk",

@@ -20,6 +20,9 @@ const CONTENT = {
     action: 'Pas sûr ? Trouvez votre offre',
     badge: 'Le plus choisi',
     swipe: 'Glissez pour comparer →',
+    directH: 'Vous savez déjà ce qu\'il vous faut ?',
+    directP: "Pas besoin de passer par l'audit : si votre problème est clair et que vous voulez juste passer à la réalisation, écrivez-moi directement. On gagne du temps tous les deux.",
+    directBtn: "M'écrire directement",
     qcmEyebrow: 'Pas sûr de votre besoin ?',
     qcmTitle: "Deux minutes pour cibler ce qu'il vous faut.",
     qcmLead:
@@ -38,6 +41,9 @@ const CONTENT = {
     action: 'Not sure? Find your offer',
     badge: 'Most chosen',
     swipe: 'Swipe to compare →',
+    directH: 'Already know what you need?',
+    directP: 'No need to go through the audit: if your problem is clear and you just want to move to delivery, write to me directly. We both save time.',
+    directBtn: 'Write to me directly',
     qcmEyebrow: 'Not sure what you need?',
     qcmTitle: 'Two minutes to pinpoint what you need.',
     qcmLead:
@@ -125,6 +131,19 @@ export default function Offres() {
             ))}
           </Reveal>
           <p className="offers__swipe" aria-hidden="true">{c.swipe}</p>
+
+          <Reveal className="direct-band" amount={0.15}>
+            <RevealItem className="direct-band__inner">
+              <div className="direct-band__text">
+                <h2 className="direct-band__title">{c.directH}</h2>
+                <p>{c.directP}</p>
+              </div>
+              <Link to="/contact" className="btn btn--primary direct-band__btn">
+                {c.directBtn}
+                <span className="btn__arrow" aria-hidden="true">→</span>
+              </Link>
+            </RevealItem>
+          </Reveal>
         </div>
       </section>
 

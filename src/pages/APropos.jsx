@@ -3,6 +3,7 @@ import PageHeader from '../components/PageHeader';
 import CTASection from '../components/CTASection';
 import { Reveal, RevealItem } from '../components/Reveal';
 import { useLang } from '../i18n';
+import moiPhoto from '../assets/moi.jpg';
 
 const CONTENT = {
   fr: {
@@ -102,7 +103,7 @@ export default function APropos() {
       <section className="section">
         <div className="container about__intro">
           <div className="about__photo">
-            <img src="/moi.png" alt={c.photoAlt} />
+            <img src={moiPhoto} alt={c.photoAlt} />
           </div>
           <Reveal className="about__text">
             <RevealItem as="h2" className="h2">{c.hello}</RevealItem>

@@ -154,6 +154,7 @@ svg {
 .display {
   font-size: var(--fs-display);
   letter-spacing: -0.035em;
+  text-wrap: balance;
 }
 .h2 {
   font-size: var(--fs-h2);
@@ -530,10 +531,11 @@ html.eco-theme .enav__tab.is-active {
 .hero__line {
   font-size: clamp(1.6rem, 3.1vw, 2.7rem);
   font-weight: 500;
-  line-height: 1.16;
+  line-height: 1.2;
   letter-spacing: -0.02em;
-  max-width: 19ch;
+  max-width: 21ch;
   color: var(--ink);
+  text-wrap: balance;
 }
 .hero__links {
   display: flex;
@@ -4257,4 +4259,97 @@ html.eco-theme .langtoggle__opt.is-on {
 }
 html.eco-theme .langtoggle__opt:not(.is-on):hover {
   color: #fff;
+}
+
+/* ============================================================
+   OFFRES — bande « vous savez déjà ce qu'il vous faut »
+   ============================================================ */
+.direct-band {
+  margin-top: clamp(1.75rem, 4vh, 2.75rem);
+}
+.direct-band__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem 2rem;
+  flex-wrap: wrap;
+  padding: clamp(1.5rem, 3vw, 2.25rem) clamp(1.5rem, 3vw, 2.5rem);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--indigo) 5%, var(--cream));
+}
+.direct-band__title {
+  font-size: clamp(1.2rem, 2.4vw, 1.6rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.35rem;
+}
+.direct-band__text {
+  max-width: 56ch;
+}
+.direct-band__text p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.96rem;
+  line-height: 1.55;
+}
+.direct-band__btn {
+  flex: none;
+}
+@media (max-width: 640px) {
+  .direct-band__inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* Contact — séparateur « ou écrivez-moi directement » */
+.contact-or {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-content: center;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: clamp(1.5rem, 3.5vh, 2.5rem);
+}
+.contact-or::before,
+.contact-or::after {
+  content: '';
+  height: 1px;
+  flex: 1;
+  max-width: 120px;
+  background: var(--hairline);
+}
+
+/* ============================================================
+   Soulignement SVG « tracé main » sur les mots-clés (Marked)
+   ============================================================ */
+.kw {
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+}
+.kw__svg {
+  position: absolute;
+  left: -0.12em;
+  right: -0.12em;
+  bottom: -0.22em;
+  width: calc(100% + 0.24em);
+  height: 0.42em;
+  overflow: visible;
+  pointer-events: none;
+}
+.kw__line {
+  fill: none;
+  stroke: var(--indigo);
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+.hero__sub {
+  text-wrap: balance;
 }

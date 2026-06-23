@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carte de visite — Reskope</title>
+  <style>
+    @font-face {
+      font-family: 'Neue Einstellung';
+      src: url('./public/fonts/NeueEinstellung-Regular.woff2') format('woff2'),
+           url('./public/fonts/NeueEinstellung-Regular.woff') format('woff');
+      font-weight: 400; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'Neue Einstellung';
+      src: url('./public/fonts/NeueEinstellung-Medium.woff2') format('woff2'),
+           url('./public/fonts/NeueEinstellung-Medium.woff') format('woff');
+      font-weight: 500; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'Neue Einstellung';
+      src: url('./public/fonts/NeueEinstellung-SemiBold.woff2') format('woff2'),
+           url('./public/fonts/NeueEinstellung-SemiBold.woff') format('woff');
+      font-weight: 600; font-style: normal; font-display: swap;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Neue Einstellung', 'Helvetica Neue', system-ui, sans-serif;
+      background: #0e0b1f;
+      min-height: 100svh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+      color: #f0eee8;
+    }
+    .panel {
+      width: 100%;
+      max-width: 560px;
+      background: #17142a;
+      border-radius: 16px;
+      padding: clamp(1.5rem, 4vw, 2.5rem);
+      box-shadow: 0 48px 96px rgba(0,0,0,0.55);
+      border: 1px solid rgba(240,238,232,0.07);
+    }
+    .eyebrow {
+      font-size: 0.78rem;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: #b7b3a9;
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.15rem, 2.4vw, 1.5rem);
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.4rem;
+    }
+    .flip-wrap {
+      width: 100%;
+      aspect-ratio: 850 / 540;
+      perspective: 1800px;
+      margin-bottom: 1.5rem;
+    }
+    .flip-inner {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .flip-inner.is-back { transform: rotateY(180deg); }
+    .face {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 14px 40px rgba(28,12,179,0.28);
+    }
+    .face--back { transform: rotateY(180deg); }
+    .face svg { display: block; width: 100%; height: auto; }
+    .controls { display: flex; flex-direction: column; gap: 1rem; }
+    .field { display: flex; flex-direction: column; gap: 0.4rem; }
+    .field-label { font-size: 0.82rem; font-weight: 500; color: #b7b3a9; }
+    input[type="text"] {
+      background: rgba(240,238,232,0.06);
+      border: 1px solid rgba(240,238,232,0.13);
+      border-radius: 8px;
+      padding: 0.7rem 0.9rem;
+      color: #f0eee8;
+      font-family: inherit;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+      width: 100%;
+    }
+    input[type="text"]:focus { border-color: rgba(240,238,232,0.32); }
+    input[type="text"]::placeholder { color: rgba(240,238,232,0.26); }
+    .actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    button {
+      flex: 1;
+      font-family: inherit;
+      font-size: 0.92rem;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      border-radius: 999px;
+      padding: 0.75rem 1.4rem;
+      cursor: pointer;
+      transition: opacity 0.15s;
+      border: none;
+    }
+    button:hover { opacity: 0.82; }
+    #btnFlip { background: transparent; border: 1px solid rgba(240,238,232,0.18); color: #f0eee8; }
+    #btnDl   { background: #1c0cb3; color: #f0eee8; }
+    .note { font-size: 0.78rem; color: #b7b3a9; line-height: 1.6; }
+  </style>
+</head>
+<body>
+<main class="panel">
+  <p class="eyebrow">Carte de visite</p>
+  <h1>Personnalisez et téléchargez.</h1>
+
+  <div class="flip-wrap">
+    <div class="flip-inner" id="flipInner">
+
+      <!-- ——— RECTO ——— -->
+      <div class="face face--front">
+        <svg id="svgFront" viewBox="0 0 850 540" xmlns="http://www.w3.org/2000/svg">
+          <defs><clipPath id="clipFront"><rect width="850" height="540" rx="20"/></clipPath></defs>
+          <g clip-path="url(#clipFront)">
+            <rect width="850" height="540" fill="#1c0cb3"/>
+
+            <!-- Trame 12 nœuds -->
+            <g opacity="0.18">
+              <g stroke="#F0EEE8" fill="none" stroke-width="1.4" opacity="0.5">
+                <line x1="300" y1="82"  x2="418" y2="110"/>
+                <line x1="418" y1="110" x2="520" y2="88"/>
+                <line x1="418" y1="110" x2="360" y2="180"/>
+                <line x1="360" y1="180" x2="470" y2="198"/>
+                <line x1="470" y1="198" x2="560" y2="178"/>
+                <line x1="360" y1="180" x2="300" y2="252"/>
+                <line x1="470" y1="198" x2="432" y2="268"/>
+                <line x1="432" y1="268" x2="540" y2="292"/>
+                <line x1="540" y1="292" x2="500" y2="384"/>
+                <line x1="500" y1="384" x2="560" y2="446"/>
+                <line x1="432" y1="268" x2="430" y2="402"/>
+                <line x1="300" y1="252" x2="432" y2="268"/>
+                <line x1="520" y1="88"  x2="560" y2="178"/>
+              </g>
+              <g fill="#F0EEE8" opacity="0.7">
+                <circle cx="300" cy="82"  r="3.4"/>
+                <circle cx="418" cy="110" r="3.4"/>
+                <circle cx="520" cy="88"  r="3.4"/>
+                <circle cx="360" cy="180" r="3.4"/>
+                <circle cx="470" cy="198" r="3.4"/>
+                <circle cx="560" cy="178" r="3.4"/>
+                <circle cx="300" cy="252" r="3.4"/>
+                <circle cx="432" cy="268" r="3.4"/>
+                <circle cx="540" cy="292" r="3.4"/>
+                <circle cx="500" cy="384" r="3.4"/>
+                <circle cx="560" cy="446" r="3.4"/>
+                <circle cx="430" cy="402" r="3.4"/>
+              </g>
+            </g>
+
+            <!-- Connecteurs trame → R -->
+            <g stroke="#F0EEE8" stroke-width="1.4" opacity="0.22">
+              <line x1="560" y1="178" x2="668" y2="180"/>
+              <line x1="540" y1="292" x2="668" y2="330"/>
+              <line x1="560" y1="446" x2="668" y2="456"/>
+            </g>
+
+            <!-- Grand R (scale=3.0, x=560, y=90) — fût à x=668, saigne à droite -->
+            <g transform="translate(560, 90) scale(3.0)">
+              <g stroke="#F0EEE8" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="36" y1="30" x2="36" y2="80"/>
+                <line x1="36" y1="80" x2="36" y2="122"/>
+                <line x1="36" y1="30" x2="92" y2="30"/>
+                <line x1="92" y1="30" x2="104" y2="62"/>
+                <line x1="104" y1="62" x2="36" y2="80"/>
+                <line x1="36" y1="80" x2="104" y2="122"/>
+              </g>
+              <g fill="#F0EEE8">
+                <circle cx="36"  cy="30"  r="2.4"/>
+                <circle cx="92"  cy="30"  r="2.4"/>
+                <circle cx="104" cy="62"  r="2.4"/>
+                <circle cx="36"  cy="80"  r="3.0"/>
+                <circle cx="36"  cy="122" r="2.4"/>
+                <circle cx="104" cy="122" r="2.4"/>
+              </g>
+            </g>
+
+            <!-- Wordmark (petit R + "Reskope") -->
+            <g transform="translate(58, 46) scale(0.5)">
+              <g stroke="#F0EEE8" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="36" y1="30" x2="36" y2="80"/>
+                <line x1="36" y1="80" x2="36" y2="122"/>
+                <line x1="36" y1="30" x2="92" y2="30"/>
+                <line x1="92" y1="30" x2="104" y2="62"/>
+                <line x1="104" y1="62" x2="36" y2="80"/>
+                <line x1="36" y1="80" x2="104" y2="122"/>
+              </g>
+              <g fill="#F0EEE8">
+                <circle cx="36"  cy="30"  r="6"/>
+                <circle cx="92"  cy="30"  r="6"/>
+                <circle cx="104" cy="62"  r="6"/>
+                <circle cx="36"  cy="80"  r="7.5"/>
+                <circle cx="36"  cy="122" r="6"/>
+                <circle cx="104" cy="122" r="6"/>
+              </g>
+            </g>
+            <text x="128" y="90" fill="#F0EEE8" font-size="36" font-weight="600" letter-spacing="-0.02em" font-family="'Neue Einstellung','Helvetica Neue',system-ui,sans-serif">Reskope</text>
+
+            <!-- Filet + tagline -->
+            <line x1="58" y1="112" x2="300" y2="112" stroke="#F0EEE8" stroke-width="1" opacity="0.15"/>
+            <text x="58" y="140" fill="#F0EEE8" font-size="15" letter-spacing="0.04em" opacity="0.48" font-family="'Neue Einstellung','Helvetica Neue',system-ui,sans-serif">Audit &amp; cartographie numérique</text>
+
+            <!-- Pour (masqué par défaut) -->
+            <text id="pourText" x="58" y="168" fill="#F0EEE8" font-size="16" opacity="0.65" visibility="hidden" font-family="'Neue Einstellung','Helvetica Neue',system-ui,sans-serif">Pour —</text>
+
+            <!-- Nom -->
+            <text x="58" y="292" fill="#F0EEE8" font-size="52" font-weight="600" letter-spacing="-0.025em" font-family="'Neue Einstellung','Helvetica Neue',system-ui,sans-serif">Florian Bouchart</text>
+            <line x1="58" y1="314" x2="390" y2="314" stroke="#F0EEE8" stroke-width="1.5" opacity="0.22"/>
+
+            <!-- Rôle -->
+            <text x="58" y="348" fill="#F0EEE8" font-size="18" opacity="0.72" font-family="'Neue Einstellung','Helvetica Neue',system-ui,sans-serif">Conseil &amp; ingénierie numérique</text>
+            <text x="58" y="374" fill="#F0EEE8" font-size="16.5" opacity="0.55" font-family="'Neue Einstellung','Helvetica Neue',system-ui,sans-serif">Développement web · automatisation</text>
+
+            <!-- Contact -->
+            <line x1="58" y1="414" x2="310" y2="414" stroke="#F0EEE8" stroke-width="1" opacity="0.10"/>
+            <text x="58" y="454" fill="#F0EEE8" font-size="18" opacity="0.88" font-family="'Neue Einstellung','Helvetica Neue',system-ui,sans-serif">+33 6 20 23 55 22</text>
+            <text x="58" y="482" fill="#F0EEE8" font-size="17" opacity="0.82" font-family="'Neue Einstellung','Helvetica Neue',system-ui,sans-serif">florian.bouchart@hotmail.fr</text>
+
+            <!-- URL -->
+            <text x="806" y="514" text-anchor="end" fill="#F0EEE8" font-size="15" letter-spacing="0.06em" opacity="0.38" font-family="'Neue Einstellung','Helvetica Neue',system-ui,sans-serif">reskope.fr</text>
+          </g>
+        </svg>
+      </div>
+
+      <!-- ——— VERSO ——— -->
+      <div class="face face--back">
+        <svg id="svgBack" viewBox="0 0 850 540" xmlns="http://www.w3.org/2000/svg">
+          <defs><clipPath id="clipBack"><rect width="850" height="540" rx="20"/></clipPath></defs>
+          <g clip-path="url(#clipBack)">
+            <rect width="850" height="540" fill="#F0EEE8"/>
+
+            <!-- Trame subtile (indigo, opacity=0.07) -->
+            <g opacity="0.07">
+              <g stroke="#1c0cb3" fill="none" stroke-width="1.4" opacity="0.5">
+                <line x1="300" y1="82"  x2="418" y2="110"/>
+                <line x1="418" y1="110" x2="520" y2="88"/>
+                <line x1="418" y1="110" x2="360" y2="180"/>
+                <line x1="360" y1="180" x2="470" y2="198"/>
+                <line x1="470" y1="198" x2="560" y2="178"/>
+                <line x1="360" y1="180" x2="300" y2="252"/>
+                <line x1="470" y1="198" x2="432" y2="268"/>
+                <line x1="432" y1="268" x2="540" y2="292"/>
+                <line x1="540" y1="292" x2="500" y2="384"/>
+                <line x1="500" y1="384" x2="560" y2="446"/>
+                <line x1="432" y1="268" x2="430" y2="402"/>
+                <line x1="300" y1="252" x2="432" y2="268"/>
+                <line x1="520" y1="88"  x2="560" y2="178"/>
+              </g>
+              <g fill="#1c0cb3" opacity="0.7">
+                <circle cx="300" cy="82"  r="3.4"/>
+                <circle cx="418" cy="110" r="3.4"/>
+                <circle cx="520" cy="88"  r="3.4"/>
+                <circle cx="360" cy="180" r="3.4"/>
+                <circle cx="470" cy="198" r="3.4"/>
+                <circle cx="560" cy="178" r="3.4"/>
+                <circle cx="300" cy="252" r="3.4"/>
+                <circle cx="432" cy="268" r="3.4"/>
+                <circle cx="540" cy="292" r="3.4"/>
+                <circle cx="500" cy="384" r="3.4"/>
+                <circle cx="560" cy="446" r="3.4"/>
+                <circle cx="430" cy="402" r="3.4"/>
+              </g>
+            </g>
+
+            <!-- Grand R centré (scale=2.7, RX=236, RY=-17 → top à y=64) -->
+            <g transform="translate(236, -17) scale(2.7)">
+              <g stroke="#1c0cb3" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="36" y1="30" x2="36" y2="80"/>
+                <line x1="36" y1="80" x2="36" y2="122"/>
+                <line x1="36" y1="30" x2="92" y2="30"/>
+                <line x1="92" y1="30" x2="104" y2="62"/>
+                <line x1="104" y1="62" x2="36" y2="80"/>
+                <line x1="36" y1="80" x2="104" y2="122"/>
+              </g>
+              <g fill="#1c0cb3">
+                <circle cx="36"  cy="30"  r="2.8"/>
+                <circle cx="92"  cy="30"  r="2.8"/>
+                <circle cx="104" cy="62"  r="2.8"/>
+                <circle cx="36"  cy="80"  r="3.5"/>
+                <circle cx="36"  cy="122" r="2.8"/>
+                <circle cx="104" cy="122" r="2.8"/>
+              </g>
+            </g>
+
+            <!-- "Reskope" + filet + rôles -->
+            <text x="425" y="378" text-anchor="middle" fill="#1c0cb3" font-size="52" font-weight="600" letter-spacing="-0.02em" font-family="'Neue Einstellung','Helvetica Neue',system-ui,sans-serif">Reskope</text>
+            <line x1="220" y1="402" x2="630" y2="402" stroke="#1c0cb3" stroke-width="1" opacity="0.18"/>
+            <text x="425" y="430" text-anchor="middle" fill="#1c0cb3" font-size="19" opacity="0.66" font-family="'Neue Einstellung','Helvetica Neue',system-ui,sans-serif">Conseil &amp; ingénierie numérique</text>
+            <text x="425" y="456" text-anchor="middle" fill="#1c0cb3" font-size="17" opacity="0.50" font-family="'Neue Einstellung','Helvetica Neue',system-ui,sans-serif">Développement web · automatisation</text>
+            <text x="425" y="504" text-anchor="middle" fill="#1c0cb3" font-size="15" letter-spacing="0.06em" opacity="0.38" font-family="'Neue Einstellung','Helvetica Neue',system-ui,sans-serif">reskope.fr</text>
+          </g>
+        </svg>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="controls">
+    <label class="field">
+      <span class="field-label">Pour (optionnel, visible sur le recto)</span>
+      <input type="text" id="pourInput" placeholder="Nom du destinataire" maxlength="28">
+    </label>
+    <div class="actions">
+      <button id="btnFlip">Voir le verso ↺</button>
+      <button id="btnDl">Télécharger le recto ↓</button>
+    </div>
+    <p class="note">Fichier vectoriel · 85 × 54 mm · recto &amp; verso · à ouvrir dans Illustrator, Figma ou chez votre imprimeur.</p>
+  </div>
+</main>
+
+<script>
+  var side = 'front';
+  var flipInner = document.getElementById('flipInner');
+  var pourInput = document.getElementById('pourInput');
+  var pourText  = document.getElementById('pourText');
+  var btnFlip   = document.getElementById('btnFlip');
+  var btnDl     = document.getElementById('btnDl');
+
+  pourInput.addEventListener('input', function () {
+    var val = this.value.trim();
+    if (val) {
+      pourText.textContent = 'Pour ' + val;
+      pourText.setAttribute('visibility', 'visible');
+    } else {
+      pourText.setAttribute('visibility', 'hidden');
+    }
+  });
+
+  btnFlip.addEventListener('click', function () {
+    side = side === 'front' ? 'back' : 'front';
+    flipInner.classList.toggle('is-back');
+    btnFlip.textContent = side === 'front' ? 'Voir le verso ↺' : 'Voir le recto ↺';
+    btnDl.textContent   = side === 'front' ? 'Télécharger le recto ↓' : 'Télécharger le verso ↓';
+  });
+
+  btnDl.addEventListener('click', function () {
+    var svgEl = document.getElementById(side === 'front' ? 'svgFront' : 'svgBack');
+    var str   = new XMLSerializer().serializeToString(svgEl);
+    if (!str.startsWith('<?xml')) str = '<?xml version="1.0" encoding="UTF-8"?>\n' + str;
+    var blob = new Blob([str], { type: 'image/svg+xml;charset=utf-8' });
+    var url  = URL.createObjectURL(blob);
+    var a    = document.createElement('a');
+    a.href   = url;
+    var pour = pourInput.value.trim();
+    var suffix = side === 'front'
+      ? (pour ? 'recto-' + pour.toLowerCase().replace(/\s+/g, '-') : 'recto')
+      : 'verso';
+    a.download = 'reskope-carte-' + suffix + '.svg';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+</script>
+</body>
+</html>
