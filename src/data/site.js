@@ -7,7 +7,7 @@ export const CONTACT = {
   email: 'hello@reskope.fr',
 };
 
-export const FORMSUBMIT_URL = 'https://formsubmit.co/ajax/wedday.thomyflorian@gmail.com';
+export const FORMSUBMIT_URL = 'https://formsubmit.co/ajax/florian.bouchart@hotmail.fr';
 
 /* Statistiques EXTERNES, toujours sourcées (le ⓘ affiche la source). */
 export const STATS = {
@@ -165,7 +165,7 @@ export const OFFERS = {
     {
       id: ‘audit’,
       name: ‘Audit numérique’,
-      tagline: ‘Comprendre avant d’agir.’,
+      tagline: "Comprendre avant d’agir.",
       features: [
         ‘Entretiens individuels avec vos équipes’,
         ‘Cartographie complète de vos outils et usages’,
@@ -180,9 +180,9 @@ export const OFFERS = {
       name: ‘Audit + Mise en œuvre’,
       tagline: ‘On identifie, je règle.’,
       features: [
-        ‘Tout l’audit numérique, inclus’,
+        "Tout l’audit numérique, inclus",
         ‘Réalisation : intégrations, automatisations, site web’,
-        ‘Développement d’outils sur-mesure si besoin’,
+        "Développement d’outils sur-mesure si besoin",
         ‘Facturable à la journée (estimation fournie en amont)’,
         ‘Vous choisissez : je fais tout, ou vous reprenez la main’,
       ],
@@ -196,7 +196,7 @@ export const OFFERS = {
         ‘Site web ou application métier sur-mesure’,
         ‘Automatisations (n8n, BI, intelligence artificielle)’,
         ‘Intégrations entre vos outils existants’,
-        ‘Pas besoin de passer par l’audit si le besoin est clair’,
+        "Pas besoin de passer par l’audit si le besoin est clair",
         ‘Estimation de jours fournie avant démarrage’,
       ],
       cta: ‘Décrire mon besoin’, featured: false,
