@@ -16,8 +16,7 @@ export const STATS = {
       id: 'workaboutwork',
       value: 60,
       suffix: '%',
-      label:
-        'du temps englouti par le « travail autour du travail » : chercher l'information, jongler entre les apps, réunions de statut.',
+      label: `du temps englouti par le « travail autour du travail » : chercher l'information, jongler entre les apps, réunions de statut.`,
       source: {
         label: 'Asana, Anatomy of Work Index 2021',
         url: 'https://www.businesswire.com/news/home/20210114005374/en/Asana-Anatomy-of-Work-Index-2021-Work-About-Work-Is-Dominating-in-a-Distributed-World',
@@ -28,7 +27,7 @@ export const STATS = {
       value: 6.5,
       decimals: 1,
       suffix: 'h',
-      label: 'par semaine et par salarié, perdues en travail dupliqué ou jugé inutile.',
+      label: `par semaine et par salarié, perdues en travail dupliqué ou jugé inutile.`,
       source: {
         label: 'Asana, Anatomy of Work Index 2021',
         url: 'https://www.businesswire.com/news/home/20210114005374/en/Asana-Anatomy-of-Work-Index-2021-Work-About-Work-Is-Dominating-in-a-Distributed-World',
@@ -38,7 +37,7 @@ export const STATS = {
       id: 'email',
       value: 47,
       suffix: '%',
-      label: 'du temps passé à gérer ses e-mails (28 %) et à chercher de l'information (19 %).',
+      label: `du temps passé à gérer ses e-mails (28 %) et à chercher de l'information (19 %).`,
       source: {
         label: 'McKinsey Global Institute, The Social Economy, 2012',
         url: 'https://www.mckinsey.com/industries/technology-media-and-telecommunications/our-insights/the-social-economy',
@@ -48,8 +47,7 @@ export const STATS = {
       id: 'automation',
       value: 30,
       suffix: '%',
-      label:
-        'des activités sont automatisables dans 60 % des métiers, soit près d'1,5 jour par semaine.',
+      label: `des activités sont automatisables dans 60 % des métiers, soit près d'1,5 jour par semaine.`,
       source: {
         label: 'McKinsey, A Future That Works, 2017',
         url: 'https://www.mckinsey.com/featured-insights/digital-disruption/harnessing-automation-for-a-future-that-works',
@@ -61,8 +59,7 @@ export const STATS = {
       id: 'workaboutwork',
       value: 60,
       suffix: '%',
-      label:
-        'of time swallowed by “work about work”: searching for information, juggling apps, status meetings.',
+      label: 'of time swallowed by "work about work": searching for information, juggling apps, status meetings.',
       source: {
         label: 'Asana, Anatomy of Work Index 2021',
         url: 'https://www.businesswire.com/news/home/20210114005374/en/Asana-Anatomy-of-Work-Index-2021-Work-About-Work-Is-Dominating-in-a-Distributed-World',
@@ -107,27 +104,27 @@ export const JALONS = {
   fr: [
     {
       n: '01', label: 'Cadrage', title: 'On définit le terrain de jeu.',
-      text: 'Un premier échange pour cerner votre contexte, vos objectifs et le périmètre. Vous savez où on va avant même de commencer.',
+      text: `Un premier échange pour cerner votre contexte, vos objectifs et le périmètre. Vous savez où on va avant même de commencer.`,
       deliver: 'Une feuille de route partagée.', here: false,
     },
     {
       n: '02', label: 'Audit', title: 'On observe, salarié par salarié.',
-      text: 'Entretiens individuels et cartographie de vos outils et de vos process. C'est l'étape de départ proposée aujourd'hui.',
-      deliver: 'La photo fidèle de votre quotidien numérique.', here: true,
+      text: `Entretiens individuels et cartographie de vos outils et de vos process. C'est l'étape de départ proposée aujourd'hui.`,
+      deliver: `La photo fidèle de votre quotidien numérique.`, here: true,
     },
     {
       n: '03', label: 'Bilan', title: 'On partage un diagnostic priorisé.',
-      text: 'Constats, gains estimés et recommandations classées par impact. On le relit et on le valide ensemble.',
+      text: `Constats, gains estimés et recommandations classées par impact. On le relit et on le valide ensemble.`,
       deliver: 'Un rapport clair, que vous gardez.', here: false,
     },
     {
       n: '04', label: 'Mise en œuvre', title: 'On exécute, jalon par jalon.',
-      text: 'Les quick wins d'abord, puis les chantiers de fond. Vous cochez chaque étape avec moi, à votre rythme.',
+      text: `Les quick wins d'abord, puis les chantiers de fond. Vous cochez chaque étape avec moi, à votre rythme.`,
       deliver: 'Des outils qui travaillent enfin pour vous.', here: false,
     },
     {
       n: '05', label: 'Autonomie', title: 'Vos équipes reprennent la main.',
-      text: 'Outils en place, équipes formées, gains mesurés. Vous continuez sans dépendre de qui que ce soit.',
+      text: `Outils en place, équipes formées, gains mesurés. Vous continuez sans dépendre de qui que ce soit.`,
       deliver: 'Un système durable, et des gains chiffrés.', here: false,
     },
   ],
@@ -165,7 +162,7 @@ export const OFFERS = {
     {
       id: 'audit',
       name: 'Audit numérique',
-      tagline: "Comprendre avant d'agir.",
+      tagline: `Comprendre avant d'agir.`,
       features: [
         'Entretiens individuels avec vos équipes',
         'Cartographie complète de vos outils et usages',
@@ -180,9 +177,9 @@ export const OFFERS = {
       name: 'Audit + Mise en œuvre',
       tagline: 'On identifie, je règle.',
       features: [
-        "Tout l'audit numérique, inclus",
+        `Tout l'audit numérique, inclus`,
         'Réalisation : intégrations, automatisations, site web',
-        "Développement d'outils sur-mesure si besoin",
+        `Développement d'outils sur-mesure si besoin`,
         'Facturable à la journée (estimation fournie en amont)',
         'Vous choisissez : je fais tout, ou vous reprenez la main',
       ],
@@ -196,7 +193,7 @@ export const OFFERS = {
         'Site web ou application métier sur-mesure',
         'Automatisations (n8n, BI, intelligence artificielle)',
         'Intégrations entre vos outils existants',
-        "Pas besoin de passer par l'audit si le besoin est clair",
+        `Pas besoin de passer par l'audit si le besoin est clair`,
         'Estimation de jours fournie avant démarrage',
       ],
       cta: 'Décrire mon besoin', featured: false,
@@ -240,7 +237,7 @@ export const OFFERS = {
         'Day-rate billing (estimate provided upfront)',
         'You choose: I do it all, or you take over',
       ],
-      cta: 'Let\'s talk', featured: true,
+      cta: "Let's talk", featured: true,
     },
     {
       id: 'developpement',
@@ -275,19 +272,19 @@ export const FAQ = {
   fr: [
     {
       q: 'Combien de temps dure un audit ?',
-      a: 'Selon la taille de l'équipe, comptez de quelques jours à deux semaines entre les entretiens, l'analyse et la restitution du bilan.',
+      a: `Selon la taille de l'équipe, comptez de quelques jours à deux semaines entre les entretiens, l'analyse et la restitution du bilan.`,
     },
     {
       q: 'Faut-il changer tous nos outils ?',
-      a: 'Rarement. L'objectif est de mieux utiliser l'existant, de connecter ce qui doit l'être, et de n'ajouter un outil que lorsqu'il fait gagner du temps.',
+      a: `Rarement. L'objectif est de mieux utiliser l'existant, de connecter ce qui doit l'être, et de n'ajouter un outil que lorsqu'il fait gagner du temps.`,
     },
     {
-      q: 'Le bilan m'engage-t-il à prendre la mise en œuvre ?',
-      a: 'Non. Le bilan est un livrable autonome : vous pouvez l'appliquer vous-même, avec votre équipe, ou me confier la réalisation.',
+      q: `Le bilan m'engage-t-il à prendre la mise en œuvre ?`,
+      a: `Non. Le bilan est un livrable autonome : vous pouvez l'appliquer vous-même, avec votre équipe, ou me confier la réalisation.`,
     },
     {
       q: 'Travaillez-vous avec les petites structures ?',
-      a: 'Oui. L'approche terrain, salarié par salarié, est particulièrement efficace dans les TPE, PME et équipes en croissance.',
+      a: `Oui. L'approche terrain, salarié par salarié, est particulièrement efficace dans les TPE, PME et équipes en croissance.`,
     },
   ],
   en: [
