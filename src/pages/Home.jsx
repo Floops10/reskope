@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import Page from '../components/Page';
 import { HeroLogo } from '../components/Logo';
+import SceneHook from '../components/SceneHook';
 import NetField from '../components/NetField';
 import CTASection from '../components/CTASection';
 import Marked from '../components/Marked';
@@ -19,6 +20,8 @@ const CONTENT = {
       'Reskope cartographie et audite vos outils sur le terrain, salarié par salarié, puis relie, simplifie et construit ce qui manque. Démarche ouverte, gains chiffrés.',
     eyebrow: 'Audit & cartographie numérique',
     heroTitle: 'Vos équipes perdent des heures dans leurs outils.',
+    moment2: 'On cartographie. On relie. On simplifie.',
+    moment3: 'On construit ce qui manque.',
     line1: "Des outils qui ne se parlent pas, des informations éparpillées, des usages que personne n'a vraiment cartographiés. Le coût ne se voit pas sur une facture, mais il est bien réel.",
     line2: "Reskope cartographie votre écosystème numérique, outil par outil et usage par usage. Puis on relie, on simplifie et on construit ce qui manque : du site web à l'outil métier, jusqu'aux automatisations. Toujours au grand jour, jalon après jalon.",
     sub: "On cartographie vos outils et vos usages, on relie, on simplifie, on construit ce qui manque. Toujours au grand jour, jalon après jalon.",
@@ -46,6 +49,8 @@ const CONTENT = {
       'Reskope maps and audits your tools on the ground, employee by employee, then connects, simplifies and builds what is missing. Open process, quantified gains.',
     eyebrow: 'Digital audit & mapping',
     heroTitle: 'Your teams lose hours inside their tools.',
+    moment2: 'We map. We connect. We simplify.',
+    moment3: 'We build what is missing.',
     line1: "Tools that don't talk to each other, scattered information, usage no one has really mapped. The cost is hidden, but it is very real.",
     line2: 'Reskope maps your digital ecosystem, tool by tool and use by use. Then we connect, simplify and build what is missing: from websites to business tools and automations. Always in the open, milestone by milestone.',
     sub: "We map your tools and how they're used, we connect, simplify and build what is missing. Always in the open, milestone by milestone.",
@@ -186,23 +191,38 @@ export default function Home() {
 
   return (
     <Page title={c.metaTitle} description={c.metaDesc}>
-      {isDesktop ? <HeroPinned c={c} /> : <HeroCompact c={c} />}
+      {isDesktop ? <SceneHook c={c} /> : <HeroCompact c={c} />}
 
-      {!isDesktop && (
-        <section className="section section--tight" id="start" aria-labelledby="start-title">
+      {/* Récit détaillé (conservé) — desktop : suite du hook */}
+      {isDesktop && (
+        <section className="section home-recit" aria-label="Le constat, en clair">
           <div className="container">
-            <Reveal className="section__head">
-              <RevealItem as="p" className="eyebrow eyebrow--index">{c.startEyebrow}</RevealItem>
-              <RiseText as="h2" className="h2" id="start-title" text={c.startTitle} />
-            </Reveal>
-            <Reveal amount={0.1}>
-              <RevealItem>
-                <DestGrid dest={c.dest} />
+            <Reveal className="home-recit__inner">
+              <RevealItem as="p" className="hero__line">
+                <Marked text={c.line1} word={c.mark1} />
+              </RevealItem>
+              <RevealItem as="p" className="hero__line">
+                <Marked text={c.line2} word={c.mark2} />
               </RevealItem>
             </Reveal>
           </div>
         </section>
       )}
+
+      {/* Par où commencer — partagé desktop + mobile */}
+      <section className="section section--tight" id="start" aria-labelledby="start-title">
+        <div className="container">
+          <Reveal className="section__head">
+            <RevealItem as="p" className="eyebrow eyebrow--index">{c.startEyebrow}</RevealItem>
+            <RiseText as="h2" className="h2" id="start-title" text={c.startTitle} />
+          </Reveal>
+          <Reveal amount={0.1}>
+            <RevealItem>
+              <DestGrid dest={c.dest} />
+            </RevealItem>
+          </Reveal>
+        </div>
+      </section>
 
       {/* Teaser — numérique responsable */}
       <section className="section eco-teaser" aria-labelledby="eco-teaser-title">
