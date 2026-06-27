@@ -1958,14 +1958,37 @@ html.eco-theme .enav__tab.is-active {
   margin-bottom: 1.1rem;
 }
 .navmenu__links {
+  position: relative;
   display: flex;
   flex-direction: column;
+}
+/* Dorsale réseau (faible) + lien qui se trace du nœud courant au nœud survolé */
+.navmenu__spine,
+.navmenu__route {
+  position: absolute;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+.navmenu__spine {
+  width: 2px;
+  background: color-mix(in srgb, var(--indigo) 15%, transparent);
+}
+.navmenu__route {
+  width: 2.5px;
+  border-radius: 2px;
+  background: var(--indigo);
+  opacity: 0;
+  box-shadow: 0 0 12px color-mix(in srgb, var(--indigo) 45%, transparent);
+  transition:
+    top 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    height 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.3s ease;
 }
 .navmenu__link {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 1.1rem;
+  gap: 1.4rem;
   padding: clamp(0.7rem, 1.7vh, 1.1rem) 0;
   border-bottom: 1px solid var(--hairline);
   font-size: clamp(1.8rem, 6.5vw, 3.4rem);
@@ -1975,43 +1998,44 @@ html.eco-theme .enav__tab.is-active {
   color: var(--ink);
   opacity: 0;
   transform: translateY(26px);
-  transition: opacity 0.5s ease, transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), color 0.3s ease;
+  transition: opacity 0.5s ease, transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), color 0.35s ease;
 }
 .navmenu.is-open .navmenu__link {
   opacity: 1;
   transform: translateY(0);
   transition-delay: calc(200ms + var(--i) * 60ms);
 }
-.navmenu__num {
-  align-self: flex-start;
-  margin-top: 0.55em;
+/* Chaque page = un nœud du réseau */
+.navmenu__node {
   flex: none;
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: var(--indigo);
-  letter-spacing: 0.08em;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  border: 1.5px solid color-mix(in srgb, var(--indigo) 38%, transparent);
+  background: var(--cream);
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease,
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.3s ease;
 }
-.navmenu__text {
-  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.navmenu__arrow {
-  margin-left: auto;
-  font-size: 0.55em;
-  color: var(--indigo);
-  opacity: 0;
-  transform: translateX(-14px);
-  transition: opacity 0.35s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.navmenu__link.active,
-.navmenu__link:hover {
+.navmenu__link.is-current {
   color: var(--indigo);
 }
-.navmenu__link:hover .navmenu__text {
-  transform: translateX(14px);
+.navmenu__link.is-current .navmenu__node {
+  background: var(--indigo);
+  border-color: var(--indigo);
 }
-.navmenu__link:hover .navmenu__arrow {
-  opacity: 1;
-  transform: translateX(0);
+.navmenu__link:hover,
+.navmenu__link:focus-visible {
+  color: var(--indigo);
+}
+.navmenu__link:hover .navmenu__node,
+.navmenu__link:focus-visible .navmenu__node {
+  background: var(--indigo);
+  border-color: var(--indigo);
+  transform: scale(1.3);
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--indigo) 14%, transparent);
 }
 .navmenu__aside {
   opacity: 0;
@@ -2126,6 +2150,8 @@ html.eco-theme .enav__tab.is-active {
   .navmenu.is-open .navmenu__link,
   .navmenu__aside,
   .navmenu.is-open .navmenu__aside,
+  .navmenu__route,
+  .navmenu__node,
   .mn-link,
   .mn-node {
     transition: none;
@@ -4158,10 +4184,28 @@ html.eco-theme .navmenu__link {
   color: var(--cream);
   border-bottom-color: rgba(240, 238, 232, 0.18);
 }
-html.eco-theme .navmenu__num,
-html.eco-theme .navmenu__link.active,
-html.eco-theme .navmenu__link:hover {
+html.eco-theme .navmenu__link.is-current,
+html.eco-theme .navmenu__link:hover,
+html.eco-theme .navmenu__link:focus-visible {
   color: #ffffff;
+}
+html.eco-theme .navmenu__node {
+  border-color: rgba(240, 238, 232, 0.5);
+  background: var(--eco);
+}
+html.eco-theme .navmenu__link.is-current .navmenu__node,
+html.eco-theme .navmenu__link:hover .navmenu__node,
+html.eco-theme .navmenu__link:focus-visible .navmenu__node {
+  background: var(--cream);
+  border-color: var(--cream);
+  box-shadow: 0 0 0 5px rgba(240, 238, 232, 0.14);
+}
+html.eco-theme .navmenu__spine {
+  background: rgba(240, 238, 232, 0.22);
+}
+html.eco-theme .navmenu__route {
+  background: var(--cream);
+  box-shadow: 0 0 12px rgba(240, 238, 232, 0.4);
 }
 html.eco-theme .nav__menu-btn,
 html.eco-theme .navmenu__title {

@@ -15,7 +15,7 @@ const SHARED = {
       tabs: {
         '/pourquoi': 'Le constat',
         '/methode': 'La méthode',
-        '/offres': 'Offres & tarifs',
+        '/offres': 'Offres',
         '/exemple': 'Exemple de bilan',
         '/numerique-responsable': 'Numérique responsable',
         '/a-propos': 'À propos',
@@ -48,7 +48,7 @@ const SHARED = {
       talk: 'Parler de vos outils',
       sign: 'On remet vos outils en ordre.',
       rights: 'Conseil et ingénierie numérique',
-      meta: 'Prix affichés · démarche ouverte · chiffres sourcés',
+      meta: 'Démarche ouverte · cadre clair · chiffres sourcés',
     },
     card: {
       eyebrow: 'Carte de visite',
@@ -70,7 +70,7 @@ const SHARED = {
       tabs: {
         '/pourquoi': 'The findings',
         '/methode': 'The method',
-        '/offres': 'Offers & pricing',
+        '/offres': 'Offers',
         '/exemple': 'Sample audit',
         '/numerique-responsable': 'Sustainable IT',
         '/a-propos': 'About',
@@ -103,7 +103,7 @@ const SHARED = {
       talk: 'Talk about your tools',
       sign: 'We put your tools back in order.',
       rights: 'Consulting & digital engineering',
-      meta: 'Prices shown · open process · sourced figures',
+      meta: 'Open process · clear scope · sourced figures',
     },
     card: {
       eyebrow: 'Business card',

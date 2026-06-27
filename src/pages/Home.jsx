@@ -14,7 +14,7 @@ const CONTENT = {
   fr: {
     metaTitle: 'Conseil & ingénierie numérique',
     metaDesc:
-      'Reskope cartographie et audite vos outils sur le terrain, salarié par salarié, puis relie, simplifie et construit ce qui manque. Prix affichés, démarche ouverte, gains chiffrés.',
+      'Reskope cartographie et audite vos outils sur le terrain, salarié par salarié, puis relie, simplifie et construit ce qui manque. Démarche ouverte, gains chiffrés.',
     eyebrow: 'Audit & cartographie numérique',
     heroTitle: 'Vos équipes perdent des heures dans leurs outils.',
     line1: "Des outils qui ne se parlent pas, des informations éparpillées, des usages que personne n'a vraiment cartographiés. Le coût ne se voit pas sur une facture, mais il est bien réel.",
@@ -30,7 +30,7 @@ const CONTENT = {
     dest: [
       { to: '/pourquoi', label: 'Le constat', desc: "Le coût caché, et pour qui on agit" },
       { to: '/methode', label: 'La méthode', desc: '5 jalons, en toute transparence' },
-      { to: '/offres', label: 'Offres & tarifs', desc: 'Prix affichés, devis sur-mesure' },
+      { to: '/offres', label: 'Offres', desc: 'Packages clairs, devis sur-mesure' },
       { to: '/exemple', label: 'Exemple de bilan', desc: 'Un audit réel, détaillé' },
     ],
     ecoEyebrow: 'Numérique responsable',
@@ -41,7 +41,7 @@ const CONTENT = {
   en: {
     metaTitle: 'Consulting & digital engineering',
     metaDesc:
-      'Reskope maps and audits your tools on the ground, employee by employee, then connects, simplifies and builds what is missing. Prices shown, open process, quantified gains.',
+      'Reskope maps and audits your tools on the ground, employee by employee, then connects, simplifies and builds what is missing. Open process, quantified gains.',
     eyebrow: 'Digital audit & mapping',
     heroTitle: 'Your teams lose hours inside their tools.',
     line1: "Tools that don't talk to each other, scattered information, usage no one has really mapped. The cost is hidden, but it is very real.",
@@ -57,7 +57,7 @@ const CONTENT = {
     dest: [
       { to: '/pourquoi', label: 'The findings', desc: 'The hidden cost, and who we act for' },
       { to: '/methode', label: 'The method', desc: '5 milestones, in full transparency' },
-      { to: '/offres', label: 'Pricing', desc: 'Prices shown, custom quotes' },
+      { to: '/offres', label: 'Offers', desc: 'Clear scope, custom quotes' },
       { to: '/exemple', label: 'Example report', desc: 'A real, detailed audit' },
     ],
     ecoEyebrow: 'Responsible digital',

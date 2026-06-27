@@ -25,7 +25,7 @@ const CONTENT = {
     principes: [
       { num: '01', title: "Je m'investis comme si c'était la mienne", text: "Votre entreprise, je la traite comme la mienne. Je m'implique sur la durée, je cherche à la faire grandir, pas à boucler une mission au plus vite." },
       { num: '02', title: 'La qualité passe avant tout', text: "Je préfère un chantier vraiment bien fait à trois bâclés. Je ne sacrifie jamais le résultat pour aller plus vite ou facturer davantage. Le travail doit tenir dans le temps." },
-      { num: '03', title: 'Tout au grand jour', text: "Prix affichés, démarche posée à l'avance, bilan montré avant que vous achetiez. Vous savez toujours où va votre budget, et pourquoi." },
+      { num: '03', title: 'Tout au grand jour', text: "Démarche posée à l'avance, bilan montré avant que vous achetiez. Vous savez toujours où va votre budget, et pourquoi." },
       { num: '04', title: 'Votre autonomie, pas votre dépendance', text: "Mon but n'est pas de vous lier à moi. À la fin, vos équipes maîtrisent leurs outils et continuent sans moi. Un système qui tient debout tout seul." },
     ],
     sizeEyebrow: 'Selon nous',
@@ -67,7 +67,7 @@ const CONTENT = {
     principes: [
       { num: '01', title: 'I commit as if it were mine', text: "Your company, I treat as my own. I get involved for the long run, I try to grow it, not just close a mission as fast as possible." },
       { num: '02', title: 'Quality comes first', text: "I'd rather do one job really well than three badly. I never sacrifice the result to go faster or bill more. The work has to last." },
-      { num: '03', title: 'Everything out in the open', text: 'Prices shown, process set in advance, report shown before you buy. You always know where your budget goes, and why.' },
+      { num: '03', title: 'Everything out in the open', text: 'Process set in advance, report shown before you buy. You always know where your budget goes, and why.' },
       { num: '04', title: 'Your autonomy, not your dependence', text: "My goal isn't to tie you to me. In the end, your teams master their tools and carry on without me. A system that stands on its own." },
     ],
     sizeEyebrow: 'In our view',

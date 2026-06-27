@@ -1,26 +1,17 @@
 import { useEffect, useRef } from 'react';
 import { R_NODES, R_LINKS } from './Logo';
 
-/* Réseau « R » de la marque qui s'assemble à l'ouverture du menu :
-   les nœuds convergent depuis un état dispersé, les liens se tracent.
-   Tout est piloté en CSS via la classe .is-on (état du menu). */
+/* Le « R » de la marque qui s'assemble à l'ouverture du menu : les nœuds
+   convergent depuis un état dispersé, les liens se tracent. Forme propre,
+   strictement le R (pas de nœuds parasites). Piloté CSS via .is-on. */
 
-const AMB = [
-  [12, 58], [150, 28], [180, 86], [150, 150],
-  [70, 168], [18, 140], [120, 8], [206, 140],
-];
-const NODES = [...R_NODES, ...AMB];
-const HUB = 3; // nœud de jonction du R
-const LINKS = [
-  ...R_LINKS,
-  [6, 3], [1, 7], [2, 8], [5, 9], [4, 10], [3, 11], [7, 12], [8, 13],
-];
+const HUB = 3; // jonction du R
 
 /* Décalage déterministe (pas de random) : état « dispersé » autour de la cible. */
 function scatter(i) {
   const a = Math.sin(i * 12.9898 + 4.1) * 43758.5453;
   const b = Math.sin(i * 78.233 + 1.7) * 12543.197;
-  return [((a - Math.floor(a)) - 0.5) * 80, ((b - Math.floor(b)) - 0.5) * 80];
+  return [((a - Math.floor(a)) - 0.5) * 64, ((b - Math.floor(b)) - 0.5) * 64];
 }
 
 export default function MenuNet({ open }) {
@@ -43,25 +34,25 @@ export default function MenuNet({ open }) {
     <svg
       ref={ref}
       className={`menunet${open ? ' is-on' : ''}`}
-      viewBox="0 0 224 186"
+      viewBox="8 6 124 140"
       fill="none"
       aria-hidden="true"
     >
       <g className="mn-links">
-        {LINKS.map(([a, b], i) => (
+        {R_LINKS.map(([a, b], i) => (
           <line
             key={i}
             className="mn-link"
             style={{ '--i': i }}
-            x1={NODES[a][0]}
-            y1={NODES[a][1]}
-            x2={NODES[b][0]}
-            y2={NODES[b][1]}
+            x1={R_NODES[a][0]}
+            y1={R_NODES[a][1]}
+            x2={R_NODES[b][0]}
+            y2={R_NODES[b][1]}
           />
         ))}
       </g>
       <g className="mn-nodes">
-        {NODES.map(([x, y], i) => {
+        {R_NODES.map(([x, y], i) => {
           const [sx, sy] = scatter(i);
           return (
             <circle
@@ -70,7 +61,7 @@ export default function MenuNet({ open }) {
               style={{ '--i': i, '--sx': `${sx}px`, '--sy': `${sy}px` }}
               cx={x}
               cy={y}
-              r={i === HUB ? 5 : i < 6 ? 4 : 3}
+              r={i === HUB ? 6 : 5}
             />
           );
         })}

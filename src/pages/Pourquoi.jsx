@@ -37,7 +37,7 @@ const CONTENT = {
       { num: '03', title: "L'artisan & le TPE", size: "Jusqu'à 20 pers.", desc: "Devis, factures, planning, échanges clients : tout est dispersé. Quelques automatisations bien choisies libèrent plusieurs heures chaque semaine.", cta: 'Voir les offres', to: '/offres' },
     ],
     pillars: [
-      { title: 'Prix affichés', text: 'Des tarifs « à partir de » dès la page Offres. Aucun devis-surprise.', to: '/offres', cta: 'Voir les tarifs' },
+      { title: 'Cadre clair', text: 'Un périmètre défini et des offres lisibles avant de commencer. Aucun devis-surprise.', to: '/offres', cta: 'Voir les offres' },
       { title: 'Démarche ouverte', text: "Chaque jalon est posé à l'avance. Vous savez toujours ce qui suit.", to: '/methode', cta: 'Voir la démarche' },
       { title: 'Bilan montré', text: "Un audit réel et détaillé, en accès libre. Vous voyez avant d'acheter.", to: '/exemple', cta: 'Voir un exemple' },
     ],
@@ -64,10 +64,10 @@ const CONTENT = {
     targets: [
       { num: '01', title: 'The growing SME', size: '10 to 80 people', desc: 'Tools piled up over the years. Everyone has their habits, no one has the full picture. We audit, prioritize, put things back in order.', cta: 'See an example report', to: '/exemple' },
       { num: '02', title: 'The team in transition', size: '20 to 150 people', desc: 'A digital transformation is under way. You need an honest assessment before investing in a new tool.', cta: 'See the method', to: '/methode' },
-      { num: '03', title: 'The craftsman & micro-business', size: 'Up to 20 people', desc: 'Quotes, invoices, scheduling, client exchanges: everything is scattered. A few well-chosen automations free up several hours each week.', cta: 'See pricing', to: '/offres' },
+      { num: '03', title: 'The craftsman & micro-business', size: 'Up to 20 people', desc: 'Quotes, invoices, scheduling, client exchanges: everything is scattered. A few well-chosen automations free up several hours each week.', cta: 'See the offers', to: '/offres' },
     ],
     pillars: [
-      { title: 'Prices shown', text: 'From-prices right on the Pricing page. No surprise quotes.', to: '/offres', cta: 'See pricing' },
+      { title: 'Clear scope', text: 'A defined scope and readable offers before we start. No surprise quotes.', to: '/offres', cta: 'See the offers' },
       { title: 'Open process', text: 'Every milestone is set in advance. You always know what comes next.', to: '/methode', cta: 'See the method' },
       { title: 'Report shown', text: 'A real, detailed audit, freely accessible. You see before you buy.', to: '/exemple', cta: 'See an example' },
     ],

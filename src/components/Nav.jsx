@@ -1,16 +1,23 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState, useRef } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { LogoMark } from './Logo';
 import MenuNet from './MenuNet';
-import { useT, LangToggle } from '../i18n';
+import { useT, useLang, LangToggle } from '../i18n';
 import { CONTACT } from '../data/site';
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [hovered, setHovered] = useState(null);
   const { pathname } = useLocation();
+  const { lang } = useLang();
   const t = useT();
   const tabs = Object.entries(t.nav.tabs);
+  const activeIndex = tabs.findIndex(([to]) => to === pathname);
+
+  const linksRef = useRef(null);
+  const spineRef = useRef(null);
+  const routeRef = useRef(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -30,6 +37,50 @@ export default function Nav() {
       window.removeEventListener('keydown', onKey);
     };
   }, [open]);
+
+  /* Positionne la dorsale réseau (spine) et le lien qui se trace au survol
+     (route) du nœud de la page courante vers le nœud survolé. */
+  useLayoutEffect(() => {
+    const place = () => {
+      const cont = linksRef.current;
+      if (!cont) return;
+      const nodes = [...cont.querySelectorAll('.navmenu__node')];
+      if (!nodes.length) return;
+      const base = cont.getBoundingClientRect();
+      const cy = (el) => {
+        const r = el.getBoundingClientRect();
+        return r.top - base.top + r.height / 2;
+      };
+      const r0 = nodes[0].getBoundingClientRect();
+      const cx = r0.left - base.left + r0.width / 2;
+      const ys = nodes.map(cy);
+
+      const spine = spineRef.current;
+      if (spine) {
+        spine.style.left = `${cx}px`;
+        spine.style.top = `${ys[0]}px`;
+        spine.style.height = `${ys[ys.length - 1] - ys[0]}px`;
+      }
+      const route = routeRef.current;
+      if (!route) return;
+      route.style.left = `${cx}px`;
+      const aI = activeIndex >= 0 ? activeIndex : 0;
+      if (hovered == null || hovered === aI) {
+        route.style.top = `${ys[aI]}px`;
+        route.style.height = '0px';
+        route.style.opacity = '0';
+        return;
+      }
+      const aY = ys[aI];
+      const hY = ys[hovered];
+      route.style.top = `${Math.min(aY, hY)}px`;
+      route.style.height = `${Math.abs(hY - aY)}px`;
+      route.style.opacity = '1';
+    };
+    place();
+    window.addEventListener('resize', place);
+    return () => window.removeEventListener('resize', place);
+  }, [hovered, activeIndex, open, lang, pathname]);
 
   return (
     <>
@@ -69,13 +120,27 @@ export default function Nav() {
 
       <div className={`navmenu${open ? ' is-open' : ''}`} aria-hidden={!open}>
         <div className="navmenu__inner">
-          <nav className="navmenu__links" aria-label="Pages">
+          <nav
+            className="navmenu__links"
+            ref={linksRef}
+            aria-label="Pages"
+            onMouseLeave={() => setHovered(null)}
+          >
             <p className="navmenu__eyebrow">{t.nav.menuEyebrow}</p>
+            <span className="navmenu__spine" aria-hidden="true" ref={spineRef} />
+            <span className="navmenu__route" aria-hidden="true" ref={routeRef} />
             {tabs.map(([to, label], i) => (
-              <NavLink key={to} to={to} className="navmenu__link" style={{ '--i': i }}>
-                <span className="navmenu__num">{`0${i + 1}`}</span>
+              <NavLink
+                key={to}
+                to={to}
+                className={({ isActive }) => `navmenu__link${isActive ? ' is-current' : ''}`}
+                style={{ '--i': i }}
+                onMouseEnter={() => setHovered(i)}
+                onFocus={() => setHovered(i)}
+                onBlur={() => setHovered(null)}
+              >
+                <span className="navmenu__node" aria-hidden="true" />
                 <span className="navmenu__text">{label}</span>
-                <span className="navmenu__arrow" aria-hidden="true">→</span>
               </NavLink>
             ))}
           </nav>
