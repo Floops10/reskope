@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import Page from '../components/Page';
 import PageHeader from '../components/PageHeader';
 import CTASection from '../components/CTASection';
+import Stagger from '../components/Stagger';
 import InfoTip from '../components/InfoTip';
 import Stat from '../components/Stat';
 import { Reveal, RevealItem } from '../components/Reveal';
@@ -453,16 +454,14 @@ export default function Exemple() {
             <RevealItem as="p" className="lead" style={{ marginTop: '1rem' }}>{c.ctxLead}</RevealItem>
             <RevealItem as="p" style={{ color: 'var(--muted)', marginTop: '0.85rem' }}>{c.ctxSub}</RevealItem>
           </Reveal>
-          <Reveal className="case-split__figs" amount={0.1}>
+          <Stagger className="case-split__figs" stagger={0.12} y={48}>
             {c.keyFigs.map(({ v, l }) => (
-              <RevealItem key={l}>
-                <div className="key-fig">
-                  <span className="key-fig__v">{v}</span>
-                  <span className="key-fig__l">{l}</span>
-                </div>
-              </RevealItem>
+              <div className="key-fig" key={l}>
+                <span className="key-fig__v">{v}</span>
+                <span className="key-fig__l">{l}</span>
+              </div>
             ))}
-          </Reveal>
+          </Stagger>
         </div>
       </section>
 
@@ -486,9 +485,9 @@ export default function Exemple() {
             <RevealItem as="h2" className="h2">{c.constatsTitle}</RevealItem>
             <RevealItem as="p" className="lead">{c.constatsLead}</RevealItem>
           </Reveal>
-          <Reveal className="constats" amount={0.08}>
+          <Stagger className="constats" stagger={0.13} y={64}>
             {c.constats.map((ct) => (
-              <RevealItem className="constat" key={ct.pole}>
+              <div className="constat" key={ct.pole}>
                 <div className="constat__head">
                   <h3>{ct.pole}</h3>
                   <span className="constat__time">
@@ -503,9 +502,9 @@ export default function Exemple() {
                 </div>
                 <p className="constat__obs">{ct.obs}</p>
                 <blockquote className="constat__quote">« {ct.quote} »</blockquote>
-              </RevealItem>
+              </div>
             ))}
-          </Reveal>
+          </Stagger>
         </div>
       </section>
 
@@ -516,13 +515,13 @@ export default function Exemple() {
             <RevealItem as="p" className="eyebrow eyebrow--index">{c.diagEyebrow}</RevealItem>
             <RevealItem as="h2" className="h2">{c.diagTitle}</RevealItem>
           </Reveal>
-          <Reveal className="benefits__grid" amount={0.15}>
+          <Stagger className="benefits__grid" stagger={0.12} y={56}>
             {c.stats.map((s, i) => (
-              <RevealItem key={i}>
+              <div key={i}>
                 <Stat value={s.value} suffix={s.suffix} label={s.label} note={s.note} />
-              </RevealItem>
+              </div>
             ))}
-          </Reveal>
+          </Stagger>
         </div>
       </section>
 
@@ -562,18 +561,18 @@ export default function Exemple() {
                 <ImpactMatrix recos={c.recos} quickWins={c.quickWins} effortAxis={c.effortAxis} impactAxis={c.impactAxis} aria={c.matrixAria} />
               </RevealItem>
             </Reveal>
-            <Reveal className="case-recos__list" amount={0.05}>
+            <Stagger className="case-recos__list" stagger={0.1} y={48}>
               {c.recos.map((r) => (
-                <RevealItem className="case-reco" key={r.id}>
+                <div className="case-reco" key={r.id}>
                   <div className="case-reco__top">
                     <span className="case-reco__id">{r.id}</span>
                     <h3>{r.title}</h3>
                     <span className="case-reco__gain">{r.gain}</span>
                   </div>
                   <p>{r.detail}</p>
-                </RevealItem>
+                </div>
               ))}
-            </Reveal>
+            </Stagger>
           </div>
         </div>
       </section>
