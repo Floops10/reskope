@@ -594,6 +594,57 @@ html.eco-theme .enav__tab.is-active {
   flex-direction: column;
   align-items: flex-start;
 }
+.hero__intro .eyebrow {
+  margin-bottom: 1.1rem;
+}
+/* le masque de SplitText clippe à la ligne : on laisse respirer les jambages */
+.hero__intro .hero-l {
+  padding-bottom: 0.06em;
+}
+/* Repère de scroll (signature) */
+.hero__cue {
+  position: absolute;
+  left: var(--gutter);
+  bottom: clamp(1.4rem, 3.5vh, 2.6rem);
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+  z-index: 2;
+}
+.hero__cue i {
+  position: relative;
+  display: block;
+  width: 1px;
+  height: 38px;
+  background: color-mix(in srgb, var(--indigo) 20%, transparent);
+  overflow: hidden;
+}
+.hero__cue i::after {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 45%;
+  background: var(--indigo);
+  animation: heroCue 1.9s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+@keyframes heroCue {
+  0% { transform: translateY(-110%); }
+  100% { transform: translateY(235%); }
+}
+@media (max-width: 880px) {
+  .hero__cue {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero__cue i::after {
+    animation: none;
+  }
+}
 .hero__sticky {
   position: sticky;
   top: 0;

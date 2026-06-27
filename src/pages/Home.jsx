@@ -7,6 +7,8 @@ import CTASection from '../components/CTASection';
 import Marked from '../components/Marked';
 import RiseText from '../components/RiseText';
 import { Reveal, RevealItem } from '../components/Reveal';
+import { useGSAP } from '../lib/gsap';
+import { heroIntro } from '../animations/hero';
 import { useMediaQuery } from '../hooks/useMediaQuery';
 import { useLang } from '../i18n';
 
@@ -84,14 +86,21 @@ function DestGrid({ dest }) {
 
 function HeroPinned({ c }) {
   const heroRef = useRef(null);
+  const eyebrowRef = useRef(null);
+  const titleRef = useRef(null);
+  const cueRef = useRef(null);
+  useGSAP(
+    () => heroIntro({ eyebrow: eyebrowRef.current, title: titleRef.current, cue: cueRef.current }),
+    { scope: heroRef }
+  );
   return (
     <header className="hero hero--pinned" ref={heroRef} id="top">
       <div className="container hero__grid">
         <div className="hero__scroller">
-          <Reveal className="hero__step" onMount>
-            <RevealItem as="p" className="eyebrow">{c.eyebrow}</RevealItem>
-            <RiseText as="h1" className="display" text={c.heroTitle} />
-          </Reveal>
+          <div className="hero__step hero__intro">
+            <p className="eyebrow" ref={eyebrowRef}>{c.eyebrow}</p>
+            <h1 className="display" ref={titleRef}>{c.heroTitle}</h1>
+          </div>
 
           <Reveal className="hero__step" amount={0.6}>
             <RevealItem as="p" className="hero__line">
@@ -117,27 +126,45 @@ function HeroPinned({ c }) {
           <HeroLogo containerRef={heroRef} mode="scroll" />
         </div>
       </div>
+      <div className="hero__cue" ref={cueRef} aria-hidden="true">
+        <span>Scroll</span>
+        <i />
+      </div>
     </header>
   );
 }
 
 function HeroCompact({ c }) {
+  const scope = useRef(null);
+  const eyebrowRef = useRef(null);
+  const titleRef = useRef(null);
+  const subRef = useRef(null);
+  const linksRef = useRef(null);
+  useGSAP(
+    () =>
+      heroIntro({
+        eyebrow: eyebrowRef.current,
+        title: titleRef.current,
+        extras: [subRef.current, linksRef.current],
+      }),
+    { scope }
+  );
   return (
-    <header className="hero hero--compact" id="top">
+    <header className="hero hero--compact" id="top" ref={scope}>
       <div className="hero__bg-net" aria-hidden="true">
         <NetField variant="cluster" />
       </div>
       <div className="container">
-        <Reveal className="hero__copy" onMount>
-          <RevealItem as="div" className="hero__compact-logo" aria-hidden="true">
+        <div className="hero__copy">
+          <div className="hero__compact-logo" aria-hidden="true">
             <HeroLogo mode="mount" />
-          </RevealItem>
-          <RevealItem as="p" className="eyebrow">{c.eyebrow}</RevealItem>
-          <RiseText as="h1" className="display" text={c.heroTitle} />
-          <RevealItem as="p" className="lead hero__sub">
+          </div>
+          <p className="eyebrow" ref={eyebrowRef}>{c.eyebrow}</p>
+          <h1 className="display" ref={titleRef}>{c.heroTitle}</h1>
+          <p className="lead hero__sub" ref={subRef}>
             <Marked text={c.sub} word={c.markSub} />
-          </RevealItem>
-          <RevealItem as="div" className="hero__links">
+          </p>
+          <div className="hero__links" ref={linksRef}>
             <Link to="/contact" className="btn btn--primary">
               {c.primary}
               <span className="btn__arrow" aria-hidden="true">→</span>
@@ -145,8 +172,8 @@ function HeroCompact({ c }) {
             <Link to="/pourquoi" className="btn btn--ghost">
               {c.ghost}
             </Link>
-          </RevealItem>
-        </Reveal>
+          </div>
+        </div>
       </div>
     </header>
   );
