@@ -4,6 +4,7 @@ import { MotionConfig } from 'framer-motion';
 import { ScrollTrigger } from './lib/gsap';
 import { initSmoothScroll, destroySmoothScroll } from './lib/smoothScroll';
 import ScrollToTop from './components/ScrollToTop';
+import Interactions from './components/Interactions';
 import Nav from './components/Nav';
 import Footer from './components/Footer';
 import Home from './pages/Home';
@@ -32,6 +33,7 @@ export default function App() {
   return (
     <MotionConfig reducedMotion="user">
       <ScrollToTop />
+      <Interactions />
       <Nav />
       <Routes>
         <Route path="/" element={<Home />} />
