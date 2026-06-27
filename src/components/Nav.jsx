@@ -1,7 +1,6 @@
 import { useEffect, useLayoutEffect, useState, useRef } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { LogoMark } from './Logo';
-import MenuNet from './MenuNet';
 import { useT, useLang, LangToggle } from '../i18n';
 import { CONTACT } from '../data/site';
 
@@ -38,8 +37,8 @@ export default function Nav() {
     };
   }, [open]);
 
-  /* Positionne la dorsale réseau (spine) et le lien qui se trace au survol
-     (route) du nœud de la page courante vers le nœud survolé. */
+  /* Dorsale réseau (spine) + lien qui se trace au survol (route) du nœud
+     de la page courante vers le nœud survolé. */
   useLayoutEffect(() => {
     const place = () => {
       const cont = linksRef.current;
@@ -107,7 +106,6 @@ export default function Nav() {
               aria-expanded={open}
               onClick={() => setOpen((o) => !o)}
             >
-              <span className="nav__menu-label">{open ? t.nav.close : t.nav.menu}</span>
               <span className={`burger${open ? ' is-open' : ''}`}>
                 <i />
                 <i />
@@ -118,8 +116,13 @@ export default function Nav() {
         </div>
       </nav>
 
-      <div className={`navmenu${open ? ' is-open' : ''}`} aria-hidden={!open}>
-        <div className="navmenu__inner">
+      <div className={`navmenu${open ? ' is-open' : ''}`}>
+        <div
+          className="navmenu__backdrop"
+          aria-hidden="true"
+          onClick={() => setOpen(false)}
+        />
+        <div className="navmenu__panel" aria-hidden={!open}>
           <nav
             className="navmenu__links"
             ref={linksRef}
@@ -145,10 +148,8 @@ export default function Nav() {
             ))}
           </nav>
 
-          <aside className="navmenu__aside" style={{ '--i': tabs.length }}>
-            <MenuNet open={open} />
+          <div className="navmenu__foot">
             <p className="navmenu__eyebrow">{t.nav.asideEyebrow}</p>
-            <p className="navmenu__title">{t.nav.asideTitle}</p>
             <div className="navmenu__contact">
               <a href={`mailto:${CONTACT.email}`} className="navmenu__contact-link">
                 {CONTACT.email}
@@ -157,14 +158,14 @@ export default function Nav() {
                 +33 6 20 23 55 22
               </a>
             </div>
-            <div className="navmenu__foot">
+            <div className="navmenu__foot-actions">
               <Link to="/contact" className="btn btn--primary navmenu__cta">
                 {t.nav.cta}
                 <span className="btn__arrow" aria-hidden="true">→</span>
               </Link>
               <LangToggle className="navmenu__lang" />
             </div>
-          </aside>
+          </div>
         </div>
       </div>
     </>

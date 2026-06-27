@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Page from '../components/Page';
 import PageHeader from '../components/PageHeader';
 import CTASection from '../components/CTASection';
+import Stagger from '../components/Stagger';
 import Quiz from '../components/Quiz';
 import NetField from '../components/NetField';
 import { Reveal, RevealItem } from '../components/Reveal';
@@ -110,9 +111,9 @@ export default function Offres() {
 
       <section className="section section--tight">
         <div className="container">
-          <Reveal className="offers offers--snap" amount={0.05}>
+          <Stagger className="offers offers--snap" stagger={0.16} y={70}>
             {offers.map((o) => (
-              <RevealItem className={`offer${o.featured ? ' offer--featured' : ''}`} key={o.id}>
+              <div className={`offer${o.featured ? ' offer--featured' : ''}`} key={o.id}>
                 {o.featured && <span className="offer__badge">{c.badge}</span>}
                 <h3>{o.name}</h3>
                 <p className="offer__tagline">{o.tagline}</p>
@@ -125,9 +126,9 @@ export default function Offres() {
                   {o.cta}
                   <span className="btn__arrow" aria-hidden="true">→</span>
                 </Link>
-              </RevealItem>
+              </div>
             ))}
-          </Reveal>
+          </Stagger>
           <p className="offers__swipe" aria-hidden="true">{c.swipe}</p>
 
           <Reveal className="direct-band" amount={0.15}>
