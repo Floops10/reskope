@@ -352,10 +352,39 @@ svg {
 .footer .wordmark {
   color: var(--cream);
 }
-.nav__links {
+.nav__actions {
   display: flex;
   align-items: center;
   gap: 1rem;
+}
+.nav__menu-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: none;
+  border: 0;
+  padding: 0.4rem 0.1rem 0.4rem 0.3rem;
+  cursor: pointer;
+  color: var(--ink);
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  transition: color 0.25s ease;
+}
+.nav__menu-btn:hover {
+  color: var(--indigo);
+}
+.nav__menu-label {
+  line-height: 1;
+}
+@media (max-width: 600px) {
+  .nav__actions .nav__lang,
+  .nav__actions .nav__cta {
+    display: none;
+  }
+  .nav__menu-label {
+    display: none;
+  }
 }
 
 /* ---------- Menu « onglets extensibles » (ExpandableNav) ---------- */
@@ -1883,59 +1912,179 @@ html.eco-theme .enav__tab.is-active {
   width: 100%;
   max-width: var(--maxw);
   margin: 0 auto;
-  padding: 6.5rem var(--gutter) 3rem;
+  min-height: 100svh;
+  padding: clamp(6rem, 13vh, 9rem) var(--gutter) 3rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-height: 100svh;
+  gap: 2.75rem;
+}
+.navmenu__eyebrow {
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 1.1rem;
 }
 .navmenu__links {
   display: flex;
   flex-direction: column;
 }
 .navmenu__link {
+  position: relative;
   display: flex;
-  align-items: baseline;
-  gap: 1rem;
-  padding: 1.05rem 0;
+  align-items: center;
+  gap: 1.1rem;
+  padding: clamp(0.7rem, 1.7vh, 1.1rem) 0;
   border-bottom: 1px solid var(--hairline);
-  font-size: clamp(1.9rem, 9vw, 3rem);
+  font-size: clamp(1.8rem, 6.5vw, 3.4rem);
   font-weight: 500;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
   color: var(--ink);
   opacity: 0;
   transform: translateY(26px);
-  transition: opacity 0.5s ease, transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), color 0.25s ease;
+  transition: opacity 0.5s ease, transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), color 0.3s ease;
 }
 .navmenu.is-open .navmenu__link {
   opacity: 1;
   transform: translateY(0);
-  transition-delay: calc(220ms + var(--i) * 65ms);
+  transition-delay: calc(200ms + var(--i) * 60ms);
+}
+.navmenu__num {
+  align-self: flex-start;
+  margin-top: 0.55em;
+  flex: none;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--indigo);
+  letter-spacing: 0.08em;
+}
+.navmenu__text {
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.navmenu__arrow {
+  margin-left: auto;
+  font-size: 0.55em;
+  color: var(--indigo);
+  opacity: 0;
+  transform: translateX(-14px);
+  transition: opacity 0.35s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .navmenu__link.active,
 .navmenu__link:hover {
   color: var(--indigo);
 }
-.navmenu__num {
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: var(--indigo);
-  letter-spacing: 0.08em;
+.navmenu__link:hover .navmenu__text {
+  transform: translateX(14px);
 }
-.navmenu__foot {
-  margin-top: 2.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-  align-items: flex-start;
+.navmenu__link:hover .navmenu__arrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+.navmenu__aside {
   opacity: 0;
-  transform: translateY(18px);
-  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translateY(26px);
+  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.navmenu.is-open .navmenu__foot {
+.navmenu.is-open .navmenu__aside {
   opacity: 1;
   transform: translateY(0);
-  transition-delay: 0.6s;
+  transition-delay: 0.25s;
+}
+.navmenu__title {
+  font-size: clamp(1.5rem, 2.6vw, 2rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--indigo);
+  max-width: 20ch;
+  margin-bottom: 1.6rem;
+}
+.navmenu__contact {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin-bottom: 2rem;
+}
+.navmenu__contact-link {
+  width: fit-content;
+  font-size: 1.05rem;
+  color: var(--ink);
+  transition: color 0.25s ease;
+}
+.navmenu__contact-link:hover {
+  color: var(--indigo);
+}
+.navmenu__foot {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+/* Réseau « R » qui s'assemble dans le menu (PC) */
+.menunet {
+  display: none;
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+  margin-bottom: 2.4rem;
+  color: var(--indigo);
+  overflow: visible;
+}
+.mn-link {
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  opacity: 0.78;
+  stroke-dashoffset: var(--len, 240);
+  transition: stroke-dashoffset 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: calc(430ms + var(--i) * 38ms);
+}
+.menunet.is-on .mn-link {
+  stroke-dashoffset: 0;
+}
+.mn-node {
+  fill: currentColor;
+  opacity: 0;
+  transform: translate(var(--sx, 0px), var(--sy, 0px));
+  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.5s ease;
+  transition-delay: calc(250ms + var(--i) * 38ms);
+}
+.menunet.is-on .mn-node {
+  transform: translate(0px, 0px);
+  opacity: 1;
+}
+
+/* Sur tablette/desktop, les boutons du menu (CTA + langue) sont déjà
+   dans le header → on ne les répète pas dans le menu. */
+@media (min-width: 601px) {
+  .navmenu__foot {
+    display: none;
+  }
+}
+@media (min-width: 861px) {
+  .navmenu__inner {
+    display: grid;
+    grid-template-columns: 1.45fr 1fr;
+    align-items: center;
+    align-content: center;
+    gap: clamp(3rem, 8vw, 7rem);
+    padding-block: 6rem;
+  }
+  .navmenu__aside {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-left: 1px solid var(--hairline);
+    padding-left: clamp(2rem, 4vw, 4rem);
+  }
+  .menunet {
+    display: block;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   .navmenu,
@@ -1945,18 +2094,12 @@ html.eco-theme .enav__tab.is-active {
   }
   .navmenu__link,
   .navmenu.is-open .navmenu__link,
-  .navmenu__foot,
-  .navmenu.is-open .navmenu__foot {
+  .navmenu__aside,
+  .navmenu.is-open .navmenu__aside,
+  .mn-link,
+  .mn-node {
     transition: none;
     transition-delay: 0s;
-  }
-}
-.navmenu__mail {
-  color: var(--muted);
-}
-@media (min-width: 861px) {
-  .navmenu {
-    display: none;
   }
 }
 
@@ -3989,6 +4132,26 @@ html.eco-theme .navmenu__num,
 html.eco-theme .navmenu__link.active,
 html.eco-theme .navmenu__link:hover {
   color: #ffffff;
+}
+html.eco-theme .nav__menu-btn,
+html.eco-theme .navmenu__title {
+  color: var(--cream);
+}
+html.eco-theme .navmenu__eyebrow {
+  color: rgba(240, 238, 232, 0.6);
+}
+html.eco-theme .navmenu__contact-link {
+  color: rgba(240, 238, 232, 0.85);
+}
+html.eco-theme .navmenu__contact-link:hover,
+html.eco-theme .navmenu__arrow {
+  color: #ffffff;
+}
+html.eco-theme .navmenu__aside {
+  border-left-color: rgba(240, 238, 232, 0.18);
+}
+html.eco-theme .menunet {
+  color: var(--cream);
 }
 /* Titres & textes par défaut en crème */
 html.eco-theme .h2,

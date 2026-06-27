@@ -21,6 +21,11 @@ const SHARED = {
         '/a-propos': 'À propos',
       },
       cta: 'Parlons-en',
+      menu: 'Menu',
+      close: 'Fermer',
+      menuEyebrow: 'Navigation',
+      asideEyebrow: 'On en parle ?',
+      asideTitle: 'Et si on refaisait le point sur vos outils ?',
     },
     cta: {
       aria: "Appel à l'action",
@@ -71,6 +76,11 @@ const SHARED = {
         '/a-propos': 'About',
       },
       cta: "Let's talk",
+      menu: 'Menu',
+      close: 'Close',
+      menuEyebrow: 'Navigation',
+      asideEyebrow: 'Shall we talk?',
+      asideTitle: 'Shall we take a fresh look at your tools?',
     },
     cta: {
       aria: 'Call to action',
