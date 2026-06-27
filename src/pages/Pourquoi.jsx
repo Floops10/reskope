@@ -6,6 +6,7 @@ import WeekBar from '../components/WeekBar';
 import InfoTip from '../components/InfoTip';
 import NetField from '../components/NetField';
 import CTASection from '../components/CTASection';
+import Stagger from '../components/Stagger';
 import { Reveal, RevealItem } from '../components/Reveal';
 import { useLang } from '../i18n';
 import { STATS } from '../data/site';
@@ -103,13 +104,13 @@ export default function Pourquoi() {
             </RevealItem>
           </Reveal>
 
-          <Reveal className="benefits__grid" amount={0.15}>
+          <Stagger className="benefits__grid" stagger={0.12} y={56}>
             {stats.map((s) => (
-              <RevealItem key={s.id}>
+              <div key={s.id}>
                 <Stat {...s} />
-              </RevealItem>
+              </div>
             ))}
-          </Reveal>
+          </Stagger>
         </div>
       </section>
 
@@ -121,9 +122,9 @@ export default function Pourquoi() {
             <RevealItem as="h2" className="h2" id="targets-title">{c.targetsTitle}</RevealItem>
           </Reveal>
 
-          <Reveal className="targets" amount={0.1}>
+          <Stagger className="targets" stagger={0.14} y={70}>
             {c.targets.map((t) => (
-              <RevealItem className="target-card" key={t.num}>
+              <div className="target-card" key={t.num}>
                 <div className="target-card__head">
                   <span className="target-card__num">{t.num}</span>
                   <span className="target-card__size">{t.size}</span>
@@ -131,9 +132,9 @@ export default function Pourquoi() {
                 <h3 className="target-card__title">{t.title}</h3>
                 <p className="target-card__desc">{t.desc}</p>
                 <Link className="link" to={t.to}>{t.cta} →</Link>
-              </RevealItem>
+              </div>
             ))}
-          </Reveal>
+          </Stagger>
         </div>
       </section>
 
@@ -149,16 +150,16 @@ export default function Pourquoi() {
             <RevealItem as="p" className="lead">{c.plusLead}</RevealItem>
           </Reveal>
 
-          <Reveal className="pillars" amount={0.15}>
+          <Stagger className="pillars" stagger={0.14} y={64}>
             {c.pillars.map((p, i) => (
-              <RevealItem className="pillar pillar--link" key={p.title}>
+              <div className="pillar pillar--link" key={p.title}>
                 <span className="pillar__num">{`0${i + 1}`}</span>
                 <h3>{p.title}</h3>
                 <p>{p.text}</p>
                 <Link className="link" to={p.to}>{p.cta} →</Link>
-              </RevealItem>
+              </div>
             ))}
-          </Reveal>
+          </Stagger>
         </div>
       </section>
 
