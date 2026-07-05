@@ -1,252 +1,234 @@
-import { useRef } from 'react';
-import { Link } from 'react-router-dom';
 import Page from '../components/Page';
-import { HeroLogo } from '../components/Logo';
-import SceneHook from '../components/SceneHook';
-import NetField from '../components/NetField';
-import CTASection from '../components/CTASection';
-import Marked from '../components/Marked';
-import RiseText from '../components/RiseText';
-import { Reveal, RevealItem } from '../components/Reveal';
-import { useGSAP } from '../lib/gsap';
-import { heroIntro } from '../animations/hero';
-import { useMediaQuery } from '../hooks/useMediaQuery';
+import HeroFormation from '../components/HeroFormation';
+import HomeCinema from '../components/HomeCinema';
+import LongPhrase from '../components/LongPhrase';
 import { useLang } from '../i18n';
+
+/* HOME — structure calquée sur noomoagency.com, DA réseau Reskope :
+   1. Hero (récit volet + R qui se forme et tourne) + offres-réseau
+   2. Manifesto (phrase longue, mots révélés au scrub — « At Noomo, we… »)
+   3. Services (grandes lignes typographiques — « Services »)
+   4. Outils (deux colonnes — « Clients »)
+   5. Philosophie (réseau canvas + copy — « Great work… »)
+   6. Méthode (3 jalons — slot « testimonials »)
+   7. Chiffres (table count-up — « Recognition »)
+   8. Explorer (cartes — « Insights »)
+   9. CTA géant (« BUT WE'RE HERE NOT TO TALK ABOUT OURSELVES… ») */
 
 const CONTENT = {
   fr: {
-    metaTitle: 'Conseil & ingénierie numérique',
+    metaTitle: 'Conseil & ingénierie numérique · Reskope',
     metaDesc:
       'Reskope cartographie et audite vos outils sur le terrain, salarié par salarié, puis relie, simplifie et construit ce qui manque. Démarche ouverte, gains chiffrés.',
-    eyebrow: 'Audit & cartographie numérique',
+
+    /* — 1. Hero — */
     heroTitle: 'Vos équipes perdent des heures dans leurs outils.',
-    moment2: 'On cartographie. On relie. On simplifie.',
-    moment3: 'On construit ce qui manque.',
-    line1: "Des outils qui ne se parlent pas, des informations éparpillées, des usages que personne n'a vraiment cartographiés. Le coût ne se voit pas sur une facture, mais il est bien réel.",
-    line2: "Reskope cartographie votre écosystème numérique, outil par outil et usage par usage. Puis on relie, on simplifie et on construit ce qui manque : du site web à l'outil métier, jusqu'aux automatisations. Toujours au grand jour, jalon après jalon.",
-    sub: "On cartographie vos outils et vos usages, on relie, on simplifie, on construit ce qui manque. Toujours au grand jour, jalon après jalon.",
+    line1: "Des outils qui ne se parlent pas, des données éparpillées, des usages que personne n'a cartographiés. Un coût invisible — mais bien réel.",
+    line2: "Reskope cartographie votre écosystème, puis relie, simplifie et construit ce qui manque : du site à l'outil métier, jusqu'aux automatisations. Au grand jour, jalon après jalon.",
     mark1: 'cartographiés',
     mark2: 'construit',
-    markSub: 'cartographie',
-    startEyebrow: 'Par où commencer',
-    startTitle: 'Explorez à votre rythme.',
-    primary: 'Parler de vos outils',
+    closing: 'Cartographiez vos SI. Reprenez le contrôle.',
+    offerings: [
+      { title: 'Audit numérique', sub: 'On cartographie vos outils et vos usages, salarié par salarié.' },
+      { title: 'Refonte d’outils', sub: 'On relie, on simplifie et on remet de l’ordre dans l’écosystème.' },
+      { title: 'Automatisation', sub: 'On supprime les tâches répétitives : intégrations, workflows, IA.' },
+      { title: 'Alternatives économiques', sub: 'Des outils sobres et justes, à la place des usines à gaz.' },
+    ],
+    primary: 'Démarrer un audit',
     ghost: 'Le constat',
+    sting: 'Un seul interlocuteur. Tout au grand jour.',
+
+    /* — 2. Manifesto : la marque en une phrase — */
+    longPhrase:
+      'Reskope, c’est un partenaire technique qui cartographie vos outils, les relie, les simplifie, et construit ce qui manque. Moins de friction, plus de temps pour votre vrai métier.',
+
+    /* — 3. Services — */
+    svEyebrow: 'Services',
+    svTitle: 'Ce qu’on fait, concrètement.',
+    services: [
+      'Audit numérique',
+      'Cartographie du SI',
+      'Refonte d’outils',
+      'Automatisations & IA',
+      'Intégrations entre outils',
+      'Sites web & outils métier',
+      'Alternatives économiques',
+      'Suivi mensuel',
+    ],
+
+    /* — 4. Outils — */
+    toolsEyebrow: 'Outils maîtrisés',
+    toolsTitle: 'Le terrain de jeu.',
+    toolsLead:
+      'Plus de 40 outils audités, connectés ou remplacés. En voici quelques-uns — et si le vôtre n’y est pas, c’est justement le métier.',
+
+    /* — 5. Philosophie — */
+    whyEyebrow: 'Notre différence',
+    whyTitle: 'Pas un cabinet qui livre un deck.',
+    whyLead:
+      'Un partenaire technique qui ouvre le capot, vous montre ce qui ne fonctionne pas, et le répare. Sur le terrain, pas depuis un open space.',
+    whyLink: 'En savoir plus',
+
+    /* — 6. Méthode — */
+    pillarsEyebrow: 'La méthode',
+    pillarsTitle: 'Trois étapes, zéro surprise.',
+    pillars: [
+      {
+        id: 'audit',
+        title: 'Audit',
+        text: 'On vient chez vous. On observe, on écoute, on cartographie chaque outil et chaque usage réel. En 2 à 5 jours, vous avez une vue complète de ce qui coince.',
+      },
+      {
+        id: 'conception',
+        title: 'Conception',
+        text: 'On identifie les priorités par impact. On conçoit les connexions, automatisations et outils manquants. Rien n’est imposé : vous validez chaque étape.',
+      },
+      {
+        id: 'deploiement',
+        title: 'Déploiement',
+        text: 'On construit, on intègre, on teste. Puis on vous rend un système qui tourne et vos équipes qui savent s’en servir.',
+      },
+    ],
+
+    /* — 7. Chiffres — */
+    statsEyebrow: 'Des résultats qui se mesurent',
+    statsTitle: 'Le sérieux se prouve avec des chiffres, pas des promesses.',
+    stats: [
+      { label: 'outils maîtrisés et audités', display: '+40', value: 40, prefix: '+', suffix: '', decimals: 0 },
+      { label: 'retour sur investissement moyen constaté', display: '3,5×', value: 3.5, prefix: '', suffix: '×', decimals: 1 },
+      { label: 'jours maximum pour la première cartographie complète', display: '10', value: 10, prefix: '', suffix: '', decimals: 0 },
+      { label: 'de la démarche au grand jour : accès, jalons, livrables', display: '100 %', value: 100, prefix: '', suffix: ' %', decimals: 0 },
+    ],
+
+    /* — 8. Explorer — */
+    exploreEyebrow: 'Aller plus loin',
+    exploreTitle: 'Explorez à votre rythme.',
     dest: [
-      { to: '/pourquoi', label: 'Le constat', desc: "Le coût caché, et pour qui on agit" },
+      { to: '/pourquoi', label: 'Le constat', desc: 'Le coût caché, et pour qui on agit' },
       { to: '/methode', label: 'La méthode', desc: '5 jalons, en toute transparence' },
       { to: '/offres', label: 'Offres', desc: 'Packages clairs, devis sur-mesure' },
       { to: '/exemple', label: 'Exemple de bilan', desc: 'Un audit réel, détaillé' },
     ],
-    ecoEyebrow: 'Numérique responsable',
-    ecoTitle: "Simplifier vos outils, c'est aussi consommer moins.",
-    ecoLead: "Moins d'outils, moins de serveurs, moins de doublons. L'angle écologique de notre démarche a sa propre page.",
-    ecoBtn: "Découvrir l'angle écologique",
+
+    /* — 9. CTA géant — */
+    ctaStatement:
+      'Mais on n’est pas là pour parler de nous. On est là pour parler de vous, vos équipes, vos outils et votre temps.',
+    ctaSub: 'Un premier échange de 30 minutes, sans engagement. On regarde vos outils, et on vous dit franchement s’il y a quelque chose à faire.',
+    ctaBtn: 'Parlons de vos outils',
   },
+
   en: {
-    metaTitle: 'Consulting & digital engineering',
+    metaTitle: 'Digital consulting & engineering · Reskope',
     metaDesc:
       'Reskope maps and audits your tools on the ground, employee by employee, then connects, simplifies and builds what is missing. Open process, quantified gains.',
-    eyebrow: 'Digital audit & mapping',
+
     heroTitle: 'Your teams lose hours inside their tools.',
-    moment2: 'We map. We connect. We simplify.',
-    moment3: 'We build what is missing.',
-    line1: "Tools that don't talk to each other, scattered information, usage no one has really mapped. The cost is hidden, but it is very real.",
-    line2: 'Reskope maps your digital ecosystem, tool by tool and use by use. Then we connect, simplify and build what is missing: from websites to business tools and automations. Always in the open, milestone by milestone.',
-    sub: "We map your tools and how they're used, we connect, simplify and build what is missing. Always in the open, milestone by milestone.",
+    line1: "Tools that don't talk to each other, scattered data, usage no one has mapped. A hidden cost — but a very real one.",
+    line2: 'Reskope maps your ecosystem, then connects, simplifies and builds what is missing: from websites to business tools and automations. In the open, milestone by milestone.',
     mark1: 'mapped',
-    mark2: 'build',
-    markSub: 'map',
-    startEyebrow: 'Where to start',
-    startTitle: 'Explore at your own pace.',
-    primary: 'Talk about your tools',
+    mark2: 'builds',
+    closing: 'Map your systems. Take back control.',
+    offerings: [
+      { title: 'Digital audit', sub: "We map your tools and how they're really used, person by person." },
+      { title: 'Tool redesign', sub: 'We connect, simplify and put your ecosystem back in order.' },
+      { title: 'Automation', sub: 'We remove repetitive work: integrations, workflows, AI.' },
+      { title: 'Affordable alternatives', sub: 'Lean, honest tools instead of bloated all-in-ones.' },
+    ],
+    primary: 'Start an audit',
     ghost: 'The findings',
+    sting: 'One partner. Everything in the open.',
+
+    longPhrase:
+      'Reskope is a technical partner who maps your tools, connects them, simplifies them, and builds what is missing. Less friction, more time for your real work.',
+
+    svEyebrow: 'Services',
+    svTitle: 'What we actually do.',
+    services: [
+      'Digital audit',
+      'Systems mapping',
+      'Tool redesign',
+      'Automations & AI',
+      'Tool integrations',
+      'Websites & business tools',
+      'Affordable alternatives',
+      'Monthly retainer',
+    ],
+
+    toolsEyebrow: 'Tools we master',
+    toolsTitle: 'The playing field.',
+    toolsLead:
+      "40+ tools audited, connected or replaced. Here are a few — and if yours isn't listed, that's precisely the job.",
+
+    whyEyebrow: 'Our difference',
+    whyTitle: 'Not a firm that delivers a deck.',
+    whyLead:
+      'A technical partner who opens the hood, shows you what isn’t working, and fixes it. On the ground, not from an open-plan office.',
+    whyLink: 'Learn more',
+
+    pillarsEyebrow: 'The method',
+    pillarsTitle: 'Three steps, zero surprises.',
+    pillars: [
+      {
+        id: 'audit',
+        title: 'Audit',
+        text: 'We come to you. We observe, listen, and map every tool and every real workflow. In 2 to 5 days, you have a complete picture of what is getting in the way.',
+      },
+      {
+        id: 'conception',
+        title: 'Design',
+        text: 'We identify priorities by impact. We design the missing connections, automations and tools. Nothing is imposed: you validate every step.',
+      },
+      {
+        id: 'deploiement',
+        title: 'Deployment',
+        text: 'We build, integrate and test. Then we hand back a system that runs — and teams who know how to use it.',
+      },
+    ],
+
+    statsEyebrow: 'Results that can be measured',
+    statsTitle: 'Seriousness is proven with numbers, not promises.',
+    stats: [
+      { label: 'tools mastered and audited', display: '+40', value: 40, prefix: '+', suffix: '', decimals: 0 },
+      { label: 'average return on investment observed', display: '3.5×', value: 3.5, prefix: '', suffix: '×', decimals: 1 },
+      { label: 'days max for the first complete mapping', display: '10', value: 10, prefix: '', suffix: '', decimals: 0 },
+      { label: 'of the process in the open: access, milestones, deliverables', display: '100%', value: 100, prefix: '', suffix: '%', decimals: 0 },
+    ],
+
+    exploreEyebrow: 'Go further',
+    exploreTitle: 'Explore at your own pace.',
     dest: [
       { to: '/pourquoi', label: 'The findings', desc: 'The hidden cost, and who we act for' },
       { to: '/methode', label: 'The method', desc: '5 milestones, in full transparency' },
       { to: '/offres', label: 'Offers', desc: 'Clear scope, custom quotes' },
       { to: '/exemple', label: 'Example report', desc: 'A real, detailed audit' },
     ],
-    ecoEyebrow: 'Responsible digital',
-    ecoTitle: 'Simplifying your tools also means consuming less.',
-    ecoLead: 'Fewer tools, fewer servers, fewer duplicates. The ecological angle of our approach has its own page.',
-    ecoBtn: 'Explore the ecological angle',
+
+    ctaStatement:
+      "But we're not here to talk about us. We're here to talk about you, your teams, your tools and your time.",
+    ctaSub: 'A first 30-minute conversation, no strings attached. We look at your tools and tell you frankly if there is something worth doing.',
+    ctaBtn: 'Talk about your tools',
   },
 };
 
-function DestGrid({ dest }) {
-  return (
-    <div className="dest-grid">
-      {dest.map((d, i) => (
-        <Link key={d.to} to={d.to} className="dest-card">
-          <span className="dest-card__num">{`0${i + 1}`}</span>
-          <span className="dest-card__label">{d.label}</span>
-          <span className="dest-card__desc">{d.desc}</span>
-          <span className="dest-card__arrow" aria-hidden="true">→</span>
-        </Link>
-      ))}
-    </div>
-  );
-}
-
-function HeroPinned({ c }) {
-  const heroRef = useRef(null);
-  const eyebrowRef = useRef(null);
-  const titleRef = useRef(null);
-  const cueRef = useRef(null);
-  useGSAP(
-    () => heroIntro({ eyebrow: eyebrowRef.current, title: titleRef.current, cue: cueRef.current }),
-    { scope: heroRef }
-  );
-  return (
-    <header className="hero hero--pinned" ref={heroRef} id="top">
-      <div className="container hero__grid">
-        <div className="hero__scroller">
-          <div className="hero__step hero__intro">
-            <p className="eyebrow" ref={eyebrowRef}>{c.eyebrow}</p>
-            <h1 className="display" ref={titleRef}>{c.heroTitle}</h1>
-          </div>
-
-          <Reveal className="hero__step" amount={0.6}>
-            <RevealItem as="p" className="hero__line">
-              <Marked text={c.line1} word={c.mark1} />
-            </RevealItem>
-          </Reveal>
-
-          <Reveal className="hero__step" amount={0.6}>
-            <RevealItem as="p" className="hero__line">
-              <Marked text={c.line2} word={c.mark2} />
-            </RevealItem>
-          </Reveal>
-
-          <Reveal className="hero__step hero__step--final" amount={0.4}>
-            <RevealItem as="p" className="eyebrow eyebrow--index">{c.startEyebrow}</RevealItem>
-            <RevealItem>
-              <DestGrid dest={c.dest} />
-            </RevealItem>
-          </Reveal>
-        </div>
-
-        <div className="hero__sticky" aria-hidden="true">
-          <HeroLogo containerRef={heroRef} mode="scroll" />
-        </div>
-      </div>
-      <div className="hero__cue" ref={cueRef} aria-hidden="true">
-        <span>Scroll</span>
-        <i />
-      </div>
-    </header>
-  );
-}
-
-function HeroCompact({ c }) {
-  const scope = useRef(null);
-  const eyebrowRef = useRef(null);
-  const titleRef = useRef(null);
-  const subRef = useRef(null);
-  const linksRef = useRef(null);
-  useGSAP(
-    () =>
-      heroIntro({
-        eyebrow: eyebrowRef.current,
-        title: titleRef.current,
-        extras: [subRef.current, linksRef.current],
-      }),
-    { scope }
-  );
-  return (
-    <header className="hero hero--compact" id="top" ref={scope}>
-      <div className="hero__bg-net" aria-hidden="true">
-        <NetField variant="cluster" />
-      </div>
-      <div className="container">
-        <div className="hero__copy">
-          <div className="hero__compact-logo" aria-hidden="true">
-            <HeroLogo mode="mount" />
-          </div>
-          <p className="eyebrow" ref={eyebrowRef}>{c.eyebrow}</p>
-          <h1 className="display" ref={titleRef}>{c.heroTitle}</h1>
-          <p className="lead hero__sub" ref={subRef}>
-            <Marked text={c.sub} word={c.markSub} />
-          </p>
-          <div className="hero__links" ref={linksRef}>
-            <Link to="/contact" className="btn btn--primary">
-              {c.primary}
-              <span className="btn__arrow" aria-hidden="true">→</span>
-            </Link>
-            <Link to="/pourquoi" className="btn btn--ghost">
-              {c.ghost}
-            </Link>
-          </div>
-        </div>
-      </div>
-    </header>
-  );
-}
-
 export default function Home() {
-  const isDesktop = useMediaQuery('(min-width: 881px)');
   const { lang } = useLang();
   const c = CONTENT[lang];
 
   return (
     <Page title={c.metaTitle} description={c.metaDesc}>
-      {isDesktop ? <SceneHook c={c} /> : <HeroCompact c={c} />}
 
-      {/* Récit détaillé (conservé) — desktop : suite du hook */}
-      {isDesktop && (
-        <section className="section home-recit" aria-label="Le constat, en clair">
-          <div className="container">
-            <Reveal className="home-recit__inner">
-              <RevealItem as="p" className="hero__line">
-                <Marked text={c.line1} word={c.mark1} />
-              </RevealItem>
-              <RevealItem as="p" className="hero__line">
-                <Marked text={c.line2} word={c.mark2} />
-              </RevealItem>
-            </Reveal>
-          </div>
-        </section>
-      )}
+      {/* 1 — Hero : titre à gauche, R 3D qui se forme au scroll puis tourne.
+             key={lang} : remonte proprement au changement de langue (sinon le
+             calque réseau du titre se superpose à la version sans-serif). */}
+      <HeroFormation key={lang} c={c} />
 
-      {/* Par où commencer — partagé desktop + mobile */}
-      <section className="section section--tight" id="start" aria-labelledby="start-title">
-        <div className="container">
-          <Reveal className="section__head">
-            <RevealItem as="p" className="eyebrow eyebrow--index">{c.startEyebrow}</RevealItem>
-            <RiseText as="h2" className="h2" id="start-title" text={c.startTitle} />
-          </Reveal>
-          <Reveal amount={0.1}>
-            <RevealItem>
-              <DestGrid dest={c.dest} />
-            </RevealItem>
-          </Reveal>
-        </div>
-      </section>
+      {/* 2 — La marque en une phrase (mots révélés au scrub) */}
+      <LongPhrase text={c.longPhrase} />
 
-      {/* Teaser — numérique responsable */}
-      <section className="section eco-teaser" aria-labelledby="eco-teaser-title">
-        <div className="container">
-          <Reveal className="eco-teaser__inner">
-            <div className="eco-teaser__text">
-              <RevealItem as="p" className="eyebrow eyebrow--eco">{c.ecoEyebrow}</RevealItem>
-              <RiseText as="h2" className="h2 eco-teaser__title" id="eco-teaser-title" text={c.ecoTitle} />
-              <RevealItem as="p" className="eco-teaser__lead">{c.ecoLead}</RevealItem>
-              <RevealItem>
-                <Link to="/numerique-responsable" className="btn btn--eco">
-                  {c.ecoBtn}
-                  <span className="btn__arrow" aria-hidden="true">→</span>
-                </Link>
-              </RevealItem>
-            </div>
-            <RevealItem as="div" className="eco-teaser__art" aria-hidden="true">
-              <NetField variant="leaf" />
-            </RevealItem>
-          </Reveal>
-        </div>
-      </section>
+      {/* 3 — Traversée caméra 3D : constat → réponse → bascule → offres →
+             signature. FIN de la home : le footer (scène de clôture) suit. */}
+      <HomeCinema c={c} lang={lang} />
 
-      <CTASection />
     </Page>
   );
 }

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLang } from '../i18n';
-import { CONTACT } from '../data/site';
+import { FORMSUBMIT_URL } from '../data/site';
 
 /* Contenu bilingue. Les `tags` sont des clés neutres (identiques fr/en) :
    c'est la logique de reco. Seuls les libellés changent. */
@@ -86,9 +86,11 @@ const T = {
       synergie: 'améliorer le partage d’information entre équipes',
       cout: 'maîtriser vos coûts logiciels',
     },
-    offerAudit: 'L’Audit',
-    offerCustom: 'Sur-mesure (après un audit de cadrage)',
-    offerDelivery: 'Audit + Mise en œuvre',
+    offers: {
+      audit: { name: 'L’Audit', price: 'dès 1 490 €' },
+      delivery: { name: 'Audit + Mise en œuvre', price: '450 €/jour' },
+      custom: { name: 'Sur-mesure, après un audit de cadrage', price: 'sur devis' },
+    },
     defaultSize: 'votre équipe',
     message: ({ needs, offer, size }) => {
       const lines = ['Bonjour,', '', 'Je viens de remplir le questionnaire sur le site Reskope.', '', `Mon contexte : ${size}.`];
@@ -103,12 +105,17 @@ const T = {
     subjectFallback: 'questionnaire',
     ui: {
       eyebrow: 'Votre accompagnement',
-      subNeeds: 'D’après vos réponses, on pourrait surtout :',
+      recoLead: 'D’après vos réponses, le plus juste pour vous :',
+      subNeeds: 'On se concentrerait surtout sur :',
       subNone: 'Tout semble déjà bien en place. Un audit léger confirmerait qu’il n’y a rien à gratter, ou révélerait les derniers gains cachés.',
       msgLabel: 'Votre message (modifiable)',
       name: 'Nom', email: 'E-mail',
       back: 'Revenir', send: 'Envoyer ma demande',
-      note: 'Aucun engagement. Le bouton ouvre votre messagerie avec ce message pré-rempli : vous l’ajustez, puis vous envoyez.',
+      sending: 'Envoi en cours…',
+      successTitle: 'Demande envoyée !',
+      successText: 'Je vous réponds sous 24 h, avec une première idée de la marche à suivre.',
+      errorText: 'Une erreur est survenue. Réessayez, ou écrivez-moi directement.',
+      note: 'Aucun engagement. J’ajuste avec vous lors d’un premier échange.',
       question: 'Question', prev: 'Précédent', next: 'Suivant', seeReco: 'Voir mon accompagnement',
     },
   },
@@ -192,9 +199,11 @@ const T = {
       synergie: 'improve information sharing between teams',
       cout: 'keep your software costs under control',
     },
-    offerAudit: 'The Audit',
-    offerCustom: 'Custom (after a scoping audit)',
-    offerDelivery: 'Audit + Delivery',
+    offers: {
+      audit: { name: 'The Audit', price: 'from €1,490' },
+      delivery: { name: 'Audit + Delivery', price: '€450/day' },
+      custom: { name: 'Custom, after a scoping audit', price: 'on quote' },
+    },
     defaultSize: 'your team',
     message: ({ needs, offer, size }) => {
       const lines = ['Hello,', '', 'I just filled in the questionnaire on the Reskope site.', '', `My context: ${size}.`];
@@ -209,12 +218,17 @@ const T = {
     subjectFallback: 'questionnaire',
     ui: {
       eyebrow: 'Your support',
-      subNeeds: 'Based on your answers, we could mainly:',
+      recoLead: 'Based on your answers, the best fit for you:',
+      subNeeds: "We'd focus mainly on:",
       subNone: "Everything seems already in place. A light audit would confirm there's nothing left to scrape, or reveal the last hidden gains.",
       msgLabel: 'Your message (editable)',
       name: 'Name', email: 'Email',
       back: 'Back', send: 'Send my request',
-      note: "No strings attached. The button opens your email app with this message pre-filled: adjust it, then send.",
+      sending: 'Sending…',
+      successTitle: 'Request sent!',
+      successText: "I'll get back to you within 24 h, with a first idea of the way forward.",
+      errorText: 'Something went wrong. Please try again, or write to me directly.',
+      note: 'No strings attached. I adjust it with you during a first conversation.',
       question: 'Question', prev: 'Back', next: 'Next', seeReco: 'See my support',
     },
   },
@@ -234,11 +248,11 @@ function buildResult(answers, data) {
   });
   const needs = [...tags].filter((t) => t !== 'audit').map((t) => data.needLabel[t]).filter(Boolean);
   const heavy = tags.has('developpement') || tags.has('refonte');
-  let offer;
-  if (needs.length === 0) offer = data.offerAudit;
-  else if (heavy) offer = data.offerCustom;
-  else offer = data.offerDelivery;
-  return { needs, offer, size };
+  let offerKey;
+  if (needs.length === 0) offerKey = 'audit';
+  else if (heavy) offerKey = 'custom';
+  else offerKey = 'delivery';
+  return { needs, offerKey, size };
 }
 
 export default function Quiz() {
@@ -251,18 +265,21 @@ export default function Quiz() {
   const [answers, setAnswers] = useState({});
   const [message, setMessage] = useState('');
   const [sender, setSender] = useState({ name: '', email: '' });
+  const [status, setStatus] = useState('idle'); // idle | sending | sent | error
 
   const total = questions.length;
   const isResult = step >= total;
   const result = useMemo(() => (isResult ? buildResult(answers, data) : null), [isResult, answers, data]);
+  const offer = result ? data.offers[result.offerKey] : null;
+  const msgFor = (r) => data.message({ needs: r.needs, offer: data.offers[r.offerKey].name, size: r.size });
 
   useEffect(() => {
-    if (isResult && result) setMessage((m) => m || data.message(result));
+    if (isResult && result) setMessage((m) => m || msgFor(result));
   }, [isResult, result, data]);
 
   const goResult = () => {
     const r = buildResult(answers, data);
-    setMessage(data.message(r));
+    setMessage(msgFor(r));
     setStep(total);
   };
 
@@ -283,18 +300,45 @@ export default function Quiz() {
   const next = () => setStep((s) => Math.min(s + 1, total));
   const prev = () => setStep((s) => Math.max(s - 1, 0));
 
-  const send = (e) => {
+  const send = async (e) => {
     e.preventDefault();
-    const subject = encodeURIComponent(`${data.subjectPrefix} (${sender.name || data.subjectFallback})`);
-    const body = encodeURIComponent(`${message}\n${sender.name}\n${sender.email}`);
-    window.location.href = `mailto:${CONTACT.email}?subject=${subject}&body=${body}`;
+    setStatus('sending');
+    try {
+      const res = await fetch(FORMSUBMIT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          name: sender.name,
+          email: sender.email,
+          message,
+          _subject: `${data.subjectPrefix} (${sender.name || data.subjectFallback})`,
+          _captcha: 'false',
+        }),
+      });
+      setStatus(res.ok ? 'sent' : 'error');
+    } catch {
+      setStatus('error');
+    }
   };
 
   if (isResult) {
+    if (status === 'sent') {
+      return (
+        <div className="quiz quiz--result quiz--sent">
+          <span className="quiz__done" aria-hidden="true" />
+          <h3 className="quiz__reco">{ui.successTitle}</h3>
+          <p className="quiz__sub">{ui.successText}</p>
+        </div>
+      );
+    }
     return (
       <div className="quiz quiz--result">
         <span className="quiz__eyebrow">{ui.eyebrow}</span>
-        <h3 className="quiz__reco">{result.offer}</h3>
+        <p className="quiz__reco-lead">{ui.recoLead}</p>
+        <div className="quiz__reco-head">
+          <h3 className="quiz__reco">{offer.name}</h3>
+          <span className="quiz__reco-price">{offer.price}</span>
+        </div>
         {result.needs.length > 0 ? (
           <>
             <p className="quiz__sub">{ui.subNeeds}</p>
@@ -316,19 +360,20 @@ export default function Quiz() {
           <div className="quiz__id">
             <label>
               <span>{ui.name}</span>
-              <input type="text" value={sender.name} onChange={(e) => setSender((s) => ({ ...s, name: e.target.value }))} required />
+              <input type="text" value={sender.name} onChange={(e) => setSender((s) => ({ ...s, name: e.target.value }))} required autoComplete="name" />
             </label>
             <label>
               <span>{ui.email}</span>
-              <input type="email" value={sender.email} onChange={(e) => setSender((s) => ({ ...s, email: e.target.value }))} required />
+              <input type="email" value={sender.email} onChange={(e) => setSender((s) => ({ ...s, email: e.target.value }))} required autoComplete="email" />
             </label>
           </div>
+          {status === 'error' && <p className="quiz__error">{ui.errorText}</p>}
           <div className="quiz__actions">
             <button type="button" className="btn btn--ghost" onClick={() => setStep(total - 1)}>
               {ui.back}
             </button>
-            <button type="submit" className="btn btn--primary">
-              {ui.send}
+            <button type="submit" className="btn btn--primary" disabled={status === 'sending'}>
+              {status === 'sending' ? ui.sending : ui.send}
               <span className="btn__arrow" aria-hidden="true">→</span>
             </button>
           </div>

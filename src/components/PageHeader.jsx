@@ -1,14 +1,46 @@
+import { useRef } from 'react';
+import { gsap, SplitText, useGSAP } from '../lib/gsap';
+import { instant } from '../lib/scrub';
 import NetWord from './NetWord';
 import { Reveal, RevealItem } from './Reveal';
 
-/* En-tête de page : le premier mot du titre se forme via la trame
-   (réseau de lettres), le reste reste en texte. Le titre complet est
-   présent pour le SEO et les lecteurs d'écran (sans doublon).
-   Le mot-réseau est toujours le 1er mot réel du titre (préfixe), pour
-   ne jamais casser la phrase de la balise h1. */
+/* En-tête de page : le premier mot du titre se forme via la trame réseau
+   (NetWord), les mots suivants arrivent mot par mot via SplitText (delay pour
+   laisser le NetWord se former d'abord). Le lead suit via Reveal standard. */
 export default function PageHeader({ eyebrow, title, lead, tone = 'default', action }) {
   const word = title.split(' ')[0];
   const rest = title.slice(word.length).replace(/^\s+/, '');
+  const restRef = useRef(null);
+
+  useGSAP(
+    () => {
+      if (instant() || !restRef.current || !rest) return;
+
+      let split = null;
+      try {
+        split = new SplitText(restRef.current, { type: 'words' });
+        gsap.from(split.words, {
+          autoAlpha: 0,
+          yPercent: 65,
+          duration: 0.88,
+          ease: 'power4.out',
+          stagger: 0.072,
+          delay: 0.55,
+        });
+      } catch {
+        gsap.from(restRef.current, {
+          autoAlpha: 0,
+          y: 30,
+          duration: 0.9,
+          ease: 'power4.out',
+          delay: 0.45,
+        });
+      }
+
+      return () => split?.revert();
+    },
+    { scope: restRef }
+  );
 
   return (
     <header className={`pagehead${tone === 'eco' ? ' pagehead--eco' : ''}`}>
@@ -24,15 +56,15 @@ export default function PageHeader({ eyebrow, title, lead, tone = 'default', act
 
           <h1 className="pagehead__title">
             <span className="pagehead__title-word">
-              {/* Texte réel (couleur du fond) sous le mot-réseau : invisible à
-                  l'œil mais bien présent dans le H1 pour le SEO. */}
               <span className="pagehead__title-ghost">{word}</span>
               <NetWord className="pagehead__netword">{word}</NetWord>
             </span>
             {rest && (
               <>
                 {' '}
-                <span className="pagehead__title-rest">{rest}</span>
+                <span className="pagehead__title-rest" ref={restRef}>
+                  {rest}
+                </span>
               </>
             )}
           </h1>

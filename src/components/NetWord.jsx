@@ -101,8 +101,56 @@ export default function NetWord({ children, className = '', dur = 1.25, heightEm
     // Les liens se redessinent à chaque frame depuis les positions vivantes.
     tl.eventCallback('onUpdate', redrawLinks);
 
-    return () => tl.kill();
-  }, [nodes, links, scattered, dur]);
+    /* Une fois le mot assemblé : le réseau reste vivant sous le curseur —
+       les nœuds proches s'écartent doucement (repousse), comme un bout du
+       réseau de la marque qui réagit au passage, puis reviennent au repos. */
+    let hoverRaf = null;
+    let mx = -9999, my = -9999;
+    // Unités du repère interne (CAP = 100 = hauteur d'une capitale) —
+    // grand devant l'écran car le SVG est rendu à ~0.8em, donc très réduit.
+    const RADIUS = 85;
+    const PUSH = 20;
+    const [vbMinX, vbMinY] = vb.split(' ').map(Number);
+
+    const onPointerMove = (e) => {
+      const rect = svg.getBoundingClientRect();
+      if (!rect.width || !rect.height) return;
+      const vbW = svg.viewBox.baseVal.width;
+      const vbH = svg.viewBox.baseVal.height;
+      mx = vbMinX + ((e.clientX - rect.left) / rect.width) * vbW;
+      my = vbMinY + ((e.clientY - rect.top) / rect.height) * vbH;
+    };
+    const onPointerLeave = () => { mx = -9999; my = -9999; };
+
+    const hoverTick = () => {
+      nodes.forEach((target, i) => {
+        const d = Math.hypot(mx - target[0], my - target[1]);
+        const proximity = Math.max(0, 1 - d / RADIUS);
+        const push = proximity * PUSH;
+        const a = Math.atan2(target[1] - my, target[0] - mx);
+        const goalX = target[0] + Math.cos(a) * push;
+        const goalY = target[1] + Math.sin(a) * push;
+        cur[i][0] += (goalX - cur[i][0]) * 0.22;
+        cur[i][1] += (goalY - cur[i][1]) * 0.22;
+        place(i);
+      });
+      redrawLinks();
+      hoverRaf = requestAnimationFrame(hoverTick);
+    };
+
+    tl.eventCallback('onComplete', () => {
+      svg.addEventListener('pointermove', onPointerMove);
+      svg.addEventListener('pointerleave', onPointerLeave);
+      hoverRaf = requestAnimationFrame(hoverTick);
+    });
+
+    return () => {
+      tl.kill();
+      if (hoverRaf) cancelAnimationFrame(hoverRaf);
+      svg.removeEventListener('pointermove', onPointerMove);
+      svg.removeEventListener('pointerleave', onPointerLeave);
+    };
+  }, [nodes, links, scattered, dur, vb]);
 
   return (
     <span className={`netword ${className}`} aria-hidden="true">

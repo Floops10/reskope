@@ -19,7 +19,7 @@ export const R_LINKS = [
   [2, 3], // D-M (fermeture de la boucle)
   [3, 5], // M-F (jambe)
 ];
-const R_SCATTER = [
+export const R_SCATTER = [
   [16, 18],
   [116, 10],
   [120, 104],
@@ -28,7 +28,7 @@ const R_SCATTER = [
   [98, 70],
 ];
 
-const linkD = (coords, [a, b]) =>
+export const linkD = (coords, [a, b]) =>
   `M${coords[a][0]} ${coords[a][1]} L${coords[b][0]} ${coords[b][1]}`;
 
 /* Marque statique (nav, footer, etc.) — hérite de la couleur via currentColor. */

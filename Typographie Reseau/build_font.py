@@ -281,6 +281,11 @@ for ch,(base,kind,upper) in ACC.items():
     g,adv,lsb = make_glyph(nodes,edges,w,s)
     register(ch,g,adv,lsb)
 
+# Apostrophe typographique (U+2019) + guillemet simple ouvrant (U+2018)
+# + prime (U+02BC) : tous rendus par le glyphe apostrophe déjà tracé.
+for _cp in (0x2019, 0x2018, 0x02BC):
+    cmap[_cp] = 'quotesingle'
+
 # Ligatures œ / Œ
 def ligature(c1,c2,s):
     n1,e1,w1 = to_font(ALL[c1], s)

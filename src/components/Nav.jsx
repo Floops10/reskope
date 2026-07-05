@@ -1,26 +1,47 @@
-import { useEffect, useLayoutEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
+import { gsap, useGSAP } from '../lib/gsap';
 import { LogoMark } from './Logo';
 import { lockScroll } from '../lib/smoothScroll';
+import { GLYPH_SHAPES } from '../lib/net3d';
+import Net3D from './Net3D';
+import SwapLabel from './SwapLabel';
 import { useT, useLang, LangToggle } from '../i18n';
 import { CONTACT } from '../data/site';
 
+/* NAV — header minimal + MENU refait (exigence premium).
+   Ouverture en couches : le voile s'assombrit, une lame indigo glisse,
+   le panneau crème la suit avec un léger retard (profondeur), puis les
+   liens — GRANDS, numérotés — montent un à un derrière leurs masques,
+   le pied arrive en dernier, un objet réseau 3D flotte en décor.
+   Fermeture : la même chorégraphie, rejouée à l'envers, accélérée.
+   Survol d'un lien : la ligne s'indente, le numéro s'allume, la flèche
+   arrive, un nœud-réseau pulse. Mobile : panneau plein écran, même soin. */
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const [open, setOpen] = useState(false);
-  const [hovered, setHovered] = useState(null);
   const { pathname } = useLocation();
   const { lang } = useLang();
   const t = useT();
   const tabs = Object.entries(t.nav.tabs);
-  const activeIndex = tabs.findIndex(([to]) => to === pathname);
 
-  const linksRef = useRef(null);
-  const spineRef = useRef(null);
-  const routeRef = useRef(null);
+  const menuRef = useRef(null);
+  const backdropRef = useRef(null);
+  const layerRef = useRef(null);
+  const panelRef = useRef(null);
+  const menuTl = useRef(null);
 
+  /* Nav qui se masque au défilement vers le bas, réapparaît vers le haut */
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
+    let last = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 24);
+      if (y > last && y > 140) setHidden(true);
+      else if (y < last) setHidden(false);
+      last = y;
+    };
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
@@ -40,66 +61,54 @@ export default function Nav() {
     };
   }, [open]);
 
-  /* Dorsale réseau (spine) + lien qui se trace au survol (route) du nœud
-     de la page courante vers le nœud survolé. */
-  useLayoutEffect(() => {
-    const place = () => {
-      const cont = linksRef.current;
-      if (!cont) return;
-      const nodes = [...cont.querySelectorAll('.navmenu__node')];
-      if (!nodes.length) return;
-      const base = cont.getBoundingClientRect();
-      const cy = (el) => {
-        const r = el.getBoundingClientRect();
-        return r.top - base.top + r.height / 2;
-      };
-      const r0 = nodes[0].getBoundingClientRect();
-      const cx = r0.left - base.left + r0.width / 2;
-      const ys = nodes.map(cy);
+  /* Chorégraphie d'ouverture (fermeture = reverse accéléré) */
+  useGSAP(() => {
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const rows = menuRef.current.querySelectorAll('.menu2__row');
+    const head = menuRef.current.querySelector('.menu2__head');
+    const foot = menuRef.current.querySelector('.menu2__foot');
+    const decor = menuRef.current.querySelector('.menu2__decor');
 
-      const spine = spineRef.current;
-      if (spine) {
-        spine.style.left = `${cx}px`;
-        spine.style.top = `${ys[0]}px`;
-        spine.style.height = `${ys[ys.length - 1] - ys[0]}px`;
-      }
-      const route = routeRef.current;
-      if (!route) return;
-      route.style.left = `${cx}px`;
-      const aI = activeIndex >= 0 ? activeIndex : 0;
-      if (hovered == null || hovered === aI) {
-        route.style.top = `${ys[aI]}px`;
-        route.style.height = '0px';
-        route.style.opacity = '0';
-        return;
-      }
-      const aY = ys[aI];
-      const hY = ys[hovered];
-      route.style.top = `${Math.min(aY, hY)}px`;
-      route.style.height = `${Math.abs(hY - aY)}px`;
-      route.style.opacity = '1';
-    };
-    place();
-    window.addEventListener('resize', place);
-    return () => window.removeEventListener('resize', place);
-  }, [hovered, activeIndex, open, lang, pathname]);
+    const tl = gsap.timeline({ paused: true, defaults: { ease: 'power4.out' } });
+    tl.set(menuRef.current, { visibility: 'visible' }, 0);
+    if (reduce) {
+      tl.set([layerRef.current, panelRef.current], { xPercent: 0 }, 0)
+        .fromTo(menuRef.current, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.25 }, 0);
+    } else {
+      tl.fromTo(backdropRef.current, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6, ease: 'power2.out' }, 0)
+        .fromTo(layerRef.current, { xPercent: 101 }, { xPercent: 0, duration: 0.6, ease: 'power4.inOut' }, 0)
+        .fromTo(panelRef.current, { xPercent: 103 }, { xPercent: 0, duration: 0.72, ease: 'power4.inOut' }, 0.1)
+        .fromTo(head, { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, duration: 0.5 }, 0.44)
+        .fromTo(rows, { yPercent: 130 }, { yPercent: 0, duration: 0.75, stagger: 0.06 }, 0.42)
+        .fromTo(foot, { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.55 }, 0.68)
+        .fromTo(decor, { autoAlpha: 0, scale: 0.7 }, { autoAlpha: 0.55, scale: 1, duration: 0.7, ease: 'power2.out' }, 0.6);
+    }
+    menuTl.current = tl;
+  }, { scope: menuRef, dependencies: [lang] });
+
+  useEffect(() => {
+    const tl = menuTl.current;
+    if (!tl) return;
+    if (open) tl.timeScale(1).play();
+    else tl.timeScale(1.5).reverse();
+  }, [open]);
 
   return (
     <>
       <nav
-        className={`nav${scrolled || open ? ' is-scrolled' : ''}${open ? ' is-open' : ''}`}
+        className={`nav${scrolled || open ? ' is-scrolled' : ''}${open ? ' is-open' : ''}${hidden && !open ? ' is-hidden' : ''}`}
         aria-label="Navigation principale"
       >
         <div className="container nav__inner">
           <Link to="/" className="wordmark" aria-label="Reskope, accueil">
             <LogoMark className="wordmark__mark" />
-            <span>Reskope</span>
+            <span className="wordmark__text">Reskope</span>
           </Link>
 
           <div className="nav__actions">
             <LangToggle className="nav__lang" />
             <Link to="/contact" className="btn btn--primary nav__cta">
-              {t.nav.cta}
+              <SwapLabel>{t.nav.cta}</SwapLabel>
               <span className="btn__arrow" aria-hidden="true">→</span>
             </Link>
             <button
@@ -119,55 +128,53 @@ export default function Nav() {
         </div>
       </nav>
 
-      <div className={`navmenu${open ? ' is-open' : ''}`}>
+      <div className={`menu2${open ? ' is-open' : ''}`} ref={menuRef}>
         <div
-          className="navmenu__backdrop"
+          className="menu2__backdrop"
           aria-hidden="true"
+          ref={backdropRef}
           onClick={() => setOpen(false)}
         />
-        <div className="navmenu__panel" aria-hidden={!open}>
-          <nav
-            className="navmenu__links"
-            ref={linksRef}
-            aria-label="Pages"
-            onMouseLeave={() => setHovered(null)}
-          >
-            <p className="navmenu__eyebrow">{t.nav.menuEyebrow}</p>
-            <span className="navmenu__spine" aria-hidden="true" ref={spineRef} />
-            <span className="navmenu__route" aria-hidden="true" ref={routeRef} />
+        <div className="menu2__layer" aria-hidden="true" ref={layerRef} />
+        <div className="menu2__panel" ref={panelRef} aria-hidden={!open}>
+
+          <p className="menu2__head">{t.nav.menuEyebrow}</p>
+
+          <nav className="menu2__links" aria-label="Pages">
             {tabs.map(([to, label], i) => (
               <NavLink
                 key={to}
                 to={to}
-                className={({ isActive }) => `navmenu__link${isActive ? ' is-current' : ''}`}
-                style={{ '--i': i }}
-                onMouseEnter={() => setHovered(i)}
-                onFocus={() => setHovered(i)}
-                onBlur={() => setHovered(null)}
+                className={({ isActive }) => `menu2__link${isActive ? ' is-current' : ''}`}
               >
-                <span className="navmenu__node" aria-hidden="true" />
-                <span className="navmenu__text">{label}</span>
+                <span className="menu2__mask">
+                  <span className="menu2__row">
+                    <span className="menu2__num">{String(i + 1).padStart(2, '0')}</span>
+                    <span className="menu2__node" aria-hidden="true" />
+                    <span className="menu2__label">{label}</span>
+                    <span className="menu2__arrow" aria-hidden="true">→</span>
+                  </span>
+                </span>
               </NavLink>
             ))}
           </nav>
 
-          <div className="navmenu__foot">
-            <p className="navmenu__eyebrow">{t.nav.asideEyebrow}</p>
-            <div className="navmenu__contact">
-              <a href={`mailto:${CONTACT.email}`} className="navmenu__contact-link">
-                {CONTACT.email}
-              </a>
-              <a href="tel:+33620235522" className="navmenu__contact-link">
-                +33 6 20 23 55 22
-              </a>
+          <div className="menu2__foot">
+            <div className="menu2__contact">
+              <a href={`mailto:${CONTACT.email}`} className="menu2__contact-link">{CONTACT.email}</a>
+              <a href="tel:+33620235522" className="menu2__contact-link">+33 6 20 23 55 22</a>
             </div>
-            <div className="navmenu__foot-actions">
-              <Link to="/contact" className="btn btn--primary navmenu__cta">
-                {t.nav.cta}
+            <div className="menu2__foot-actions">
+              <Link to="/contact" className="btn btn--primary">
+                <SwapLabel>{t.nav.cta}</SwapLabel>
                 <span className="btn__arrow" aria-hidden="true">→</span>
               </Link>
-              <LangToggle className="navmenu__lang" />
+              <LangToggle className="menu2__lang" />
             </div>
+          </div>
+
+          <div className="menu2__decor" aria-hidden="true">
+            <Net3D shape={GLYPH_SHAPES[2]} size={150} speed={0.6} tiltX={0.4} nodeR={3} />
           </div>
         </div>
       </div>

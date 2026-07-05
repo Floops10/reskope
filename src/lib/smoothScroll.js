@@ -18,14 +18,17 @@ export function initSmoothScroll() {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return null;
 
   lenis = new Lenis({
-    duration: 1.05,
-    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // expo.out
+    lerp: 0.1,            // interpolation continue = scroll soyeux mais « ferme » (Noomo)
     smoothWheel: true,
     wheelMultiplier: 1,
-    touchMultiplier: 1.6,
+    touchMultiplier: 1.5,
+    syncTouch: false,
   });
 
   lenis.on('scroll', ScrollTrigger.update);
+
+  // Dev only : accès à l'instance pour piloter/tester le scroll précisément.
+  if (import.meta.env.DEV) window.__lenis = lenis;
 
   tick = (time) => lenis.raf(time * 1000);
   gsap.ticker.add(tick);
