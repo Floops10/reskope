@@ -1,10 +1,30 @@
+import { useRef } from 'react';
+import { Link } from 'react-router-dom';
 import Page from '../components/Page';
-import PageHeader from '../components/PageHeader';
-import AboutBio from '../components/AboutBio';
-import CTASection from '../components/CTASection';
+import MorphTitle from '../components/MorphTitle';
+import Tilt from '../components/Tilt';
+import Net3D from '../components/Net3D';
+import HeroNetwork from '../components/HeroNetwork';
+import { GLYPH_SHAPES } from '../lib/net3d';
 import Stagger from '../components/Stagger';
 import { Reveal, RevealItem } from '../components/Reveal';
+import { gsap, SplitText, ScrollTrigger, useGSAP } from '../lib/gsap';
 import { useLang } from '../i18n';
+
+/* À PROPOS — « LE PORTRAIT » (v3, refonte entière).
+   1. HERO intégré plein écran : titre morphing (police réseau au survol),
+      PHOTO révélée par balayage + parallaxe, glyphe 3D, fond réseau vivant.
+   2. LE RÉCIT : « Bonjour, moi c'est Florian. » géant + la bio révélée
+      LIGNE À LIGNE, entre les guillemets « » de la marque qui dérivent.
+   3. LES ENGAGEMENTS = grandes lignes typographiques masquées (Noomo).
+   4. LES PALIERS = cartes rideau + glyphe réseau 3D + tilt.
+   5. LES COMPÉTENCES = nœuds en cascade.
+   6. Clôture personnelle. */
+
+const PHOTO = 'https://www.image2url.com/r2/default/images/1782253442600-884214d2-7945-4d3c-b79f-6b7586efd15b.png';
+
+const reduced = () =>
+  typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const CONTENT = {
   fr: {
@@ -48,6 +68,9 @@ const CONTENT = {
       'Développement web',
       'Conduite du changement',
     ],
+    ctaH: 'On se parle ?',
+    ctaP: "Trente minutes, sans engagement. Vous repartez au minimum avec un regard extérieur honnête sur vos outils.",
+    ctaBtn: 'Prendre contact',
   },
   en: {
     metaTitle: 'About · the digital, seen from the ground',
@@ -90,83 +113,229 @@ const CONTENT = {
       'Web development',
       'Change management',
     ],
+    ctaH: 'Shall we talk?',
+    ctaP: 'Thirty minutes, no strings attached. At the very least you leave with an honest outside look at your tools.',
+    ctaBtn: 'Get in touch',
   },
 };
 
 export default function APropos() {
   const { lang } = useLang();
   const c = CONTENT[lang];
+  const pageRef = useRef(null);
+
+  useGSAP(() => {
+    if (reduced()) return;
+    const root = pageRef.current;
+
+    /* HERO : cascade d'entrée + PHOTO révélée par balayage + parallaxe */
+    gsap.from(root.querySelectorAll('.ahero__reveal'), {
+      y: 30, autoAlpha: 0, duration: 0.9, ease: 'power3.out', stagger: 0.09, delay: 0.15,
+    });
+    const mask = root.querySelector('.ahero__photo-mask');
+    const img = root.querySelector('.ahero__img');
+    if (mask && img) {
+      gsap.fromTo(mask,
+        { clipPath: 'inset(100% 0% 0% 0% round 18px)' },
+        { clipPath: 'inset(0% 0% 0% 0% round 18px)', duration: 1.3, ease: 'power4.inOut', delay: 0.35 });
+      /* parallaxe UNIQUEMENT vers le bas : le visage reste toujours cadré */
+      gsap.fromTo(img, { yPercent: 0, scale: 1.06 }, {
+        yPercent: 8, scale: 1, ease: 'none',
+        scrollTrigger: { trigger: root.querySelector('.ahero'), start: 'top top', end: 'bottom top', scrub: true },
+      });
+    }
+
+    /* LE RÉCIT : bio révélée LIGNE À LIGNE + guillemets en dérive */
+    let splits = [];
+    root.querySelectorAll('.astory__p').forEach((p) => {
+      try {
+        const sp = new SplitText(p, { type: 'lines', mask: 'lines' });
+        splits.push(sp);
+        gsap.from(sp.lines, {
+          yPercent: 110, duration: 0.85, ease: 'power4.out', stagger: 0.07,
+          scrollTrigger: { trigger: p, start: 'top 84%' },
+        });
+      } catch { /* fallback : reveal simple */ }
+    });
+    const q1 = root.querySelector('.astory__quote--open');
+    const q2 = root.querySelector('.astory__quote--close');
+    if (q1 && q2) {
+      gsap.to(q1, { y: -70, ease: 'none', scrollTrigger: { trigger: root.querySelector('.astory'), start: 'top bottom', end: 'bottom top', scrub: true } });
+      gsap.to(q2, { y: 60, ease: 'none', scrollTrigger: { trigger: root.querySelector('.astory'), start: 'top bottom', end: 'bottom top', scrub: true } });
+    }
+
+    /* LES ENGAGEMENTS : chaque grande ligne monte derrière son masque,
+       puis son texte se dévoile — et repart si on remonte */
+    root.querySelectorAll('.serment').forEach((el) => {
+      const row = el.querySelector('.serment__row');
+      const text = el.querySelector('.serment__text');
+      const tl = gsap.timeline({
+        scrollTrigger: { trigger: el, start: 'top 84%', toggleActions: 'play none none reverse' },
+      });
+      tl.fromTo(row, { yPercent: 120 }, { yPercent: 0, duration: 0.85, ease: 'power4.out' }, 0)
+        .fromTo(text, { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, duration: 0.6, ease: 'power3.out' }, 0.28);
+    });
+
+    /* LES PALIERS : entrée rideau (le langage des cartes du site) */
+    const cards = root.querySelectorAll('.about-tiers .tgt');
+    if (cards.length) {
+      gsap.set(cards, { clipPath: 'inset(0% 0% 100% 0% round 18px)', y: 60, autoAlpha: 0, filter: 'blur(9px)' });
+      cards.forEach((card, i) => {
+        const inner = card.querySelectorAll('.tgt__glyph, .tgt__size, .tgt__title, .about-tier__principle, .tgt__desc, .about-tier__wins');
+        const tl = gsap.timeline({
+          scrollTrigger: { trigger: root.querySelector('.about-tiers'), start: 'top 80%' },
+          delay: i * 0.13,
+        });
+        tl.to(card, { clipPath: 'inset(0% 0% 0% 0% round 18px)', y: 0, autoAlpha: 1, filter: 'blur(0px)', duration: 1, ease: 'power4.out' }, 0)
+          .from(inner, { y: 24, autoAlpha: 0, duration: 0.65, ease: 'power3.out', stagger: 0.06 }, 0.18)
+          .set(card, { clearProps: 'clipPath,filter,willChange' });
+      });
+    }
+
+    return () => splits.forEach((s) => s.revert());
+  }, { scope: pageRef, dependencies: [lang] });
 
   return (
     <Page title={c.metaTitle} description={c.metaDesc}>
-      <PageHeader eyebrow={c.eyebrow} title={c.title} lead={c.lead} />
-
-      {/* Scène portrait cinématique : photo + texte gauche / droite */}
-      <AboutBio hello={c.hello} bio={c.bio} photoAlt={c.photoAlt} />
-
-      {/* MES ENGAGEMENTS */}
-      <section className="section section--tint" aria-labelledby="principes-title">
-        <div className="container">
-          <Reveal className="section__head">
-            <RevealItem as="p" className="eyebrow eyebrow--index">{c.principesEyebrow}</RevealItem>
-            <RevealItem as="h2" className="h2" id="principes-title">{c.principesTitle}</RevealItem>
-          </Reveal>
-          <Stagger className="manifesto" stagger={0.14} y={70}>
-            {c.principes.map((m) => (
-              <div className="manifesto__item" key={m.num}>
-                <span className="manifesto__num">{m.num}</span>
-                <h3 className="manifesto__title">{m.title}</h3>
-                <p className="manifesto__text">{m.text}</p>
+      <div ref={pageRef}>
+        {/* 1 — HERO intégré : titre morphing + PHOTO révélée + fond vivant */}
+        <header className="ahero" key={lang}>
+          <div className="ahero__bg" aria-hidden="true">
+            <HeroNetwork />
+            <div className="hero2__grain" />
+          </div>
+          <div className="container ahero__grid">
+            <div className="ahero__copy">
+              <p className="eyebrow eyebrow--index ahero__reveal">{c.eyebrow}</p>
+              <div className="ahero__reveal">
+                <MorphTitle as="h1" text={c.title} textClass="ahero__title" intro />
               </div>
-            ))}
-          </Stagger>
-        </div>
-      </section>
+              <p className="lead ahero__lead ahero__reveal">{c.lead}</p>
+            </div>
+            <div className="ahero__viz ahero__reveal">
+              <span className="ahero__glyph" aria-hidden="true">
+                <Net3D shape={GLYPH_SHAPES[1]} size={120} speed={0.6} tiltX={0.45} nodeR={2.8} />
+              </span>
+              <div className="ahero__photo-mask">
+                <img className="ahero__img" src={PHOTO} alt={c.photoAlt} loading="eager" />
+              </div>
+            </div>
+          </div>
+        </header>
 
-      {/* SELON LA TAILLE */}
-      <section className="section" aria-labelledby="size-title">
-        <div className="container">
-          <Reveal className="section__head">
-            <RevealItem as="p" className="eyebrow eyebrow--index">{c.sizeEyebrow}</RevealItem>
-            <RevealItem as="h2" className="h2" id="size-title">{c.sizeTitle}</RevealItem>
-            <RevealItem as="p" className="lead">{c.sizeLead}</RevealItem>
-          </Reveal>
-          <Stagger className="size-tiers" stagger={0.14} y={70}>
-            {c.tiers.map((t) => (
-              <div className="size-tier" key={t.range}>
-                <div className="size-tier__head">
-                  <span className="size-tier__range">{t.range}</span>
-                  <span className="size-tier__label">{t.label}</span>
+        {/* 2 — LE RÉCIT : la bio, ligne à ligne, entre les « » de la marque */}
+        <section className="astory" aria-label={c.hello}>
+          <span className="astory__quote astory__quote--open" aria-hidden="true">«</span>
+          <span className="astory__quote astory__quote--close" aria-hidden="true">»</span>
+          <div className="container astory__inner">
+            <Reveal>
+              <RevealItem>
+                <MorphTitle as="h2" text={c.hello} textClass="astory__hello" />
+              </RevealItem>
+            </Reveal>
+            <div className="astory__cols">
+              {c.bio.map((p, i) => (
+                <p key={i} className="astory__p">{p}</p>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* MES ENGAGEMENTS : grandes lignes typographiques */}
+        <section className="section section--tint" aria-labelledby="principes-title">
+          <div className="container">
+            <Reveal className="section__head">
+              <RevealItem as="p" className="eyebrow eyebrow--index">{c.principesEyebrow}</RevealItem>
+              <RevealItem>
+                <MorphTitle as="h2" text={c.principesTitle} textClass="h2" id="principes-title" />
+              </RevealItem>
+            </Reveal>
+            <div className="serments">
+              {c.principes.map((m) => (
+                <div className="serment" key={m.num}>
+                  <div className="serment__mask">
+                    <div className="serment__row">
+                      <span className="serment__num">{m.num}</span>
+                      <span className="serment__node" aria-hidden="true" />
+                      <h3 className="serment__title">{m.title}</h3>
+                    </div>
+                  </div>
+                  <p className="serment__text">{m.text}</p>
                 </div>
-                <p className="size-tier__principle">{t.principle}</p>
-                <p className="size-tier__detail">{t.detail}</p>
-                <ul className="size-tier__wins">
-                  {t.wins.map((w) => (
-                    <li key={w}>{w}</li>
-                  ))}
-                </ul>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* SELON LA TAILLE : cartes rideau + glyphes réseau 3D */}
+        <section className="section" aria-labelledby="size-title">
+          <div className="container">
+            <Reveal className="section__head">
+              <RevealItem as="p" className="eyebrow eyebrow--index">{c.sizeEyebrow}</RevealItem>
+              <RevealItem>
+                <MorphTitle as="h2" text={c.sizeTitle} textClass="h2" id="size-title" />
+              </RevealItem>
+              <RevealItem as="p" className="lead">{c.sizeLead}</RevealItem>
+            </Reveal>
+            <div className="tgt-grid about-tiers">
+              {c.tiers.map((t, i) => (
+                <Tilt className="tgt" key={t.range} max={7}>
+                  <span className="tgt__glyph" aria-hidden="true">
+                    <Net3D shape={GLYPH_SHAPES[i % GLYPH_SHAPES.length]} size={72} speed={0.8} tiltX={0.5} nodeR={2.6} />
+                  </span>
+                  <span className="tgt__size">{t.range}</span>
+                  <h3 className="tgt__title">{t.label}</h3>
+                  <p className="about-tier__principle">{t.principle}</p>
+                  <p className="tgt__desc">{t.detail}</p>
+                  <ul className="about-tier__wins">
+                    {t.wins.map((w) => <li key={w}>{w}</li>)}
+                  </ul>
+                </Tilt>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* COMPÉTENCES : la chaîne de nœuds */}
+        <section className="section section--tint">
+          <div className="container">
+            <Reveal className="section__head">
+              <RevealItem as="p" className="eyebrow eyebrow--index">{c.skillsEyebrow}</RevealItem>
+              <RevealItem>
+                <MorphTitle as="h2" text={c.skillsTitle} textClass="h2" />
+              </RevealItem>
+            </Reveal>
+            <div className="skillpath">
+              <Stagger className="skillpath__chips" sel=".skillchip" stagger={0.07} y={26}>
+                {c.skills.map((s) => (
+                  <span className="skillchip" key={s}>
+                    <i aria-hidden="true" />
+                    {s}
+                  </span>
+                ))}
+              </Stagger>
+            </div>
+          </div>
+        </section>
+
+        {/* Clôture personnelle */}
+        <section className="section">
+          <div className="container">
+            <div className="direct-band">
+              <div className="direct-band__inner">
+                <div className="direct-band__text">
+                  <h2 className="direct-band__title">{c.ctaH}</h2>
+                  <p>{c.ctaP}</p>
+                </div>
+                <Link to="/contact" className="btn btn--primary direct-band__btn" data-cursor-label={c.ctaBtn}>
+                  {c.ctaBtn}
+                  <span className="btn__arrow" aria-hidden="true">→</span>
+                </Link>
               </div>
-            ))}
-          </Stagger>
-        </div>
-      </section>
-
-      {/* COMPÉTENCES */}
-      <section className="section section--tint">
-        <div className="container">
-          <Reveal className="section__head">
-            <RevealItem as="p" className="eyebrow eyebrow--index">{c.skillsEyebrow}</RevealItem>
-            <RevealItem as="h2" className="h2">{c.skillsTitle}</RevealItem>
-          </Reveal>
-          <Stagger className="skills" sel=".skill" stagger={0.06} y={28}>
-            {c.skills.map((s) => (
-              <span className="skill" key={s}>{s}</span>
-            ))}
-          </Stagger>
-        </div>
-      </section>
-
-      <CTASection />
+            </div>
+          </div>
+        </section>
+      </div>
     </Page>
   );
 }

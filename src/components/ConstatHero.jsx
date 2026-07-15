@@ -12,16 +12,13 @@ import MorphTitle from './MorphTitle';
    sources signale une vraie étude, pas une plaquette. Aucun chiffre précis
    ici : le film qui suit les révèle un à un. Un glyphe réseau 3D dérive à
    droite, le fond réagit au curseur. Entrée chorégraphiée, sans pin fragile. */
-export default function ConstatHero({ eyebrow, title, teaser, lead, sourcesLabel, sources = [], cue = 'Scroll' }) {
+export default function ConstatHero({ eyebrow, title, teaser, lead, sourcesLabel, sources = [] }) {
   const rootRef = useRef(null);
 
   useGSAP(() => {
     if (instant()) return;
     gsap.from(rootRef.current.querySelectorAll('.chero__reveal'), {
       y: 30, autoAlpha: 0, duration: 0.9, ease: 'power3.out', stagger: 0.09, delay: 0.15,
-    });
-    gsap.from(rootRef.current.querySelector('.chero__cue'), {
-      autoAlpha: 0, y: -8, duration: 0.6, delay: 1,
     });
   }, { scope: rootRef });
 
@@ -60,10 +57,6 @@ export default function ConstatHero({ eyebrow, title, teaser, lead, sourcesLabel
         </div>
       </div>
 
-      <div className="chero__cue" aria-hidden="true">
-        <span>{cue}</span>
-        <i />
-      </div>
     </header>
   );
 }

@@ -49,6 +49,10 @@ const SHARED = {
       sign: 'On remet vos outils en ordre.',
       rights: 'Conseil et ingénierie numérique',
       meta: 'Démarche ouverte · cadre clair · chiffres sourcés',
+      mentions: 'Mentions légales',
+      privacy: 'Politique de confidentialité',
+      terms: 'CGU',
+      sales: 'CGV',
     },
     card: {
       eyebrow: 'Carte de visite',
@@ -104,6 +108,10 @@ const SHARED = {
       sign: 'We put your tools back in order.',
       rights: 'Consulting & digital engineering',
       meta: 'Open process · clear scope · sourced figures',
+      mentions: 'Legal notice',
+      privacy: 'Privacy policy',
+      terms: 'Terms of use',
+      sales: 'Terms of sale',
     },
     card: {
       eyebrow: 'Business card',

@@ -37,7 +37,7 @@ const CONTENT = {
     heroCue: 'Voir les chiffres',
     bridgeTitle: 'Et chez vous ?',
     bridgeText:
-      "Ces chiffres viennent de McKinsey, Asana, Harvard Business Review et Okta — pas d'une plaquette commerciale. Si une partie seulement se vérifie chez vous, l'audit se rembourse tout seul.",
+      "Ces chiffres ne sortent pas d'une plaquette commerciale. Si une partie seulement se vérifie chez vous, l'audit se rembourse tout seul.",
     bridgeBtn: 'Estimer votre situation',
     film: {
       weekLabel: 'Une semaine de travail : 35 heures.',
@@ -81,7 +81,7 @@ const CONTENT = {
     heroCue: 'See the numbers',
     bridgeTitle: 'What about you?',
     bridgeText:
-      'These numbers come from McKinsey, Asana, Harvard Business Review and Okta — not from a sales brochure. If only part of them holds true for you, the audit pays for itself.',
+      'These numbers do not come from a sales brochure. If only part of them holds true for you, the audit pays for itself.',
     bridgeBtn: 'Assess your situation',
     film: {
       weekLabel: 'One working week: 35 hours.',
@@ -119,11 +119,29 @@ function TargetsShow({ eyebrow, title, targets }) {
 
   useGSAP(() => {
     if (instant()) return;
-    gsap.from(rootRef.current.querySelectorAll('.tgt'), {
-      rotationX: 24, y: 70, autoAlpha: 0,
-      transformPerspective: 1000, transformOrigin: '50% 100%',
-      duration: 0.9, ease: 'power3.out', stagger: 0.14,
-      scrollTrigger: { trigger: rootRef.current.querySelector('.tgt-grid'), start: 'top 78%' },
+    /* Entrée « rideau » : chaque carte se dévoile par balayage (clip-path)
+       en se posant, avec un léger flou qui se dissipe — plus feutré qu'un
+       simple slide. Le glyphe et le contenu suivent en cascade interne. */
+    const cards = rootRef.current.querySelectorAll('.tgt');
+    gsap.set(cards, {
+      clipPath: 'inset(0% 0% 100% 0% round 18px)',
+      y: 64, autoAlpha: 0, filter: 'blur(10px)',
+    });
+    cards.forEach((card, i) => {
+      const inner = card.querySelectorAll('.tgt__glyph, .tgt__size, .tgt__title, .tgt__desc, .tgt__link');
+      const tl = gsap.timeline({
+        scrollTrigger: { trigger: rootRef.current.querySelector('.tgt-grid'), start: 'top 80%' },
+        delay: i * 0.14,
+      });
+      tl.to(card, {
+        clipPath: 'inset(0% 0% 0% 0% round 18px)',
+        y: 0, autoAlpha: 1, filter: 'blur(0px)',
+        duration: 1.05, ease: 'power4.out',
+      }, 0)
+        .from(inner, {
+          y: 26, autoAlpha: 0, duration: 0.7, ease: 'power3.out', stagger: 0.07,
+        }, 0.18)
+        .set(card, { clearProps: 'clipPath,filter,willChange' });
     });
   }, { scope: rootRef });
 
@@ -189,14 +207,26 @@ export default function Pourquoi() {
         />
       </Suspense>
 
-      {/* 3 — Et chez vous ? (bascule + closing) */}
-      <section className="constat-bridge" data-cursor-dark>
+      {/* 3 — Et chez vous ? (bascule + closing, scène habillée) */}
+      <section className="constat-bridge" data-cursor-dark data-nav-dark>
+        <div className="constat-bridge__decor" aria-hidden="true">
+          <span className="constat-bridge__glyph">
+            <Net3D shape={GLYPH_SHAPES[3]} size={260} speed={0.5} tiltX={0.4} nodeR={3.2} />
+          </span>
+        </div>
         <div className="container constat-bridge__inner">
           <Reveal>
             <RevealItem>
               <MorphTitle as="h2" text={c.bridgeTitle} textClass="constat-bridge__title" netClass="morph__net--cream" />
             </RevealItem>
             <RevealItem as="p" className="constat-bridge__text">{c.bridgeText}</RevealItem>
+            <RevealItem>
+              <div className="constat-bridge__chips">
+                {c.heroSources.map((s) => (
+                  <span className="constat-bridge__chip" key={s}>{s}</span>
+                ))}
+              </div>
+            </RevealItem>
             <RevealItem>
               <Link to="/contact" className="btn btn--on-dark" data-cursor-label={c.bridgeBtn}>
                 {c.bridgeBtn}

@@ -12,6 +12,11 @@ dist
 dist-ssr
 *.local
 
+# Sessions R (ne rien versionner)
+.RData
+.Rhistory
+.Rapp.history
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

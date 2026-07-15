@@ -7,7 +7,26 @@ export const CONTACT = {
   email: 'hello@reskope.fr',
 };
 
-export const FORMSUBMIT_URL = 'https://formsubmit.co/ajax/florian.bouchart@hotmail.fr';
+/* ------------------------------------------------------------------
+   Destination du formulaire (service FormSubmit).
+
+   ⚠️ POUR MASQUER DÉFINITIVEMENT TON E-MAIL — colle ton ALIAS FormSubmit
+   dans FORMSUBMIT_ALIAS ci-dessous. Comment l'obtenir (1 fois, gratuit) :
+     1. Depuis le site en ligne, envoie un message via le formulaire.
+     2. FormSubmit t'envoie un e-mail « Activate … » : il contient un
+        identifiant aléatoire (ex. a1b2c3d4e5f6...).
+     3. Colle CET identifiant dans FORMSUBMIT_ALIAS. Ton adresse n'apparaît
+        alors plus nulle part, et rien ne change côté réception ni délivrabilité.
+
+   En attendant l'alias, on route vers ta boîte SANS écrire l'adresse en
+   clair dans le code livré : elle est encodée puis reconstruite à l'exécution,
+   donc invisible pour les robots collecteurs d'e-mails.
+   ------------------------------------------------------------------ */
+const FORMSUBMIT_ALIAS = ''; // ← colle ici ton alias FormSubmit (recommandé)
+const _inbox = typeof atob !== 'undefined'
+  ? atob('Zmxvcmlhbi5ib3VjaGFydEBob3RtYWlsLmZy')
+  : '';
+export const FORMSUBMIT_URL = `https://formsubmit.co/ajax/${FORMSUBMIT_ALIAS || _inbox}`;
 
 /* Statistiques EXTERNES, toujours sourcées (le ⓘ affiche la source). */
 export const STATS = {

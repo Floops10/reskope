@@ -1,7 +1,6 @@
 import { useState, Suspense, lazy } from 'react';
 import { Link } from 'react-router-dom';
 import Page from '../components/Page';
-import CTASection from '../components/CTASection';
 import Quiz from '../components/Quiz';
 import { Reveal, RevealItem } from '../components/Reveal';
 import { useLang } from '../i18n';
@@ -18,7 +17,6 @@ const CONTENT = {
     title: 'Quatre façons de travailler ensemble.',
     lead: "Chaque mission est différente, mais les tarifs sont clairs dès le départ. On définit ensemble le périmètre, et vous savez ce que vous payez, et pourquoi.",
     action: 'Pas sûr ? Trouvez votre offre',
-    cue: 'Défiler',
     badge: 'Le plus choisi',
     offerLabel: 'Offre',
     pricingLabel: 'Ce qui influence le tarif',
@@ -55,7 +53,6 @@ const CONTENT = {
     title: 'Four ways to work together.',
     lead: 'Every engagement is different, but pricing is clear from the start. We define the scope together, and you know what you pay, and why.',
     action: 'Not sure? Find your offer',
-    cue: 'Scroll',
     badge: 'Most chosen',
     offerLabel: 'Offer',
     pricingLabel: 'What influences the price',
@@ -129,7 +126,7 @@ export default function Offres() {
           prices={c.prices}
           billing={c.billing}
           badge={c.badge}
-          intro={{ eyebrow: c.eyebrow, title: c.title, lead: c.lead, cue: c.cue, action: c.action }}
+          intro={{ eyebrow: c.eyebrow, title: c.title, lead: c.lead, action: c.action }}
           labels={{ offer: c.offerLabel, pricing: c.pricingLabel, detail: c.detailLabel, hide: c.hideLabel }}
           locale={lang}
         />
@@ -188,7 +185,6 @@ export default function Offres() {
         </div>
       </section>
 
-      <CTASection />
     </Page>
   );
 }

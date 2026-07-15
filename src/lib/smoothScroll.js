@@ -15,6 +15,9 @@ export function getLenis() {
 
 export function initSmoothScroll() {
   if (typeof window === 'undefined' || lenis) return lenis;
+  // SPA : c'est nous qui gérons la position au changement de page,
+  // sinon le navigateur restaure l'ancien scroll (on arrivait en bas).
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return null;
 
   lenis = new Lenis({

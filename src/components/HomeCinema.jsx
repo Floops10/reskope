@@ -102,7 +102,8 @@ export default function HomeCinema({ c }) {
       scrollTrigger: {
         trigger: rootRef.current,
         start: 'top top',
-        end: () => '+=' + SCENES * window.innerHeight,
+        /* ×0.85 : les scènes s'enchaînent plus vite (moins d'espace mort) */
+        end: () => '+=' + SCENES * window.innerHeight * 0.85,
         pin: stageRef.current,
         scrub: 1,
         invalidateOnRefresh: true,

@@ -46,7 +46,6 @@ export default function HeroFormation({ c }) {
   const netTitleRef = useRef(null);
   const visualRef = useRef(null);
   const actionsRef = useRef(null);
-  const cueRef = useRef(null);
   const glyphRefs = useRef([]);
 
   const shape = useMemo(() => buildR3D(16, 0.66), []);
@@ -187,7 +186,6 @@ export default function HeroFormation({ c }) {
       intro.from(split.chars, { yPercent: 112, autoAlpha: 0, duration: 0.9, stagger: 0.013 }, 0.12);
     }
     intro.from(actionsRef.current, { y: 24, autoAlpha: 0, duration: 0.7 }, 0.6);
-    intro.from(cueRef.current, { autoAlpha: 0, y: -8, duration: 0.6 }, 0.85);
 
     /* Morph survol : VAGUE de bascule lettre à lettre — la lettre sans
        plonge (rotationX), la lettre réseau se relève à sa place exacte.
@@ -243,10 +241,6 @@ export default function HeroFormation({ c }) {
             hoverTl.timeScale(2).reverse();
           }
         },
-      });
-      gsap.to(cueRef.current, {
-        autoAlpha: 0, ease: 'none',
-        scrollTrigger: { trigger: rootRef.current, start: 'top top', end: '10% top', scrub: true },
       });
       const wrap = wrapRef.current;
       wrap.addEventListener('pointerenter', onEnter);
@@ -324,10 +318,6 @@ export default function HeroFormation({ c }) {
           </div>
         </div>
 
-        <div className="heroform__cue" ref={cueRef} aria-hidden="true">
-          <span>Scroll</span>
-          <i />
-        </div>
       </div>
     </header>
   );

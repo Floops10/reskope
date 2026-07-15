@@ -1,8 +1,9 @@
-import { useRef, useMemo, useState } from 'react';
+import { useRef, useMemo, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Link } from 'react-router-dom';
 import * as THREE from 'three';
 import { ScrollTrigger, useGSAP } from '../lib/gsap';
+import { lockScroll } from '../lib/smoothScroll';
 import NetWord from './NetWord';
 
 /* ============================================================
@@ -180,8 +181,21 @@ export default function OffersShowcase({ offers, prices, billing, badge, labels,
   const progress = useRef(0);
   const mouse = useRef({ x: 0, y: 0 });
   const [active, setActive] = useState(0);
-  const [detail, setDetail] = useState(false);
+  const [modal, setModal] = useState(null);       // offre ouverte en popup
   const reduced = prefersReduced();
+
+  /* Popup : scroll de page verrouillé, Échap pour fermer */
+  useEffect(() => {
+    lockScroll(modal !== null);
+    document.body.style.overflow = modal !== null ? 'hidden' : '';
+    const onKey = (e) => e.key === 'Escape' && setModal(null);
+    window.addEventListener('keydown', onKey);
+    return () => {
+      lockScroll(false);
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [modal]);
 
   const states = useMemo(buildStates, []);
   const introWord = intro.title.split(' ')[0];
@@ -211,7 +225,7 @@ export default function OffersShowcase({ offers, prices, billing, badge, labels,
         progress.current = p;
         let best = 0, bd = 9;
         CD.forEach((c, i) => { const d = Math.abs(p - c); if (d < bd) { bd = d; best = i; } });
-        setActive((a) => { if (a !== best) setDetail(false); return a === best ? a : best; });
+        setActive((a) => (a === best ? a : best));
         if (railFillRef.current) railFillRef.current.style.transform = `scaleX(${clamp01((p - 0.03) / 0.9)})`;
       },
     });
@@ -250,7 +264,7 @@ export default function OffersShowcase({ offers, prices, billing, badge, labels,
 
   return (
     <section className="ofs" ref={rootRef}>
-      <div className="ofs__holder">
+      <div className="ofs__holder" data-nav-dark data-cursor-dark>
         <Canvas
           className="ofs__canvas"
           dpr={[1, 2]}
@@ -283,7 +297,6 @@ export default function OffersShowcase({ offers, prices, billing, badge, labels,
                   <a href="#qcm" className="btn btn--on-dark ofs__intro-cta" onClick={toQuiz} data-cursor-label={intro.action}>
                     {intro.action}<span className="btn__arrow" aria-hidden="true">↓</span>
                   </a>
-                  <span className="ofs__cue">{intro.cue}<i /></span>
                 </article>
               );
             }
@@ -300,7 +313,6 @@ export default function OffersShowcase({ offers, prices, billing, badge, labels,
             }
 
             const { o, price } = pn;
-            const isOpen = shown && detail;
             return (
               <article className={`ofs__panel${o.featured ? ' is-featured' : ''}${shown ? ' is-active' : ''}`} key={o.id}>
                 <p className="ofs__kicker">
@@ -326,25 +338,16 @@ export default function OffersShowcase({ offers, prices, billing, badge, labels,
                   <Link to="/contact" className={`btn ${o.featured ? 'btn--primary' : 'btn--on-dark'}`} data-cursor-label={o.cta}>
                     {o.cta}<span className="btn__arrow" aria-hidden="true">→</span>
                   </Link>
-                  <button type="button" className="ofs__toggle" aria-expanded={isOpen} onClick={() => setDetail((d) => !d)}>
-                    {isOpen ? labels.hide : labels.detail}
+                  <button type="button" className="ofs__toggle" onClick={() => setModal(i - 1)}>
+                    {labels.detail}
                     <span className="ofs__toggle-icon" aria-hidden="true" />
                   </button>
-                </div>
-
-                <div className={`ofs__detail${isOpen ? ' is-open' : ''}`}>
-                  <div className="ofs__detail-inner">
-                    <p className="ofs__detail-text">{o.detail}</p>
-                    <p className="ofs__pricing-label">{labels.pricing}</p>
-                    <ul className="ofs__pricing">
-                      {o.pricingFactors.map((f, k) => <li key={k}>{f}</li>)}
-                    </ul>
-                  </div>
                 </div>
               </article>
             );
           })}
         </div>
+
 
         {/* frise des scènes */}
         <div className="ofs__rail" aria-hidden="true">
@@ -358,6 +361,41 @@ export default function OffersShowcase({ offers, prices, billing, badge, labels,
           </span>
         </div>
       </div>
+
+      {/* Popup détails : son propre scroll, la page reste où elle est */}
+      {modal !== null && (() => {
+        const o = offers[modal];
+        const price = prices[o.id];
+        return (
+          <div className="ofsmodal" role="dialog" aria-modal="true" aria-label={o.name}>
+            <div className="ofsmodal__backdrop" onClick={() => setModal(null)} />
+            <div className="ofsmodal__panel" data-lenis-prevent>
+              <button type="button" className="ofsmodal__close" aria-label="Fermer" onClick={() => setModal(null)}>
+                <span aria-hidden="true" />
+              </button>
+              <p className="ofsmodal__kicker">
+                {labels.offer} {String(modal + 1).padStart(2, '0')}
+                {o.featured && <span className="ofsmodal__badge">{badge}</span>}
+              </p>
+              <h3 className="ofsmodal__name">{o.name}</h3>
+              <p className="ofsmodal__tagline">{o.tagline}</p>
+              <div className="ofsmodal__price">
+                <span className="ofsmodal__amount">{price.amount}</span>
+                <span className="ofsmodal__type">{price.type}</span>
+              </div>
+              <p className="ofsmodal__note">{price.note}</p>
+              <p className="ofsmodal__text">{o.detail}</p>
+              <p className="ofsmodal__label">{labels.pricing}</p>
+              <ul className="ofsmodal__pricing">
+                {o.pricingFactors.map((f, k) => <li key={k}>{f}</li>)}
+              </ul>
+              <Link to="/contact" className="btn btn--primary ofsmodal__cta" data-cursor-label={o.cta}>
+                {o.cta}<span className="btn__arrow" aria-hidden="true">→</span>
+              </Link>
+            </div>
+          </div>
+        );
+      })()}
     </section>
   );
 }

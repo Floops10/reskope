@@ -325,7 +325,7 @@ export default function ConstatFlow({ cards, film, sourceLabel, calcLabel, local
 
   return (
     <section className="cflw" ref={rootRef}>
-      <div className="cflw__holder" data-cursor-dark>
+      <div className="cflw__holder" data-cursor-dark data-nav-dark>
         <Canvas
           className="cflw__canvas"
           dpr={[1, 2]}

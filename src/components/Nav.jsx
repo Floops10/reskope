@@ -21,6 +21,7 @@ export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [open, setOpen] = useState(false);
+  const [dark, setDark] = useState(false);
   const { pathname } = useLocation();
   const { lang } = useLang();
   const t = useT();
@@ -32,14 +33,18 @@ export default function Nav() {
   const panelRef = useRef(null);
   const menuTl = useRef(null);
 
-  /* Nav qui se masque au défilement vers le bas, réapparaît vers le haut */
+  /* Nav qui se masque au défilement vers le bas, réapparaît vers le haut.
+     Durci pour mobile : y clampé à 0 (rebond iOS), seuil de 6px (évite le
+     clignotement pendant l'inertie), toujours visible près du haut. */
   useEffect(() => {
-    let last = window.scrollY;
+    let last = Math.max(0, window.scrollY);
     const onScroll = () => {
-      const y = window.scrollY;
+      const y = Math.max(0, window.scrollY);
       setScrolled(y > 24);
-      if (y > last && y > 140) setHidden(true);
-      else if (y < last) setHidden(false);
+      const delta = y - last;
+      if (y < 90) setHidden(false);
+      else if (delta > 6) setHidden(true);
+      else if (delta < -6) setHidden(false);
       last = y;
     };
     onScroll();
@@ -48,6 +53,40 @@ export default function Nav() {
   }, []);
 
   useEffect(() => setOpen(false), [pathname]);
+
+  /* Contraste : le header passe en clair quand une section sombre
+     ([data-nav-dark]) est SOUS la barre. Calcul en pixels (hauteur réelle du
+     header), recalculé au scroll : déterministe sur mobile, là où une bande
+     en % du viewport laissait le logo invisible dans la zone frontière.
+     Un MutationObserver re-collecte quand les pages lazy montent. */
+  useEffect(() => {
+    let els = [];
+    let raf = 0;
+    const check = () => {
+      raf = 0;
+      const d = els.some((el) => {
+        const r = el.getBoundingClientRect();
+        return r.top <= 80 && r.bottom >= 24;
+      });
+      setDark((p) => (p === d ? p : d));
+    };
+    const schedule = () => { if (!raf) raf = requestAnimationFrame(check); };
+    const collect = () => {
+      els = [...document.querySelectorAll('[data-nav-dark]')];
+      schedule();
+    };
+    collect();
+    const mo = new MutationObserver(collect);
+    mo.observe(document.body, { childList: true, subtree: true });
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule, { passive: true });
+    return () => {
+      mo.disconnect();
+      cancelAnimationFrame(raf);
+      window.removeEventListener('scroll', schedule);
+      window.removeEventListener('resize', schedule);
+    };
+  }, [pathname]);
 
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : '';
@@ -96,7 +135,7 @@ export default function Nav() {
   return (
     <>
       <nav
-        className={`nav${scrolled || open ? ' is-scrolled' : ''}${open ? ' is-open' : ''}${hidden && !open ? ' is-hidden' : ''}`}
+        className={`nav${scrolled || open ? ' is-scrolled' : ''}${open ? ' is-open' : ''}${hidden && !open ? ' is-hidden' : ''}${dark && !open ? ' nav--dark' : ''}`}
         aria-label="Navigation principale"
       >
         <div className="container nav__inner">
@@ -121,12 +160,26 @@ export default function Nav() {
               <span className={`burger${open ? ' is-open' : ''}`}>
                 <i />
                 <i />
-                <i />
               </span>
             </button>
           </div>
         </div>
       </nav>
+
+      {/* Pastille compacte : quand le header se détache au scroll, seul le
+          menu reste, en verre flouté en haut à droite */}
+      <button
+        type="button"
+        className={`nav-pill${hidden && !open ? ' is-on' : ''}${dark ? ' nav-pill--dark' : ''}`}
+        aria-label="Ouvrir le menu"
+        tabIndex={hidden && !open ? 0 : -1}
+        onClick={() => setOpen(true)}
+      >
+        <span className="burger">
+          <i />
+          <i />
+        </span>
+      </button>
 
       <div className={`menu2${open ? ' is-open' : ''}`} ref={menuRef}>
         <div
@@ -162,7 +215,6 @@ export default function Nav() {
           <div className="menu2__foot">
             <div className="menu2__contact">
               <a href={`mailto:${CONTACT.email}`} className="menu2__contact-link">{CONTACT.email}</a>
-              <a href="tel:+33620235522" className="menu2__contact-link">+33 6 20 23 55 22</a>
             </div>
             <div className="menu2__foot-actions">
               <Link to="/contact" className="btn btn--primary">

@@ -9,11 +9,26 @@ import BusinessCard from './BusinessCard';
 import { useT, useLang } from '../i18n';
 import { CONTACT } from '../data/site';
 
-/* FOOTER — scène de clôture (« fin de film »).
-   Bloc indigo plein : déclaration + CTA (révélés ligne à ligne au scroll),
-   colonnes de navigation sobres, le R de la marque en VRAI 3D qui tourne
-   lentement, et en signature finale le wordmark « Reskope » GÉANT en police
-   réseau, révélé par balayage — le générique de fin. */
+/* FOOTER — L'UNIVERS de clôture (plein écran).
+   On termine EN IMMERSION dans le réseau de la marque : une poussière
+   d'étoiles-nœuds en profondeur (3 couches de parallaxe), des halos, le R
+   en vrai 3D qui tourne, la déclaration + CTA révélés ligne à ligne, les
+   colonnes sobres, puis le wordmark « Reskope » GÉANT en police réseau,
+   révélé par balayage. Rang légal complet (mentions, confidentialité, CGU). */
+
+const DUST = Array.from({ length: 34 }, (_, i) => {
+  const r = (s) => { const v = Math.sin(i * 127.1 + s * 311.7) * 43758.5453; return v - Math.floor(v); };
+  return {
+    x: 2 + r(1) * 96,
+    y: 3 + r(2) * 92,
+    s: 2 + r(3) * 3.6,
+    o: 0.14 + r(4) * 0.5,
+    layer: i % 3,                       // 3 profondeurs de parallaxe
+    dur: 2.6 + r(5) * 3.4,
+    delay: r(6) * 4,
+  };
+});
+
 export default function Footer() {
   const [cardOpen, setCardOpen] = useState(false);
   const rootRef = useRef(null);
@@ -61,11 +76,40 @@ export default function Footer() {
       scrollTrigger: { trigger: word, start: 'top 96%' },
     });
 
+    /* Parallaxe des couches de poussière : l'univers a de la profondeur */
+    [0, 1, 2].forEach((layer) => {
+      gsap.fromTo(rootRef.current.querySelectorAll(`.footer2__dust--${layer}`),
+        { yPercent: -30 - layer * 22 },
+        {
+          yPercent: 10 + layer * 8, ease: 'none',
+          scrollTrigger: { trigger: rootRef.current, start: 'top bottom', end: 'bottom bottom', scrub: true },
+        });
+    });
+
     return () => split?.revert();
   }, { scope: rootRef });
 
   return (
-    <footer className="footer2" ref={rootRef} data-cursor-dark>
+    <footer className="footer2 footer2--universe" ref={rootRef} data-cursor-dark data-nav-dark>
+      {/* L'univers : poussière d'étoiles-nœuds en 3 profondeurs + halos */}
+      <div className="footer2__cosmos" aria-hidden="true">
+        {DUST.map((d, i) => (
+          <span
+            key={i}
+            className={`footer2__dust footer2__dust--${d.layer}`}
+            style={{
+              left: `${d.x}%`,
+              top: `${d.y}%`,
+              width: `${d.s}px`,
+              height: `${d.s}px`,
+              opacity: d.o,
+              animationDuration: `${d.dur}s`,
+              animationDelay: `${d.delay}s`,
+            }}
+          />
+        ))}
+      </div>
+
       <Net3D shape={rShape} size={190} speed={0.45} tiltX={0.3} nodeR={4.2} className="footer2__net" />
 
       <div className="container footer2__top">
@@ -90,7 +134,7 @@ export default function Footer() {
           <Link to="/exemple">{tabs['/exemple']}</Link>
           <Link to="/numerique-responsable">{tabs['/numerique-responsable']}</Link>
           <Link to="/a-propos">{tabs['/a-propos']}</Link>
-          <a href="/reskope-logo.svg" download>{f.logo}</a>
+          <Link to="/contact">{f.talk}</Link>
         </nav>
 
         <div className="footer2__col">
@@ -109,6 +153,12 @@ export default function Footer() {
       </div>
 
       <div className="container footer2__legal">
+        <nav className="footer2__legal-links" aria-label={f.mentions}>
+          <Link to="/mentions-legales">{f.mentions}</Link>
+          <Link to="/confidentialite">{f.privacy}</Link>
+          <Link to="/cgu">{f.terms}</Link>
+          <Link to="/cgv">{f.sales}</Link>
+        </nav>
         <p>© {new Date().getFullYear()} Reskope · {f.rights}</p>
       </div>
 

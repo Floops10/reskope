@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLang } from '../i18n';
 import { FORMSUBMIT_URL } from '../data/site';
@@ -116,6 +117,8 @@ const T = {
       successText: 'Je vous réponds sous 24 h, avec une première idée de la marche à suivre.',
       errorText: 'Une erreur est survenue. Réessayez, ou écrivez-moi directement.',
       note: 'Aucun engagement. J’ajuste avec vous lors d’un premier échange.',
+      consent: 'En envoyant, vous acceptez que vos données servent à traiter votre demande, conformément à la',
+      consentLink: 'politique de confidentialité',
       question: 'Question', prev: 'Précédent', next: 'Suivant', seeReco: 'Voir mon accompagnement',
     },
   },
@@ -229,6 +232,8 @@ const T = {
       successText: "I'll get back to you within 24 h, with a first idea of the way forward.",
       errorText: 'Something went wrong. Please try again, or write to me directly.',
       note: 'No strings attached. I adjust it with you during a first conversation.',
+      consent: 'By sending, you agree that your data will be used to handle your request, in accordance with the',
+      consentLink: 'privacy policy',
       question: 'Question', prev: 'Back', next: 'Next', seeReco: 'See my support',
     },
   },
@@ -265,6 +270,7 @@ export default function Quiz() {
   const [answers, setAnswers] = useState({});
   const [message, setMessage] = useState('');
   const [sender, setSender] = useState({ name: '', email: '' });
+  const [trap, setTrap] = useState(''); // honeypot anti-bot : doit rester vide
   const [status, setStatus] = useState('idle'); // idle | sending | sent | error
 
   const total = questions.length;
@@ -302,6 +308,7 @@ export default function Quiz() {
 
   const send = async (e) => {
     e.preventDefault();
+    if (trap) { setStatus('sent'); return; } // bot détecté : on ignore silencieusement
     setStatus('sending');
     try {
       const res = await fetch(FORMSUBMIT_URL, {
@@ -312,7 +319,8 @@ export default function Quiz() {
           email: sender.email,
           message,
           _subject: `${data.subjectPrefix} (${sender.name || data.subjectFallback})`,
-          _captcha: 'false',
+          _template: 'table',
+          _honey: trap,
         }),
       });
       setStatus(res.ok ? 'sent' : 'error');
@@ -353,6 +361,11 @@ export default function Quiz() {
         )}
 
         <form className="quiz__form" onSubmit={send}>
+          {/* Honeypot anti-bot : invisible pour un humain, laissé vide */}
+          <input
+            type="text" tabIndex={-1} autoComplete="off" aria-hidden="true"
+            className="ctc__hp" value={trap} onChange={(e) => setTrap(e.target.value)}
+          />
           <label>
             <span>{ui.msgLabel}</span>
             <textarea rows="7" value={message} onChange={(e) => setMessage(e.target.value)} />
@@ -378,6 +391,9 @@ export default function Quiz() {
             </button>
           </div>
           <p className="quiz__note">{ui.note}</p>
+          <p className="ctc__consent quiz__consent">
+            {ui.consent} <Link to="/confidentialite">{ui.consentLink}</Link>.
+          </p>
         </form>
       </div>
     );

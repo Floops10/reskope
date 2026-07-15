@@ -9,6 +9,13 @@ const FONT = "'Neue Einstellung', 'Helvetica Neue', system-ui, sans-serif";
 const CREAM = '#F0EEE8';
 const INDIGO = '#1c0cb3';
 
+/* Coordonnées encodées : elles s'affichent sur la carte (destinée à être
+   partagée) mais n'apparaissent PAS en clair dans le code livré, donc ne sont
+   pas moissonnables par les robots collecteurs. Décodées à l'affichage. */
+const dec = (s) => (typeof atob !== 'undefined' ? atob(s) : '');
+const PHONE = dec('KzMzIDYgMjAgMjMgNTUgMjI=');
+const EMAIL = dec('Zmxvcmlhbi5ib3VjaGFydEBob3RtYWlsLmZy');
+
 function RMark({ x, y, scale = 1, color = CREAM, sw = 6, nr = 7 }) {
   return (
     <g transform={`translate(${x}, ${y}) scale(${scale})`}>
@@ -115,10 +122,10 @@ function CardFront({ pour, t, svgRef }) {
         {/* Contact */}
         <line x1={58} y1={414} x2={310} y2={414} stroke={CREAM} strokeWidth="1" opacity="0.10" />
         <text x={58} y={454} fill={CREAM} fontSize={18} opacity="0.88" fontFamily={FONT}>
-          +33 6 20 23 55 22
+          {PHONE}
         </text>
         <text x={58} y={482} fill={CREAM} fontSize={17} opacity="0.82" fontFamily={FONT}>
-          florian.bouchart@hotmail.fr
+          {EMAIL}
         </text>
 
         {/* URL */}
