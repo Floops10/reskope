@@ -1,5 +1,23 @@
+import { copyFileSync, existsSync } from 'node:fs'
+import { resolve } from 'node:path'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+
+/* GitHub Pages ne route que des fichiers réels : un lien direct, un favori ou
+   une actualisation sur /reskope/contact (route gérée côté client par React
+   Router) renvoie une vraie 404 GitHub, PAS notre app. Astuce standard : on
+   copie index.html en 404.html au build. GitHub Pages sert alors 404.html
+   (donc notre app) pour toute route inconnue, et React Router prend la main
+   pour afficher la bonne page. */
+const spaFallback = () => ({
+  name: 'reskope-spa-404-fallback',
+  apply: 'build',
+  closeBundle() {
+    const outDir = resolve(process.cwd(), 'dist')
+    const index = resolve(outDir, 'index.html')
+    if (existsSync(index)) copyFileSync(index, resolve(outDir, '404.html'))
+  },
+})
 
 /* En-têtes de sécurité (CSP + Referrer-Policy) injectés en <meta> UNIQUEMENT
    au build de production. En dev, on ne les injecte pas pour ne pas casser le
@@ -33,7 +51,7 @@ const securityMeta = () => ({
 // https://vite.dev/config/
 export default defineConfig({
   base: '/reskope/',
-  plugins: [react(), securityMeta()],
+  plugins: [react(), securityMeta(), spaFallback()],
   build: {
     // Pas de script inline injecté → script-src 'self' reste strict.
     modulePreload: { polyfill: false },
