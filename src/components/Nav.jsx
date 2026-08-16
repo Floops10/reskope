@@ -28,13 +28,11 @@ export default function Nav() {
   const t = useT();
   const tabs = Object.entries(t.nav.tabs);
 
-  /* CTA du header : ouvre l'agenda Cal.com en pop-up. On n'empêche la
-     navigation vers /contact que si le pop-up s'ouvre vraiment — en cas
-     d'échec (script bloqué, hors ligne), le lien joue son rôle de repli.
-     Les clics « ouvrir dans un nouvel onglet » sont laissés au navigateur. */
-  const bookOrFallback = (e) => {
-    if (!isCalConfigured) return; // lien Cal.com pas encore renseigné : on va sur /contact
-    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+  /* Deux CTA distincts dans le header : « Écrire » mène au formulaire,
+     « Réserver » ouvre l'agenda. Un seul bouton pour les deux intentions
+     créait une ambiguïté (le lien naviguait ET tentait d'ouvrir le pop-up).
+     Si Cal.com n'est pas joignable, on bascule sur le formulaire. */
+  const book = (e) => {
     e.preventDefault();
     setOpen(false);
     openCalModal().catch(() => {
@@ -161,12 +159,18 @@ export default function Nav() {
 
           <div className="nav__actions">
             <LangToggle className="nav__lang" />
-            {/* Reste un lien vers /contact : si Cal.com ne répond pas (ou si JS
-                est indisponible), le visiteur atterrit sur le formulaire. */}
-            <Link to="/contact" className="btn btn--primary nav__cta" onClick={bookOrFallback}>
-              <SwapLabel>{t.nav.cta}</SwapLabel>
-              <span className="btn__arrow" aria-hidden="true">→</span>
-            </Link>
+            {/* Deux intentions, deux boutons : écrire / réserver */}
+            <div className="nav__ctas">
+              <Link to="/contact" className="nav__cta nav__cta--ghost">
+                <SwapLabel>{t.nav.cta}</SwapLabel>
+              </Link>
+              {isCalConfigured && (
+                <button type="button" className="nav__cta nav__cta--solid" onClick={book}>
+                  <SwapLabel>{t.nav.ctaBook}</SwapLabel>
+                  <span className="nav__cta-arrow" aria-hidden="true">→</span>
+                </button>
+              )}
+            </div>
             <button
               type="button"
               className={`nav__menu-btn${open ? ' is-open' : ''}`}
@@ -231,10 +235,15 @@ export default function Nav() {
               <a href={`mailto:${CONTACT.email}`} className="menu2__contact-link">{CONTACT.email}</a>
             </div>
             <div className="menu2__foot-actions">
-              <Link to="/contact" className="btn btn--primary" onClick={bookOrFallback}>
+              <Link to="/contact" className="btn btn--ghost">
                 <SwapLabel>{t.nav.cta}</SwapLabel>
-                <span className="btn__arrow" aria-hidden="true">→</span>
               </Link>
+              {isCalConfigured && (
+                <button type="button" className="btn btn--primary" onClick={book}>
+                  <SwapLabel>{t.nav.ctaBook}</SwapLabel>
+                  <span className="btn__arrow" aria-hidden="true">→</span>
+                </button>
+              )}
               <LangToggle className="menu2__lang" />
             </div>
           </div>

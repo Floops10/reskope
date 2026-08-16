@@ -383,6 +383,10 @@ export const FAQ = {
       q: 'Travaillez-vous avec les petites structures ?',
       a: `Oui. L'approche terrain, salarié par salarié, est particulièrement efficace dans les TPE, PME et équipes en croissance.`,
     },
+    {
+      q: 'Et si le bilan ne m’apporte rien ?',
+      a: `Vous ne le payez pas. Vous disposez de sept jours après la remise pour me le dire par écrit : je reprends le bilan sans supplément, ou j'annule la facture. Le détail figure dans les conditions générales de vente.`,
+    },
   ],
   en: [
     {
@@ -400,6 +404,10 @@ export const FAQ = {
     {
       q: 'Do you work with small organizations?',
       a: 'Yes. The on-the-ground, employee-by-employee approach is especially effective in small businesses, SMEs and growing teams.',
+    },
+    {
+      q: 'What if the report gives me nothing?',
+      a: 'You do not pay for it. You have seven days after delivery to tell me in writing: I either revise the report at no extra cost, or cancel the invoice. The details are in the terms of sale.',
     },
   ],
 };

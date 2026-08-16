@@ -1,10 +1,11 @@
 import { useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Page from '../components/Page';
 import MorphTitle from '../components/MorphTitle';
 import HeroNetwork from '../components/HeroNetwork';
 import Quiz from '../components/Quiz';
 import Booking from '../components/Booking';
+import ZoneMap from '../components/ZoneMap';
 import { Reveal, RevealItem } from '../components/Reveal';
 import { gsap, useGSAP } from '../lib/gsap';
 import { useLang } from '../i18n';
@@ -137,6 +138,7 @@ export default function Contact() {
   const { lang } = useLang();
   const c = CONTENT[lang];
   const rootRef = useRef(null);
+  const navigate = useNavigate();
   const [form, setForm] = useState({ name: '', email: '', message: '' });
   const [trap, setTrap] = useState(''); // honeypot anti-bot : doit rester vide
   const [status, setStatus] = useState('idle'); // idle | sending | sent | error
@@ -162,6 +164,9 @@ export default function Contact() {
       if (res.ok) {
         setStatus('sent');
         setForm({ name: '', email: '', message: '' });
+        /* Page de remerciement dediee : adresse reelle, partageable et
+           mesurable, plutot qu'un simple message inline. */
+        navigate('/merci');
       } else {
         setStatus('error');
       }
@@ -269,7 +274,10 @@ export default function Contact() {
         {/* 2 — PRENDRE RENDEZ-VOUS : scène en DA, Cal.com en surcouche au clic */}
         <Booking c={c.booking} />
 
-        {/* 3 — LE QUESTIONNAIRE : guidé, clair, organisé */}
+        {/* 3 — ZONE D'INTERVENTION : carte réseau + itinéraire */}
+        <ZoneMap />
+
+        {/* 4 — LE QUESTIONNAIRE : guidé, clair, organisé */}
         <section className="section section--tint ctc-quiz" id="qcm">
           <div className="container">
             <Reveal className="section__head section__head--center">

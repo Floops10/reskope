@@ -9,6 +9,7 @@ import Cursor from './components/Cursor';
 import PageTransition from './components/PageTransition';
 import Interactions from './components/Interactions';
 import Nav from './components/Nav';
+import Breadcrumb from './components/Breadcrumb';
 import Footer from './components/Footer';
 import Home from './pages/Home';
 import Pourquoi from './pages/Pourquoi';
@@ -62,6 +63,9 @@ export default function App() {
             silencieusement — mauvais pour l'utilisateur comme pour le SEO). */}
         <Route path="*" element={<NotFound />} />
       </Routes>
+      {/* Fil d'Ariane en fin de page : la nav est fixe et transparente au-dessus
+          de héros plein écran, un bandeau en haut passerait sous le logo. */}
+      <Breadcrumb />
       <Footer />
     </MotionConfig>
   );
