@@ -8,17 +8,18 @@ export const CONTACT = {
 };
 
 /* ------------------------------------------------------------------
-   Prise de rendez-vous (Cal.com).
+   Prise de rendez-vous (Cal.com) — événement « Premier échange », 30 min.
 
-   ⚠️ À REMPLACER par ton vrai lien Cal.com, au format « pseudo/evenement ».
-   Exemple : si ta page est https://cal.com/florian-bouchart/30min
-   alors CAL_LINK = 'florian-bouchart/30min'.
+   Format attendu : « pseudo/identifiant-evenement ».
+   Note : l'identifiant d'URL de l'événement est resté « 30min » (valeur par
+   défaut de Cal.com) même après avoir renommé le titre en « Premier échange ».
+   Pour une URL plus parlante, modifier le champ URL de l'événement dans
+   Cal.com, puis reporter la nouvelle valeur ici.
 
-   Tant que ce lien n'est pas le bon, le bouton ouvrira une page Cal.com
-   inexistante. Le script Cal.com n'est chargé qu'au clic (aucune requête
-   tierce tant que le visiteur ne demande pas explicitement un rendez-vous).
+   Le script Cal.com n'est chargé qu'au clic sur un bouton de réservation :
+   aucune requête tierce tant que le visiteur ne demande pas de rendez-vous.
    ------------------------------------------------------------------ */
-export const CAL_LINK = 'reskope/30min';
+export const CAL_LINK = 'florian-bouchart/30min';
 
 /* ------------------------------------------------------------------
    Destination du formulaire (service FormSubmit).
