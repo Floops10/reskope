@@ -25,13 +25,20 @@ const spaFallback = () => ({
    balise <meta> (frame-ancestors n'y est pas géré par les navigateurs : la
    protection anti-iframe n'est pas possible sur Pages, ce qui est sans impact
    réel pour un site vitrine sans authentification). */
+/* Cal.com (prise de rendez-vous) est autorisé NOMMÉMENT, jamais par joker :
+   embed.js est servi par app.cal.com, et le pop-up ouvre une iframe cal.com.
+   Sans ces trois entrées, le navigateur bloque le script et le bouton retombe
+   silencieusement sur le formulaire de contact. */
+const CAL_SRC = 'https://app.cal.com https://cal.com'
+
 const CSP = [
   "default-src 'self'",
-  "script-src 'self'",
+  `script-src 'self' ${CAL_SRC}`,
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: https:",
   "font-src 'self'",
-  "connect-src 'self' https://formsubmit.co",
+  `connect-src 'self' https://formsubmit.co ${CAL_SRC}`,
+  `frame-src 'self' ${CAL_SRC}`,
   "form-action 'self' https://formsubmit.co",
   "base-uri 'self'",
   "object-src 'none'",
