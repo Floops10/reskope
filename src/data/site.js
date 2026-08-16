@@ -8,6 +8,19 @@ export const CONTACT = {
 };
 
 /* ------------------------------------------------------------------
+   Prise de rendez-vous (Cal.com).
+
+   ⚠️ À REMPLACER par ton vrai lien Cal.com, au format « pseudo/evenement ».
+   Exemple : si ta page est https://cal.com/florian-bouchart/30min
+   alors CAL_LINK = 'florian-bouchart/30min'.
+
+   Tant que ce lien n'est pas le bon, le bouton ouvrira une page Cal.com
+   inexistante. Le script Cal.com n'est chargé qu'au clic (aucune requête
+   tierce tant que le visiteur ne demande pas explicitement un rendez-vous).
+   ------------------------------------------------------------------ */
+export const CAL_LINK = 'reskope/30min';
+
+/* ------------------------------------------------------------------
    Destination du formulaire (service FormSubmit).
 
    ⚠️ POUR MASQUER DÉFINITIVEMENT TON E-MAIL — colle ton ALIAS FormSubmit

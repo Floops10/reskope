@@ -136,6 +136,7 @@ const PRIVACY = {
       ] },
       { h: 'Destinataires et transfert hors UE', p: [
         "Les messages des formulaires sont acheminés par le service FormSubmit (opéré depuis les États-Unis), qui transmet votre message par e-mail sans le stocker durablement. À ce titre, vos données transitent hors de l'Union européenne ; ce transfert est encadré par les garanties contractuelles du prestataire.",
+        "La prise de rendez-vous est assurée par Cal.com. Le script de Cal.com n'est chargé qu'au moment où vous cliquez volontairement sur le bouton de réservation : tant que vous ne demandez pas de rendez-vous, aucune donnée n'est transmise à ce prestataire. Si vous réservez un créneau, les informations que vous saisissez (nom, e-mail, motif) sont traitées par Cal.com conformément à sa propre politique de confidentialité.",
         "L'hébergement du site est assuré par GitHub, Inc. (États-Unis). Vos données ne sont ni vendues ni cédées à des fins commerciales, et ne sont partagées avec aucun autre tiers que les prestataires techniques strictement nécessaires ci-dessus.",
       ] },
       { h: 'Durée de conservation', p: [
@@ -176,6 +177,7 @@ const PRIVACY = {
       ] },
       { h: 'Recipients and transfer outside the EU', p: [
         'Form messages are routed through the FormSubmit service (operated from the United States), which forwards your message by email without storing it durably. As a result, your data transits outside the European Union; this transfer is governed by the provider’s contractual safeguards.',
+        'Meeting booking is handled by Cal.com. The Cal.com script is only loaded when you deliberately click the booking button: until you request a meeting, no data is sent to this provider. If you book a slot, the information you enter (name, email, reason) is processed by Cal.com under its own privacy policy.',
         'The site is hosted by GitHub, Inc. (United States). Your data is neither sold nor transferred for commercial purposes, and is not shared with any third party other than the strictly necessary technical providers above.',
       ] },
       { h: 'Retention', p: [
@@ -290,8 +292,13 @@ const SALES = {
         "Chaque mission fait l'objet d'un devis personnalisé, gratuit et sans engagement. Les prix affichés sur le site sont indicatifs (« à partir de ») et ne constituent pas une offre ferme. Le contrat est formé à l'acceptation écrite du devis par le client (signature ou accord par e-mail).",
       ] },
       { h: 'Prix et TVA', p: [
-        "Les prix sont exprimés en euros. Le tarif de référence est de 450 € par jour d'intervention, sauf forfait précisé au devis (par exemple l'audit ou l'abonnement de suivi).",
+        "Les prix sont exprimés en euros et s'entendent nets. Le tarif de référence est de 450 € par jour d'intervention, sauf forfait précisé au devis (par exemple l'audit ou l'abonnement de suivi).",
+        "L'audit est facturé au forfait selon l'effectif de la structure auditée. Un tarif de lancement, réservé aux trois premières entreprises accompagnées, est applicable jusqu'au 31 décembre 2026 ; au-delà de cette date ou de ce nombre, le tarif standard s'applique. Le montant de l'audit est intégralement déduit du devis de mise en œuvre lorsque celle-ci est confiée à Reskope.",
         'TVA : [À COMPLÉTER : « TVA non applicable, art. 293 B du CGI » en franchise en base, ou taux de TVA applicable].',
+      ] },
+      { h: 'Garantie bilan', p: [
+        "Si, à la remise du bilan d'audit, le client estime que celui-ci ne lui apporte aucun élément exploitable, il dispose de sept (7) jours calendaires pour le signaler par écrit, en motivant sa position. Reskope propose alors, au choix du client, soit une reprise du bilan sans supplément, soit l'annulation de la facture correspondante.",
+        "En cas d'annulation, le bilan et l'ensemble des documents remis doivent être restitués et ne peuvent faire l'objet d'aucune exploitation, directe ou indirecte. Cette garantie porte sur la prestation d'audit uniquement, à l'exclusion des journées de mise en œuvre, des développements et de l'abonnement de suivi.",
       ] },
       { h: 'Modalités et délais de paiement', p: [
         'Paiement par virement bancaire. [À COMPLÉTER : acompte à la commande, ex. 30 % ; solde à la livraison ou selon l’échéancier du devis].',
@@ -355,8 +362,13 @@ const SALES = {
         'Each engagement is covered by a personalised, free and non-binding quote. Prices shown on the site are indicative ("from") and do not constitute a firm offer. The contract is formed upon the client’s written acceptance of the quote (signature or agreement by email).',
       ] },
       { h: 'Price and VAT', p: [
-        'Prices are in euros. The reference rate is €450 per day of work, unless a fixed package is stated in the quote (e.g. the audit or the retainer).',
+        'Prices are in euros and are net. The reference rate is €450 per day of work, unless a fixed package is stated in the quote (e.g. the audit or the retainer).',
+        'The audit is charged as a fixed package based on the headcount of the audited organisation. A launch rate, reserved for the first three companies supported, applies until 31 December 2026; beyond that date or that number, the standard rate applies. The audit amount is fully deducted from the delivery quote when the delivery is entrusted to Reskope.',
         'VAT: [TO COMPLETE: "VAT not applicable, art. 293 B of the French Tax Code" under the franchise scheme, or applicable VAT rate].',
+      ] },
+      { h: 'Report guarantee', p: [
+        'If, upon delivery of the audit report, the client considers that it provides no actionable element, they have seven (7) calendar days to say so in writing, stating their reasons. Reskope then offers, at the client’s choice, either a revision of the report at no extra cost, or cancellation of the corresponding invoice.',
+        'In the event of cancellation, the report and all documents provided must be returned and may not be used in any way, directly or indirectly. This guarantee covers the audit engagement only, excluding delivery days, development work and the retainer.',
       ] },
       { h: 'Payment terms', p: [
         'Payment by bank transfer. [TO COMPLETE: deposit on order, e.g. 30%; balance on delivery or per the quote schedule].',

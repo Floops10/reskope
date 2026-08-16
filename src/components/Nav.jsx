@@ -8,6 +8,7 @@ import Net3D from './Net3D';
 import SwapLabel from './SwapLabel';
 import { useT, useLang, LangToggle } from '../i18n';
 import { CONTACT } from '../data/site';
+import { openCalModal, isCalConfigured } from '../lib/cal';
 
 /* NAV — header minimal + MENU refait (exigence premium).
    Ouverture en couches : le voile s'assombrit, une lame indigo glisse,
@@ -26,6 +27,20 @@ export default function Nav() {
   const { lang } = useLang();
   const t = useT();
   const tabs = Object.entries(t.nav.tabs);
+
+  /* CTA du header : ouvre l'agenda Cal.com en pop-up. On n'empêche la
+     navigation vers /contact que si le pop-up s'ouvre vraiment — en cas
+     d'échec (script bloqué, hors ligne), le lien joue son rôle de repli.
+     Les clics « ouvrir dans un nouvel onglet » sont laissés au navigateur. */
+  const bookOrFallback = (e) => {
+    if (!isCalConfigured) return; // lien Cal.com pas encore renseigné : on va sur /contact
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+    e.preventDefault();
+    setOpen(false);
+    openCalModal().catch(() => {
+      window.location.href = `${import.meta.env.BASE_URL}contact`;
+    });
+  };
 
   const menuRef = useRef(null);
   const backdropRef = useRef(null);
@@ -146,7 +161,9 @@ export default function Nav() {
 
           <div className="nav__actions">
             <LangToggle className="nav__lang" />
-            <Link to="/contact" className="btn btn--primary nav__cta">
+            {/* Reste un lien vers /contact : si Cal.com ne répond pas (ou si JS
+                est indisponible), le visiteur atterrit sur le formulaire. */}
+            <Link to="/contact" className="btn btn--primary nav__cta" onClick={bookOrFallback}>
               <SwapLabel>{t.nav.cta}</SwapLabel>
               <span className="btn__arrow" aria-hidden="true">→</span>
             </Link>
@@ -191,8 +208,6 @@ export default function Nav() {
         <div className="menu2__layer" aria-hidden="true" ref={layerRef} />
         <div className="menu2__panel" ref={panelRef} aria-hidden={!open}>
 
-          <p className="menu2__head">{t.nav.menuEyebrow}</p>
-
           <nav className="menu2__links" aria-label="Pages">
             {tabs.map(([to, label], i) => (
               <NavLink
@@ -202,7 +217,6 @@ export default function Nav() {
               >
                 <span className="menu2__mask">
                   <span className="menu2__row">
-                    <span className="menu2__num">{String(i + 1).padStart(2, '0')}</span>
                     <span className="menu2__node" aria-hidden="true" />
                     <span className="menu2__label">{label}</span>
                     <span className="menu2__arrow" aria-hidden="true">→</span>
@@ -217,7 +231,7 @@ export default function Nav() {
               <a href={`mailto:${CONTACT.email}`} className="menu2__contact-link">{CONTACT.email}</a>
             </div>
             <div className="menu2__foot-actions">
-              <Link to="/contact" className="btn btn--primary">
+              <Link to="/contact" className="btn btn--primary" onClick={bookOrFallback}>
                 <SwapLabel>{t.nav.cta}</SwapLabel>
                 <span className="btn__arrow" aria-hidden="true">→</span>
               </Link>

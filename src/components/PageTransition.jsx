@@ -1,7 +1,44 @@
 import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { gsap } from '../lib/gsap';
+import { useLang } from '../i18n';
 import { R_NODES, R_LINKS, R_SCATTER, linkD } from './Logo';
+
+/* Une phrase par destination, tirée au hasard : le temps de chargement
+   devient un micro-moment de marque (promesse, chiffre, ou invitation). */
+const PHRASES = {
+  fr: {
+    '/':                       ['Votre SI, enfin lisible.', 'On ouvre le capot.', 'Le désordre a un coût. On le chiffre.'],
+    '/pourquoi':               ['16,5 h perdues par personne, chaque semaine.', 'Un coût que personne ne voit.', 'Les chiffres, sourcés.'],
+    '/methode':                ['Cinq jalons, zéro angle mort.', 'Vous validez chaque étape.', 'Rien n’est imposé.'],
+    '/offres':                 ['Prix affichés, devis gratuit.', 'L’audit est déduit si on continue.', 'Bilan garanti ou non facturé.'],
+    '/exemple':                ['Le livrable, avant de payer.', 'Voici exactement ce que vous recevez.', 'Un audit réel, détaillé.'],
+    '/a-propos':               ['Un seul interlocuteur, du début à la fin.', 'Terrain d’abord, technique ensuite.', 'Pas de sous-traitance.'],
+    '/contact':                ['Réponse sous 24 h, directement par moi.', 'Trente minutes, sans engagement.', 'S’il n’y a rien à faire, je vous le dis.'],
+    '/numerique-responsable':  ['Moins d’outils, moins de serveurs.', 'Simplifier, c’est consommer moins.', 'Sobriété, sans greenwashing.'],
+    _default:                  ['Cartographier. Relier. Simplifier.', 'Reprenez le contrôle.'],
+  },
+  en: {
+    '/':                       ['Your systems, finally legible.', 'We open the hood.', 'Clutter has a cost. We measure it.'],
+    '/pourquoi':               ['16.5 hours lost per person, every week.', 'A cost nobody sees.', 'The numbers, sourced.'],
+    '/methode':                ['Five milestones, no blind spots.', 'You validate every step.', 'Nothing is imposed.'],
+    '/offres':                 ['Prices shown, quote is free.', 'The audit is deducted if we continue.', 'Report guaranteed or not charged.'],
+    '/exemple':                ['The deliverable, before you pay.', 'Exactly what you receive.', 'A real audit, in detail.'],
+    '/a-propos':               ['One contact, start to finish.', 'Field first, tech second.', 'No outsourcing.'],
+    '/contact':                ['A reply within 24 h, from me.', 'Thirty minutes, no strings attached.', 'If there’s nothing to do, I say so.'],
+    '/numerique-responsable':  ['Fewer tools, fewer servers.', 'Simplifying means consuming less.', 'Sobriety, no greenwashing.'],
+    _default:                  ['Map. Connect. Simplify.', 'Take back control.'],
+  },
+};
+
+/* Retire la base GitHub Pages (/reskope) pour retrouver la route applicative */
+const routeOf = (pathname) => pathname.replace(/^\/reskope/, '') || '/';
+
+function pickPhrase(lang, pathname) {
+  const table = PHRASES[lang] || PHRASES.fr;
+  const list = table[routeOf(pathname)] || table._default;
+  return list[Math.floor(Math.random() * list.length)];
+}
 
 /* Transition de page — rideau indigo + le R réseau qui s'ASSEMBLE (nœuds
    dispersés qui convergent avec un léger rebond, liens qui se tracent, halo
@@ -21,7 +58,11 @@ export default function PageTransition() {
   const logoRef = useRef(null);
   const wordRef = useRef(null);
   const haloRef = useRef(null);
+  const lineRef = useRef(null);
   const { pathname } = useLocation();
+  const { lang } = useLang();
+  const langRef = useRef(lang);
+  langRef.current = lang;
   const isFirst = useRef(true);
 
   /* Initialise les paths SVG + le listener de clic (couverture) */
@@ -42,14 +83,20 @@ export default function PageTransition() {
     };
     initLinks();
 
-    const cover = () => {
-      gsap.killTweensOf([overlay, stageRef.current, haloRef.current, wordRef.current, ...nodes, ...links]);
+    const cover = (destination) => {
+      gsap.killTweensOf([overlay, stageRef.current, haloRef.current, wordRef.current, lineRef.current, ...nodes, ...links]);
+
+      /* La phrase du chargement dépend de la page visée */
+      if (lineRef.current) {
+        lineRef.current.textContent = pickPhrase(langRef.current, destination);
+      }
 
       /* Couverture INSTANTANÉE (aucun flash pendant le changement de route) */
       gsap.set(overlay, { clipPath: COVER });
       gsap.set(stageRef.current, { autoAlpha: 1, scale: 1 });
-      gsap.set(haloRef.current, { scale: 0.5, autoAlpha: 0 });
+      gsap.set(haloRef.current, { scale: 0.62, autoAlpha: 0 });
       gsap.set(wordRef.current, { autoAlpha: 0, yPercent: 65 });
+      gsap.set(lineRef.current, { autoAlpha: 0, yPercent: 60 });
       nodes.forEach((n) => gsap.set(n, { x: 0, y: 0 }));
       initLinks();
 
@@ -66,6 +113,7 @@ export default function PageTransition() {
       });
       tl.to(links, { strokeDashoffset: 0, duration: 0.4, stagger: 0.03, ease: 'power1.inOut' }, 0.2);
       tl.to(wordRef.current, { autoAlpha: 0.92, yPercent: 0, duration: 0.42, ease: 'power3.out' }, 0.3);
+      tl.to(lineRef.current, { autoAlpha: 1, yPercent: 0, duration: 0.5, ease: 'power3.out' }, 0.42);
     };
 
     const onLinkClick = (e) => {
@@ -78,7 +126,7 @@ export default function PageTransition() {
       /* Même page : pas de transition (sinon le rideau resterait bloqué) */
       if (a.pathname === window.location.pathname) return;
       if (reduced()) return;
-      cover();
+      cover(a.pathname);
     };
 
     /* Capture : on passe AVANT React Router (qui met à jour l'URL de façon
@@ -134,6 +182,7 @@ export default function PageTransition() {
           </svg>
         </div>
         <span className="page-transition__word" ref={wordRef}>Reskope</span>
+        <p className="page-transition__line" ref={lineRef} />
       </div>
     </div>
   );

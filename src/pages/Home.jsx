@@ -60,7 +60,7 @@ const CONTENT = {
     toolsEyebrow: 'Outils maîtrisés',
     toolsTitle: 'Le terrain de jeu.',
     toolsLead:
-      'Plus de 40 outils audités, connectés ou remplacés. En voici quelques-uns — et si le vôtre n’y est pas, c’est justement le métier.',
+      'Une vingtaine d’outils que je maîtrise, connecte ou remplace. En voici quelques-uns — et si le vôtre n’y est pas, c’est justement le métier.',
 
     /* — 5. Philosophie — */
     whyEyebrow: 'Notre différence',
@@ -90,14 +90,16 @@ const CONTENT = {
       },
     ],
 
-    /* — 7. Chiffres — */
-    statsEyebrow: 'Des résultats qui se mesurent',
-    statsTitle: 'Le sérieux se prouve avec des chiffres, pas des promesses.',
+    /* — 7. Engagements — Reskope démarre : aucun chiffre de performance
+       client tant qu'il n'y a pas de client. Uniquement des engagements
+       tenables et vérifiables. */
+    statsEyebrow: 'Mes engagements',
+    statsTitle: 'Ce que je m’engage à tenir.',
     stats: [
-      { label: 'outils maîtrisés et audités', display: '+40', value: 40, prefix: '+', suffix: '', decimals: 0 },
-      { label: 'retour sur investissement moyen constaté', display: '3,5×', value: 3.5, prefix: '', suffix: '×', decimals: 1 },
-      { label: 'jours maximum pour la première cartographie complète', display: '10', value: 10, prefix: '', suffix: '', decimals: 0 },
+      { label: 'outils que je maîtrise et sur lesquels j’interviens', display: '20', value: 20, prefix: '', suffix: '', decimals: 0 },
+      { label: 'jours maximum entre le premier entretien et la remise du bilan', display: '10', value: 10, prefix: '', suffix: '', decimals: 0 },
       { label: 'de la démarche au grand jour : accès, jalons, livrables', display: '100 %', value: 100, prefix: '', suffix: ' %', decimals: 0 },
+      { label: 'bilan garanti : s’il ne vous apporte rien d’exploitable, vous ne le payez pas', display: '0 €', value: null },
     ],
 
     /* — 8. Explorer — */
@@ -157,7 +159,7 @@ const CONTENT = {
     toolsEyebrow: 'Tools we master',
     toolsTitle: 'The playing field.',
     toolsLead:
-      "40+ tools audited, connected or replaced. Here are a few — and if yours isn't listed, that's precisely the job.",
+      "Around twenty tools I master, connect or replace. Here are a few — and if yours isn't listed, that's precisely the job.",
 
     whyEyebrow: 'Our difference',
     whyTitle: 'Not a firm that delivers a deck.',
@@ -185,13 +187,13 @@ const CONTENT = {
       },
     ],
 
-    statsEyebrow: 'Results that can be measured',
-    statsTitle: 'Seriousness is proven with numbers, not promises.',
+    statsEyebrow: 'My commitments',
+    statsTitle: 'What I commit to.',
     stats: [
-      { label: 'tools mastered and audited', display: '+40', value: 40, prefix: '+', suffix: '', decimals: 0 },
-      { label: 'average return on investment observed', display: '3.5×', value: 3.5, prefix: '', suffix: '×', decimals: 1 },
-      { label: 'days max for the first complete mapping', display: '10', value: 10, prefix: '', suffix: '', decimals: 0 },
+      { label: 'tools I master and work on', display: '20', value: 20, prefix: '', suffix: '', decimals: 0 },
+      { label: 'days max between the first interview and the report', display: '10', value: 10, prefix: '', suffix: '', decimals: 0 },
       { label: 'of the process in the open: access, milestones, deliverables', display: '100%', value: 100, prefix: '', suffix: '%', decimals: 0 },
+      { label: 'guaranteed report: if it gives you nothing actionable, you don’t pay for it', display: '€0', value: null },
     ],
 
     exploreEyebrow: 'Go further',

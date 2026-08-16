@@ -4,6 +4,7 @@ import Page from '../components/Page';
 import MorphTitle from '../components/MorphTitle';
 import HeroNetwork from '../components/HeroNetwork';
 import Quiz from '../components/Quiz';
+import Booking from '../components/Booking';
 import { Reveal, RevealItem } from '../components/Reveal';
 import { gsap, useGSAP } from '../lib/gsap';
 import { useLang } from '../i18n';
@@ -58,6 +59,22 @@ const CONTENT = {
       { n: '02', label: 'Une recommandation chiffrée' },
       { n: '03', label: 'Votre demande pré-remplie, envoyée en 1 clic' },
     ],
+    booking: {
+      eyebrow: 'Prendre rendez-vous',
+      title: 'Trente minutes, à l’heure qui vous arrange.',
+      lead: 'Choisissez directement un créneau dans mon agenda. On parle de vos outils, de ce qui coince, et je vous dis franchement s’il y a un sujet — ou non.',
+      points: [
+        { value: '30 min', label: 'En visio ou par téléphone, comme vous préférez' },
+        { value: '0 €', label: 'Sans engagement, et sans relance commerciale' },
+        { value: '24 h', label: 'Si aucun créneau ne convient, je réponds sous 24 h' },
+      ],
+      cta: 'Choisir un créneau',
+      ctaFallback: 'Décrire mon besoin',
+      loading: 'Ouverture de l’agenda…',
+      or: 'Vous préférez écrire ?',
+      error: 'L’agenda n’a pas pu s’ouvrir. Réessayez, ou passez directement par',
+      privacy: 'L’agenda est fourni par Cal.com. Son script n’est chargé qu’au moment où vous cliquez : tant que vous ne demandez pas de rendez-vous, aucune donnée ne quitte ce site.',
+    },
   },
   en: {
     metaTitle: "Contact · let's talk about your tools",
@@ -97,6 +114,22 @@ const CONTENT = {
       { n: '02', label: 'A quantified recommendation' },
       { n: '03', label: 'Your request pre-filled, sent in 1 click' },
     ],
+    booking: {
+      eyebrow: 'Book a meeting',
+      title: 'Thirty minutes, at a time that suits you.',
+      lead: 'Pick a slot directly in my calendar. We talk about your tools, what gets in the way, and I tell you frankly whether there is a case — or not.',
+      points: [
+        { value: '30 min', label: 'Video call or phone, whichever you prefer' },
+        { value: '€0', label: 'No strings attached, and no sales follow-up' },
+        { value: '24 h', label: 'If no slot works, I reply within 24 h' },
+      ],
+      cta: 'Pick a slot',
+      ctaFallback: 'Describe my need',
+      loading: 'Opening the calendar…',
+      or: 'Rather write?',
+      error: 'The calendar could not open. Try again, or go directly to',
+      privacy: 'The calendar is provided by Cal.com. Its script is only loaded when you click: until you request a meeting, no data leaves this site.',
+    },
   },
 };
 
@@ -181,7 +214,7 @@ export default function Contact() {
                 <span className="ctc__next-title">{c.nextTitle}</span>
                 <ol className="ctc__steps">
                   {c.next.map((s) => (
-                    <li key={s.n}><b>{s.n}</b>{s.label}</li>
+                    <li key={s.n}><i aria-hidden="true" />{s.label}</li>
                   ))}
                 </ol>
               </div>
@@ -193,7 +226,7 @@ export default function Contact() {
             </div>
 
             {/* Le formulaire, dans le premier écran */}
-            <div className="ctc__card" aria-label={c.title}>
+            <div className="ctc__card" id="contact-form" aria-label={c.title}>
               {status === 'sent' ? (
                 <div className="ctc__success">
                   <span className="quiz__done" aria-hidden="true" />
@@ -233,7 +266,10 @@ export default function Contact() {
           </div>
         </header>
 
-        {/* 2 — LE QUESTIONNAIRE : guidé, clair, organisé */}
+        {/* 2 — PRENDRE RENDEZ-VOUS : scène en DA, Cal.com en surcouche au clic */}
+        <Booking c={c.booking} />
+
+        {/* 3 — LE QUESTIONNAIRE : guidé, clair, organisé */}
         <section className="section section--tint ctc-quiz" id="qcm">
           <div className="container">
             <Reveal className="section__head section__head--center">
@@ -247,7 +283,7 @@ export default function Contact() {
             <Reveal className="ctc-quiz__marks" amount={0.2}>
               {c.quizMarks.map((m) => (
                 <RevealItem as="div" className="ctc-quiz__mark" key={m.n}>
-                  <b>{m.n}</b>
+                  <i aria-hidden="true" />
                   <span>{m.label}</span>
                 </RevealItem>
               ))}

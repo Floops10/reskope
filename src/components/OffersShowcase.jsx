@@ -315,10 +315,9 @@ export default function OffersShowcase({ offers, prices, billing, badge, labels,
             const { o, price } = pn;
             return (
               <article className={`ofs__panel${o.featured ? ' is-featured' : ''}${shown ? ' is-active' : ''}`} key={o.id}>
-                <p className="ofs__kicker">
-                  {labels.offer} {String(i).padStart(2, '0')}
-                  {o.featured && <span className="ofs__badge">{badge}</span>}
-                </p>
+                {o.featured && (
+                  <p className="ofs__kicker"><span className="ofs__badge">{badge}</span></p>
+                )}
                 <h2 className="ofs__name">{splitWords(o.name)}</h2>
                 <p className="ofs__tagline">{o.tagline}</p>
 
@@ -355,7 +354,7 @@ export default function OffersShowcase({ offers, prices, billing, badge, labels,
           <span className="ofs__rail-dots">
             {railLabels.map((lab, i) => (
               <span className={`ofs__rail-dot${active === i ? ' is-active' : ''}${active >= i ? ' is-on' : ''}`} key={i}>
-                <b>{String(i).padStart(2, '0')}</b><em>{lab}</em>
+                <em>{lab}</em>
               </span>
             ))}
           </span>
@@ -373,10 +372,9 @@ export default function OffersShowcase({ offers, prices, billing, badge, labels,
               <button type="button" className="ofsmodal__close" aria-label="Fermer" onClick={() => setModal(null)}>
                 <span aria-hidden="true" />
               </button>
-              <p className="ofsmodal__kicker">
-                {labels.offer} {String(modal + 1).padStart(2, '0')}
-                {o.featured && <span className="ofsmodal__badge">{badge}</span>}
-              </p>
+              {o.featured && (
+                <p className="ofsmodal__kicker"><span className="ofsmodal__badge">{badge}</span></p>
+              )}
               <h3 className="ofsmodal__name">{o.name}</h3>
               <p className="ofsmodal__tagline">{o.tagline}</p>
               <div className="ofsmodal__price">

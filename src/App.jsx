@@ -19,6 +19,7 @@ import Ecologie from './pages/Ecologie';
 import APropos from './pages/APropos';
 import Contact from './pages/Contact';
 import { MentionsLegales, Confidentialite, CGU, CGV } from './pages/Legales';
+import { NotFound, Merci } from './pages/Etats';
 
 export default function App() {
   useEffect(() => {
@@ -56,7 +57,10 @@ export default function App() {
         <Route path="/confidentialite" element={<Confidentialite />} />
         <Route path="/cgu" element={<CGU />} />
         <Route path="/cgv" element={<CGV />} />
-        <Route path="*" element={<Home />} />
+        <Route path="/merci" element={<Merci />} />
+        {/* Route inconnue : page 404 dédiée (avant, la Home s'affichait
+            silencieusement — mauvais pour l'utilisateur comme pour le SEO). */}
+        <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
     </MotionConfig>
