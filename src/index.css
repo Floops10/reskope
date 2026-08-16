@@ -5557,6 +5557,26 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
     cursor: none !important;
   }
 
+  /* Surcouche tierce ouverte (pop-up Cal.com) : on rend le curseur système.
+     Le curseur maison ne peut pas être dessiné au-dessus d'une iframe, et
+     `cursor: none` y laissait l'utilisateur sans aucun pointeur visible.
+     Sélecteur plus spécifique que `*`, donc il l'emporte malgré !important. */
+  html.has-overlay,
+  html.has-overlay *,
+  html.has-overlay *::before,
+  html.has-overlay *::after {
+    cursor: auto !important;
+  }
+  html.has-overlay a,
+  html.has-overlay button,
+  html.has-overlay [role='button'] {
+    cursor: pointer !important;
+  }
+  html.has-overlay .cursor-dot,
+  html.has-overlay .cursor-label {
+    opacity: 0 !important;
+  }
+
   .cursor-dot {
     position: fixed;
     top: 0;

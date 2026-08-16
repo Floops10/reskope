@@ -19,6 +19,26 @@ const PLACEHOLDER = 'reskope/30min';
 export const isCalConfigured = CAL_LINK !== PLACEHOLDER && Boolean(CAL_LINK);
 
 let calPromise = null;
+let watching = false;
+
+/* Le site masque le curseur système (`cursor: none` sur `*`) au profit d'un
+   curseur maison en z-index 9998. La modale Cal.com passe AU-DESSUS : plus
+   aucun pointeur n'était visible une fois l'agenda ouvert, donnant
+   l'impression que la page ne répondait plus.
+
+   On surveille donc la présence de <cal-modal-box> et on pose une classe sur
+   <html> : le CSS rend alors le curseur natif et masque le curseur maison,
+   le temps que la modale reste ouverte. */
+function watchModalForCursor() {
+  if (watching || typeof document === 'undefined') return;
+  watching = true;
+  const root = document.documentElement;
+  const sync = () => {
+    root.classList.toggle('has-overlay', Boolean(document.querySelector('cal-modal-box')));
+  };
+  new MutationObserver(sync).observe(document.body, { childList: true, subtree: true });
+  sync();
+}
 
 function bootstrap() {
   return new Promise((resolve, reject) => {
@@ -73,6 +93,7 @@ export function openCalModal() {
   if (!isCalConfigured) return Promise.reject(new Error('cal-not-configured'));
   if (!calPromise) calPromise = bootstrap();
   return calPromise.then((Cal) => {
+    watchModalForCursor();
     Cal('modal', { calLink: CAL_LINK, config: { layout: 'month_view' } });
   });
 }
