@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://floops10.github.io/reskope/sitemap.xml
