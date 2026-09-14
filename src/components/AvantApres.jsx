@@ -85,16 +85,14 @@ const T = {
   fr: {
     avant: 'Aujourd’hui',
     apres: 'Après',
-    cue: 'Continuez à faire défiler',
-    pme: { eyebrow: 'Avant, après', titre: 'Le même parc d’outils. Remis en ordre.' },
-    tpe: { eyebrow: 'Avant, après', titre: 'Ce qui vous manque. Construit.' },
+    pme: { titre: 'Le même parc d’outils. Remis en ordre.' },
+    tpe: { titre: 'Ce qui vous manque. Construit.' },
   },
   en: {
     avant: 'Today',
     apres: 'After',
-    cue: 'Keep scrolling',
-    pme: { eyebrow: 'Before, after', titre: 'The same set of tools. Put back in order.' },
-    tpe: { eyebrow: 'Before, after', titre: 'What you are missing. Built.' },
+    pme: { titre: 'The same set of tools. Put back in order.' },
+    tpe: { titre: 'What you are missing. Built.' },
   },
 };
 
@@ -212,7 +210,10 @@ export default function AvantApres() {
       const brut = Math.min(Math.max(p, 0), 1);
       const nuit = doux(Math.min(palier(brut, 0, 0.18), 1 - palier(brut, 0.84, 1)));
       if (collant) {
-        collant.style.setProperty('--aap-y', `${((1 - nuit) * 100).toFixed(2)}%`);
+/* Le rideau n'arrive jamais de zéro : une lèvre sombre est déjà
+           posée en bas de l'écran quand la section entre. On voit que
+           quelque chose monte, au lieu de le voir apparaître. */
+        collant.style.setProperty('--aap-y', `${((1 - nuit) * 86).toFixed(2)}%`);
         collant.style.setProperty('--aap-x', `${((1 - nuit) * 7).toFixed(2)}vw`);
         collant.style.setProperty('--aap-rad', `${((1 - nuit) * 40).toFixed(1)}px`);
         collant.style.setProperty('--aap-encre', melange(ENCRE, CREME, nuit));
@@ -243,10 +244,9 @@ export default function AvantApres() {
         {/* Le rideau : un panneau sombre qui monte et s'ouvre. */}
         <div className="aap__rideau" aria-hidden="true" />
         <div className="container aap__inner">
-          <header className="aap__head">
-            <p className="eyebrow eyebrow--index">{t.eyebrow}</p>
-            <h2 className="h2" id="aap-t">{t.titre}</h2>
-          </header>
+          {/* Un seul titre, concret. Le sur-titre « Avant, après » ne
+              disait rien que les deux colonnes ne disent déjà. */}
+          <h2 className="aap__t" id="aap-t">{t.titre}</h2>
 
           <div className="aap__scene" data-etat="avant">
             <Colonne id="avant" titre={t.avant} lignes={e.avant} />
@@ -266,7 +266,6 @@ export default function AvantApres() {
                   {geo.ordre.map((_, i) => <circle className="aap-n" key={`n${i}`} />)}
                 </g>
               </svg>
-              <p className="aap__cue">{t.cue}</p>
             </div>
 
             <Colonne id="apres" titre={t.apres} lignes={e.apres} />

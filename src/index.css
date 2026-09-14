@@ -14150,9 +14150,15 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 }
 .aap__inner { position: relative; z-index: 1; }
 .aap__inner { width: 100%; }
-.aap__head { text-align: center; margin-bottom: clamp(1.4rem, 3vh, 2.6rem); }
-.aap__head .eyebrow { color: var(--aap-encre, var(--ink)); opacity: 0.6; }
-.aap__head .h2 { color: var(--aap-encre, var(--ink)); }
+.aap__t {
+  text-align: center;
+  margin: 0 0 clamp(2rem, 4vh, 3.4rem);
+  font-size: clamp(1.8rem, 4.2vw, 3.2rem);
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 1.06;
+  color: var(--aap-encre, var(--ink));
+}
 
 .aap__scene {
   display: grid;
@@ -14161,24 +14167,15 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   align-items: center;
 }
 @media (min-width: 1000px) {
-  .aap__scene { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.4fr) minmax(0, 0.9fr); }
+  .aap__scene { grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.55fr) minmax(0, 0.92fr); }
 }
 
 .aap__viz { position: relative; }
-.aap__viz svg { display: block; width: 100%; height: auto; max-height: 52svh; }
+.aap__viz svg { display: block; width: 100%; height: auto; max-height: 56svh; }
 .aap-n { fill: var(--aap-encre, var(--ink)); }
 .aap-lc { stroke: var(--indigo-bright); stroke-width: 1.1; }
 .aap-lo { stroke: var(--aap-encre, var(--ink)); stroke-width: 2.6; stroke-linecap: round; }
 .aap-ls { stroke: var(--aap-encre, var(--ink)); stroke-width: 1; }
-.aap__cue {
-  margin-top: 0.6rem;
-  text-align: center;
-  font-size: 0.64rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--aap-encre, var(--ink));
-  opacity: 0.42;
-}
 
 /* Les deux colonnes chiffrées. Celle qui n'est pas d'actualité s'efface :
    on lit toujours l'état où on se trouve, jamais les deux à la fois. */
@@ -14187,7 +14184,7 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 .aap__scene[data-etat='apres'] .aap__col--avant { opacity: 0.26; transform: translateY(6px); }
 
 .aap__col-t {
-  font-size: 0.68rem;
+  font-size: 0.72rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--aap-encre, var(--ink));
@@ -14201,19 +14198,19 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 .aap__list li {
   display: flex;
   align-items: baseline;
-  gap: 0.8rem;
-  padding: 0.7rem 0;
+  gap: 1rem;
+  padding: 0.95rem 0;
   border-top: 1px solid rgba(240, 238, 232, 0.14);
 }
 .aap__list li:last-child { border-bottom: 1px solid color-mix(in srgb, currentColor 16%, transparent); }
 .aap__list b {
-  font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+  font-size: clamp(1.9rem, 3.4vw, 2.9rem);
   font-weight: 600;
   letter-spacing: -0.04em;
   line-height: 1;
   min-width: 2.1ch;
 }
-.aap__list span { font-size: 0.9rem; line-height: 1.45; color: currentColor; opacity: 0.74; }
+.aap__list span { font-size: clamp(0.94rem, 1.15vw, 1.06rem); line-height: 1.5; color: currentColor; opacity: 0.78; }
 
 @media (max-width: 999px) {
   .aap { height: 280svh; }
@@ -14387,44 +14384,132 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 
 /* ---------- les deux chiffres sourcés, version TPE ---------- */
 
-.prv { padding: clamp(4rem, 9vw, 7.5rem) 0; background: var(--cream-shade); }
-.prv__head { max-width: 62ch; }
-.prv__lead { margin-top: 1rem; }
+/* Même fond que la page : découper une bande d'une autre couleur pour
+   trois lignes de texte casse la lecture pour rien. */
+.prv { padding: clamp(5rem, 11vw, 9rem) 0; }
+.prv__intro {
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 clamp(2.4rem, 5vw, 3.6rem);
+}
 .prv__grid {
   display: grid;
-  gap: clamp(2rem, 5vw, 4rem);
+  gap: clamp(3rem, 7vw, 5.5rem);
   grid-template-columns: 1fr;
-  margin-top: clamp(2.4rem, 5vw, 3.6rem);
 }
-@media (min-width: 720px) { .prv__grid { grid-template-columns: 1fr 1fr; } }
-.prv__item { border-top: 1px solid var(--hairline); padding-top: 1.6rem; }
+@media (min-width: 760px) { .prv__grid { grid-template-columns: 1fr 1fr; } }
+
+.prv__item { position: relative; padding-top: 1.8rem; }
+.prv__rule {
+  position: absolute;
+  left: 0; top: 0; right: 0;
+  height: 2px;
+  background: var(--indigo);
+  transform-origin: left center;
+}
+/* Les chiffres sont le propos : ils sont dimensionnés comme un titre,
+   pas comme une donnée dans un tableau. */
 .prv__v {
   display: block;
-  font-size: clamp(3rem, 7vw, 5rem);
+  font-size: clamp(4.5rem, 13vw, 9.5rem);
   font-weight: 600;
-  letter-spacing: -0.05em;
-  line-height: 0.92;
+  letter-spacing: -0.055em;
+  line-height: 0.86;
   color: var(--indigo);
+  font-variant-numeric: tabular-nums;
 }
+.prv__v em { font-style: normal; font-size: 0.52em; letter-spacing: -0.03em; }
 .prv__t {
   display: block;
-  margin-top: 1rem;
-  max-width: 34ch;
-  font-size: 1.02rem;
+  margin-top: 1.6rem;
+  max-width: 32ch;
+  font-size: clamp(1.02rem, 1.3vw, 1.18rem);
   line-height: 1.55;
-  color: var(--muted);
+  color: var(--ink);
 }
 /* La source est cliquable : un chiffre qui sert à convaincre quelqu'un
    de dépenser doit pouvoir être vérifié en un geste. */
 .prv__src {
   display: inline-block;
-  margin-top: 1.1rem;
+  margin-top: 1.3rem;
   font-size: 0.72rem;
   letter-spacing: 0.13em;
   text-transform: uppercase;
-  color: var(--indigo);
+  color: var(--muted);
   text-decoration: none;
-  border-bottom: 1px solid color-mix(in srgb, currentColor 35%, transparent);
-  padding-bottom: 0.15rem;
+  border-bottom: 1px solid color-mix(in srgb, currentColor 30%, transparent);
+  padding-bottom: 0.2rem;
+  transition: color 0.3s ease, border-color 0.3s ease;
 }
-.prv__src:hover { border-bottom-color: currentColor; }
+.prv__src:hover { color: var(--indigo); border-bottom-color: currentColor; }
+
+/* ════════════════════════════════════════════════════════════
+   LE SOMMAIRE QUI SE REMPLIT
+
+   Pendant la traversée, chaque offre vient se ranger ici et y reste. À
+   la fin, on a l'offre complète sous les yeux en même temps que la
+   signature — au lieu d'avoir vu passer quatre titres et de ne rien
+   avoir gardé.
+
+   Il vit hors du repère de la caméra : s'il dérivait avec elle, il
+   cesserait d'être un point fixe, et c'est tout son intérêt.
+   ════════════════════════════════════════════════════════════ */
+
+.cine__somme {
+  position: absolute;
+  z-index: 4;
+  right: clamp(1.4rem, 3.5vw, 3.2rem);
+  top: 50%;
+  transform: translateY(-50%);
+  width: clamp(230px, 24vw, 340px);
+  pointer-events: none;
+}
+/* En dessous de 1080 px la traversée occupe toute la largeur : un
+   panneau latéral y passerait par-dessus les titres. */
+@media (max-width: 1079px) { .cine__somme { display: none; } }
+
+/* La traversée se joue sur fond crème : le sommaire s'écrit donc à
+   l'encre, pas en crème. Repris de la couleur de la scène, il était
+   invisible. */
+.cine__somme-t {
+  margin: 0 0 1rem;
+  font-size: 0.64rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.cine__somme-l { list-style: none; margin: 0; padding: 0; }
+.cine__somme-l li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.85rem;
+  padding: 0.75rem 0;
+  border-top: 1px solid var(--hairline);
+  will-change: transform, opacity, filter;
+}
+.cine__somme-l li:last-child { border-bottom: 1px solid var(--hairline); }
+.cine__somme-n {
+  flex: none;
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  color: var(--indigo);
+  font-variant-numeric: tabular-nums;
+}
+.cine__somme-x { min-width: 0; }
+.cine__somme-nom {
+  display: block;
+  font-size: 0.98rem;
+  font-weight: 600;
+  letter-spacing: -0.022em;
+  line-height: 1.2;
+  color: var(--ink);
+}
+.cine__somme-sub {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--muted);
+}

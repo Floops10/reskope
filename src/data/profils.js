@@ -140,41 +140,17 @@ export const HOME_TPE = {
    indispensable, et qu'un tiers ne l'a toujours pas fait. */
 export const PREUVES_TPE = {
   fr: {
-    eyebrow: 'Vous le savez déjà',
-    titre: 'Ce n’est pas la conviction qui manque.',
-    lead: 'C’est le temps, et quelqu’un à qui confier le travail. Les deux chiffres ci-dessous ne viennent pas de nous.',
+    intro: 'Deux chiffres qui ne viennent pas de nous.',
     items: [
-      {
-        v: '95 %',
-        t: 'des TPE et PME jugent leur présence sur internet indispensable ou utile à leur activité',
-        src: 'Afnic · Réussir avec le web, 6ᵉ édition',
-        url: 'https://www.afnic.fr/observatoire-ressources/actualites/etude-afnic-la-presence-en-ligne-des-tpe-et-pme-francaises-progresse-leurs-pratiques-de-securite-aussi/',
-      },
-      {
-        v: '1 sur 3',
-        t: 'n’a pourtant toujours pas de site internet : 67 % seulement en sont équipées',
-        src: 'Afnic · Réussir avec le web, 6ᵉ édition',
-        url: 'https://www.afnic.fr/observatoire-ressources/actualites/etude-afnic-la-presence-en-ligne-des-tpe-et-pme-francaises-progresse-leurs-pratiques-de-securite-aussi/',
-      },
+      { n: 95, unite: ' %', t: 'des TPE et PME jugent leur présence sur internet indispensable ou utile à leur activité.', src: 'Afnic · Réussir avec le web', url: 'https://www.afnic.fr/observatoire-ressources/actualites/etude-afnic-la-presence-en-ligne-des-tpe-et-pme-francaises-progresse-leurs-pratiques-de-securite-aussi/' },
+      { n: 33, unite: ' %', t: 'n’ont pourtant toujours pas de site internet. Ce n’est pas la conviction qui manque : c’est le temps.', src: 'Afnic · Réussir avec le web', url: 'https://www.afnic.fr/observatoire-ressources/actualites/etude-afnic-la-presence-en-ligne-des-tpe-et-pme-francaises-progresse-leurs-pratiques-de-securite-aussi/' },
     ],
   },
   en: {
-    eyebrow: 'You already know',
-    titre: 'Conviction is not what is missing.',
-    lead: 'Time is, and someone to hand the work to. The two figures below are not ours.',
+    intro: 'Two figures that are not ours.',
     items: [
-      {
-        v: '95%',
-        t: 'of French small businesses consider their online presence essential or useful to their activity',
-        src: 'Afnic · Réussir avec le web, 6th edition',
-        url: 'https://www.afnic.fr/observatoire-ressources/actualites/etude-afnic-la-presence-en-ligne-des-tpe-et-pme-francaises-progresse-leurs-pratiques-de-securite-aussi/',
-      },
-      {
-        v: '1 in 3',
-        t: 'still has no website at all: only 67% of them are equipped with one',
-        src: 'Afnic · Réussir avec le web, 6th edition',
-        url: 'https://www.afnic.fr/observatoire-ressources/actualites/etude-afnic-la-presence-en-ligne-des-tpe-et-pme-francaises-progresse-leurs-pratiques-de-securite-aussi/',
-      },
+      { n: 95, unite: '%', t: 'of French small businesses consider their online presence essential or useful to their activity.', src: 'Afnic · Réussir avec le web', url: 'https://www.afnic.fr/observatoire-ressources/actualites/etude-afnic-la-presence-en-ligne-des-tpe-et-pme-francaises-progresse-leurs-pratiques-de-securite-aussi/' },
+      { n: 33, unite: '%', t: 'still have no website at all. Conviction is not what is missing: time is.', src: 'Afnic · Réussir avec le web', url: 'https://www.afnic.fr/observatoire-ressources/actualites/etude-afnic-la-presence-en-ligne-des-tpe-et-pme-francaises-progresse-leurs-pratiques-de-securite-aussi/' },
     ],
   },
 };
