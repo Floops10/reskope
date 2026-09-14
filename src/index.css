@@ -13817,3 +13817,53 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   .zone__inner { grid-template-columns: 1fr; }
   .zone__map { order: -1; max-width: 26rem; }
 }
+
+/* ---------- profil : TPE ou PME ---------- */
+
+/* La bascule reprend la pilule de FR / EN, à l'identique : le visiteur
+   comprend en une seconde qu'il s'agit d'un réglage, pas d'un lien. Le
+   libellé qui la précède dit ce qu'on lui demande — sans lui, deux
+   sigles côte à côte ne veulent rien dire. */
+.proftoggle { display: inline-flex; align-items: center; gap: 0.5rem; flex: none; }
+.proftoggle__label {
+  font-size: 0.66rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.nav--dark .proftoggle__label { color: rgba(240, 238, 232, 0.7); }
+@media (max-width: 1100px) { .nav__profil .proftoggle__label { display: none; } }
+@media (max-width: 760px) { .nav__profil { display: none; } }
+.menu2__profil { margin-right: 0.4rem; }
+
+/* Le pont entre les deux versions du site. */
+.section--tight { padding-block: clamp(2rem, 4vw, 3.5rem); }
+.pont {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem 1.1rem;
+  padding: 1.2rem 1.6rem;
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  text-align: center;
+}
+.pont__txt { color: var(--muted); font-size: 0.95rem; }
+.pont__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border: 0;
+  background: none;
+  padding: 0;
+  font-family: var(--font);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--indigo);
+  cursor: pointer;
+}
+.pont__btn span { transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1); }
+.pont__btn:hover span { transform: translateX(5px); }

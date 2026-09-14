@@ -3,6 +3,8 @@ import HeroFormation from '../components/HeroFormation';
 import HomeCinema from '../components/HomeCinema';
 import LongPhrase from '../components/LongPhrase';
 import { useLang } from '../i18n';
+import { useProfil } from '../profil';
+import { HOME_TPE } from '../data/profils';
 
 /* HOME — structure calquée sur noomoagency.com, DA réseau Reskope :
    1. Hero (récit volet + R qui se forme et tourne) + offres-réseau
@@ -214,22 +216,28 @@ const CONTENT = {
 
 export default function Home() {
   const { lang } = useLang();
-  const c = CONTENT[lang];
+  const { profil } = useProfil();
+  /* Une TPE n'a pas de système d'information à cartographier. On ne
+     dédouble pas la page : on superpose les seuls écarts. Tout ce qui
+     n'est pas dans HOME_TPE reste identique pour les deux profils. */
+  const c = profil === 'tpe' ? { ...CONTENT[lang], ...HOME_TPE[lang] } : CONTENT[lang];
 
   return (
     <Page title={c.metaTitle} description={c.metaDesc}>
 
       {/* 1 — Hero : titre à gauche, R 3D qui se forme au scroll puis tourne.
-             key={lang} : remonte proprement au changement de langue (sinon le
-             calque réseau du titre se superpose à la version sans-serif). */}
-      <HeroFormation key={lang} c={c} />
+             key={lang + profil} : remonte proprement quand la langue OU le
+             profil change (sinon le calque réseau du titre se superpose à
+             la version sans-serif — le défaut se voyait en basculant de
+             PME à TPE, les deux accroches restaient l'une sur l'autre). */}
+      <HeroFormation key={lang + profil} c={c} />
 
       {/* 2 — La marque en une phrase (mots révélés au scrub) */}
       <LongPhrase text={c.longPhrase} />
 
       {/* 3 — Traversée caméra 3D : constat → réponse → bascule → offres →
              signature. FIN de la home : le footer (scène de clôture) suit. */}
-      <HomeCinema c={c} lang={lang} />
+      <HomeCinema key={profil} c={c} lang={lang} />
 
     </Page>
   );

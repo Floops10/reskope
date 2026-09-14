@@ -5,6 +5,8 @@ import Quiz from '../components/Quiz';
 import { Reveal, RevealItem } from '../components/Reveal';
 import { useLang } from '../i18n';
 import { OFFERS, FAQ } from '../data/site';
+import { useProfil } from '../profil';
+import { OFFERS_TPE, PRICES_TPE, OFFRES_TPE, PASSERELLE } from '../data/profils';
 
 const OffersShowcase = lazy(() => import('../components/OffersShowcase'));
 
@@ -112,8 +114,18 @@ function Faq({ items }) {
 
 export default function Offres() {
   const { lang } = useLang();
-  const c = CONTENT[lang];
-  const offers = OFFERS[lang];
+  const { profil, setProfil } = useProfil();
+  /* Chez une TPE il n'y a pas d'effectif à facturer : les chantiers sont
+     courts et au forfait. Seul l'en-tête et le pavé de facturation
+     changent, le QCM et la FAQ valent pour les deux. */
+  const c = profil === 'tpe' ? { ...CONTENT[lang], ...OFFRES_TPE[lang] } : CONTENT[lang];
+  /* Le jeu d'offres suit le profil : une TPE de trois personnes ne se
+     voit pas proposer un audit poste par poste, ça n'aurait pas de sens.
+     La passerelle en bas de page mène à l'autre version : le profil
+     choisit ce qu'on montre en premier, pas ce qu'on rend inaccessible. */
+  const offers = profil === 'tpe' ? OFFERS_TPE[lang] : OFFERS[lang];
+  const prices = profil === 'tpe' ? PRICES_TPE[lang] : c.prices;
+  const pont = PASSERELLE[lang][profil];
   const faq = FAQ[lang];
 
   return (
@@ -121,9 +133,9 @@ export default function Offres() {
       {/* Intro + 4 offres : scènes plein écran nuit qui s'enchaînent (WebGL) */}
       <Suspense fallback={<div className="ofs-loading" aria-hidden="true" />}>
         <OffersShowcase
-          key={lang}
+          key={lang + profil}
           offers={offers}
-          prices={c.prices}
+          prices={prices}
           billing={c.billing}
           badge={c.badge}
           intro={{ eyebrow: c.eyebrow, title: c.title, lead: c.lead, action: c.action }}
@@ -131,6 +143,28 @@ export default function Offres() {
           locale={lang}
         />
       </Suspense>
+
+      {/* La passerelle vers l'autre profil. Elle est posée juste sous les
+          offres, là où la question se pose vraiment : « et si je ne suis
+          pas dans la bonne case ? ». Un bouton, pas un lien de page :
+          c'est un réglage qu'on change, on reste où on est. */}
+      <section className="section section--tight">
+        <div className="container">
+          <Reveal>
+            <RevealItem className="pont">
+              <span className="pont__txt">{pont.txt}</span>
+              <button
+                type="button"
+                className="pont__btn"
+                onClick={() => setProfil(profil === 'tpe' ? 'pme' : 'tpe')}
+              >
+                {pont.act}
+                <span aria-hidden="true">→</span>
+              </button>
+            </RevealItem>
+          </Reveal>
+        </div>
+      </section>
 
       {/* Bande directe */}
       <section className="section">

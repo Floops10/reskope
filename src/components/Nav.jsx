@@ -7,6 +7,7 @@ import { GLYPH_SHAPES } from '../lib/net3d';
 import Net3D from './Net3D';
 import SwapLabel from './SwapLabel';
 import { useT, useLang, LangToggle } from '../i18n';
+import { ProfilToggle } from '../profil';
 import { CONTACT } from '../data/site';
 import { openCalModal, isCalConfigured } from '../lib/cal';
 
@@ -158,6 +159,9 @@ export default function Nav() {
           </Link>
 
           <div className="nav__actions">
+            {/* Deux réglages de même nature : la langue, et la taille de
+                la structure. Le second change ce que le site propose. */}
+            <ProfilToggle className="nav__profil" />
             <LangToggle className="nav__lang" />
             {/* Deux intentions, deux boutons : écrire / réserver */}
             <div className="nav__ctas">
@@ -244,6 +248,7 @@ export default function Nav() {
                   <span className="btn__arrow" aria-hidden="true">→</span>
                 </button>
               )}
+              <ProfilToggle className="menu2__profil" />
               <LangToggle className="menu2__lang" />
             </div>
           </div>
