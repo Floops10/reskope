@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<title>Reskope</title>
+<script>
+/* GitHub Pages ne connaît pas les routes du site : il sert ce fichier
+   pour toute adresse qui ne correspond pas à un fichier réel. On garde
+   le chemin demandé dans la session et on repasse la main à l'index, qui
+   le restitue au routeur. Sans ça, /reskope/tpe/offres envoyé par un
+   client tomberait sur une 404 GitHub. */
+(function () {
+  var base = '/reskope/';
+  var p = window.location.pathname;
+  if (p.indexOf(base) === 0) {
+    try { sessionStorage.setItem('reskope-route', p.slice(base.length) + window.location.search + window.location.hash); } catch (e) {}
+  }
+  window.location.replace(base);
+})();
+</script>
+</head>
+<body></body>
+</html>

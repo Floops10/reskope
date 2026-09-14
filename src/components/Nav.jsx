@@ -121,7 +121,10 @@ export default function Nav() {
     };
   }, [open]);
 
-  /* Chorégraphie d'ouverture (fermeture = reverse accéléré) */
+  /* Chorégraphie d'ouverture (fermeture = reverse accéléré).
+     Elle dépend du PROFIL autant que de la langue : le menu perd une
+     entrée quand une page ne concerne pas le visiteur, et une timeline
+     construite sur l'ancienne liste laisse une ligne figée. */
   useGSAP(() => {
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const rows = menuRef.current.querySelectorAll('.menu2__row');
@@ -144,7 +147,7 @@ export default function Nav() {
         .fromTo(decor, { autoAlpha: 0, scale: 0.7 }, { autoAlpha: 0.55, scale: 1, duration: 0.7, ease: 'power2.out' }, 0.6);
     }
     menuTl.current = tl;
-  }, { scope: menuRef, dependencies: [lang] });
+  }, { scope: menuRef, dependencies: [lang, profil] });
 
   useEffect(() => {
     const tl = menuTl.current;

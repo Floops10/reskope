@@ -2,77 +2,100 @@ import { createContext, useContext, useState, useEffect, useCallback } from 'rea
 import { useLang } from './i18n';
 
 /* ============================================================
-   PROFIL — TPE ou PME.
+   DEUX SITES DANS UN SITE.
 
-   Le site raconte une seule chose très bien : l'audit et la cartographie,
-   qui s'adressent à une PME. Or on ne propose pas la même chose à une
-   entreprise de trois personnes : un audit poste par poste chez elle n'a
-   aucun sens. Plutôt que de dédoubler le site, on ajoute un second axe à
-   côté de la langue — même mécanique, même persistance, même bascule dans
-   le header. Deux sites en un, sans rien casser.
+   Reskope sert deux contenus : celui d'une TPE et celui d'une PME. Un
+   audit poste par poste chez une entreprise de trois personnes n'a aucun
+   sens, et l'inverse non plus.
 
-   Rien n'est interdit à personne : le profil choisit ce qu'on montre en
-   premier, jamais ce qu'on rend inaccessible. Chaque page qui varie
-   propose le chemin vers l'autre version.
+   La première version basculait le contenu en place, le profil caché
+   dans le stockage local. Résultat : on changeait de site sans jamais
+   savoir sur lequel on était. Le profil vit donc maintenant DANS
+   L'ADRESSE — /tpe/offres et /pme/offres sont deux pages différentes.
 
-   `data-profil` est posé sur <html> : une section peut donc apparaître ou
-   disparaître en CSS seul, sans plomberie dans chaque page.
+   Ce que ça règle, et qu'aucun réglage caché ne pouvait régler :
+   - on sait toujours où on est, c'est écrit dans la barre d'adresse ;
+   - un lien envoyé à quelqu'un ouvre la bonne version ;
+   - « précédent » et « suivant » font ce qu'on attend ;
+   - chaque version s'indexe séparément.
+
+   Techniquement tout tient dans le `basename` du routeur : une fois posé
+   sur /reskope/tpe, chaque <Link to="/offres"> du site pointe tout seul
+   au bon endroit. Pas un lien n'a eu besoin d'être réécrit.
    ============================================================ */
 
-const ProfilContext = createContext({
-  profil: 'pme', setProfil: () => {}, choisi: true, demander: () => {}, passer: () => {},
-});
-
-const VALIDES = ['tpe', 'pme'];
+export const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
+export const PROFILS = ['tpe', 'pme'];
 const CLE = 'reskope-profil';
 
-export function ProfilProvider({ children }) {
-  const [profil, setProfilState] = useState(() => {
-    if (typeof localStorage !== 'undefined') {
-      const s = localStorage.getItem(CLE);
-      if (VALIDES.includes(s)) return s;
-    }
-    /* Par défaut la PME : c'est le contenu historique du site, celui qui
-       existe et qui est complet. Une TPE qui bascule trouve le sien. */
-    return 'pme';
-  });
+/** Le profil lu dans l'adresse, ou null si l'adresse n'en porte pas. */
+export function profilDeLUrl(pathname = window.location.pathname) {
+  const reste = pathname.startsWith(BASE) ? pathname.slice(BASE.length) : pathname;
+  const seg = reste.replace(/^\//, '').split('/')[0];
+  return PROFILS.includes(seg) ? seg : null;
+}
 
-  /* `choisi` distingue « n'a pas encore répondu » de « a répondu PME ».
-     Sans cette nuance, on ne saurait pas à qui poser la question, et on
-     la reposerait à chaque visite — ce qui est le meilleur moyen de se
-     faire fermer au deuxième passage. */
-  const [choisi, setChoisi] = useState(() => {
-    if (typeof localStorage === 'undefined') return true;
-    return VALIDES.includes(localStorage.getItem(CLE));
-  });
+/** Le chemin à l'intérieur d'une version (sans la base ni le profil). */
+export function cheminInterne(pathname = window.location.pathname) {
+  const reste = pathname.startsWith(BASE) ? pathname.slice(BASE.length) : pathname;
+  const parts = reste.replace(/^\//, '').split('/');
+  if (PROFILS.includes(parts[0])) parts.shift();
+  const p = parts.filter(Boolean).join('/');
+  return p ? `/${p}` : '/';
+}
+
+export function profilMemorise() {
+  try {
+    const s = localStorage.getItem(CLE);
+    return PROFILS.includes(s) ? s : null;
+  } catch {
+    return null;
+  }
+}
+
+const ProfilContext = createContext({ profil: null, setProfil: () => {}, adopter: () => {} });
+
+export function ProfilProvider({ children }) {
+  const [profil, setProfilState] = useState(() => profilDeLUrl());
 
   useEffect(() => {
-    document.documentElement.dataset.profil = profil;
+    document.documentElement.dataset.profil = profil || 'porte';
+    if (!profil) return;
+    try {
+      localStorage.setItem(CLE, profil);
+    } catch {
+      /* navigation privée : le choix vaut pour la visite, c'est tout */
+    }
   }, [profil]);
 
-  const setProfil = useCallback((p, memoriser = true) => {
-    if (!VALIDES.includes(p)) return;
+  /* Changer de version, c'est changer d'adresse. On reste sur la page où
+     on est : quelqu'un qui lit les offres en TPE et bascule en PME
+     atterrit sur les offres PME, pas sur un accueil qu'il a déjà vu. */
+  const setProfil = useCallback((p) => {
+    if (!PROFILS.includes(p) || p === profil) return;
+    const interne = cheminInterne();
+    const dest = `${BASE}/${p}${interne === '/' ? '' : interne}`;
+    window.history.pushState({}, '', dest + window.location.search + window.location.hash);
     setProfilState(p);
-    if (memoriser) {
-      setChoisi(true);
-      try {
-        localStorage.setItem(CLE, p);
-      } catch {
-        /* navigation privée : le choix vaut pour la session, c'est tout */
-      }
-    }
+  }, [profil]);
+
+  /* Adopter une version sans toucher à l'historique : sert quand
+     l'adresse vient d'être réécrite (lien ancien sans version, ou retour
+     d'un visiteur qui avait déjà choisi). */
+  const adopter = useCallback((p) => {
+    if (PROFILS.includes(p)) setProfilState(p);
   }, []);
 
-  /* Rouvrir la question depuis n'importe où. */
-  const demander = useCallback(() => setChoisi(false), []);
-
-  /* « Je regarde d'abord » : on ferme sans rien retenir. La question ne
-     revient pas pendant la visite, et le réglage reste dans le header.
-     On ne mémorise pas un non-choix comme s'il en était un. */
-  const passer = useCallback(() => setChoisi(true), []);
+  /* Les boutons précédent et suivant du navigateur doivent pouvoir
+     ramener sur l'autre version : on relit l'adresse à chaque retour. */
+  useEffect(() => {
+    const relire = () => setProfilState(profilDeLUrl());
+    window.addEventListener('popstate', relire);
+    return () => window.removeEventListener('popstate', relire);
+  }, []);
 
   return (
-    <ProfilContext.Provider value={{ profil, setProfil, choisi, demander, passer }}>
+    <ProfilContext.Provider value={{ profil, setProfil, adopter }}>
       {children}
     </ProfilContext.Provider>
   );
@@ -82,61 +105,50 @@ export function useProfil() {
   return useContext(ProfilContext);
 }
 
-/** Choisit entre deux valeurs selon le profil courant. */
-export function useSelonProfil() {
-  const { profil } = useProfil();
-  return useCallback((tpe, pme) => (profil === 'tpe' ? tpe : pme), [profil]);
-}
-
 const MOTS = {
   fr: {
-    aria: 'Taille de votre structure',
+    aria: 'Version du site',
     label: 'Vous êtes',
     tpe: 'TPE',
     pme: 'PME',
-    tpeTitre: 'TPE : de 1 à 10 personnes',
-    pmeTitre: 'PME : de 10 à 250 personnes',
+    tpeTitre: 'Version TPE : de 1 à 10 personnes',
+    pmeTitre: 'Version PME : de 10 à 250 personnes',
   },
   en: {
-    aria: 'Size of your organisation',
+    aria: 'Site version',
     label: 'You are',
     tpe: 'SMB',
     pme: 'SME',
-    tpeTitre: 'Small business: 1 to 10 people',
-    pmeTitre: 'SME: 10 to 250 people',
+    tpeTitre: 'Small-business version: 1 to 10 people',
+    pmeTitre: 'SME version: 10 to 250 people',
   },
 };
 
-/* La bascule reprend exactement la grammaire de FR / EN : même pilule,
-   même poids, posée juste à côté. C'est ce qui fait comprendre en une
-   seconde qu'il s'agit d'un réglage et pas d'un lien. */
+/* La bascule reprend la pilule de FR / EN, posée juste à côté : on
+   comprend en une seconde que c'est un réglage du site, et la version
+   active est celle qui est allumée. */
 export function ProfilToggle({ className = '', avecLabel = true }) {
   const { profil, setProfil } = useProfil();
   const { lang } = useLang();
   const m = MOTS[lang] || MOTS.fr;
+  if (!profil) return null;
 
   return (
     <div className={`proftoggle ${className}`}>
       {avecLabel && <span className="proftoggle__label" aria-hidden="true">{m.label}</span>}
       <div className="langtoggle proftoggle__pilule" role="group" aria-label={m.aria}>
-        <button
-          type="button"
-          className={`langtoggle__opt${profil === 'tpe' ? ' is-on' : ''}`}
-          aria-pressed={profil === 'tpe'}
-          title={m.tpeTitre}
-          onClick={() => setProfil('tpe')}
-        >
-          {m.tpe}
-        </button>
-        <button
-          type="button"
-          className={`langtoggle__opt${profil === 'pme' ? ' is-on' : ''}`}
-          aria-pressed={profil === 'pme'}
-          title={m.pmeTitre}
-          onClick={() => setProfil('pme')}
-        >
-          {m.pme}
-        </button>
+        {PROFILS.map((p) => (
+          <button
+            key={p}
+            type="button"
+            className={`langtoggle__opt${profil === p ? ' is-on' : ''}`}
+            aria-pressed={profil === p}
+            title={m[`${p}Titre`]}
+            onClick={() => setProfil(p)}
+          >
+            {m[p]}
+          </button>
+        ))}
       </div>
     </div>
   );

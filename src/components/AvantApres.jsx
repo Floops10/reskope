@@ -138,6 +138,16 @@ export default function AvantApres() {
     const ls = [...s.querySelectorAll('.aap-ls')];
     const lc = [...s.querySelectorAll('.aap-lc')];
     const scene = el.querySelector('.aap__scene');
+    const collant = el.querySelector('.aap__sticky');
+
+    /* La bascule du clair vers le sombre se FAIT, elle ne se coupe pas :
+       le fond et l'encre s'interpolent sur les premiers et les derniers
+       pour cent de la course. Sans ça, on passe d'un coup du crème au
+       noir, et ça se voit comme une couture. */
+    const CREME = [240, 238, 232];
+    const ENCRE = [14, 11, 31];
+    const melange = (a, b, k) => `rgb(${a.map((v, i) => Math.round(v + (b[i] - v) * k)).join(',')})`;
+    const palier = (v, d, f) => Math.min(Math.max((v - d) / (f - d), 0), 1);
 
     const rendre = (p) => {
       const q = easeInOut(Math.min(Math.max(p, 0), 1));
@@ -186,6 +196,19 @@ export default function AvantApres() {
       trait(lo, geo.liensR, Math.max(0, q * 1.9 - 0.9) * 0.95);
 
       if (scene) scene.dataset.etat = q > 0.55 ? 'apres' : 'avant';
+
+      /* p brut, pas q : la teinte doit suivre le scroll linéairement,
+         sinon l'adoucissement de la courbe retarde le noir. */
+      const brut = Math.min(Math.max(p, 0), 1);
+      const nuit = Math.min(palier(brut, 0, 0.16), 1 - palier(brut, 0.86, 1));
+      if (collant) {
+        collant.style.setProperty('--aap-fond', melange(CREME, ENCRE, nuit));
+        collant.style.setProperty('--aap-encre', melange(ENCRE, CREME, nuit));
+        collant.style.setProperty('--aap-voile', nuit.toFixed(3));
+        /* Le header ne passe en clair que quand le fond l'est vraiment. */
+        if (nuit > 0.55) el.setAttribute('data-nav-dark', '');
+        else el.removeAttribute('data-nav-dark');
+      }
     };
 
     if (instant()) { rendre(1); return undefined; }

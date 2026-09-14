@@ -67,6 +67,20 @@
       type="font/woff2"
       crossorigin
     />
+    <script>
+      /* Reprise du chemin mis de côté par 404.html : GitHub Pages sert ce
+         fichier-là pour toute route du site, il faut donc remettre
+         l'adresse demandée avant que le routeur ne lise l'historique. */
+      (function () {
+        try {
+          var r = sessionStorage.getItem('reskope-route');
+          if (r) {
+            sessionStorage.removeItem('reskope-route');
+            history.replaceState({}, '', '/reskope/' + r);
+          }
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

@@ -9,7 +9,6 @@ import Cursor from './components/Cursor';
 import PageTransition from './components/PageTransition';
 import Interactions from './components/Interactions';
 import Nav from './components/Nav';
-import ChoixProfil from './components/ChoixProfil';
 import Breadcrumb from './components/Breadcrumb';
 import Footer from './components/Footer';
 import Home from './pages/Home';
@@ -46,8 +45,6 @@ export default function App() {
       <PageTransition />
       <Interactions />
       <Nav />
-      {/* Posée une fois, à la première visite. */}
-      <ChoixProfil />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/pourquoi" element={<Pourquoi />} />

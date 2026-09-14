@@ -6446,7 +6446,8 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   border-bottom: 1px solid rgba(240, 238, 232, 0.14);
 }
 .offer-orbit__stack-item:first-child {
-  border-top: 1px solid rgba(240, 238, 232, 0.14);
+  border-top: 1px solid currentColor;
+  border-color: color-mix(in srgb, currentColor 16%, transparent);
 }
 .offer-orbit__stack-head {
   width: 100%;
@@ -14123,10 +14124,10 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   position: relative;
   /* La hauteur donne la course : trois écrans pour aller du désordre à
      l'ordre, c'est ce qui laisse le temps de comprendre. */
-  height: 300svh;
-  background: var(--ink);
-  color: var(--cream);
+  height: 320svh;
 }
+/* Fond et encre viennent du composant, interpolés au scroll : la section
+   entre dans le noir et en ressort, au lieu de le trancher. */
 .aap__sticky {
   position: sticky;
   top: 0;
@@ -14134,11 +14135,14 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   display: flex;
   align-items: center;
   overflow: hidden;
+  background: var(--aap-fond, var(--cream));
+  color: var(--aap-encre, var(--ink));
+  transition: none;
 }
 .aap__inner { width: 100%; }
 .aap__head { text-align: center; margin-bottom: clamp(1.4rem, 3vh, 2.6rem); }
-.aap__head .eyebrow { color: rgba(240, 238, 232, 0.6); }
-.aap__head .h2 { color: var(--cream); }
+.aap__head .eyebrow { color: var(--aap-encre, var(--ink)); opacity: 0.6; }
+.aap__head .h2 { color: var(--aap-encre, var(--ink)); }
 
 .aap__scene {
   display: grid;
@@ -14152,17 +14156,18 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 
 .aap__viz { position: relative; }
 .aap__viz svg { display: block; width: 100%; height: auto; max-height: 52svh; }
-.aap-n { fill: var(--cream); }
+.aap-n { fill: var(--aap-encre, var(--ink)); }
 .aap-lc { stroke: var(--indigo-bright); stroke-width: 1.1; }
-.aap-lo { stroke: var(--cream); stroke-width: 2.6; stroke-linecap: round; }
-.aap-ls { stroke: var(--cream); stroke-width: 1; }
+.aap-lo { stroke: var(--aap-encre, var(--ink)); stroke-width: 2.6; stroke-linecap: round; }
+.aap-ls { stroke: var(--aap-encre, var(--ink)); stroke-width: 1; }
 .aap__cue {
   margin-top: 0.6rem;
   text-align: center;
   font-size: 0.64rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(240, 238, 232, 0.4);
+  color: var(--aap-encre, var(--ink));
+  opacity: 0.42;
 }
 
 /* Les deux colonnes chiffrées. Celle qui n'est pas d'actualité s'efface :
@@ -14175,11 +14180,12 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   font-size: 0.68rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(240, 238, 232, 0.66);
+  color: var(--aap-encre, var(--ink));
+  opacity: 0.6;
   margin-bottom: 1.1rem;
 }
 .aap__scene[data-etat='apres'] .aap__col--apres .aap__col-t,
-.aap__scene[data-etat='avant'] .aap__col--avant .aap__col-t { color: var(--cream); }
+.aap__scene[data-etat='avant'] .aap__col--avant .aap__col-t { opacity: 1; }
 
 .aap__list { list-style: none; margin: 0; padding: 0; }
 .aap__list li {
@@ -14189,7 +14195,7 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   padding: 0.7rem 0;
   border-top: 1px solid rgba(240, 238, 232, 0.14);
 }
-.aap__list li:last-child { border-bottom: 1px solid rgba(240, 238, 232, 0.14); }
+.aap__list li:last-child { border-bottom: 1px solid color-mix(in srgb, currentColor 16%, transparent); }
 .aap__list b {
   font-size: clamp(1.5rem, 2.6vw, 2.1rem);
   font-weight: 600;
@@ -14197,10 +14203,10 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   line-height: 1;
   min-width: 2.1ch;
 }
-.aap__list span { font-size: 0.9rem; line-height: 1.45; color: rgba(240, 238, 232, 0.74); }
+.aap__list span { font-size: 0.9rem; line-height: 1.45; color: currentColor; opacity: 0.74; }
 
 @media (max-width: 999px) {
-  .aap { height: 260svh; }
+  .aap { height: 280svh; }
   .aap__scene { grid-template-columns: 1fr 1fr; }
   .aap__viz { grid-column: 1 / -1; order: -1; }
   .aap__list b { font-size: 1.35rem; }
@@ -14208,4 +14214,163 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 @media (prefers-reduced-motion: reduce) {
   .aap { height: auto; }
   .aap__sticky { position: static; height: auto; padding: clamp(3rem, 8vw, 6rem) 0; }
+}
+
+/* ════════════════════════════════════════════════════════════
+   LA PORTE — l'écran de choix, à la racine
+
+   Une page, pas une modale : une modale se ferme par réflexe et laisse
+   quelqu'un dans une version qu'il n'a pas choisie. Elle n'est vue
+   qu'une fois, la racine renvoie ensuite directement dans la version
+   retenue.
+   ════════════════════════════════════════════════════════════ */
+
+.porte {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: var(--indigo-deep);
+  color: var(--cream);
+  overflow: hidden;
+  padding: clamp(6rem, 12vh, 9rem) 0 clamp(4rem, 9vh, 7rem);
+}
+.porte__trame {
+  position: absolute;
+  inset: 0;
+  opacity: 0.13;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(to right, var(--cream) 0 1px, transparent 1px 64px),
+    repeating-linear-gradient(to bottom, var(--cream) 0 1px, transparent 1px 64px);
+  mask-image: radial-gradient(130% 95% at 50% 42%, #000 18%, transparent 80%);
+}
+
+.porte__tete {
+  position: absolute;
+  top: clamp(1.2rem, 3vh, 2.2rem);
+  left: 0;
+  right: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-inline: var(--gutter);
+}
+.porte__tete .wordmark { color: var(--cream); }
+.porte__tete .wordmark__mark { width: 1.35rem; }
+.porte__tete .langtoggle {
+  background: rgba(240, 238, 232, 0.08);
+  border-color: rgba(240, 238, 232, 0.24);
+}
+.porte__tete .langtoggle__opt { color: rgba(240, 238, 232, 0.66); }
+.porte__tete .langtoggle__opt.is-on { background: var(--cream); color: var(--indigo-deep); }
+
+.porte__inner { position: relative; z-index: 2; }
+.porte__kicker { color: rgba(240, 238, 232, 0.6); }
+.porte__t {
+  margin: clamp(0.8rem, 2vh, 1.4rem) 0 0;
+  font-size: clamp(2.8rem, 9vw, 7.5rem);
+  font-weight: 600;
+  letter-spacing: -0.05em;
+  line-height: 0.96;
+}
+.porte__mot { position: relative; display: inline-block; white-space: nowrap; }
+.porte__ghost { position: absolute; left: 0; top: 0; color: transparent; pointer-events: none; }
+.porte__net { position: relative; vertical-align: -0.13em; margin-right: 0.08em; }
+.porte__net .nw-node { fill: var(--cream); }
+.porte__net .nw-link { stroke: var(--cream); }
+.porte__lead {
+  margin-top: clamp(1.2rem, 3vh, 2rem);
+  max-width: 62ch;
+  font-size: var(--fs-lead);
+  line-height: 1.6;
+  color: rgba(240, 238, 232, 0.82);
+}
+
+.porte__choix {
+  display: grid;
+  gap: clamp(0.9rem, 2vw, 1.4rem);
+  grid-template-columns: 1fr;
+  margin-top: clamp(2rem, 5vh, 3.4rem);
+  max-width: 900px;
+}
+@media (min-width: 680px) { .porte__choix { grid-template-columns: 1fr 1fr; } }
+
+/* Chaque porte est un objet qu'on pousse, pas un bouton de formulaire :
+   le solide réseau tourne à l'intérieur, la carte se soulève au survol. */
+.porte__opt {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: clamp(1.4rem, 3vw, 2rem);
+  border: 1px solid rgba(240, 238, 232, 0.2);
+  border-radius: 18px;
+  background: rgba(240, 238, 232, 0.05);
+  color: var(--cream);
+  font-family: var(--font);
+  text-align: left;
+  cursor: pointer;
+  overflow: hidden;
+  transition: border-color 0.4s ease, background 0.4s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.porte__opt:hover, .porte__opt:focus-visible {
+  border-color: rgba(240, 238, 232, 0.55);
+  background: rgba(240, 238, 232, 0.1);
+  transform: translateY(-4px);
+}
+.porte__solide {
+  position: absolute;
+  right: clamp(0.6rem, 2vw, 1.4rem);
+  top: clamp(0.6rem, 2vw, 1.2rem);
+  opacity: 0.5;
+  color: var(--cream);
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+.porte__opt:hover .porte__solide { opacity: 0.85; }
+.porte__sigle {
+  display: block;
+  font-size: clamp(1.7rem, 3.4vw, 2.5rem);
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+.porte__taille {
+  display: block;
+  margin-top: 0.45rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(240, 238, 232, 0.66);
+}
+.porte__quoi {
+  display: block;
+  margin-top: 1rem;
+  max-width: 34ch;
+  font-size: 0.94rem;
+  line-height: 1.55;
+  color: rgba(240, 238, 232, 0.8);
+}
+.porte__entrer {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.4rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+.porte__entrer span { transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1); }
+.porte__opt:hover .porte__entrer span { transform: translateX(6px); }
+
+.porte__pied {
+  position: relative;
+  z-index: 2;
+  margin: clamp(2.4rem, 6vh, 4rem) 0 0;
+  padding-inline: var(--gutter);
+  font-size: 0.74rem;
+  letter-spacing: 0.06em;
+  color: rgba(240, 238, 232, 0.45);
 }
