@@ -1,5 +1,10 @@
 /* ============================================================
-   BILAN INTERACTIF — cas réel anonymisé.
+   BILAN INTERACTIF — cas d'école.
+
+   Le dossier n'est tiré d'aucune mission : il est construit de toutes
+   pièces pour montrer la forme exacte du livrable, chiffres compris. La
+   page le dit en toutes lettres et le porte en première pastille : on ne
+   met pas un faux client sur un site qui n'en a pas encore.
    Menuiserie-agencement, 24 personnes (bureau d'études, atelier,
    équipes de pose, administratif). Une vraie PME : un ERP métier
    sous-exploité, du shadow IT, des licences qui dorment.
@@ -59,14 +64,14 @@ export const CARTO_LINKS = {
 
 export const BILAN = {
   fr: {
-    metaTitle: 'Exemple de bilan · un audit réel, détaillé',
+    metaTitle: 'Exemple de bilan · le document remis, en entier',
     metaDesc:
-      "Le bilan interactif d'une mission réelle (menuiserie-agencement, 24 personnes) : cartographie de 24 outils avant/après, 35 actions, gains chiffrés, feuille de route. Données anonymisées.",
+      "Le bilan interactif, volet par volet : cartographie de 24 outils avant/après, 35 actions, gains chiffrés, feuille de route. Cas d'école construit pour montrer la forme exacte du livrable.",
     hero: {
       eyebrow: 'Exemple de bilan',
-      title: 'Le bilan, en vrai.',
-      lead: "Ce qu'un client reçoit en fin de mission. Cas réel, anonymisé avec son accord : explorez chaque volet comme lui.",
-      chips: ['Menuiserie & agencement', '24 personnes', 'Audit 5 j · mise en œuvre 18 j', 'Sur 4 mois', '21 entretiens'],
+      title: 'Le bilan, en entier.',
+      lead: "Le document remis en fin de mission, volet par volet. Le dossier est construit pour l'exemple, pas tiré d'une mission : les chiffres sont des ordres de grandeur, la forme est celle que vous recevrez.",
+      chips: ['Cas d’école', 'Menuiserie & agencement', '24 personnes', 'Audit 5 j · mise en œuvre 18 j', 'Sur 4 mois', '21 entretiens'],
     },
     tabs: [
       { id: 'resume', label: 'Résumé exécutif' },
@@ -276,21 +281,21 @@ export const BILAN = {
       ],
     },
     cta: {
-      title: 'Votre bilan ressemblera à celui-là.',
-      text: 'Mêmes exigences, mêmes chiffres vérifiables, adapté à votre terrain. Le bilan vous appartient, quelle que soit la suite.',
+      title: 'Votre bilan aura cette forme.',
+      text: 'Même structure, même niveau de détail, avec vos chiffres à vous. Le bilan vous appartient, quelle que soit la suite.',
       btn: 'Demander mon audit',
     },
   },
 
   en: {
-    metaTitle: 'Sample report · a real, detailed audit',
+    metaTitle: 'Sample report · the deliverable, in full',
     metaDesc:
-      'The interactive report of a real engagement (joinery & fit-out, 24 people): 24 tools mapped before/after, 35 actions, quantified gains, roadmap. Anonymised data.',
+      'The interactive report, section by section: 24 tools mapped before/after, 35 actions, quantified gains, roadmap. A worked example built to show the exact shape of the deliverable.',
     hero: {
       eyebrow: 'Sample report',
-      title: 'The report, for real.',
-      lead: 'What a client receives at the end of an engagement. Real case, anonymised with their consent: explore each section as they did.',
-      chips: ['Joinery & fit-out', '24 people', 'Audit 5 d · delivery 18 d', 'Over 4 months', '21 interviews'],
+      title: 'The report, in full.',
+      lead: 'The document handed over at the end of an engagement, section by section. The case is built as an example, not taken from an engagement: the figures are orders of magnitude, the shape is the one you will receive.',
+      chips: ['Worked example', 'Joinery & fit-out', '24 people', 'Audit 5 d · delivery 18 d', 'Over 4 months', '21 interviews'],
     },
     tabs: [
       { id: 'resume', label: 'Executive summary' },
@@ -500,8 +505,8 @@ export const BILAN = {
       ],
     },
     cta: {
-      title: 'Your report will look like this one.',
-      text: 'Same standards, same verifiable numbers, adapted to your field. The report is yours, whatever you decide next.',
+      title: 'Your report will have this shape.',
+      text: 'Same structure, same level of detail, with your own figures. The report is yours, whatever you decide next.',
       btn: 'Request my audit',
     },
   },

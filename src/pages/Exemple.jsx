@@ -310,7 +310,14 @@ function BilanHero({ hero }) {
           </h1>
           <p className="bilan-hero__lead bilan-hero__reveal">{hero.lead}</p>
           <div className="bilan-hero__chips">
-            {hero.chips.map((chip) => <span className="bilan-hero__chip" key={chip}>{chip}</span>)}
+            {/* La première pastille dit ce qu'est ce dossier. Elle est
+                marquée pour qu'on ne la lise pas comme un fait de mission
+                parmi les autres : personne ne doit croire à un vrai client. */}
+            {hero.chips.map((chip, i) => (
+              <span className={`bilan-hero__chip${i === 0 ? ' bilan-hero__chip--nature' : ''}`} key={chip}>
+                {chip}
+              </span>
+            ))}
           </div>
         </div>
         <div className="bilan-hero__viz bilan-hero__reveal" aria-hidden="true">

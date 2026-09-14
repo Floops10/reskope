@@ -1778,7 +1778,7 @@ html.eco-theme .enav__tab.is-active {
   color: var(--indigo);
 }
 .carousel__index span {
-  color: var(--silver);
+  color: var(--muted);
 }
 .carousel__panel h3 {
   font-size: clamp(1.5rem, 3.5vw, 2.4rem);
@@ -2890,7 +2890,7 @@ html.eco-theme .scrollnet {
 .journey__hint {
   margin-top: 1.25rem;
   font-size: 0.85rem;
-  color: var(--silver) !important;
+  color: var(--muted) !important;
 }
 
 /* ============================================================
@@ -3758,7 +3758,7 @@ html.eco-theme .scrollnet {
 .jpanel__count-total {
   font-size: 1.05rem;
   font-weight: 500;
-  color: var(--silver);
+  color: var(--muted);
 }
 .jpanel__bar {
   flex: 1;
@@ -3789,7 +3789,7 @@ html.eco-theme .scrollnet {
 .journey__hint {
   margin-top: 1rem;
   font-size: 0.85rem;
-  color: var(--silver);
+  color: var(--muted);
   text-align: center;
 }
 
@@ -4405,7 +4405,7 @@ html.eco-theme .scrollnet {
   text-transform: uppercase;
 }
 .tmap-title--before {
-  color: var(--silver);
+  color: var(--muted);
 }
 .tmap-title--after {
   color: var(--indigo);
@@ -8255,13 +8255,18 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 .footer2__card-btn:hover {
   color: var(--cream);
 }
+/* Net3D dessine en indigo en dur : sur le pied de page, qui est indigo,
+   le réseau avait exactement la luminosité du fond et ne se voyait que par
+   accident, là où le dégradé s'éclaircit. En crème, il redevient un objet. */
 .footer2__net {
   position: absolute;
   top: 8%;
   right: 6%;
-  opacity: 0.55;
+  opacity: 0.4;
   pointer-events: none;
 }
+.footer2__net .n3d-link { stroke: rgba(240, 238, 232, 0.55); }
+.footer2__net .n3d-node { fill: var(--cream); }
 .footer2__top {
   position: relative;
   z-index: 1;
@@ -12454,7 +12459,7 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   text-align: left; border-left: 2px solid var(--hairline); border-radius: 0 10px 10px 0;
   transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, padding-left 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.bilan__tab b { font-size: 0.66rem; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--silver); transition: color 0.25s ease; }
+.bilan__tab b { font-size: 0.66rem; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--muted); transition: color 0.25s ease; }
 .bilan__tab:hover { color: var(--ink); background: color-mix(in srgb, var(--indigo) 5%, transparent); }
 .bilan__tab.is-on {
   color: var(--indigo); border-left-color: var(--indigo);
@@ -12463,7 +12468,7 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 }
 .bilan__tab.is-on b { color: var(--indigo); }
 .bilan__panelwrap { min-height: 560px; }
-.bilan__index { font-size: 0.7rem; letter-spacing: 0.2em; color: var(--silver); font-variant-numeric: tabular-nums; margin: 0 0 0.6rem; }
+.bilan__index { font-size: 0.7rem; letter-spacing: 0.2em; color: var(--muted); font-variant-numeric: tabular-nums; margin: 0 0 0.6rem; }
 .bilan__h2 { font-size: clamp(1.7rem, 3vw, 2.5rem); font-weight: 600; letter-spacing: -0.03em; line-height: 1.08; margin: 0 0 0.9rem; color: var(--ink); }
 .bilan__intro { color: var(--muted); line-height: 1.6; max-width: 62ch; margin: 0 0 1.8rem; }
 .bilan-note { font-size: 0.84rem; color: var(--muted); margin: 1rem 0 0; }
@@ -12568,7 +12573,7 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 .bilan-carto__node--supprime .bilan-carto__dot { fill: var(--cream); stroke: var(--silver); stroke-width: 0.4; }
 .bilan-carto__node text { font-size: 2.4px; font-weight: 600; fill: var(--ink); text-anchor: middle; pointer-events: none; font-family: var(--font); }
 .bilan-carto__node--supprime text { text-decoration: line-through; fill: var(--muted); }
-.bilan-carto__hint { position: absolute; right: 0.9rem; bottom: 0.6rem; margin: 0; font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--silver); }
+.bilan-carto__hint { position: absolute; right: 0.9rem; bottom: 0.6rem; margin: 0; font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
 .bilan-carto__detail { border: 1px solid var(--hairline); border-radius: 16px; background: var(--cream-light); padding: 1.2rem 1.3rem; }
 .bilan-carto__status { display: inline-block; font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; padding: 0.24rem 0.6rem; border-radius: 999px; margin-bottom: 0.7rem; color: var(--cream); background: var(--indigo); }
 .bilan-carto__status--nouveau { background: var(--indigo-bright); }
@@ -12610,7 +12615,7 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 .bilan-reco__body h4 { margin: 0 0 0.25rem; font-size: 1.02rem; letter-spacing: -0.015em; }
 .bilan-reco__body p { margin: 0 0 0.55rem; font-size: 0.9rem; line-height: 1.5; color: var(--muted); }
 .bilan-reco__meta { display: flex; flex-wrap: wrap; gap: 0.4rem 1.1rem; font-size: 0.74rem; color: var(--muted); }
-.bilan-reco__meta em { font-style: normal; color: var(--silver); }
+.bilan-reco__meta em { font-style: normal; color: var(--muted); }
 .bilan-reco.is-done .bilan-reco__meta em { color: var(--indigo); font-weight: 600; }
 
 /* Mobile */
@@ -12689,6 +12694,14 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   background: var(--cream-light);
   padding: 0.34rem 0.8rem;
   border-radius: 999px;
+}
+/* La pastille qui dit la nature du dossier, pas un fait de mission. */
+.bilan-hero__chip--nature {
+  background: var(--indigo);
+  border-color: var(--indigo);
+  color: var(--cream);
+  font-weight: 600;
+  letter-spacing: 0.02em;
 }
 .bilan-hero__viz { display: flex; align-items: center; }
 .bilan-hero__glyph {
@@ -13672,14 +13685,18 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   padding-block: clamp(5rem, 12vh, 8.5rem);
   overflow: hidden;
 }
+/* Même correction que pour le pied de page : la scène de prise de
+   rendez-vous est nuit, le glyphe y était indigo sur indigo. */
 .bk__decor {
   position: absolute;
   top: 50%;
   right: -4%;
   transform: translateY(-50%);
-  opacity: 0.5;
+  opacity: 0.4;
   pointer-events: none;
 }
+.bk__decor .n3d-link { stroke: rgba(240, 238, 232, 0.5); }
+.bk__decor .n3d-node { fill: rgba(240, 238, 232, 0.9); }
 .bk__inner {
   position: relative;
   z-index: 1;
@@ -14476,6 +14493,11 @@ html.eco-theme .crumb__node { background: rgba(125, 223, 168, 0.55); }
   transition: opacity 0.4s ease;
   pointer-events: none;
 }
+/* Les glyphes réseau sont dessinés en indigo en dur dans Net3D : posés sur
+   la porte, qui est indigo profond, ils étaient invisibles. Ici ils passent
+   en crème, comme tout le reste sur ce fond. */
+.porte__solide .n3d-link { stroke: var(--cream); }
+.porte__solide .n3d-node { fill: var(--cream); }
 .porte__opt:hover .porte__solide { opacity: 0.85; }
 .porte__sigle {
   display: block;

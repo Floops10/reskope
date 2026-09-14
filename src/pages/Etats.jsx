@@ -91,7 +91,9 @@ export function NotFound() {
 
   return (
     <Page title={c.meta} description={c.lead}>
-      <section className="state-page">
+      {/* Fond presque noir : le header et le curseur doivent y passer
+          en clair, sinon « Réserver » reste indigo sur nuit. */}
+      <section className="state-page" data-nav-dark data-cursor-dark>
         <div className="container state-page__inner">
           <Reveal>
             <RevealItem>
@@ -130,7 +132,7 @@ export function Merci() {
 
   return (
     <Page title={c.meta} description={c.lead}>
-      <section className="state-page state-page--thanks">
+      <section className="state-page state-page--thanks" data-nav-dark data-cursor-dark>
         <div className="container state-page__inner">
           <Reveal>
             <RevealItem>
