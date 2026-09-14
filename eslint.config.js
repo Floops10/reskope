@@ -17,5 +17,17 @@ export default defineConfig([
       globals: globals.browser,
       parserOptions: { ecmaFeatures: { jsx: true } },
     },
+    rules: {
+      /* Le site est en français : les espaces insécables avant « : ; ! ? »
+         et à l'intérieur des guillemets sont voulues, pas des fautes de
+         frappe. La règle continue de les signaler dans le CODE, là où elles
+         cassent vraiment quelque chose. */
+      'no-irregular-whitespace': ['error', {
+        skipStrings: true,
+        skipTemplates: true,
+        skipJSXText: true,
+        skipComments: true,
+      }],
+    },
   },
 ])

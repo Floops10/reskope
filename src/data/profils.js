@@ -461,7 +461,7 @@ export const METHODE_TPE = {
       'Cadrage, devis, construction par petites étapes, mise en ligne, remise des clés. Rien n’est engagé avant d’être chiffré, et vous pouvez vous arrêter à la fin de chaque étape.',
     film: {
       introTitle: 'On construit, vous gardez la main.',
-      introText: 'Des outils qui vous prennent du temps aujourd’hui. Un parcours court pour les remettre à leur place.',
+      introText: 'Ce qui vous manque aujourd’hui. Un parcours court pour le construire, et vous le remettre entre les mains.',
       synthCap: 'Cinq étapes. Et les clés à la fin.',
     },
     calloutTitle: 'Le livrable : un outil qui tourne, et le code avec.',
@@ -476,7 +476,7 @@ export const METHODE_TPE = {
       'Framing, quote, build in small steps, go live, handover. Nothing is committed before it is priced, and you can stop at the end of any step.',
     film: {
       introTitle: 'We build, you keep control.',
-      introText: 'Tools that take your time today. A short journey to put them back in their place.',
+      introText: 'What you are missing today. A short journey to build it, and hand it over to you.',
       synthCap: 'Five steps. And the keys at the end.',
     },
     calloutTitle: 'The deliverable: a tool that runs, and the code with it.',

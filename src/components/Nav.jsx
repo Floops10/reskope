@@ -235,7 +235,7 @@ export default function Nav() {
           </div>
 
           <nav className="menu2__links" aria-label="Pages">
-            {tabs.map(([to, label], i) => (
+            {tabs.map(([to, label]) => (
               <NavLink
                 key={to}
                 to={to}
