@@ -14110,3 +14110,102 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   color: var(--indigo);
   opacity: 0.85;
 }
+
+/* ════════════════════════════════════════════════════════════
+   AVANT / APRÈS — la nuée qui se range en R
+
+   Section épinglée : la remise en ordre avance au scroll, on peut
+   s'arrêter au milieu et revenir en arrière. Même principe que le vol de
+   la page Méthode, appliqué au message central de la marque.
+   ════════════════════════════════════════════════════════════ */
+
+.aap {
+  position: relative;
+  /* La hauteur donne la course : trois écrans pour aller du désordre à
+     l'ordre, c'est ce qui laisse le temps de comprendre. */
+  height: 300svh;
+  background: var(--ink);
+  color: var(--cream);
+}
+.aap__sticky {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+.aap__inner { width: 100%; }
+.aap__head { text-align: center; margin-bottom: clamp(1.4rem, 3vh, 2.6rem); }
+.aap__head .eyebrow { color: rgba(240, 238, 232, 0.6); }
+.aap__head .h2 { color: var(--cream); }
+
+.aap__scene {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(1rem, 3vw, 2.5rem);
+  align-items: center;
+}
+@media (min-width: 1000px) {
+  .aap__scene { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.4fr) minmax(0, 0.9fr); }
+}
+
+.aap__viz { position: relative; }
+.aap__viz svg { display: block; width: 100%; height: auto; max-height: 52svh; }
+.aap-n { fill: var(--cream); }
+.aap-lc { stroke: var(--indigo-bright); stroke-width: 1.1; }
+.aap-lo { stroke: var(--cream); stroke-width: 2.6; stroke-linecap: round; }
+.aap-ls { stroke: var(--cream); stroke-width: 1; }
+.aap__cue {
+  margin-top: 0.6rem;
+  text-align: center;
+  font-size: 0.64rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(240, 238, 232, 0.4);
+}
+
+/* Les deux colonnes chiffrées. Celle qui n'est pas d'actualité s'efface :
+   on lit toujours l'état où on se trouve, jamais les deux à la fois. */
+.aap__col { transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
+.aap__scene[data-etat='avant'] .aap__col--apres { opacity: 0.26; transform: translateY(6px); }
+.aap__scene[data-etat='apres'] .aap__col--avant { opacity: 0.26; transform: translateY(6px); }
+
+.aap__col-t {
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(240, 238, 232, 0.66);
+  margin-bottom: 1.1rem;
+}
+.aap__scene[data-etat='apres'] .aap__col--apres .aap__col-t,
+.aap__scene[data-etat='avant'] .aap__col--avant .aap__col-t { color: var(--cream); }
+
+.aap__list { list-style: none; margin: 0; padding: 0; }
+.aap__list li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  padding: 0.7rem 0;
+  border-top: 1px solid rgba(240, 238, 232, 0.14);
+}
+.aap__list li:last-child { border-bottom: 1px solid rgba(240, 238, 232, 0.14); }
+.aap__list b {
+  font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  min-width: 2.1ch;
+}
+.aap__list span { font-size: 0.9rem; line-height: 1.45; color: rgba(240, 238, 232, 0.74); }
+
+@media (max-width: 999px) {
+  .aap { height: 260svh; }
+  .aap__scene { grid-template-columns: 1fr 1fr; }
+  .aap__viz { grid-column: 1 / -1; order: -1; }
+  .aap__list b { font-size: 1.35rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .aap { height: auto; }
+  .aap__sticky { position: static; height: auto; padding: clamp(3rem, 8vw, 6rem) 0; }
+}

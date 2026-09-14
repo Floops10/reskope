@@ -2,6 +2,7 @@ import Page from '../components/Page';
 import HeroFormation from '../components/HeroFormation';
 import HomeCinema from '../components/HomeCinema';
 import LongPhrase from '../components/LongPhrase';
+import AvantApres from '../components/AvantApres';
 import { useLang } from '../i18n';
 import { useProfil } from '../profil';
 import { HOME_TPE } from '../data/profils';
@@ -234,6 +235,11 @@ export default function Home() {
 
       {/* 2 — La marque en une phrase (mots révélés au scrub) */}
       <LongPhrase text={c.longPhrase} />
+
+      {/* 3 — Avant / après : la nuée d'outils se range en R au scroll.
+             C'est le message de la marque en une seule image, et les
+             chiffres de part et d'autre changent selon le profil. */}
+      <AvantApres key={profil} />
 
       {/* 3 — Traversée caméra 3D : constat → réponse → bascule → offres →
              signature. FIN de la home : le footer (scène de clôture) suit. */}
