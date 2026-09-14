@@ -82,8 +82,11 @@ export function NotFound() {
   /* L'exemple de bilan ne concerne que les PME : en version TPE, on
      remplace le lien plutôt que d'envoyer dans un cul-de-sac. */
   const base = CONTENT[lang].notFound;
+  /* On RETIRE l'exemple de bilan en version TPE, on ne le remplace pas :
+     le lien de remplacement doublonnait avec les offres déjà listées, et
+     trois liens utiles valent mieux que quatre dont deux identiques. */
   const c = profil === 'tpe'
-    ? { ...base, links: base.links.map((l) => (l.to === '/exemple' ? ETATS_TPE[lang].notFoundLien : l)) }
+    ? { ...base, links: base.links.filter((l) => l.to !== '/exemple') }
     : base;
 
   return (

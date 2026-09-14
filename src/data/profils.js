@@ -647,14 +647,12 @@ export const FAQ_TPE = {
    renvoie donc ailleurs plutôt que dans un cul-de-sac. */
 export const ETATS_TPE = {
   fr: {
-    notFoundLien: { to: '/offres', label: 'Ce qu’on construit, et à quel prix' },
     meanwhile: 'En attendant, vous pouvez regarder ce qu’on construit et à quel prix : tout est affiché.',
     cta: 'Voir ce qu’on construit',
     to: '/offres',
     urgent: 'Besoin de nous joindre plus vite ?',
   },
   en: {
-    notFoundLien: { to: '/offres', label: 'What we build, and what it costs' },
     meanwhile: 'In the meantime, you can look at what we build and what it costs: everything is on the page.',
     cta: 'See what we build',
     to: '/offres',
