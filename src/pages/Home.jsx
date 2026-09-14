@@ -239,11 +239,11 @@ export default function Home() {
       {/* 3 — Avant / après : la nuée d'outils se range en R au scroll.
              C'est le message de la marque en une seule image, et les
              chiffres de part et d'autre changent selon le profil. */}
-      <AvantApres key={profil} />
+      <AvantApres key={`aap-${profil}`} />
 
       {/* 3 — Traversée caméra 3D : constat → réponse → bascule → offres →
              signature. FIN de la home : le footer (scène de clôture) suit. */}
-      <HomeCinema key={profil} c={c} lang={lang} />
+      <HomeCinema key={`cine-${profil}`} c={c} lang={lang} />
 
     </Page>
   );
