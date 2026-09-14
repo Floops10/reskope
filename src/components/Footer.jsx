@@ -8,6 +8,8 @@ import SwapLabel from './SwapLabel';
 import BusinessCard from './BusinessCard';
 import { useT, useLang } from '../i18n';
 import { CONTACT } from '../data/site';
+import { useProfil } from '../profil';
+import { PAGES_PROFIL } from '../data/profils';
 
 /* FOOTER — L'UNIVERS de clôture (plein écran).
    On termine EN IMMERSION dans le réseau de la marque : une poussière
@@ -30,6 +32,8 @@ const DUST = Array.from({ length: 34 }, (_, i) => {
 });
 
 export default function Footer() {
+  const { profil } = useProfil();
+  const visible = (to) => !PAGES_PROFIL[to] || PAGES_PROFIL[to] === profil;
   const [cardOpen, setCardOpen] = useState(false);
   const rootRef = useRef(null);
   const stRef = useRef(null);
@@ -121,17 +125,21 @@ export default function Footer() {
       </div>
 
       <div className="container footer2__grid">
+        {/* Le pied de page proposait « Le constat » et « Exemple de
+            bilan » en version TPE : deux pages réservées aux PME, qu'on
+            avait pris soin de retirer du menu. Il suit maintenant la
+            même règle que lui. */}
         <nav className="footer2__col" aria-label={f.site}>
           <span className="footer2__heading">{f.site}</span>
           <Link to="/">{f.home}</Link>
-          <Link to="/pourquoi">{tabs['/pourquoi']}</Link>
+          {visible('/pourquoi') && <Link to="/pourquoi">{tabs['/pourquoi']}</Link>}
           <Link to="/methode">{tabs['/methode']}</Link>
           <Link to="/offres">{tabs['/offres']}</Link>
         </nav>
 
         <nav className="footer2__col" aria-label={f.resources}>
           <span className="footer2__heading">{f.resources}</span>
-          <Link to="/exemple">{tabs['/exemple']}</Link>
+          {visible('/exemple') && <Link to="/exemple">{tabs['/exemple']}</Link>}
           <Link to="/numerique-responsable">{tabs['/numerique-responsable']}</Link>
           <Link to="/a-propos">{tabs['/a-propos']}</Link>
           <Link to="/contact">{f.talk}</Link>

@@ -293,7 +293,7 @@ export default function Ecologie() {
         </section>
 
         {/* CE QUE ÇA ÉCONOMISE — bande sobre : la chaîne EST le visuel */}
-        <section className="section section--eco-band" aria-labelledby="eco-savings-title">
+        <section className="section section--eco-band" aria-labelledby="eco-savings-title" data-nav-dark data-cursor-dark>
           <div className="container">
             <Reveal className="section__head">
               <RevealItem as="p" className="eyebrow eyebrow--eco">{c.savingsEyebrow}</RevealItem>
@@ -338,7 +338,7 @@ export default function Ecologie() {
         </section>
 
         {/* CTA vert */}
-        <section className="section eco-cta" aria-label={c.ctaTitle}>
+        <section className="section eco-cta" aria-label={c.ctaTitle} data-nav-dark data-cursor-dark>
           <div className="container">
             <Reveal>
               <RevealItem as="h2" className="eco-cta__title">{c.ctaTitle}</RevealItem>

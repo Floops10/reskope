@@ -14513,3 +14513,166 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   line-height: 1.45;
   color: var(--muted);
 }
+
+/* ════════════════════════════════════════════════════════════
+   LE RÉSUMÉ DE FIN
+
+   Pas de cartes, pas de grille : quatre lignes pleine largeur, du gros
+   caractère, le prix aligné à droite. La mise en page d'un sommaire
+   d'édition, pas d'un tableau comparatif.
+
+   L'état de survol n'est pas une bordure qui s'allume : la ligne entière
+   bascule en indigo. On sait où on pointe même du coin de l'œil.
+   ════════════════════════════════════════════════════════════ */
+
+.rsm { padding: clamp(4.5rem, 10vw, 8rem) 0 clamp(3.5rem, 8vw, 6rem); background: var(--cream); }
+.rsm__label {
+  margin: 0 0 clamp(2rem, 4vw, 3rem);
+  font-size: clamp(2rem, 5vw, 3.6rem);
+  font-weight: 600;
+  letter-spacing: -0.042em;
+  line-height: 1.02;
+}
+
+.rsm__liste { border-top: 1px solid var(--hairline); }
+.rsm__l {
+  display: block;
+  border-bottom: 1px solid var(--hairline);
+  color: inherit;
+  text-decoration: none;
+  /* Le masque : l'intérieur de la ligne monte derrière lui à l'entrée. */
+  overflow: hidden;
+  transition: background-color 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.rsm__in { display: block; will-change: transform; }
+.rsm__row {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: center;
+  gap: clamp(1rem, 3vw, 2.6rem);
+  padding-block: clamp(1.5rem, 3vw, 2.4rem);
+}
+@media (max-width: 860px) {
+  .rsm__row { grid-template-columns: auto 1fr auto; }
+  .rsm__fleche { display: none; }
+}
+
+.rsm__n {
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  color: var(--indigo);
+  font-variant-numeric: tabular-nums;
+  align-self: start;
+  padding-top: 0.55rem;
+  transition: color 0.4s ease;
+}
+.rsm__txt { min-width: 0; }
+.rsm__nom {
+  display: block;
+  font-size: clamp(1.3rem, 2.6vw, 2.05rem);
+  font-weight: 600;
+  letter-spacing: -0.032em;
+  line-height: 1.12;
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  transform-origin: left center;
+}
+.rsm__quoi {
+  display: block;
+  margin-top: 0.5rem;
+  max-width: 52ch;
+  font-size: 0.94rem;
+  line-height: 1.55;
+  color: var(--muted);
+  transition: color 0.4s ease;
+}
+.rsm__meta { text-align: right; white-space: nowrap; }
+.rsm__duree {
+  display: block;
+  font-size: 0.68rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  transition: color 0.4s ease;
+}
+.rsm__prix {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: clamp(1.02rem, 1.5vw, 1.3rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--indigo);
+  transition: color 0.4s ease;
+}
+.rsm__fleche { color: var(--indigo); transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), color 0.4s ease; }
+
+@media (hover: hover) {
+  .rsm__l:hover { background: var(--indigo); }
+  .rsm__l:hover .rsm__nom { transform: translateX(0.7rem); }
+  .rsm__l:hover .rsm__n,
+  .rsm__l:hover .rsm__prix,
+  .rsm__l:hover .rsm__fleche { color: var(--cream); }
+  .rsm__l:hover .rsm__quoi,
+  .rsm__l:hover .rsm__duree { color: rgba(240, 238, 232, 0.76); }
+  .rsm__l:hover .rsm__nom,
+  .rsm__l:hover { color: var(--cream); }
+  .rsm__l:hover .rsm__fleche { transform: translateX(0.5rem); }
+}
+.rsm__l:focus-visible { background: var(--indigo); color: var(--cream); outline: none; }
+
+.rsm__pied {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+  margin-top: clamp(1.6rem, 3vw, 2.4rem);
+}
+.rsm__pied p { margin: 0; max-width: 56ch; font-size: 0.86rem; line-height: 1.55; color: var(--muted); }
+.rsm__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--indigo);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.rsm__cta span { transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1); }
+.rsm__cta:hover span { transform: translateX(6px); }
+
+/* ════════════════════════════════════════════════════════════
+   LES COUTURES — passer d'un fond clair à un fond sombre
+
+   On ne passe pas du crème au noir d'un bloc à l'autre : ça se voit
+   comme une coupure. La section sombre arrive donc EN AVANT-PLAN, avec
+   ses angles hauts arrondis, et mord légèrement sur celle du dessus. Le
+   clair reste visible de part et d'autre : c'est un calque qui se pose,
+   pas une couleur qui change.
+
+   Un dégradé entre les deux teintes aurait donné une bouillie grise. Le
+   recouvrement se lit tout de suite et ne salit aucune des deux couleurs.
+   ════════════════════════════════════════════════════════════ */
+
+.footer2--universe,
+.constat-bridge,
+.section--eco-band,
+.eco-cta,
+.bk {
+  position: relative;
+  z-index: 1;
+  border-start-start-radius: clamp(1.4rem, 3vw, 2.6rem);
+  border-start-end-radius: clamp(1.4rem, 3vw, 2.6rem);
+  margin-top: calc(-1 * clamp(1.4rem, 3vw, 2.6rem));
+  overflow: hidden;
+}
+/* Deux bandes sombres qui se suivent ne se recouvrent pas : la seconde
+   se poserait sur la première et on verrait un liseré pour rien. */
+.section--eco-band + .eco-cta,
+.eco-cta + .footer2--universe,
+.constat-bridge + .footer2--universe,
+.bk + .footer2--universe {
+  margin-top: 0;
+  border-start-start-radius: 0;
+  border-start-end-radius: 0;
+}

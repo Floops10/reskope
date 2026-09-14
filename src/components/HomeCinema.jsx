@@ -78,8 +78,6 @@ export default function HomeCinema({ c }) {
   const dustRefs = useRef([]);
   const iconRefs = useRef([]);
   const progressRef = useRef(null);
-  const sommeRefs = useRef([]);
-  const sommeRef = useRef(null);
   const [activeIdx, setActiveIdx] = useState(-1);
   const [staticMode, setStaticMode] = useState(false);
 
@@ -129,31 +127,6 @@ export default function HomeCinema({ c }) {
           duration: 0.58, ease: 'power3.in',
         }, t0 + 0.72);
       }
-    });
-
-    /* ── L'ACCOSTAGE ─────────────────────────────────────────────
-       Chaque offre traversée ne disparaît pas : au moment où sa scène
-       s'échappe, son titre vient se ranger sur le côté et Y RESTE. À la
-       fin de la traversée, le panneau porte l'offre complète, et c'est
-       lui qu'on a sous les yeux en même temps que la signature.
-
-       Sans ça, on regarde quatre titres passer et il ne reste rien : on
-       a vu un film, pas une offre. L'entrée part du centre, en plus
-       grand et floue, pour qu'on lise « ce titre-là vient de se ranger »
-       et pas « une ligne est apparue ».                               */
-    if (sommeRef.current) {
-      gsap.set(sommeRef.current, { autoAlpha: 0 });
-      tl.to(sommeRef.current, { autoAlpha: 1, duration: 0.45, ease: 'power2.out' }, 3.5);
-    }
-    sommeRefs.current.filter(Boolean).forEach((row, i) => {
-      gsap.set(row, {
-        autoAlpha: 0, xPercent: -46, yPercent: 26, scale: 1.55,
-        filter: 'blur(7px)', transformOrigin: 'left center',
-      });
-      tl.to(row, {
-        autoAlpha: 1, xPercent: 0, yPercent: 0, scale: 1, filter: 'blur(0px)',
-        duration: 0.62, ease: 'power3.out',
-      }, 3 + i + 0.62);
     });
 
     /* La caméra dérive en continu (pan/tilt/dolly), jamais figée */
@@ -301,25 +274,6 @@ export default function HomeCinema({ c }) {
 
           </div>
         </div>
-
-        {/* Le sommaire qui se remplit : hors de la caméra, sinon il
-            dériverait avec elle et cesserait d'être un repère. */}
-        {!flat && (
-          <aside className="cine__somme" ref={sommeRef} aria-hidden="true">
-            <p className="cine__somme-t">{c.svEyebrow}</p>
-            <ul className="cine__somme-l">
-              {c.offerings.map((o, i) => (
-                <li key={o.title} ref={(el) => { sommeRefs.current[i] = el; }}>
-                  <span className="cine__somme-n">{String(i + 1).padStart(2, '0')}</span>
-                  <span className="cine__somme-x">
-                    <span className="cine__somme-nom">{o.title}</span>
-                    <span className="cine__somme-sub">{o.sub}</span>
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </aside>
-        )}
 
         {/* HUD : compteur + progression */}
         {!flat && (

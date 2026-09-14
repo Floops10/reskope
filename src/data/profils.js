@@ -155,78 +155,46 @@ export const PREUVES_TPE = {
   },
 };
 
-/* Les offres d'une TPE : pas d'audit poste par poste, des chantiers
-   courts facturés à la journée. Même forme que OFFERS dans site.js, pour
-   que la page et la vitrine n'aient rien à savoir du profil. */
+/* Les quatre choses qu'on peut acheter quand on est une TPE. Elles sont
+   les mêmes partout : sur l'accueil, dans la traversée, dans le résumé
+   de fin et sur la page des offres. Avant, l'accueil annonçait « aide au
+   lancement » pendant que la page des offres vendait « liaisons entre
+   outils » : deux listes différentes pour la même entreprise, et un
+   visiteur qui se demande laquelle est la vraie.
+
+   La reprise d'un outil existant et les liaisons entre logiciels ne sont
+   pas une cinquième offre : elles font partie du chantier « site », parce
+   que c'est là qu'elles se posent. */
 export const OFFERS_TPE = {
   fr: [
     {
-      id: 'site',
-      name: 'Site et boutique',
-      tagline: 'Une vitrine qui tient debout.',
+      id: 'site', name: 'Site et boutique', tagline: 'Une vitrine qui tient debout.',
       features: [
         'Site vitrine ou boutique en ligne',
         'Formulaire de contact et prise de rendez-vous',
         'Paiement, livraison, stock si vous vendez',
-        'Référencement de base et pages qui chargent vite',
+        'Liaisons avec vos outils : devis vers facture, export comptable',
         'Le code, les fichiers sources et les accès à votre nom',
       ],
-      cta: 'En discuter',
-      featured: true,
-      detailTitle: 'Ce que ça donne concrètement',
-      detail: 'On part de ce que vous vendez et de qui vous achète. Le site sort en quelques jours pour une vitrine sobre, un peu plus pour une boutique. On avance par petites étapes que vous validez une par une, et à la fin vous repartez avec tout : le code, les sources, l’hébergement à votre nom.',
-      pricingFactors: [
-        'Nombre de pages et de gabarits',
-        'Vente en ligne ou simple vitrine',
-        'Contenus et photos fournis ou à produire',
-      ],
+      cta: 'En discuter', featured: true, detailTitle: 'Ce que ça donne concrètement',
+      detail: 'On part de ce que vous vendez et de qui vous achète. Une vitrine sobre sort en cinq à huit jours de travail, une boutique un peu plus. Si vous avez déjà des outils, on les relie plutôt que de les remplacer : le devis part en facture, la facture part chez le comptable, et vous arrêtez de retaper les mêmes lignes. À la fin, vous repartez avec tout.',
+      pricingFactors: ['Nombre de pages et de gabarits', 'Vente en ligne ou simple vitrine', 'Outils existants à relier ou à reprendre'],
     },
     {
-      id: 'reservation',
-      name: 'Réservation et fidélité',
-      tagline: 'Vous ne rappelez plus personne.',
+      id: 'reservation', name: 'Prise de rendez-vous', tagline: 'Vous ne rappelez plus personne.',
       features: [
         'Créneaux en ligne, confirmation automatique',
         'Rappel la veille, relance des clients endormis',
         'Lien avec votre agenda existant',
-        'Fichier clients avec historique et relances',
+        'Fichier clients avec historique',
         'Carte de fidélité dématérialisée si vous en voulez une',
       ],
-      cta: 'En discuter',
-      featured: false,
-      detailTitle: 'Ce que ça donne concrètement',
-      detail: 'Le client réserve depuis votre site, il reçoit sa confirmation, il est rappelé la veille, et votre agenda est à jour sans que personne y touche. Ce qui vous prenait deux heures par semaine au téléphone n’existe plus.',
-      pricingFactors: [
-        'Nombre de prestations et de ressources à gérer',
-        'Agenda et outils déjà en place',
-        'Paiement de l’acompte en ligne ou non',
-      ],
+      cta: 'En discuter', featured: false, detailTitle: 'Ce que ça donne concrètement',
+      detail: 'Le client réserve depuis votre site, il reçoit sa confirmation, il est rappelé la veille, et votre agenda est à jour sans que personne y touche. Les deux heures par semaine que vous passiez au téléphone n’existent plus.',
+      pricingFactors: ['Nombre de prestations et de ressources à gérer', 'Agenda et outils déjà en place', 'Paiement de l’acompte en ligne ou non'],
     },
     {
-      id: 'liaisons',
-      name: 'Liaisons et reprise d’outils',
-      tagline: 'Fini la double saisie.',
-      features: [
-        'Devis vers facture, export vers le comptable, alertes',
-        'Mise à jour et simplification d’un outil existant',
-        'Suppression des ressaisies d’un outil à l’autre',
-        'Travail par itérations courtes, facturé à la journée',
-        'Formation de vos équipes à la fin',
-      ],
-      cta: 'En discuter',
-      featured: false,
-      detailTitle: 'Ce que ça donne concrètement',
-      detail: 'On regarde ce que vous recopiez d’un endroit à l’autre, et on le relie. Pas besoin de tout remplacer : la plupart du temps, il suffit de faire parler entre eux les outils que vous avez déjà.',
-      pricingFactors: [
-        'Nombre d’outils à relier',
-        'Existence ou non d’une interface de connexion',
-        'Reprise légère ou refonte d’un outil ancien',
-      ],
-    },
-    {
-      id: 'marque',
-      name: 'Identité de marque',
-      tagline: 'Le positionnement d’abord.',
+      id: 'marque', name: 'Identité de marque', tagline: 'Le positionnement d’abord.',
       features: [
         'Ce que vous voulez que vos clients ressentent',
         'À qui vous parlez, tranché avec des chiffres',
@@ -234,110 +202,68 @@ export const OFFERS_TPE = {
         'La liste de ce qu’il faut produire, chiffrée',
         'Un document de règles, pas une image à interpréter',
       ],
-      cta: 'En discuter',
-      featured: false,
-      detailTitle: 'Ce que ça donne concrètement',
+      cta: 'En discuter', featured: false, detailTitle: 'Ce que ça donne concrètement',
       detail: 'Trois à cinq jours étalés sur deux ou trois semaines. On commence par vous et par vos clients, jamais par les couleurs. Vous repartez avec des règles écrites, utilisables par n’importe quel imprimeur ou graphiste sans nous.',
-      pricingFactors: [
-        'Création complète ou reprise d’une identité existante',
-        'Nombre de supports à couvrir',
-        'Production des visuels incluse ou non',
+      pricingFactors: ['Création complète ou reprise d’une identité existante', 'Nombre de supports à couvrir', 'Production des visuels incluse ou non'],
+    },
+    {
+      id: 'lancement', name: 'Aide au lancement', tagline: 'Avant d’ouvrir, et avant d’emprunter.',
+      features: [
+        'Le besoin réel, creusé en deux ou trois rendez-vous',
+        'Le modèle économique, éprouvé avant de s’engager',
+        'Le coût de revient et le seuil à partir duquel vous vous payez',
+        'Les chiffres et les hypothèses qui nourriront votre dossier',
+        'La recherche de fournisseurs et de prestataires, en option',
       ],
+      cta: 'En discuter', featured: false, detailTitle: 'Ce que ça donne concrètement',
+      detail: 'On ne rédige pas votre business plan à votre place : on rassemble avec vous tout ce qui va le nourrir, et on vérifie que ce que vous voulez faire et ce que vous ferez réellement restent la même chose. Vous repartez avec un prévisionnel en tableur, formules ouvertes.',
+      pricingFactors: ['État du dossier au départ', 'Nombre de produits ou de prestations à chiffrer', 'Recherche de fournisseurs incluse ou non'],
     },
   ],
   en: [
-    {
-      id: 'site',
-      name: 'Website and shop',
-      tagline: 'A storefront that stands up.',
-      features: [
-        'Website or online shop',
-        'Contact form and online booking',
-        'Payment, delivery, stock if you sell',
-        'Basic SEO and pages that load fast',
-        'Code, source files and access in your name',
-      ],
-      cta: 'Discuss it',
-      featured: true,
-      detailTitle: 'What it looks like in practice',
-      detail: 'We start from what you sell and who buys from you. A plain site takes a few days, a shop a little longer. We move in small steps you approve one by one, and at the end you leave with everything: code, sources, hosting in your name.',
-      pricingFactors: ['Number of pages and templates', 'Online sales or plain storefront', 'Content and photos supplied or to be produced'],
-    },
-    {
-      id: 'reservation',
-      name: 'Booking and loyalty',
-      tagline: 'You stop calling people back.',
-      features: [
-        'Online slots, automatic confirmation',
-        'Reminder the day before, win-back for dormant clients',
-        'Linked to your existing calendar',
-        'Client records with history and follow-ups',
-        'Digital loyalty card if you want one',
-      ],
-      cta: 'Discuss it',
-      featured: false,
-      detailTitle: 'What it looks like in practice',
+    { id: 'site', name: 'Website and shop', tagline: 'A storefront that stands up.',
+      features: ['Website or online shop', 'Contact form and online booking', 'Payment, delivery, stock if you sell',
+                 'Links to your tools: quote to invoice, accounting export', 'Code, source files and access in your name'],
+      cta: 'Discuss it', featured: true, detailTitle: 'What it looks like in practice',
+      detail: 'We start from what you sell and who buys from you. A plain site takes five to eight working days, a shop a little longer. If you already have tools, we connect them rather than replace them. At the end you leave with everything.',
+      pricingFactors: ['Number of pages and templates', 'Online sales or plain storefront', 'Existing tools to connect or rework'] },
+    { id: 'reservation', name: 'Online booking', tagline: 'You stop calling people back.',
+      features: ['Online slots, automatic confirmation', 'Reminder the day before, win-back for dormant clients',
+                 'Linked to your existing calendar', 'Client records with history', 'Digital loyalty card if you want one'],
+      cta: 'Discuss it', featured: false, detailTitle: 'What it looks like in practice',
       detail: 'The client books from your site, gets a confirmation, is reminded the day before, and your calendar stays up to date without anyone touching it. The two hours a week you spent on the phone no longer exist.',
-      pricingFactors: ['Number of services and resources', 'Calendar and tools already in place', 'Online deposit or not'],
-    },
-    {
-      id: 'liaisons',
-      name: 'Integrations and tool rework',
-      tagline: 'No more double entry.',
-      features: [
-        'Quote to invoice, accounting export, alerts',
-        'Update and simplification of an existing tool',
-        'End of retyping from one tool into another',
-        'Short iterations, billed by the day',
-        'Training for your team at the end',
-      ],
-      cta: 'Discuss it',
-      featured: false,
-      detailTitle: 'What it looks like in practice',
-      detail: 'We look at what you retype from one place to another, and we connect it. Most of the time there is no need to replace anything: the tools you already have just need to talk to each other.',
-      pricingFactors: ['Number of tools to connect', 'Whether a connection interface exists', 'Light rework or full rebuild of an older tool'],
-    },
-    {
-      id: 'marque',
-      name: 'Brand identity',
-      tagline: 'Positioning first.',
-      features: [
-        'What you want your customers to feel',
-        'Who you speak to, decided with figures',
-        'Name, tone, colours, materials, usage rules',
-        'The list of what to produce, priced',
-        'A rulebook, not an image to interpret',
-      ],
-      cta: 'Discuss it',
-      featured: false,
-      detailTitle: 'What it looks like in practice',
+      pricingFactors: ['Number of services and resources', 'Calendar and tools already in place', 'Online deposit or not'] },
+    { id: 'marque', name: 'Brand identity', tagline: 'Positioning first.',
+      features: ['What you want your customers to feel', 'Who you speak to, decided with figures',
+                 'Name, tone, colours, materials, usage rules', 'The list of what to produce, priced', 'A rulebook, not an image to interpret'],
+      cta: 'Discuss it', featured: false, detailTitle: 'What it looks like in practice',
       detail: 'Three to five days spread over two or three weeks. We start from you and your customers, never from the colours. You leave with written rules any printer or designer can use without us.',
-      pricingFactors: ['Full creation or rework of an existing identity', 'Number of media to cover', 'Visual production included or not'],
-    },
+      pricingFactors: ['Full creation or rework of an existing identity', 'Number of media to cover', 'Visual production included or not'] },
+    { id: 'lancement', name: 'Launch support', tagline: 'Before you open, and before you borrow.',
+      features: ['The real need, dug out over two or three meetings', 'The business model, tested before you commit',
+                 'Unit cost and the point from which you pay yourself', 'The figures and assumptions that will feed your file',
+                 'Supplier and provider sourcing, as an option'],
+      cta: 'Discuss it', featured: false, detailTitle: 'What it looks like in practice',
+      detail: 'We do not write your business plan for you: we gather everything that will feed it, and we check that what you want to do and what you will actually do remain the same thing. You leave with a forecast spreadsheet, formulas open.',
+      pricingFactors: ['State of the file at the start', 'Number of products or services to price', 'Supplier sourcing included or not'] },
   ],
 };
 
-/* Les prix des offres TPE. Même forme que `prices` dans la page Offres :
-   un montant, une note qui dit ce qui le fait varier, et la nature du
-   tarif. Chez une TPE tout est à la journée ou au forfait court — il n'y
-   a pas d'effectif à facturer. */
 export const PRICES_TPE = {
   fr: {
-    site: { amount: 'dès 1 900 €', note: 'Vitrine dès 1 900 € · boutique dès 3 200 € · selon le nombre de pages et la vente en ligne', type: 'Forfait' },
+    site: { amount: 'dès 1 900 €', note: 'Vitrine dès 1 900 € · boutique dès 3 200 € · liaisons avec vos outils à 450 €/jour', type: 'Forfait' },
     reservation: { amount: 'dès 1 400 €', note: 'Créneaux, confirmation et rappels · lien avec votre agenda existant compris', type: 'Forfait' },
-    liaisons: { amount: '450 €/jour', note: 'Compter 3 à 6 jours pour relier deux ou trois outils · estimation donnée avant de démarrer', type: 'Au temps passé' },
     marque: { amount: 'dès 1 600 €', note: '3 à 5 jours étalés sur deux à trois semaines · document de règles compris', type: 'Forfait' },
+    lancement: { amount: 'dès 1 200 €', note: '2 à 4 jours selon l’état du dossier · recherche de fournisseurs chiffrée à part', type: 'Forfait' },
   },
   en: {
-    site: { amount: 'from €1,900', note: 'Storefront from €1,900 · shop from €3,200 · depending on pages and online sales', type: 'Fixed price' },
+    site: { amount: 'from €1,900', note: 'Storefront from €1,900 · shop from €3,200 · integrations at €450/day', type: 'Fixed price' },
     reservation: { amount: 'from €1,400', note: 'Slots, confirmation and reminders · link to your existing calendar included', type: 'Fixed price' },
-    liaisons: { amount: '€450/day', note: 'Count 3 to 6 days to connect two or three tools · estimate given before we start', type: 'Time spent' },
     marque: { amount: 'from €1,600', note: '3 to 5 days over two or three weeks · rulebook included', type: 'Fixed price' },
+    lancement: { amount: 'from €1,200', note: '2 to 4 days depending on the file · supplier sourcing priced separately', type: 'Fixed price' },
   },
 };
 
-/* Ce qui change dans l'en-tête et le pavé de facturation de la page
-   Offres. Le reste (QCM, FAQ, bande directe) vaut pour les deux. */
 export const OFFRES_TPE = {
   fr: {
     metaTitle: 'Offres & tarifs TPE · site, réservation, liaisons, marque',
@@ -382,6 +308,70 @@ export const OFFRES_TPE = {
    valeur pour les moteurs, et quiconque y arrive par un lien externe la
    lit normalement — avec un bandeau qui dit franchement à qui elle
    s'adresse et propose la bascule. Rediriger de force serait hostile. */
+/* ============================================================
+   LE RÉSUMÉ DE FIN.
+
+   Il remplace le panneau qui se remplissait sur le côté pendant la
+   traversée : celui-là passait par-dessus les titres, et un sommaire qui
+   s'accumule en marge est devenu un tic qu'on reconnaît au premier coup
+   d'œil.
+
+   Ici, une fois la traversée finie, on pose la liste complète : ce qu'on
+   vend, en une ligne, avec la durée et le prix de départ. C'est la seule
+   endroit de l'accueil où un prix apparaît, et c'est voulu — quelqu'un
+   qui a regardé toute la traversée se demande combien ça coûte.
+   ============================================================ */
+export const RESUME = {
+  tpe: {
+    fr: {
+      label: 'Ce qu’on construit',
+      lignes: [
+        { nom: 'Site et boutique', quoi: 'Vitrine ou boutique, formulaire, paiement, et les liaisons avec les outils que vous avez déjà.', duree: '5 à 8 jours', prix: 'dès 1 900 €' },
+        { nom: 'Prise de rendez-vous', quoi: 'Créneaux en ligne, confirmation, rappel la veille, relance des clients endormis.', duree: '3 à 5 jours', prix: 'dès 1 400 €' },
+        { nom: 'Identité de marque', quoi: 'Le positionnement, le ton, les couleurs, et la liste de ce qu’il faut produire.', duree: '3 à 5 jours', prix: 'dès 1 600 €' },
+        { nom: 'Aide au lancement', quoi: 'Le modèle, le coût de revient, le seuil de rentabilité, et de quoi nourrir votre dossier.', duree: '2 à 4 jours', prix: 'dès 1 200 €' },
+      ],
+      pied: 'Prix de départ, annoncés avant de commencer. Vous pouvez vous arrêter à la fin de chaque étape.',
+      cta: 'Voir le détail et les tarifs',
+    },
+    en: {
+      label: 'What we build',
+      lignes: [
+        { nom: 'Website and shop', quoi: 'Storefront or shop, forms, payment, and links to the tools you already have.', duree: '5 to 8 days', prix: 'from €1,900' },
+        { nom: 'Online booking', quoi: 'Online slots, confirmation, reminder the day before, win-back for dormant clients.', duree: '3 to 5 days', prix: 'from €1,400' },
+        { nom: 'Brand identity', quoi: 'Positioning, tone, colours, and the list of what to produce.', duree: '3 to 5 days', prix: 'from €1,600' },
+        { nom: 'Launch support', quoi: 'The model, the unit cost, the break-even point, and what feeds your file.', duree: '2 to 4 days', prix: 'from €1,200' },
+      ],
+      pied: 'Starting prices, stated before we begin. You can stop at the end of any stage.',
+      cta: 'See the detail and pricing',
+    },
+  },
+  pme: {
+    fr: {
+      label: 'Ce qu’on fait',
+      lignes: [
+        { nom: 'Audit numérique', quoi: 'Chaque personne rencontrée, chaque abonnement ouvert, chaque donnée suivie d’un bout à l’autre.', duree: '2 à 5 jours', prix: 'dès 990 €' },
+        { nom: 'Audit et mise en œuvre', quoi: 'L’audit, puis les chantiers que vous retenez. L’audit est intégralement déduit.', duree: 'à la journée', prix: '450 €/jour' },
+        { nom: 'Développement et automatisation', quoi: 'Le besoin est déjà cadré : intégrations, automatisations, site ou outil métier.', duree: '5 à 15 jours', prix: 'dès 1 200 €' },
+        { nom: 'Suivi mensuel', quoi: 'Contrôles réguliers, corrections, évolutions. Résiliable à tout moment.', duree: 'mensuel', prix: 'dès 290 €/mois' },
+      ],
+      pied: 'Tarifs de lancement réservés aux trois premières entreprises accompagnées, valables jusqu’au 31 décembre 2026.',
+      cta: 'Voir le détail et les tarifs',
+    },
+    en: {
+      label: 'What we do',
+      lignes: [
+        { nom: 'Digital audit', quoi: 'Every person interviewed, every subscription opened, one piece of data followed end to end.', duree: '2 to 5 days', prix: 'from €990' },
+        { nom: 'Audit and delivery', quoi: 'The audit, then the work you select. The audit is fully deducted.', duree: 'by the day', prix: '€450/day' },
+        { nom: 'Development and automation', quoi: 'The need is already scoped: integrations, automation, website or business tool.', duree: '5 to 15 days', prix: 'from €1,200' },
+        { nom: 'Monthly retainer', quoi: 'Regular checks, fixes, improvements. Cancel at any time.', duree: 'monthly', prix: 'from €290/mo' },
+      ],
+      pied: 'Launch rates reserved for the first three companies, valid until 31 December 2026.',
+      cta: 'See the detail and pricing',
+    },
+  },
+};
+
 export const PAGES_PROFIL = { '/exemple': 'pme', '/pourquoi': 'pme' };
 
 export const RESERVE = {
