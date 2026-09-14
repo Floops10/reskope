@@ -10,7 +10,7 @@ const T = {
   fr: {
     questions: [
       {
-        id: 'connect', q: 'Vos outils communiquent-ils entre eux ?', type: 'single',
+        id: 'connect', q: 'Vos outils communiquent-ils entre eux ?', type: 'single',
         options: [
           { label: 'Oui, tout est connecté', tags: [] },
           { label: 'En partie seulement', tags: ['integration'] },
@@ -19,7 +19,7 @@ const T = {
         ],
       },
       {
-        id: 'temps', q: 'Quelles tâches vous prennent le plus de temps ?', hint: 'Plusieurs choix possibles.', type: 'multi',
+        id: 'temps', q: 'Quelles tâches vous prennent le plus de temps ?', hint: 'Plusieurs choix possibles.', type: 'multi',
         options: [
           { label: 'Saisies ou ressaisies en double', tags: ['automatisation', 'integration'] },
           { label: 'Relances et e-mails répétitifs', tags: ['automatisation'] },
@@ -29,7 +29,7 @@ const T = {
         ],
       },
       {
-        id: 'donnees', q: 'Vos données sont-elles fiables et au même endroit ?', type: 'single',
+        id: 'donnees', q: 'Vos données sont-elles fiables et au même endroit ?', type: 'single',
         options: [
           { label: 'Oui, une source unique', tags: [] },
           { label: 'Éparpillées dans plusieurs outils', tags: ['donnees', 'integration'] },
@@ -37,7 +37,7 @@ const T = {
         ],
       },
       {
-        id: 'manque', q: 'Un logiciel vous manque-t-il pour un besoin précis ?', type: 'single',
+        id: 'manque', q: 'Un logiciel vous manque-t-il pour un besoin précis ?', type: 'single',
         options: [
           { label: 'Oui, clairement', tags: ['developpement'] },
           { label: 'Peut-être, à creuser', tags: ['developpement', 'audit'] },
@@ -45,7 +45,7 @@ const T = {
         ],
       },
       {
-        id: 'vieux', q: 'Un de vos outils actuels est-il vieux ou inadapté ?', type: 'single',
+        id: 'vieux', q: 'Un de vos outils actuels est-il vieux ou inadapté ?', type: 'single',
         options: [
           { label: 'Oui, il faudrait le refaire', tags: ['refonte'] },
           { label: 'Il fait le job, sans plus', tags: ['refonte'] },
@@ -53,7 +53,7 @@ const T = {
         ],
       },
       {
-        id: 'synergie', q: 'L’information circule-t-elle bien entre vos équipes ?', type: 'single',
+        id: 'synergie', q: 'L’information circule-t-elle bien entre vos équipes ?', type: 'single',
         options: [
           { label: 'Oui, ça circule bien', tags: [] },
           { label: 'Moyennement', tags: ['synergie'] },
@@ -61,7 +61,7 @@ const T = {
         ],
       },
       {
-        id: 'priorite', q: 'Qu’est-ce qui compte le plus pour vous ?', hint: 'Plusieurs choix possibles.', type: 'multi',
+        id: 'priorite', q: 'Qu’est-ce qui compte le plus pour vous ?', hint: 'Plusieurs choix possibles.', type: 'multi',
         options: [
           { label: 'Gagner du temps', tags: ['automatisation'] },
           { label: 'Réduire les coûts', tags: ['cout'] },
@@ -70,7 +70,7 @@ const T = {
         ],
       },
       {
-        id: 'taille', q: 'Combien de personnes sont concernées ?', type: 'single',
+        id: 'taille', q: 'Combien de personnes sont concernées ?', type: 'single',
         options: [
           { label: '1 à 5', tags: [], size: 'une petite équipe (1 à 5 personnes)' },
           { label: '6 à 20', tags: [], size: 'une équipe de 6 à 20 personnes' },
@@ -94,26 +94,26 @@ const T = {
     },
     defaultSize: 'votre équipe',
     message: ({ needs, offer, size }) => {
-      const lines = ['Bonjour,', '', 'Je viens de remplir le questionnaire sur le site Reskope.', '', `Mon contexte : ${size}.`];
+      const lines = ['Bonjour,', '', 'Je viens de remplir le questionnaire sur le site Reskope.', '', `Mon contexte : ${size}.`];
       if (needs.length) {
-        lines.push('', 'Ce que j’aimerais améliorer :');
+        lines.push('', 'Ce que j’aimerais améliorer :');
         needs.forEach((n) => lines.push(`- ${n}`));
       }
-      lines.push('', `L’accompagnement qui semble correspondre : ${offer}.`, '', 'Peut-on en discuter ?', '');
+      lines.push('', `L’accompagnement qui semble correspondre : ${offer}.`, '', 'Peut-on en discuter ?', '');
       return lines.join('\n');
     },
     subjectPrefix: 'Reskope · demande d’accompagnement',
     subjectFallback: 'questionnaire',
     ui: {
       eyebrow: 'Votre accompagnement',
-      recoLead: 'D’après vos réponses, le plus juste pour vous :',
-      subNeeds: 'On se concentrerait surtout sur :',
+      recoLead: 'D’après vos réponses, le plus juste pour vous :',
+      subNeeds: 'On se concentrerait surtout sur :',
       subNone: 'Tout semble déjà bien en place. Un audit léger confirmerait qu’il n’y a rien à gratter, ou révélerait les derniers gains cachés.',
       msgLabel: 'Votre message (modifiable)',
       name: 'Nom', email: 'E-mail',
       back: 'Revenir', send: 'Envoyer ma demande',
       sending: 'Envoi en cours…',
-      successTitle: 'Demande envoyée !',
+      successTitle: 'Demande envoyée !',
       successText: 'On vous répond sous 24 h, avec une première idée de la marche à suivre.',
       errorText: 'Une erreur est survenue. Réessayez, ou écrivez-nous directement.',
       note: 'Aucun engagement. On ajuste avec vous lors d’un premier échange.',

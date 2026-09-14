@@ -49,7 +49,7 @@ export const STATS = {
       id: 'workaboutwork',
       value: 60,
       suffix: '%',
-      label: `du temps englouti par le « travail autour du travail » : chercher l'information, jongler entre les apps, réunions de statut.`,
+      label: `du temps englouti par le « travail autour du travail » : chercher l'information, jongler entre les apps, réunions de statut.`,
       source: {
         label: 'Asana, Anatomy of Work Index 2021',
         url: 'https://www.businesswire.com/news/home/20210114005374/en/Asana-Anatomy-of-Work-Index-2021-Work-About-Work-Is-Dominating-in-a-Distributed-World',
@@ -70,7 +70,7 @@ export const STATS = {
       id: 'email',
       value: 47,
       suffix: '%',
-      label: `du temps passé à gérer ses e-mails (28 %) et à chercher de l'information (19 %).`,
+      label: `du temps passé à gérer ses e-mails (28 %) et à chercher de l'information (19 %).`,
       source: {
         label: 'McKinsey Global Institute, The Social Economy, 2012',
         url: 'https://www.mckinsey.com/industries/technology-media-and-telecommunications/our-insights/the-social-economy',
@@ -80,7 +80,7 @@ export const STATS = {
       id: 'automation',
       value: 30,
       suffix: '%',
-      label: `des activités sont automatisables dans 60 % des métiers, soit près d'1,5 jour par semaine.`,
+      label: `des activités sont automatisables dans 60 % des métiers, soit près d'1,5 jour par semaine.`,
       source: {
         label: 'McKinsey, A Future That Works, 2017',
         url: 'https://www.mckinsey.com/featured-insights/digital-disruption/harnessing-automation-for-a-future-that-works',
@@ -201,7 +201,7 @@ export const OFFERS = {
         'Cartographie complète de vos outils et usages',
         'Identification des doublons, frictions et coûts cachés',
         'Bilan priorisé par impact, que vous gardez',
-        'Recommandations actionnables : vous décidez de la suite',
+        'Recommandations actionnables : vous décidez de la suite',
       ],
       cta: 'Demander un audit',
       featured: false,
@@ -219,15 +219,15 @@ export const OFFERS = {
       tagline: 'On identifie, on règle.',
       features: [
         `Tout l'audit numérique, inclus`,
-        'Réalisation : intégrations, automatisations, site web',
+        'Réalisation : intégrations, automatisations, site web',
         `Développement d'outils sur-mesure si besoin`,
         'Facturable à la journée (estimation fournie en amont)',
-        'Vous choisissez : on fait tout, ou vous reprenez la main',
+        'Vous choisissez : on fait tout, ou vous reprenez la main',
       ],
       cta: 'En discuter',
       featured: true,
       detailTitle: 'Ce que ça donne concrètement',
-      detail: `L'audit d'abord, même rigueur, même présence terrain. Puis la réalisation : intégrations entre outils, automatisations, site web ou application métier. Chaque journée de réalisation est estimée avant démarrage et tracée avec vous. Si à mi-chemin vous voulez reprendre la main, c'est possible.`,
+      detail: `L'audit d'abord, même rigueur, même présence terrain. Puis la réalisation : intégrations entre outils, automatisations, site web ou application métier. Chaque journée de réalisation est estimée avant démarrage et tracée avec vous. Si à mi-chemin vous voulez reprendre la main, c'est possible.`,
       pricingFactors: [
         `Périmètre de réalisation défini après l'audit`,
         `Nombre de jours d'implémentation estimés`,
@@ -248,7 +248,7 @@ export const OFFERS = {
       cta: 'Décrire mon besoin',
       featured: false,
       detailTitle: 'Ce que ça donne concrètement',
-      detail: `Vous avez un besoin clair : un site, une application métier, une automatisation, une intégration. Pas besoin d'audit préalable. On construit de la maquette au déploiement, sans intermédiaire. Tout est estimé en jours avant de démarrer, vous savez ce que vous payez et pourquoi.`,
+      detail: `Vous avez un besoin clair : un site, une application métier, une automatisation, une intégration. Pas besoin d'audit préalable. On construit de la maquette au déploiement, sans intermédiaire. Tout est estimé en jours avant de démarrer, vous savez ce que vous payez et pourquoi.`,
       pricingFactors: [
         `Complexité fonctionnelle (pages, logique métier, APIs)`,
         `Technologies retenues (no-code, développement, IA)`,
@@ -368,24 +368,24 @@ export const OFFERS = {
 export const FAQ = {
   fr: [
     {
-      q: 'Combien de temps dure un audit ?',
+      q: 'Combien de temps dure un audit ?',
       a: `Selon la taille de l'équipe, comptez de quelques jours à deux semaines entre les entretiens, l'analyse et la restitution du bilan.`,
     },
     {
-      q: 'Faut-il changer tous nos outils ?',
+      q: 'Faut-il changer tous nos outils ?',
       a: `Rarement. L'objectif est de mieux utiliser l'existant, de connecter ce qui doit l'être, et de n'ajouter un outil que lorsqu'il fait gagner du temps.`,
     },
     {
-      q: `Le bilan m'engage-t-il à prendre la mise en œuvre ?`,
-      a: `Non. Le bilan est un livrable autonome : vous pouvez l'appliquer vous-même, avec votre équipe, ou me confier la réalisation.`,
+      q: `Le bilan m'engage-t-il à prendre la mise en œuvre ?`,
+      a: `Non. Le bilan est un livrable autonome : vous pouvez l'appliquer vous-même, avec votre équipe, ou me confier la réalisation.`,
     },
     {
-      q: 'Travaillez-vous avec les petites structures ?',
+      q: 'Travaillez-vous avec les petites structures ?',
       a: `Oui. L'approche terrain, salarié par salarié, est particulièrement efficace dans les TPE, PME et équipes en croissance.`,
     },
     {
-      q: 'Et si le bilan ne m’apporte rien ?',
-      a: `Vous ne le payez pas. Vous disposez de sept jours après la remise pour nous le dire par écrit : on reprend le bilan sans supplément, ou on annule la facture. Le détail figure dans les conditions générales de vente.`,
+      q: 'Et si le bilan ne m’apporte rien ?',
+      a: `Vous ne le payez pas. Vous disposez de sept jours après la remise pour nous le dire par écrit : on reprend le bilan sans supplément, ou on annule la facture. Le détail figure dans les conditions générales de vente.`,
     },
   ],
   en: [

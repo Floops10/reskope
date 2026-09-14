@@ -28,14 +28,14 @@ const CONTENT = {
     /* — 1. Hero — */
     heroTitle: 'Vos équipes perdent des heures dans leurs outils.',
     line1: "Des outils qui ne se parlent pas, des données éparpillées, des usages que personne n'a cartographiés. Un coût invisible, mais bien réel.",
-    line2: "Reskope cartographie votre écosystème, puis relie, simplifie et construit ce qui manque : du site à l'outil métier, jusqu'aux automatisations. Au grand jour, jalon après jalon.",
+    line2: "Reskope cartographie votre écosystème, puis relie, simplifie et construit ce qui manque : du site à l'outil métier, jusqu'aux automatisations. Au grand jour, jalon après jalon.",
     mark1: 'cartographiés',
     mark2: 'construit',
     closing: 'Cartographiez vos SI. Reprenez le contrôle.',
     offerings: [
       { title: 'Audit numérique', sub: 'On cartographie vos outils et vos usages, salarié par salarié.' },
       { title: 'Refonte d’outils', sub: 'On relie, on simplifie et on remet de l’ordre dans l’écosystème.' },
-      { title: 'Automatisation', sub: 'On supprime les tâches répétitives : intégrations, workflows, IA.' },
+      { title: 'Automatisation', sub: 'On supprime les tâches répétitives : intégrations, workflows, IA.' },
       { title: 'Alternatives économiques', sub: 'Des outils sobres et justes, à la place des usines à gaz.' },
     ],
     primary: 'Démarrer un audit',
@@ -64,7 +64,7 @@ const CONTENT = {
     toolsEyebrow: 'Outils maîtrisés',
     toolsTitle: 'Le terrain de jeu.',
     toolsLead:
-      'Une vingtaine d’outils qu’on maîtrise, qu’on connecte ou qu’on remplace. En voici quelques-uns ; si le vôtre n’y est pas, c’est justement le métier.',
+      'Une vingtaine d’outils qu’on maîtrise, qu’on connecte ou qu’on remplace. En voici quelques-uns ; si le vôtre n’y est pas, c’est justement le métier.',
 
     /* — 5. Philosophie — */
     whyEyebrow: 'Notre différence',
@@ -85,7 +85,7 @@ const CONTENT = {
       {
         id: 'conception',
         title: 'Conception',
-        text: 'On identifie les priorités par impact. On conçoit les connexions, automatisations et outils manquants. Rien n’est imposé : vous validez chaque étape.',
+        text: 'On identifie les priorités par impact. On conçoit les connexions, automatisations et outils manquants. Rien n’est imposé : vous validez chaque étape.',
       },
       {
         id: 'deploiement',
@@ -102,8 +102,8 @@ const CONTENT = {
     stats: [
       { label: 'outils qu’on maîtrise et sur lesquels on intervient', display: '20', value: 20, prefix: '', suffix: '', decimals: 0 },
       { label: 'jours maximum entre le premier entretien et la remise du bilan', display: '10', value: 10, prefix: '', suffix: '', decimals: 0 },
-      { label: 'de la démarche au grand jour : accès, jalons, livrables', display: '100 %', value: 100, prefix: '', suffix: ' %', decimals: 0 },
-      { label: 'bilan garanti : s’il ne vous apporte rien d’exploitable, vous ne le payez pas', display: '0 €', value: null },
+      { label: 'de la démarche au grand jour : accès, jalons, livrables', display: '100 %', value: 100, prefix: '', suffix: ' %', decimals: 0 },
+      { label: 'bilan garanti : s’il ne vous apporte rien d’exploitable, vous ne le payez pas', display: '0 €', value: null },
     ],
 
     /* — 8. Explorer — */

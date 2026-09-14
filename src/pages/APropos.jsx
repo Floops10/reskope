@@ -39,10 +39,10 @@ const CONTENT = {
   fr: {
     metaTitle: 'À propos · Thomy et Florian, le digital vu du terrain',
     metaDesc:
-      "Thomy et Florian, les deux personnes derrière Reskope. Une conviction : la productivité se gagne en comprenant ceux qui font le travail. Nos engagements, et ce qui est efficace selon votre taille.",
+      "Thomy et Florian, les deux personnes derrière Reskope. Une conviction : la productivité se gagne en comprenant ceux qui font le travail. Nos engagements, et ce qui est efficace selon votre taille.",
     eyebrow: 'À propos',
     title: "Terrain d'abord, technique ensuite.",
-    lead: "Reskope, c'est une conviction : la productivité ne se décrète pas d'en haut. Elle se gagne en comprenant ceux qui font le travail. On est deux à la porter.",
+    lead: "Reskope, c'est une conviction : la productivité ne se décrète pas d'en haut. Elle se gagne en comprenant ceux qui font le travail. On est deux à la porter.",
     duo: [
       { id: 'thomy', nom: 'Thomy', role: 'Stratégie · Modèle · Financement', alt: 'Thomy, cofondatrice de Reskope' },
       { id: 'florian', nom: 'Florian', role: 'Sites · Outils métier · Cartographie', alt: 'Florian Bouchart, cofondateur de Reskope' },
@@ -50,8 +50,8 @@ const CONTENT = {
     hello: "Bonjour, nous c'est Thomy et Florian.",
     bio: [
       "On ne fait pas du conseil à la chaîne. Sur chaque dossier, on s'investit comme s'il s'agissait de notre propre entreprise à faire grandir.",
-      "Thomy tient le sens, la stratégie et l'identité : ce que vous voulez faire, le modèle qui tient, et jusqu'à la recherche de financement. Florian tient la technique : les sites, les outils métier, et les logiciels qu'on relie entre eux. Les deux métiers se nourrissent l'un l'autre, et c'est ce qui fait qu'un dossier avance d'un seul tenant.",
-      "C'est une passion avant d'être un métier. On passe le temps qu'il faut sur chaque mission, parce qu'on veut un résultat concret et durable, pas une présentation qui fait joli. La qualité passe avant le reste : on ne bâcle jamais un projet pour aller plus vite ou facturer davantage.",
+      "Thomy tient le sens, la stratégie et l'identité : ce que vous voulez faire, le modèle qui tient, et jusqu'à la recherche de financement. Florian tient la technique : les sites, les outils métier, et les logiciels qu'on relie entre eux. Les deux métiers se nourrissent l'un l'autre, et c'est ce qui fait qu'un dossier avance d'un seul tenant.",
+      "C'est une passion avant d'être un métier. On passe le temps qu'il faut sur chaque mission, parce qu'on veut un résultat concret et durable, pas une présentation qui fait joli. La qualité passe avant le reste : on ne bâcle jamais un projet pour aller plus vite ou facturer davantage.",
     ],
     principesEyebrow: 'Nos engagements',
     principesTitle: 'Ce sur quoi on ne transige pas.',
@@ -65,7 +65,7 @@ const CONTENT = {
     sizeTitle: 'Ce qui est efficace dépend de votre taille.',
     sizeLead: "Il n'y a pas de stack universelle. Ce qui marche à 15 personnes ne marche pas à 80. Voici notre lecture, par palier.",
     tiers: [
-      { range: '5 à 20 pers.', label: 'Petite équipe', principle: '1 à 2 outils centraux, bien maîtrisés.', detail: "À ce stade, la complexité tue la productivité. L'objectif : un seul endroit pour chaque type d'information, et l'automatisation des tâches qui reviennent tous les jours.", wins: ['CRM simplifié', 'Outil de planning partagé', 'Automatisation des relances'] },
+      { range: '5 à 20 pers.', label: 'Petite équipe', principle: '1 à 2 outils centraux, bien maîtrisés.', detail: "À ce stade, la complexité tue la productivité. L'objectif : un seul endroit pour chaque type d'information, et l'automatisation des tâches qui reviennent tous les jours.", wins: ['CRM simplifié', 'Outil de planning partagé', 'Automatisation des relances'] },
       { range: '20 à 80 pers.', label: 'Équipe moyenne', principle: "Connecter l'existant avant d'acheter du neuf.", detail: "Les équipes ont leurs habitudes. Plutôt que d'imposer un nouvel outil, on cartographie ce qui existe et on construit les passerelles qui manquent, sans migration forcée.", wins: ['Plateforme centrale', 'Intégrations entre outils', 'Reporting automatisé'] },
       { range: '80 à 200 pers.', label: 'Entreprise en croissance', principle: 'Segmenter par métier, orchestrer par les données.', detail: "La complexité est réelle et légitime. On la cartographie pôle par pôle, on identifie les doublons entre équipes, et on pose les bases d'une architecture durable.", wins: ['Cartographie par pôle', 'APIs et flux de données', 'Gouvernance des accès'] },
     ],
@@ -82,7 +82,7 @@ const CONTENT = {
       'Développement web & outils métier',
       'Conduite du changement',
     ],
-    ctaH: 'On se parle ?',
+    ctaH: 'On se parle ?',
     ctaP: "Trente minutes, sans engagement. Vous repartez au minimum avec un regard extérieur honnête sur vos outils.",
     ctaBtn: 'Prendre contact',
   },

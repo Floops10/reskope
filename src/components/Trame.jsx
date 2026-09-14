@@ -65,7 +65,7 @@ export default function Trame() {
       className="trame"
       viewBox="0 0 400 400"
       role="img"
-      aria-label="Schéma d'un système numérique structuré : des nœuds reliés par des connexions nettes."
+      aria-label="Schéma d'un système numérique structuré : des nœuds reliés par des connexions nettes."
     >
       {LINKS.map(([a, b], i) => (
         <path

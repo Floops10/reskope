@@ -23,7 +23,7 @@ const CONTENT = {
   fr: {
     eyebrow: 'Zone d’intervention',
     title: 'Sur le terrain, pas à distance.',
-    lead: 'Basés à Valenciennes et à Lille, on intervient sur place dans tout le Hainaut et les Hauts-de-France. L’audit se fait chez vous, salarié par salarié : c’est ce qui en fait la valeur.',
+    lead: 'Basés à Valenciennes et à Lille, on intervient sur place dans tout le Hainaut et les Hauts-de-France. L’audit se fait chez vous, salarié par salarié : c’est ce qui en fait la valeur.',
     radius: 'Déplacement sans frais dans un rayon de 60 km',
     beyond: 'Au-delà, les frais sont annoncés dans le devis, jamais après.',
     itinerary: 'Ouvrir l’itinéraire',

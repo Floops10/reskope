@@ -165,7 +165,7 @@ function Matter({ progress, mouse, deadRef }) {
     m.instanceMatrix.needsUpdate = true;
     if (m.instanceColor) m.instanceColor.needsUpdate = true;
     if (deadRef.current) {
-      deadRef.current.textContent = `${Math.round((dead / data.deadTotal) * 100)} %`;
+      deadRef.current.textContent = `${Math.round((dead / data.deadTotal) * 100)} %`;
     }
 
     /* nervures : apparition pendant la formation */

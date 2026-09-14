@@ -14,18 +14,18 @@ const CONTENT = {
   fr: {
     metaTitle: 'Offres & tarifs · audit, mise en œuvre, suivi',
     metaDesc:
-      "Quatre façons de travailler ensemble, prix affichés : Audit dès 990 € (tarif de lancement), réalisation à 450 €/jour, développement dès 1 200 €, suivi dès 290 €/mois. Ce qui est fixe, ce qui varie.",
+      "Quatre façons de travailler ensemble, prix affichés : Audit dès 990 € (tarif de lancement), réalisation à 450 €/jour, développement dès 1 200 €, suivi dès 290 €/mois. Ce qui est fixe, ce qui varie.",
     eyebrow: 'Offres',
     title: 'Quatre façons de travailler ensemble.',
     lead: "Chaque mission est différente, mais les tarifs sont clairs dès le départ. On définit ensemble le périmètre, et vous savez ce que vous payez, et pourquoi. Les tarifs d'audit ci-dessous sont des tarifs de lancement, réservés aux 3 premières entreprises accompagnées et valables jusqu'au 31 décembre 2026.",
-    action: 'Pas sûr ? Trouvez votre offre',
+    action: 'Pas sûr ? Trouvez votre offre',
     badge: 'Le plus choisi',
     offerLabel: 'Offre',
     pricingLabel: 'Ce qui influence le tarif',
     detailLabel: 'Voir les détails',
     hideLabel: 'Réduire',
     prices: {
-      audit: { amount: 'dès 990 €', note: 'Forfait selon l’effectif : 990 € (≤ 10 pers.) · 1 490 € (10-30) · 2 400 € (30-80)', type: 'Tarif de lancement' },
+      audit: { amount: 'dès 990 €', note: 'Forfait selon l’effectif : 990 € (≤ 10 pers.) · 1 490 € (10-30) · 2 400 € (30-80)', type: 'Tarif de lancement' },
       'audit-plus': { amount: '450 €/jour', note: 'Audit inclus et intégralement déduit, réalisation estimée avant de démarrer', type: 'Au temps passé' },
       developpement: { amount: 'dès 1 200 €', note: 'Automatisation dès 1 200 € · site vitrine dès 1 900 € · outil interne dès 3 500 €', type: 'Selon la complexité' },
       suivi: { amount: 'dès 290 €/mois', note: '½ journée 290 € · 1 journée 490 € · 2 journées 890 €', type: 'Abonnement' },
@@ -33,19 +33,19 @@ const CONTENT = {
     billing: {
       kicker: 'Transparence',
       title: 'Comment on facture.',
-      text: 'Un jour d’intervention = 450 €. L’audit et l’abonnement sont à prix fixe ; l’audit est intégralement déduit si vous nous confiez la mise en œuvre. La réalisation dépend du temps passé et de la complexité, estimée et validée avec vous avant de démarrer. Aucune surprise sur la facture.',
+      text: 'Un jour d’intervention = 450 €. L’audit et l’abonnement sont à prix fixe ; l’audit est intégralement déduit si vous nous confiez la mise en œuvre. La réalisation dépend du temps passé et de la complexité, estimée et validée avec vous avant de démarrer. Aucune surprise sur la facture.',
       note: 'Devis gratuit, valable 30 jours. Tarifs nets, TVA non applicable, article 293 B du CGI. Tarif de lancement de l’audit réservé aux 3 premières entreprises accompagnées, valable jusqu’au 31 décembre 2026.',
     },
-    directH: "Vous savez déjà ce qu'il vous faut ?",
-    directP: "Pas besoin de passer par l'audit : si votre problème est clair et que vous voulez juste passer à la réalisation, écrivez-nous directement. On gagne du temps tous les deux.",
+    directH: "Vous savez déjà ce qu'il vous faut ?",
+    directP: "Pas besoin de passer par l'audit : si votre problème est clair et que vous voulez juste passer à la réalisation, écrivez-nous directement. On gagne du temps tous les deux.",
     directBtn: 'M\'écrire directement',
-    qcmEyebrow: 'Pas sûr de votre besoin ?',
+    qcmEyebrow: 'Pas sûr de votre besoin ?',
     qcmTitle: "Deux minutes pour cibler ce qu'il vous faut.",
     qcmLead:
-      "Quelques questions, et on vous propose l'accompagnement le plus juste. Pas le plus cher : le plus utile.",
+      "Quelques questions, et on vous propose l'accompagnement le plus juste. Pas le plus cher : le plus utile.",
     faqEyebrow: 'Questions fréquentes',
     faqTitle: "Ce qu'on me demande souvent.",
-    faqLead: "Une question qui n'est pas là ? Écrivez-nous, on répond vite et franchement.",
+    faqLead: "Une question qui n'est pas là ? Écrivez-nous, on répond vite et franchement.",
   },
   en: {
     metaTitle: 'Offers & pricing · audit, delivery, retainer',
@@ -148,7 +148,7 @@ export default function Offres() {
           offres, là où la question se pose vraiment : « et si je ne suis
           pas dans la bonne case ? ». Un bouton, pas un lien de page :
           c'est un réglage qu'on change, on reste où on est. */}
-      <section className="section section--tight">
+      <section className="section section--tight couture-claire">
         <div className="container">
           <Reveal>
             <RevealItem className="pont">

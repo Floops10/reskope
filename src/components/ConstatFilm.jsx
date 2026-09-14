@@ -246,7 +246,7 @@ export default function ConstatFilm({ cards, film, sourceLabel, calcLabel, local
       });
 
       /* Compteurs */
-      if (numRefs.current.pct) numRefs.current.pct.textContent = Math.round(47 * smooth(ph(p, B[0], B[0] + 0.09))) + ' %';
+      if (numRefs.current.pct) numRefs.current.pct.textContent = Math.round(47 * smooth(ph(p, B[0], B[0] + 0.09))) + ' %';
       if (numRefs.current.hrs) numRefs.current.hrs.textContent = fmt1.format(16.5 * smooth(ph(p, B[1], B[1] + 0.09))) + ' h';
       if (numRefs.current.eur) numRefs.current.eur.textContent = fmt.format(Math.round(film.costValue * smooth(ph(p, B[2], B[2] + 0.11)))) + ' €';
 

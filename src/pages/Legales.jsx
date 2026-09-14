@@ -43,17 +43,17 @@ const MENTIONS = {
     eyebrow: 'Informations',
     title: 'Mentions légales.',
     lead: "Les informations légales relatives à l'éditeur et à l'hébergement de ce site.",
-    updated: 'Dernière mise à jour : [À COMPLÉTER : date].',
+    updated: 'Dernière mise à jour : [À COMPLÉTER : date].',
     sections: [
       { h: 'Éditeur du site', p: [
-        `Le site Reskope est édité par Florian Bouchart, [À COMPLÉTER : forme juridique, ex. entrepreneur individuel / micro-entreprise].`,
-        'Siège : [À COMPLÉTER : adresse du siège].',
-        'SIRET : [À COMPLÉTER : n° SIRET] · Code APE : [À COMPLÉTER : code APE].',
-        'TVA : [À COMPLÉTER : « TVA non applicable, art. 293 B du CGI » en franchise en base, ou n° de TVA intracommunautaire si assujetti].',
-        `Contact : ${CONTACT.email}`,
+        `Le site Reskope est édité par Florian Bouchart, [À COMPLÉTER : forme juridique, ex. entrepreneur individuel / micro-entreprise].`,
+        'Siège : [À COMPLÉTER : adresse du siège].',
+        'SIRET : [À COMPLÉTER : n° SIRET] · Code APE : [À COMPLÉTER : code APE].',
+        'TVA : [À COMPLÉTER : « TVA non applicable, art. 293 B du CGI » en franchise en base, ou n° de TVA intracommunautaire si assujetti].',
+        `Contact : ${CONTACT.email}`,
       ] },
       { h: 'Directeur de la publication', p: [
-        'Directeur de la publication : Florian Bouchart.',
+        'Directeur de la publication : Florian Bouchart.',
       ] },
       { h: 'Hébergement', p: [
         'Le site est hébergé par GitHub, Inc. (service GitHub Pages), 88 Colin P. Kelly Jr Street, San Francisco, CA 94107, États-Unis · pages.github.com',
@@ -62,13 +62,13 @@ const MENTIONS = {
         "L'ensemble des contenus de ce site (textes, identité visuelle, logo, animations, code) est la propriété de Reskope, sauf mention contraire. Toute reproduction, représentation, modification ou adaptation, totale ou partielle, sans autorisation écrite préalable, est interdite et constitue une contrefaçon.",
       ] },
       { h: 'Données personnelles', p: [
-        `Les traitements de données personnelles réalisés via ce site (formulaires de contact, questionnaire) sont détaillés dans la politique de confidentialité. Pour toute question ou pour exercer vos droits : ${CONTACT.email}`,
+        `Les traitements de données personnelles réalisés via ce site (formulaires de contact, questionnaire) sont détaillés dans la politique de confidentialité. Pour toute question ou pour exercer vos droits : ${CONTACT.email}`,
       ] },
       { h: 'Cookies', p: [
         "Ce site n'utilise aucun cookie de suivi ou de publicité. Voir la politique de confidentialité pour le détail.",
       ] },
       { h: 'Responsabilité', p: [
-        "Reskope s'efforce d'assurer l'exactitude des informations publiées, sans pouvoir la garantir. Les liens externes sont fournis à titre informatif : Reskope n'est pas responsable de leur contenu.",
+        "Reskope s'efforce d'assurer l'exactitude des informations publiées, sans pouvoir la garantir. Les liens externes sont fournis à titre informatif : Reskope n'est pas responsable de leur contenu.",
       ] },
       { h: 'Droit applicable', p: [
         "Le présent site est soumis au droit français. À défaut de résolution amiable, les tribunaux français sont seuls compétents.",
@@ -121,13 +121,13 @@ const PRIVACY = {
     eyebrow: 'Vos données',
     title: 'Politique de confidentialité.',
     lead: 'Ce que ce site collecte (très peu), pourquoi, où vont vos données, et vos droits.',
-    updated: 'Dernière mise à jour : [À COMPLÉTER : date].',
+    updated: 'Dernière mise à jour : [À COMPLÉTER : date].',
     sections: [
       { h: 'Responsable du traitement', p: [
-        `Le responsable du traitement est Florian Bouchart (Reskope), [À COMPLÉTER : adresse]. Pour toute question relative à vos données : ${CONTACT.email}`,
+        `Le responsable du traitement est Florian Bouchart (Reskope), [À COMPLÉTER : adresse]. Pour toute question relative à vos données : ${CONTACT.email}`,
       ] },
       { h: 'Données collectées', p: [
-        "Ce site ne demande la création d'aucun compte et n'utilise aucun outil de suivi publicitaire ni de mesure d'audience. Les seules données personnelles collectées sont celles que vous transmettez volontairement via les formulaires de contact et le questionnaire : nom, adresse e-mail et contenu de votre message.",
+        "Ce site ne demande la création d'aucun compte et n'utilise aucun outil de suivi publicitaire ni de mesure d'audience. Les seules données personnelles collectées sont celles que vous transmettez volontairement via les formulaires de contact et le questionnaire : nom, adresse e-mail et contenu de votre message.",
         'Une préférence technique (la langue choisie) est enregistrée localement dans votre navigateur (localStorage) et ne quitte jamais votre appareil.',
       ] },
       { h: 'Finalités et bases légales', p: [
@@ -135,18 +135,18 @@ const PRIVACY = {
         "L'envoi d'un message via un formulaire vaut consentement à ce traitement. Vous pouvez retirer ce consentement à tout moment.",
       ] },
       { h: 'Destinataires et transfert hors UE', p: [
-        "Les messages des formulaires sont acheminés par le service FormSubmit (opéré depuis les États-Unis), qui transmet votre message par e-mail sans le stocker durablement. À ce titre, vos données transitent hors de l'Union européenne ; ce transfert est encadré par les garanties contractuelles du prestataire.",
-        "La prise de rendez-vous est assurée par Cal.com. Le script de Cal.com n'est chargé qu'au moment où vous cliquez volontairement sur le bouton de réservation : tant que vous ne demandez pas de rendez-vous, aucune donnée n'est transmise à ce prestataire. Si vous réservez un créneau, les informations que vous saisissez (nom, e-mail, motif) sont traitées par Cal.com conformément à sa propre politique de confidentialité.",
+        "Les messages des formulaires sont acheminés par le service FormSubmit (opéré depuis les États-Unis), qui transmet votre message par e-mail sans le stocker durablement. À ce titre, vos données transitent hors de l'Union européenne ; ce transfert est encadré par les garanties contractuelles du prestataire.",
+        "La prise de rendez-vous est assurée par Cal.com. Le script de Cal.com n'est chargé qu'au moment où vous cliquez volontairement sur le bouton de réservation : tant que vous ne demandez pas de rendez-vous, aucune donnée n'est transmise à ce prestataire. Si vous réservez un créneau, les informations que vous saisissez (nom, e-mail, motif) sont traitées par Cal.com conformément à sa propre politique de confidentialité.",
         "L'hébergement du site est assuré par GitHub, Inc. (États-Unis). Vos données ne sont ni vendues ni cédées à des fins commerciales, et ne sont partagées avec aucun autre tiers que les prestataires techniques strictement nécessaires ci-dessus.",
       ] },
       { h: 'Durée de conservation', p: [
         "Vos messages sont conservés le temps de l'échange, puis au maximum 3 ans après le dernier contact, avant suppression.",
       ] },
       { h: 'Sécurité', p: [
-        "Le site est servi en HTTPS. Des mesures raisonnables sont prises pour protéger vos données contre tout accès non autorisé ; aucune transmission sur Internet ne peut toutefois être garantie à 100 %.",
+        "Le site est servi en HTTPS. Des mesures raisonnables sont prises pour protéger vos données contre tout accès non autorisé ; aucune transmission sur Internet ne peut toutefois être garantie à 100 %.",
       ] },
       { h: 'Vos droits', p: [
-        `Conformément au RGPD, vous disposez d'un droit d'accès, de rectification, d'effacement, de limitation, d'opposition et de portabilité sur vos données, ainsi que du droit de retirer votre consentement. Pour l'exercer : ${CONTACT.email}`,
+        `Conformément au RGPD, vous disposez d'un droit d'accès, de rectification, d'effacement, de limitation, d'opposition et de portabilité sur vos données, ainsi que du droit de retirer votre consentement. Pour l'exercer : ${CONTACT.email}`,
         "Vous pouvez également introduire une réclamation auprès de la CNIL (cnil.fr).",
       ] },
       { h: 'Cookies', p: [
@@ -207,7 +207,7 @@ const TERMS = {
     eyebrow: 'Cadre',
     title: "Conditions générales d'utilisation.",
     lead: "Les règles simples qui encadrent l'utilisation de ce site.",
-    updated: 'Dernière mise à jour : [À COMPLÉTER : date].',
+    updated: 'Dernière mise à jour : [À COMPLÉTER : date].',
     sections: [
       { h: 'Objet', p: [
         "Les présentes conditions encadrent l'accès et l'utilisation du site Reskope, site vitrine présentant les services d'audit, de conseil et d'ingénierie numérique proposés par Reskope. En utilisant le site, vous acceptez ces conditions.",
@@ -277,32 +277,32 @@ const SALES = {
     eyebrow: 'Prestations',
     title: 'Conditions générales de vente.',
     lead: "Le cadre des prestations d'audit, de mise en œuvre, de développement et de suivi.",
-    updated: 'Dernière mise à jour : [À COMPLÉTER : date].',
+    updated: 'Dernière mise à jour : [À COMPLÉTER : date].',
     sections: [
       { h: 'Objet et champ d’application', p: [
         "Les présentes conditions générales de vente (CGV) régissent les prestations de conseil, d'audit numérique, de développement, d'automatisation et de suivi fournies par Reskope à ses clients professionnels. Toute commande implique l'acceptation sans réserve des présentes CGV, qui prévalent sur tout autre document du client.",
       ] },
       { h: 'Prestataire', p: [
-        'Reskope, Florian Bouchart, [À COMPLÉTER : forme juridique, SIRET, adresse]. Coordonnées complètes dans les mentions légales.',
+        'Reskope, Florian Bouchart, [À COMPLÉTER : forme juridique, SIRET, adresse]. Coordonnées complètes dans les mentions légales.',
       ] },
       { h: 'Prestations', p: [
-        "Reskope propose quatre types de prestations : l'audit numérique (diagnostic terrain et bilan priorisé), l'audit assorti de la mise en œuvre, le développement et l'automatisation sur-mesure, et le suivi mensuel. Le périmètre précis de chaque mission est défini au devis.",
+        "Reskope propose quatre types de prestations : l'audit numérique (diagnostic terrain et bilan priorisé), l'audit assorti de la mise en œuvre, le développement et l'automatisation sur-mesure, et le suivi mensuel. Le périmètre précis de chaque mission est défini au devis.",
       ] },
       { h: 'Devis et formation du contrat', p: [
-        "Chaque mission fait l'objet d'un devis personnalisé, gratuit et sans engagement. Les prix affichés sur le site sont indicatifs (« à partir de ») et ne constituent pas une offre ferme. Le contrat est formé à l'acceptation écrite du devis par le client (signature ou accord par e-mail).",
+        "Chaque mission fait l'objet d'un devis personnalisé, gratuit et sans engagement. Les prix affichés sur le site sont indicatifs (« à partir de ») et ne constituent pas une offre ferme. Le contrat est formé à l'acceptation écrite du devis par le client (signature ou accord par e-mail).",
       ] },
       { h: 'Prix et TVA', p: [
         "Les prix sont exprimés en euros et s'entendent nets. Le tarif de référence est de 450 € par jour d'intervention, sauf forfait précisé au devis (par exemple l'audit ou l'abonnement de suivi).",
-        "L'audit est facturé au forfait selon l'effectif de la structure auditée. Un tarif de lancement, réservé aux trois premières entreprises accompagnées, est applicable jusqu'au 31 décembre 2026 ; au-delà de cette date ou de ce nombre, le tarif standard s'applique. Le montant de l'audit est intégralement déduit du devis de mise en œuvre lorsque celle-ci est confiée à Reskope.",
-        'TVA : [À COMPLÉTER : « TVA non applicable, art. 293 B du CGI » en franchise en base, ou taux de TVA applicable].',
+        "L'audit est facturé au forfait selon l'effectif de la structure auditée. Un tarif de lancement, réservé aux trois premières entreprises accompagnées, est applicable jusqu'au 31 décembre 2026 ; au-delà de cette date ou de ce nombre, le tarif standard s'applique. Le montant de l'audit est intégralement déduit du devis de mise en œuvre lorsque celle-ci est confiée à Reskope.",
+        'TVA : [À COMPLÉTER : « TVA non applicable, art. 293 B du CGI » en franchise en base, ou taux de TVA applicable].',
       ] },
       { h: 'Garantie bilan', p: [
         "Si, à la remise du bilan d'audit, le client estime que celui-ci ne lui apporte aucun élément exploitable, il dispose de sept (7) jours calendaires pour le signaler par écrit, en motivant sa position. Reskope propose alors, au choix du client, soit une reprise du bilan sans supplément, soit l'annulation de la facture correspondante.",
         "En cas d'annulation, le bilan et l'ensemble des documents remis doivent être restitués et ne peuvent faire l'objet d'aucune exploitation, directe ou indirecte. Cette garantie porte sur la prestation d'audit uniquement, à l'exclusion des journées de mise en œuvre, des développements et de l'abonnement de suivi.",
       ] },
       { h: 'Modalités et délais de paiement', p: [
-        'Paiement par virement bancaire. [À COMPLÉTER : acompte à la commande, ex. 30 % ; solde à la livraison ou selon l’échéancier du devis].',
-        'Délai de règlement : [À COMPLÉTER : ex. 30 jours à réception de facture]. En cas de retard, des pénalités égales à trois fois le taux d’intérêt légal sont dues de plein droit, ainsi qu’une indemnité forfaitaire de recouvrement de 40 € (art. L441-10 et D441-5 du Code de commerce).',
+        'Paiement par virement bancaire. [À COMPLÉTER : acompte à la commande, ex. 30 % ; solde à la livraison ou selon l’échéancier du devis].',
+        'Délai de règlement : [À COMPLÉTER : ex. 30 jours à réception de facture]. En cas de retard, des pénalités égales à trois fois le taux d’intérêt légal sont dues de plein droit, ainsi qu’une indemnité forfaitaire de recouvrement de 40 € (art. L441-10 et D441-5 du Code de commerce).',
       ] },
       { h: 'Exécution et délais', p: [
         "Reskope est tenue à une obligation de moyens. Les délais annoncés sont indicatifs et dépendent notamment de la disponibilité du client et de la fourniture des éléments nécessaires. Chaque journée de réalisation est estimée avant démarrage et tracée avec le client.",
@@ -311,7 +311,7 @@ const SALES = {
         "Le client s'engage à fournir en temps utile les informations, accès et contenus nécessaires, à désigner un interlocuteur, et à valider les étapes clés. Un défaut de collaboration peut décaler les délais sans engager la responsabilité de Reskope.",
       ] },
       { h: 'Réception des livrables', p: [
-        "À défaut de réserve écrite formulée sous [À COMPLÉTER : ex. 10 jours] à compter de la livraison, les livrables sont réputés acceptés.",
+        "À défaut de réserve écrite formulée sous [À COMPLÉTER : ex. 10 jours] à compter de la livraison, les livrables sont réputés acceptés.",
       ] },
       { h: 'Propriété intellectuelle', p: [
         "Sauf mention contraire au devis, les droits sur les livrables sur-mesure sont cédés au client après paiement intégral de la mission. Les outils, briques logicielles génériques, méthodes et savoir-faire préexistants de Reskope restent sa propriété. Les composants open-source ou tiers conservent leur licence propre.",
@@ -329,16 +329,16 @@ const SALES = {
         "Aucune partie ne saurait être tenue responsable d'un manquement dû à un cas de force majeure au sens de l'article 1218 du Code civil.",
       ] },
       { h: 'Durée et résiliation', p: [
-        "Les missions ponctuelles prennent fin à la livraison. Le suivi mensuel est sans engagement de durée, résiliable à tout moment par chaque partie moyennant un préavis de [À COMPLÉTER : ex. 30 jours], les prestations en cours restant dues.",
+        "Les missions ponctuelles prennent fin à la livraison. Le suivi mensuel est sans engagement de durée, résiliable à tout moment par chaque partie moyennant un préavis de [À COMPLÉTER : ex. 30 jours], les prestations en cours restant dues.",
       ] },
       { h: 'Droit de rétractation', p: [
-        "Les prestations s'adressent à des clients professionnels agissant dans le cadre de leur activité : le droit de rétractation prévu pour les consommateurs ne s'applique en principe pas. Le cas échéant, il peut s'appliquer au professionnel employant cinq salariés ou moins lorsque l'objet de la prestation n'entre pas dans le champ de son activité principale (art. L221-3 du Code de la consommation).",
+        "Les prestations s'adressent à des clients professionnels agissant dans le cadre de leur activité : le droit de rétractation prévu pour les consommateurs ne s'applique en principe pas. Le cas échéant, il peut s'appliquer au professionnel employant cinq salariés ou moins lorsque l'objet de la prestation n'entre pas dans le champ de son activité principale (art. L221-3 du Code de la consommation).",
       ] },
       { h: 'Réclamations et médiation', p: [
         `Toute réclamation peut être adressée à ${CONTACT.email}. [À COMPLÉTER : en cas de clientèle consommateur, coordonnées du médiateur de la consommation compétent].`,
       ] },
       { h: 'Litiges et droit applicable', p: [
-        "Les présentes CGV sont soumises au droit français. En cas de différend, les parties rechercheront une solution amiable avant toute action ; à défaut, les tribunaux français seront compétents.",
+        "Les présentes CGV sont soumises au droit français. En cas de différend, les parties rechercheront une solution amiable avant toute action ; à défaut, les tribunaux français seront compétents.",
       ] },
     ],
   },

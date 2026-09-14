@@ -272,7 +272,7 @@ export default function ConstatFlow({ cards, film, sourceLabel, calcLabel, local
         setActive((a) => (a === best ? a : best));
         /* les compteurs finissent un peu AVANT le point de snap : au repos,
            le chiffre est toujours complet (47 %, jamais 46 %) */
-        if (numRefs.current.pct) numRefs.current.pct.textContent = Math.round(47 * smooth(ph(p, CD[1] - 0.14, CD[1] - 0.02))) + ' %';
+        if (numRefs.current.pct) numRefs.current.pct.textContent = Math.round(47 * smooth(ph(p, CD[1] - 0.14, CD[1] - 0.02))) + ' %';
         if (numRefs.current.hrs) numRefs.current.hrs.textContent = fmt1.format(16.5 * smooth(ph(p, CD[2] - 0.14, CD[2] - 0.02))) + ' h';
         if (numRefs.current.eur) numRefs.current.eur.textContent = fmt.format(Math.round(film.costValue * smooth(ph(p, CD[3] - 0.14, CD[3] - 0.02)))) + ' €';
         if (railFillRef.current) railFillRef.current.style.transform = `scaleX(${clamp01((p - 0.03) / 0.89)})`;

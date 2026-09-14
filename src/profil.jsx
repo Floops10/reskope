@@ -111,8 +111,8 @@ const MOTS = {
     label: 'Vous êtes',
     tpe: 'TPE',
     pme: 'PME',
-    tpeTitre: 'Version TPE : de 1 à 10 personnes',
-    pmeTitre: 'Version PME : de 10 à 250 personnes',
+    tpeTitre: 'Version TPE : de 1 à 10 personnes',
+    pmeTitre: 'Version PME : de 10 à 250 personnes',
   },
   en: {
     aria: 'Site version',

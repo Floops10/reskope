@@ -18,7 +18,7 @@ const CONTENT = {
   fr: {
     metaTitle: 'La méthode · votre système, assemblé jalon par jalon',
     metaDesc:
-      "Reskope ne propose jamais de solution avant le diagnostic. Cadrage, audit, bilan, mise en œuvre, autonomie : le parcours qui assemble vos outils en un système clair, en toute transparence.",
+      "Reskope ne propose jamais de solution avant le diagnostic. Cadrage, audit, bilan, mise en œuvre, autonomie : le parcours qui assemble vos outils en un système clair, en toute transparence.",
     labels: { milestone: 'Jalon', here: 'vous démarrez ici', youGet: 'Ce que vous obtenez', hint: 'Survolez un point du réseau pour les détails' },
     film: {
       introKicker: 'La méthode',
@@ -26,9 +26,9 @@ const CONTENT = {
       introText: 'Des outils épars aujourd’hui. Un parcours clair pour en faire un système qui tient tout seul.',
       synthCap: 'Cinq jalons. Un système qui tient tout seul.',
     },
-    calloutTitle: 'Le livrable : un bilan que vous gardez.',
+    calloutTitle: 'Le livrable : un bilan que vous gardez.',
     calloutText:
-      "À la fin de l'audit, vous repartez avec un document clair : constats, cartographie, recommandations priorisées et gains estimés. Vous l'appliquez vous-même, ou vous nous en confiez la mise en œuvre.",
+      "À la fin de l'audit, vous repartez avec un document clair : constats, cartographie, recommandations priorisées et gains estimés. Vous l'appliquez vous-même, ou vous nous en confiez la mise en œuvre.",
     calloutBtn: 'Voir un exemple de bilan',
   },
   en: {

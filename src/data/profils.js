@@ -15,10 +15,10 @@ export const HOME_TPE = {
   fr: {
     metaTitle: 'Sites, boutiques et identité de marque pour TPE · Reskope',
     metaDesc:
-      'On construit ce qui vous manque : site vitrine, boutique en ligne, prise de rendez-vous, identité de marque. Facturé à la journée, code et accès à votre nom.',
+      'On construit ce qui vous manque : site vitrine, boutique en ligne, prise de rendez-vous, identité de marque. Facturé à la journée, code et accès à votre nom.',
 
     heroTitle: 'On construit ce qui vous manque.',
-    line1: 'Pas de site, ou un site qui date. Des rendez-vous pris au téléphone. Une image qui ne vous ressemble plus. Rien de tout ça n’est un problème d’outils : c’est ce qui n’existe pas encore.',
+    line1: 'Pas de site, ou un site qui date. Des rendez-vous pris au téléphone. Une image qui ne vous ressemble plus. Rien de tout ça n’est un problème d’outils : c’est ce qui n’existe pas encore.',
     line2: 'Reskope conçoit et développe votre site, votre boutique, votre prise de rendez-vous, et pose l’identité qui va avec. Facturé à la journée, par petites étapes, et vous repartez avec les clés.',
     mark1: 'n’existe pas encore',
     mark2: 'les clés',
@@ -64,8 +64,8 @@ export const HOME_TPE = {
     statsTitle: 'Ce qu’on s’engage à tenir.',
     stats: [
       { label: 'jours pour un site vitrine sobre, mis en ligne et vérifié', display: '5', value: 5, prefix: '', suffix: '', decimals: 0 },
-      { label: 'du code et des fichiers sources remis, à votre nom', display: '100 %', value: 100, prefix: '', suffix: ' %', decimals: 0 },
-      { label: 'de la démarche au grand jour : étapes, prix, accès', display: '100 %', value: 100, prefix: '', suffix: ' %', decimals: 0 },
+      { label: 'du code et des fichiers sources remis, à votre nom', display: '100 %', value: 100, prefix: '', suffix: ' %', decimals: 0 },
+      { label: 'de la démarche au grand jour : étapes, prix, accès', display: '100 %', value: 100, prefix: '', suffix: ' %', decimals: 0 },
       { label: 'donnée gardée de notre côté une fois la mission finie', display: '0', value: null },
     ],
 
@@ -142,8 +142,8 @@ export const PREUVES_TPE = {
   fr: {
     intro: 'Deux chiffres qui ne viennent pas de nous.',
     items: [
-      { n: 95, unite: ' %', t: 'des TPE et PME jugent leur présence sur internet indispensable ou utile à leur activité.', src: 'Afnic · Réussir avec le web', url: 'https://www.afnic.fr/observatoire-ressources/actualites/etude-afnic-la-presence-en-ligne-des-tpe-et-pme-francaises-progresse-leurs-pratiques-de-securite-aussi/' },
-      { n: 33, unite: ' %', t: 'n’ont pourtant toujours pas de site internet. Ce n’est pas la conviction qui manque : c’est le temps.', src: 'Afnic · Réussir avec le web', url: 'https://www.afnic.fr/observatoire-ressources/actualites/etude-afnic-la-presence-en-ligne-des-tpe-et-pme-francaises-progresse-leurs-pratiques-de-securite-aussi/' },
+      { n: 95, unite: ' %', t: 'des TPE et PME jugent leur présence sur internet indispensable ou utile à leur activité.', src: 'Afnic · Réussir avec le web', url: 'https://www.afnic.fr/observatoire-ressources/actualites/etude-afnic-la-presence-en-ligne-des-tpe-et-pme-francaises-progresse-leurs-pratiques-de-securite-aussi/' },
+      { n: 33, unite: ' %', t: 'n’ont pourtant toujours pas de site internet. Ce n’est pas la conviction qui manque : c’est le temps.', src: 'Afnic · Réussir avec le web', url: 'https://www.afnic.fr/observatoire-ressources/actualites/etude-afnic-la-presence-en-ligne-des-tpe-et-pme-francaises-progresse-leurs-pratiques-de-securite-aussi/' },
     ],
   },
   en: {
@@ -173,11 +173,11 @@ export const OFFERS_TPE = {
         'Site vitrine ou boutique en ligne',
         'Formulaire de contact et prise de rendez-vous',
         'Paiement, livraison, stock si vous vendez',
-        'Liaisons avec vos outils : devis vers facture, export comptable',
+        'Liaisons avec vos outils : devis vers facture, export comptable',
         'Le code, les fichiers sources et les accès à votre nom',
       ],
       cta: 'En discuter', featured: true, detailTitle: 'Ce que ça donne concrètement',
-      detail: 'On part de ce que vous vendez et de qui vous achète. Une vitrine sobre sort en cinq à huit jours de travail, une boutique un peu plus. Si vous avez déjà des outils, on les relie plutôt que de les remplacer : le devis part en facture, la facture part chez le comptable, et vous arrêtez de retaper les mêmes lignes. À la fin, vous repartez avec tout.',
+      detail: 'On part de ce que vous vendez et de qui vous achète. Une vitrine sobre sort en cinq à huit jours de travail, une boutique un peu plus. Si vous avez déjà des outils, on les relie plutôt que de les remplacer : le devis part en facture, la facture part chez le comptable, et vous arrêtez de retaper les mêmes lignes. À la fin, vous repartez avec tout.',
       pricingFactors: ['Nombre de pages et de gabarits', 'Vente en ligne ou simple vitrine', 'Outils existants à relier ou à reprendre'],
     },
     {
@@ -216,7 +216,7 @@ export const OFFERS_TPE = {
         'La recherche de fournisseurs et de prestataires, en option',
       ],
       cta: 'En discuter', featured: false, detailTitle: 'Ce que ça donne concrètement',
-      detail: 'On ne rédige pas votre business plan à votre place : on rassemble avec vous tout ce qui va le nourrir, et on vérifie que ce que vous voulez faire et ce que vous ferez réellement restent la même chose. Vous repartez avec un prévisionnel en tableur, formules ouvertes.',
+      detail: 'On ne rédige pas votre business plan à votre place : on rassemble avec vous tout ce qui va le nourrir, et on vérifie que ce que vous voulez faire et ce que vous ferez réellement restent la même chose. Vous repartez avec un prévisionnel en tableur, formules ouvertes.',
       pricingFactors: ['État du dossier au départ', 'Nombre de produits ou de prestations à chiffrer', 'Recherche de fournisseurs incluse ou non'],
     },
   ],
@@ -268,14 +268,14 @@ export const OFFRES_TPE = {
   fr: {
     metaTitle: 'Offres & tarifs TPE · site, réservation, liaisons, marque',
     metaDesc:
-      'Quatre chantiers courts, prix affichés : site dès 1 900 €, réservation dès 1 400 €, liaisons entre outils à 450 €/jour, identité de marque dès 1 600 €. Ce qui est fixe, ce qui varie.',
+      'Quatre chantiers courts, prix affichés : site dès 1 900 €, réservation dès 1 400 €, liaisons entre outils à 450 €/jour, identité de marque dès 1 600 €. Ce qui est fixe, ce qui varie.',
     title: 'Quatre chantiers, quatre façons de gagner du temps.',
     directP: 'Si votre besoin est clair et que vous voulez passer directement à la réalisation, écrivez-nous. On gagne du temps tous les deux.',
     lead: 'Chaque chantier est différent, mais les tarifs sont clairs dès le départ. On définit ensemble le périmètre, vous savez ce que vous payez et pourquoi, et vous pouvez vous arrêter à la fin de chaque étape.',
     billing: {
       kicker: 'Transparence',
       title: 'Comment on facture.',
-      text: 'Un jour d’intervention = 450 €. Les chantiers courts sont au forfait, annoncé avant de démarrer ; le reste est au temps passé, estimé et validé avec vous. On avance par petites étapes que vous validez une par une, et vous pouvez vous arrêter à la fin de chacune. Aucune surprise sur la facture.',
+      text: 'Un jour d’intervention = 450 €. Les chantiers courts sont au forfait, annoncé avant de démarrer ; le reste est au temps passé, estimé et validé avec vous. On avance par petites étapes que vous validez une par une, et vous pouvez vous arrêter à la fin de chacune. Aucune surprise sur la facture.',
       note: 'Devis gratuit, valable 30 jours. Tarifs nets, TVA non applicable, article 293 B du CGI. Le code, les fichiers sources et les accès vous sont remis à la fin, quelle que soit la suite.',
     },
   },
@@ -352,7 +352,7 @@ export const RESUME = {
       lignes: [
         { nom: 'Audit numérique', quoi: 'Chaque personne rencontrée, chaque abonnement ouvert, chaque donnée suivie d’un bout à l’autre.', duree: '2 à 5 jours', prix: 'dès 990 €' },
         { nom: 'Audit et mise en œuvre', quoi: 'L’audit, puis les chantiers que vous retenez. L’audit est intégralement déduit.', duree: 'à la journée', prix: '450 €/jour' },
-        { nom: 'Développement et automatisation', quoi: 'Le besoin est déjà cadré : intégrations, automatisations, site ou outil métier.', duree: '5 à 15 jours', prix: 'dès 1 200 €' },
+        { nom: 'Développement et automatisation', quoi: 'Le besoin est déjà cadré : intégrations, automatisations, site ou outil métier.', duree: '5 à 15 jours', prix: 'dès 1 200 €' },
         { nom: 'Suivi mensuel', quoi: 'Contrôles réguliers, corrections, évolutions. Résiliable à tout moment.', duree: 'mensuel', prix: 'dès 290 €/mois' },
       ],
       pied: 'Tarifs de lancement réservés aux trois premières entreprises accompagnées, valables jusqu’au 31 décembre 2026.',
@@ -377,7 +377,7 @@ export const PAGES_PROFIL = { '/exemple': 'pme', '/pourquoi': 'pme' };
 export const RESERVE = {
   fr: {
     pme: {
-      txt: 'Cette page s’adresse aux PME de dix personnes et plus : elle part d’un parc d’outils déjà en place. Vous consultez le site en version TPE.',
+      txt: 'Cette page s’adresse aux PME de dix personnes et plus : elle part d’un parc d’outils déjà en place. Vous consultez le site en version TPE.',
       act: 'Passer en version PME',
       autre: 'Voir les offres TPE',
       autreTo: '/offres',
@@ -420,10 +420,10 @@ export const RESERVE = {
 export const JALONS_TPE = {
   fr: [
     { n: '01', label: 'Cadrage', title: 'On comprend votre métier.',
-      text: `Une demi-journée chez vous ou en visio : ce que vous vendez, comment vous travaillez, et ce qui vous prend du temps tous les jours.`,
+      text: `Une demi-journée chez vous ou en visio : ce que vous vendez, comment vous travaillez, et ce qui vous prend du temps tous les jours.`,
       deliver: 'Le périmètre écrit, et le prix.', here: true },
     { n: '02', label: 'Devis', title: 'On chiffre avant de commencer.',
-      text: `Ce qu'on fait, poste par poste : ce qui est au forfait, ce qui est à la journée, et le total. Vous décidez ensuite, sans engagement.`,
+      text: `Ce qu'on fait, poste par poste : ce qui est au forfait, ce qui est à la journée, et le total. Vous décidez ensuite, sans engagement.`,
       deliver: 'Un devis détaillé, valable 30 jours.', here: false },
     { n: '03', label: 'Construction', title: 'On avance par petites étapes.',
       text: `Vous voyez chaque brique fonctionner avant qu'on passe à la suivante. Rien n'est caché jusqu'à la livraison, et vous pouvez vous arrêter à la fin de chacune.`,
@@ -464,9 +464,9 @@ export const METHODE_TPE = {
       introText: 'Des outils qui vous prennent du temps aujourd’hui. Un parcours court pour les remettre à leur place.',
       synthCap: 'Cinq étapes. Et les clés à la fin.',
     },
-    calloutTitle: 'Le livrable : un outil qui tourne, et le code avec.',
+    calloutTitle: 'Le livrable : un outil qui tourne, et le code avec.',
     calloutText:
-      'À la fin, vous repartez avec ce qui a été construit, les fichiers sources, l’hébergement et les accès à votre nom. Vous faites vos modifications vous-même, ou vous nous les confiez : dans les deux cas, rien ne vous retient.',
+      'À la fin, vous repartez avec ce qui a été construit, les fichiers sources, l’hébergement et les accès à votre nom. Vous faites vos modifications vous-même, ou vous nous les confiez : dans les deux cas, rien ne vous retient.',
     calloutBtn: 'Voir ce qu’on construit',
     calloutTo: '/offres',
   },
@@ -497,8 +497,8 @@ export const APROPOS_TPE = {
     sizeTitle: 'Ce qui est efficace dépend de votre taille.',
     sizeLead: 'Il n’y a pas d’outil universel. Ce qui marche à deux ne marche pas à dix. Voici notre lecture, par palier.',
     tiers: [
-      { range: '1 à 3 pers.', label: 'Vous, et peut-être une main', principle: 'Un seul endroit, et zéro double saisie.', detail: 'À ce stade, chaque outil en plus est une charge. L’objectif : un endroit pour les clients, un pour les devis et factures, et une liaison entre les deux pour ne jamais retaper la même ligne.', wins: ['Site vitrine', 'Devis vers facture', 'Agenda relié'] },
-      { range: '3 à 6 pers.', label: 'Petite équipe', principle: 'Automatiser ce qui revient toutes les semaines.', detail: 'Les rendez-vous, les rappels, les relances : tout ce qui se répète peut se faire sans vous. C’est là qu’on récupère les premières heures, et ce sont souvent des soirées.', wins: ['Prise de réservation', 'Rappels automatiques', 'Fichier clients'] },
+      { range: '1 à 3 pers.', label: 'Vous, et peut-être une main', principle: 'Un seul endroit, et zéro double saisie.', detail: 'À ce stade, chaque outil en plus est une charge. L’objectif : un endroit pour les clients, un pour les devis et factures, et une liaison entre les deux pour ne jamais retaper la même ligne.', wins: ['Site vitrine', 'Devis vers facture', 'Agenda relié'] },
+      { range: '3 à 6 pers.', label: 'Petite équipe', principle: 'Automatiser ce qui revient toutes les semaines.', detail: 'Les rendez-vous, les rappels, les relances : tout ce qui se répète peut se faire sans vous. C’est là qu’on récupère les premières heures, et ce sont souvent des soirées.', wins: ['Prise de réservation', 'Rappels automatiques', 'Fichier clients'] },
       { range: '6 à 10 pers.', label: 'Structure qui s’installe', principle: 'Relier avant d’acheter du neuf.', detail: 'Vos habitudes sont prises et elles fonctionnent. Plutôt que d’imposer un nouvel outil, on relie ceux que vous avez déjà et on remplace seulement ce qui coince vraiment.', wins: ['Liaisons entre outils', 'Reprise d’un outil ancien', 'Identité de marque'] },
     ],
   },
@@ -519,8 +519,8 @@ export const CONTACT_TPE = {
   fr: {
     metaTitle: 'Contact · parlons de votre projet',
     title: 'Parlons de votre projet.',
-    lead: 'Décrivez votre besoin en trois lignes. On vous répond sous 24 h, franchement : si ce n’est pas pour nous, on vous le dit.',
-    quizLead: 'Le questionnaire cerne votre besoin et prépare votre demande : vous validez, on a tout.',
+    lead: 'Décrivez votre besoin en trois lignes. On vous répond sous 24 h, franchement : si ce n’est pas pour nous, on vous le dit.',
+    quizLead: 'Le questionnaire cerne votre besoin et prépare votre demande : vous validez, on a tout.',
   },
   en: {
     metaTitle: 'Contact · let us talk about your project',
@@ -537,16 +537,16 @@ export const CONTACT_TPE = {
    code, et ce qui se passe s'il veut arrêter en cours de route. */
 export const FAQ_TPE = {
   fr: [
-    { q: 'Combien de temps pour avoir mon site en ligne ?',
+    { q: 'Combien de temps pour avoir mon site en ligne ?',
       a: `Un site vitrine sobre sort en cinq à huit jours de travail, étalés sur deux à trois semaines pour laisser le temps des allers-retours. Une boutique demande davantage, autour de dix à quinze jours. Le nombre exact est écrit dans le devis avant qu'on commence.` },
-    { q: 'Est-ce que le code m’appartient à la fin ?',
+    { q: 'Est-ce que le code m’appartient à la fin ?',
       a: `Oui, entièrement, et sans condition. Le code, les fichiers sources, l'hébergement et les noms de domaine sont mis à votre nom. Vous pouvez reprendre le travail avec n'importe qui, ou le continuer vous-même. Rien n'est verrouillé de notre côté.` },
-    { q: 'Et si je veux arrêter en cours de route ?',
+    { q: 'Et si je veux arrêter en cours de route ?',
       a: `Vous pouvez vous arrêter à la fin de n'importe quelle étape. On avance par petites étapes que vous validez une par une, donc vous ne payez jamais pour quelque chose que vous n'avez pas vu fonctionner. Ce qui est fait vous reste, sources comprises.` },
-    { q: 'Faut-il remplacer les outils qu’on utilise déjà ?',
-      a: `Presque jamais. La plupart du temps il suffit de les faire parler entre eux : le devis part en facture, la facture part chez le comptable, et vous arrêtez de retaper les mêmes lignes. On ne remplace que ce qui coince vraiment, et on vous dit pourquoi.` },
-    { q: 'Vous travaillez avec des entreprises d’une seule personne ?',
-      a: `Oui. Un artisan seul, un commerce de deux personnes : c'est souvent là que quelques heures rendues chaque semaine changent le plus de choses. En revanche, on ne vous vendra pas un audit poste par poste : à cette taille, ça n'a pas de sens.` },
+    { q: 'Faut-il remplacer les outils qu’on utilise déjà ?',
+      a: `Presque jamais. La plupart du temps il suffit de les faire parler entre eux : le devis part en facture, la facture part chez le comptable, et vous arrêtez de retaper les mêmes lignes. On ne remplace que ce qui coince vraiment, et on vous dit pourquoi.` },
+    { q: 'Vous travaillez avec des entreprises d’une seule personne ?',
+      a: `Oui. Un artisan seul, un commerce de deux personnes : c'est souvent là que quelques heures rendues chaque semaine changent le plus de choses. En revanche, on ne vous vendra pas un audit poste par poste : à cette taille, ça n'a pas de sens.` },
   ],
   en: [
     { q: 'How long before my site is live?',
@@ -567,10 +567,10 @@ export const FAQ_TPE = {
    renvoie donc ailleurs plutôt que dans un cul-de-sac. */
 export const ETATS_TPE = {
   fr: {
-    meanwhile: 'En attendant, vous pouvez regarder ce qu’on construit et à quel prix : tout est affiché.',
+    meanwhile: 'En attendant, vous pouvez regarder ce qu’on construit et à quel prix : tout est affiché.',
     cta: 'Voir ce qu’on construit',
     to: '/offres',
-    urgent: 'Besoin de nous joindre plus vite ?',
+    urgent: 'Besoin de nous joindre plus vite ?',
   },
   en: {
     meanwhile: 'In the meantime, you can look at what we build and what it costs: everything is on the page.',
@@ -584,8 +584,8 @@ export const ETATS_TPE = {
    dans son profil. */
 export const PASSERELLE = {
   fr: {
-    tpe: { txt: 'Vous dirigez plutôt une PME de dix personnes ou plus ? Le sujet n’est plus de construire, mais de remettre de l’ordre.', act: 'Voir la version PME' },
-    pme: { txt: 'Vous êtes plutôt une TPE de moins de dix personnes ? On construit plutôt qu’on n’audite.', act: 'Voir la version TPE' },
+    tpe: { txt: 'Vous dirigez plutôt une PME de dix personnes ou plus ? Le sujet n’est plus de construire, mais de remettre de l’ordre.', act: 'Voir la version PME' },
+    pme: { txt: 'Vous êtes plutôt une TPE de moins de dix personnes ? On construit plutôt qu’on n’audite.', act: 'Voir la version TPE' },
   },
   en: {
     tpe: { txt: 'Do you actually run an SME of ten people or more?', act: 'See the SME version' },

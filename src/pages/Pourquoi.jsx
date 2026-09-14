@@ -13,6 +13,8 @@ import { GLYPH_SHAPES } from '../lib/net3d';
 import { Reveal, RevealItem } from '../components/Reveal';
 import { useLang } from '../i18n';
 import ReservePme from '../components/ReservePme';
+import { useProfil } from '../profil';
+import { PASSERELLE } from '../data/profils';
 import { CONSTAT } from '../data/constat';
 
 /* LE CONSTAT — l'étude de marché en expérience (niveau home) :
@@ -26,32 +28,32 @@ const CONTENT = {
   fr: {
     metaTitle: 'Le constat · le coût invisible du désordre numérique',
     metaDesc:
-      "47 % de la semaine part dans les e-mails et la recherche d'information. Les chiffres sourcés du coût invisible, et pour qui Reskope agit.",
+      "47 % de la semaine part dans les e-mails et la recherche d'information. Les chiffres sourcés du coût invisible, et pour qui Reskope agit.",
     eyebrow: 'Le constat',
     heroTitle: 'Un coût que personne ne voit.',
     heroTease:
       'Chaque semaine, vos outils vous coûtent des heures. On a mesuré combien, et surtout pourquoi.',
     heroLead:
-      "Outils dispersés, saisies en double, information introuvable : le coût n'apparaît sur aucune facture. Mais il est réel, mesuré, documenté.",
+      "Outils dispersés, saisies en double, information introuvable : le coût n'apparaît sur aucune facture. Mais il est réel, mesuré, documenté.",
     heroSourcesLabel: "L'étude, sourcée",
     heroSources: ['McKinsey', 'Asana', 'Harvard Business Review', 'Okta'],
     heroCue: 'Voir les chiffres',
-    bridgeTitle: 'Et chez vous ?',
+    bridgeTitle: 'Et chez vous ?',
     bridgeText:
       "Ces chiffres ne sortent pas d'une plaquette commerciale. Si une partie seulement se vérifie chez vous, l'audit se rembourse tout seul.",
     bridgeBtn: 'Estimer votre situation',
     film: {
-      weekLabel: 'Une semaine de travail : 35 heures.',
+      weekLabel: 'Une semaine de travail : 35 heures.',
       weekText: 'Cinq jours, une équipe qui avance. En apparence.',
       lostCap: "de la semaine part dans les e-mails et la recherche d'information.",
       lostCapFull: "Près de la moitié de la semaine part dans les e-mails et la recherche d'information.",
       hoursCap: '16,5 heures perdues, par personne, chaque semaine.',
-      hoursCalc: '47 % × 35 h ≈ 16,5 h par personne et par semaine.',
+      hoursCalc: '47 % × 35 h ≈ 16,5 h par personne et par semaine.',
       costValue: 465000,
       costCap: "Pour une équipe de 20 personnes, ça se chiffre en centaines de milliers d'euros par an.",
       costCalc: '16,5 h × 47 semaines × 20 personnes × 30 €/h chargé ≈ 465 000 € par an.',
       teamCaption: 'Une équipe de 20 personnes.',
-      whyTitle: 'Pourquoi tant de temps perdu ?',
+      whyTitle: 'Pourquoi tant de temps perdu ?',
       whyCap: 'Parce que les outils ne se parlent pas.',
       orderCap: 'Alors on remet de l’ordre.',
       orderText: 'Chaque heure rendue à vos équipes, c’est du temps pour leur vrai métier.',
@@ -59,12 +61,12 @@ const CONTENT = {
       mckLabel: 'McKinsey · The Social Economy (2012)',
       mckUrl: 'https://www.mckinsey.com/industries/technology-media-and-telecommunications/our-insights/the-social-economy',
     },
-    targetsEyebrow: 'Pour qui ?',
+    targetsEyebrow: 'Pour qui ?',
     targetsTitle: 'Pour ceux qui se reconnaissent ici.',
     targets: [
       { title: 'La PME qui grossit', size: '10 à 80 personnes', desc: "Les outils se sont accumulés au fil des années. Chacun a ses habitudes, personne n'a la vue d'ensemble. On audite, on priorise, on remet de l'ordre.", cta: 'Voir un exemple de bilan', to: '/exemple' },
       { title: "L'équipe en transition", size: '20 à 150 personnes', desc: "Une transformation numérique est en cours. Vous voulez un état des lieux honnête avant d'investir dans un nouvel outil.", cta: 'Voir la méthode', to: '/methode' },
-      { title: "L'artisan & la TPE", size: "Jusqu'à 20 personnes", desc: 'Devis, factures, planning, échanges clients : tout est dispersé. Quelques automatisations bien choisies libèrent plusieurs heures par semaine.', cta: 'Voir les offres', to: '/offres' },
+      { title: 'Le dirigeant qui reprend la main', size: '10 à 50 personnes', desc: "La personne qui savait comment tout tenait a quitté l'entreprise. Les accès, les abonnements, les fichiers : plus personne n'a la carte. On la refait.", cta: 'Voir les offres', to: '/offres' },
     ],
   },
   en: {
@@ -108,14 +110,14 @@ const CONTENT = {
     targets: [
       { title: 'The growing SME', size: '10 to 80 people', desc: 'Tools piled up over the years. Everyone has their habits, no one has the full picture. We audit, prioritize, put things back in order.', cta: 'See an example report', to: '/exemple' },
       { title: 'The team in transition', size: '20 to 150 people', desc: 'A digital transformation is under way. You want an honest assessment before investing in a new tool.', cta: 'See the method', to: '/methode' },
-      { title: 'The craftsman & micro-business', size: 'Up to 20 people', desc: 'Quotes, invoices, scheduling, client exchanges: everything is scattered. A few well-chosen automations free up several hours a week.', cta: 'See the offers', to: '/offres' },
+      { title: 'The owner taking back control', size: '10 to 50 people', desc: 'The person who knew how everything fitted together has left. Access, subscriptions, files: nobody holds the map any more. We redraw it.', cta: 'See the offers', to: '/offres' },
     ],
   },
 };
 
 /* POUR QUI — cartes épurées : un glyphe réseau 3D par profil, hover incliné,
    révélation en 3D. Aucun index 01/02/03, aucune ligne décorative. */
-function TargetsShow({ eyebrow, title, targets }) {
+function TargetsShow({ eyebrow, title, targets, pont, versTpe }) {
   const rootRef = useRef(null);
 
   useGSAP(() => {
@@ -147,7 +149,7 @@ function TargetsShow({ eyebrow, title, targets }) {
   }, { scope: rootRef });
 
   return (
-    <section className="section tgt-show" aria-labelledby="tgt-title" ref={rootRef}>
+    <section className="section tgt-show couture-claire" aria-labelledby="tgt-title" ref={rootRef}>
       <div className="container">
         <Reveal className="section__head section__head--center">
           <RevealItem as="p" className="eyebrow eyebrow--index">{eyebrow}</RevealItem>
@@ -172,6 +174,20 @@ function TargetsShow({ eyebrow, title, targets }) {
             </Tilt>
           ))}
         </div>
+
+        {/* Personne ne se reconnaît dans ces trois cas ? Alors c'est
+            probablement qu'on est plus petit que ça, et la page suivante
+            n'est pas celle-ci. On le dit ici plutôt que de laisser
+            quelqu'un lire une étude qui ne le concerne pas. */}
+        <Reveal>
+          <RevealItem className="pont pont--sous">
+            <span className="pont__txt">{pont.txt}</span>
+            <button type="button" className="pont__btn" onClick={versTpe}>
+              {pont.act}
+              <span aria-hidden="true">→</span>
+            </button>
+          </RevealItem>
+        </Reveal>
       </div>
     </section>
   );
@@ -179,6 +195,7 @@ function TargetsShow({ eyebrow, title, targets }) {
 
 export default function Pourquoi() {
   const { lang } = useLang();
+  const { setProfil } = useProfil();
   /* Cette page démontre le coût du désordre numérique dans une structure
      déjà équipée : elle n'est servie qu'en version PME, et le menu TPE ne
      la propose pas. Elle n'a donc pas de variante. */
@@ -216,11 +233,14 @@ export default function Pourquoi() {
         />
       </Suspense>
 
-      {/* 3 — Et chez vous ? (bascule + closing, scène habillée) */}
+      {/* 3 — Et chez vous ? La bascule reprend le geste de l'ouverture :
+             une grande question, puis un ourlet en bas qui porte les
+             sources et l'action. Le réseau passe derrière le texte au lieu
+             de tourner à côté de lui. */}
       <section className="constat-bridge" data-cursor-dark data-nav-dark>
         <div className="constat-bridge__decor" aria-hidden="true">
-          <span className="constat-bridge__glyph">
-            <Net3D shape={GLYPH_SHAPES[3]} size={260} speed={0.5} tiltX={0.4} nodeR={3.2} />
+          <span className="constat-bridge__champ">
+            <Net3D shape={GLYPH_SHAPES[3]} size={620} speed={0.34} tiltX={0.35} nodeR={2.6} />
           </span>
         </div>
         <div className="container constat-bridge__inner">
@@ -229,14 +249,18 @@ export default function Pourquoi() {
               <MorphTitle as="h2" text={c.bridgeTitle} textClass="constat-bridge__title" netClass="morph__net--cream" />
             </RevealItem>
             <RevealItem as="p" className="constat-bridge__text">{c.bridgeText}</RevealItem>
-            <RevealItem>
-              <div className="constat-bridge__chips">
+          </Reveal>
+
+          <Reveal className="constat-bridge__pied">
+            <RevealItem className="constat-bridge__sources">
+              <span className="constat-bridge__lab">{c.heroSourcesLabel}</span>
+              <span className="constat-bridge__chips">
                 {c.heroSources.map((s) => (
                   <span className="constat-bridge__chip" key={s}>{s}</span>
                 ))}
-              </div>
+              </span>
             </RevealItem>
-            <RevealItem>
+            <RevealItem className="constat-bridge__act">
               <Link to="/contact" className="btn btn--on-dark" data-cursor-label={c.bridgeBtn}>
                 {c.bridgeBtn}
                 <span className="btn__arrow" aria-hidden="true">→</span>
@@ -247,7 +271,13 @@ export default function Pourquoi() {
       </section>
 
       {/* 4 — Pour qui */}
-      <TargetsShow eyebrow={c.targetsEyebrow} title={c.targetsTitle} targets={c.targets} />
+      <TargetsShow
+        eyebrow={c.targetsEyebrow}
+        title={c.targetsTitle}
+        targets={c.targets}
+        pont={PASSERELLE[lang].pme}
+        versTpe={() => setProfil('tpe')}
+      />
 
     </Page>
   );

@@ -16,7 +16,7 @@ const CONTENT = {
   fr: {
     metaTitle: "Numérique responsable · simplifier, c'est consommer moins",
     metaDesc:
-      "L'angle écologique de Reskope : alléger votre stack d'outils réduit serveurs, stockage et données dupliquées. Une sobriété numérique sans effort supplémentaire.",
+      "L'angle écologique de Reskope : alléger votre stack d'outils réduit serveurs, stockage et données dupliquées. Une sobriété numérique sans effort supplémentaire.",
     eyebrow: 'Numérique responsable',
     title: 'Simplifier réduit aussi votre empreinte.',
     lead: "Notre métier réduit le désordre numérique. Or, moins d'outils superflus, c'est mécaniquement moins de serveurs, moins de stockage et moins d'énergie. L'efficacité et la sobriété avancent dans le même sens.",
@@ -25,14 +25,14 @@ const CONTENT = {
       counterLabel: 'du superflu éteint',
       caps: [
         'Chaque point est un outil. Chacun fait tourner des serveurs, quelque part.',
-        'La plupart sont superflus : doublons, licences dormantes, silos. On les éteint.',
+        'La plupart sont superflus : doublons, licences dormantes, silos. On les éteint.',
         'Ce qui reste se relie, et travaille. La sobriété a la forme de l’essentiel.',
       ],
     },
     factsEyebrow: 'Le constat',
-    factsTitle: 'Le numérique « invisible » a un coût bien réel.',
+    factsTitle: 'Le numérique « invisible » a un coût bien réel.',
     facts: [
-      { num: 68, suffix: ' %', stat: '68 %', label: 'des licences SaaS sous-utilisées', detail: 'Chaque application inutilisée fait tourner des serveurs, stocke vos données et facture une licence. Rien ne le justifie.', source: 'Gartner, 2023' },
+      { num: 68, suffix: ' %', stat: '68 %', label: 'des licences SaaS sous-utilisées', detail: 'Chaque application inutilisée fait tourner des serveurs, stocke vos données et facture une licence. Rien ne le justifie.', source: 'Gartner, 2023' },
       { num: 9.4, decimals: 1, stat: '9,4', label: 'applications par salarié en moyenne', detail: 'Chaque app est un silo. Plus il y en a, plus la donnée est dupliquée, vieillie, et énergivore à maintenir.', source: 'Okta, Businesses at Work, 2023' },
       { num: 2, prefix: '× ', stat: '× 2', label: 'moins de stockage et de doublons', detail: "En passant de 6 à 3 outils, nos clients divisent leurs données redondantes, et l'empreinte de stockage qui va avec.", source: 'Estimation Reskope' },
     ],
@@ -45,11 +45,11 @@ const CONTENT = {
       { title: "Moins de temps, donc moins d'énergie", text: "Le temps gagné par vos équipes, c'est aussi moins de réunions, moins d'e-mails, moins d'allers-retours numériques. La productivité rejoint la sobriété." },
     ],
     posEyebrow: 'Notre position',
-    posTitle: 'On ne vend pas du « green », on évite du superflu.',
+    posTitle: 'On ne vend pas du « green », on évite du superflu.',
     posLead:
-      "Pas de greenwashing : la sobriété n'est pas un argument ajouté, c'est la conséquence directe de notre travail. Un audit qui supprime trois outils redondants a un effet écologique réel, et il est gratuit pour la planète comme pour votre budget.",
+      "Pas de greenwashing : la sobriété n'est pas un argument ajouté, c'est la conséquence directe de notre travail. Un audit qui supprime trois outils redondants a un effet écologique réel, et il est gratuit pour la planète comme pour votre budget.",
     posBtn: 'Parler de votre stack',
-    ctaTitle: 'Et si on allégeait vos outils ?',
+    ctaTitle: 'Et si on allégeait vos outils ?',
     ctaLead:
       'Un premier échange pour mesurer ce que vous pourriez simplifier, pour vos équipes comme pour votre empreinte.',
     ctaPrimary: 'Parler de vos outils',
@@ -262,7 +262,7 @@ export default function Ecologie() {
         </Suspense>
 
         {/* CHIFFRES */}
-        <section className="section section--tight" aria-labelledby="eco-facts-title">
+        <section className="section section--tight couture-claire" aria-labelledby="eco-facts-title">
           <div className="container">
             <Reveal className="section__head">
               <RevealItem as="p" className="eyebrow eyebrow--eco">{c.factsEyebrow}</RevealItem>
@@ -319,7 +319,7 @@ export default function Ecologie() {
         </section>
 
         {/* POSITION */}
-        <section className="section" aria-labelledby="eco-pos-title">
+        <section className="section couture-claire" aria-labelledby="eco-pos-title">
           <div className="container">
             <Reveal className="eco-stance">
               <RevealItem as="p" className="eyebrow eyebrow--eco">{c.posEyebrow}</RevealItem>

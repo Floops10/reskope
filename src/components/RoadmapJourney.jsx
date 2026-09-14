@@ -107,7 +107,7 @@ function Track({ active, onPick, jalons, L }) {
             role="button"
             tabIndex={0}
             aria-pressed={i === active}
-            aria-label={`${L.milestone} ${jal.n} : ${jal.label}`}
+            aria-label={`${L.milestone} ${jal.n} : ${jal.label}`}
             onClick={() => onPick(i)}
             onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && (e.preventDefault(), onPick(i))}
           >

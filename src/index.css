@@ -4623,7 +4623,7 @@ html.eco-theme .scrollnet {
 /* ============================================================
    Section éco — numérique responsable
    ============================================================ */
-:root { --eco: #0B6B35; }
+:root { --eco: #0B6B35; --eco-deep: #074C25; }
 
 .section--eco {
   position: relative;
@@ -5094,6 +5094,9 @@ html.eco-theme,
 html.eco-theme body {
   background: var(--eco);
 }
+/* Sur la page verte, une section « claire » est verte : la couture reprend
+   le fond courant au lieu du crème. */
+html.eco-theme { --couture-fond: var(--eco); }
 html.eco-theme body {
   color: var(--cream);
 }
@@ -5119,6 +5122,30 @@ html.eco-theme .nav .btn--primary {
   --ba: var(--cream);
   --bh: var(--cream);
   --bd: var(--cream);
+}
+/* Les deux actions du header ne sont pas des .btn : la règle ci-dessus ne
+   les atteignait pas et « Réserver » restait indigo sur fond vert, tandis
+   qu'« Écrire » gardait son filet encre. Toute la page est verte, du haut
+   jusqu'au pied : le contraste s'inverse partout, pas seulement au-dessus
+   des bandes foncées. */
+html.eco-theme .nav__cta--ghost {
+  color: var(--cream);
+  border-color: rgba(240, 238, 232, 0.32);
+}
+html.eco-theme .nav__cta--ghost:hover {
+  color: var(--cream);
+  border-color: var(--cream);
+}
+html.eco-theme .nav__cta--solid,
+html.eco-theme .nav--dark .nav__cta--solid {
+  background: var(--cream);
+  color: var(--eco-deep);
+  border-color: var(--cream);
+}
+html.eco-theme .nav__cta--solid:hover {
+  background: #ffffff;
+  border-color: #ffffff;
+  color: var(--eco-deep);
 }
 /* Menu mobile */
 html.eco-theme .navmenu__panel {
@@ -8882,25 +8909,50 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   inset: 0;
   pointer-events: none;
 }
-.constat-bridge__glyph {
+/* Le réseau n'est plus un objet posé à côté du texte : il est le fond.
+   Il déborde à droite, très effacé, et le titre passe par-dessus. */
+.constat-bridge__champ {
   position: absolute;
-  right: clamp(2rem, 9vw, 10rem);
-  top: 50%;
+  right: -14%;
+  top: 44%;
   transform: translateY(-50%);
-  opacity: 0.7;
-  animation: cheroFloat 10s ease-in-out infinite;
+  opacity: 0.22;
+  animation: cheroFloat 14s ease-in-out infinite;
 }
-.constat-bridge__glyph .n3d-link { stroke: rgba(240, 238, 232, 0.55); }
-.constat-bridge__glyph .n3d-node { fill: var(--cream); }
+.constat-bridge__champ .n3d-link { stroke: rgba(240, 238, 232, 0.5); }
+.constat-bridge__champ .n3d-node { fill: rgba(240, 238, 232, 0.85); }
 .constat-bridge__inner {
   position: relative;
   z-index: 1;
+}
+/* L'ourlet du bas : sources à gauche, action à droite, un filet entre le
+   propos et les preuves. Même dispositif qu'en ouverture de page. */
+.constat-bridge__pied {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(1.2rem, 3vw, 2.6rem);
+  margin-top: clamp(2.4rem, 6vh, 4rem);
+  padding-top: clamp(1.1rem, 2.4vh, 1.7rem);
+  border-top: 1px solid rgba(240, 238, 232, 0.22);
+}
+.constat-bridge__sources {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.constat-bridge__lab {
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(240, 238, 232, 0.6);
 }
 .constat-bridge__chips {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin: 0 0 1.9rem;
+  margin: 0;
 }
 .constat-bridge__chip {
   font-size: 0.8rem;
@@ -8916,10 +8968,14 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   background: rgba(240, 238, 232, 0.08);
 }
 @media (max-width: 880px) {
-  .constat-bridge__glyph { display: none; }
+  .constat-bridge__champ { display: none; }
+  .constat-bridge__pied { justify-content: flex-start; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .constat-bridge__champ { animation: none; }
 }
 .constat-bridge__title {
-  font-size: clamp(2rem, 4.4vw, 3.8rem);
+  font-size: clamp(2.4rem, 6.6vw, 5.6rem);
   font-weight: 600;
   letter-spacing: -0.035em;
   margin: 0 0 1rem;
@@ -8928,8 +8984,8 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 .constat-bridge__text {
   color: rgba(240, 238, 232, 0.8);
   line-height: 1.6;
-  max-width: 52ch;
-  margin: 0 0 1.8rem;
+  max-width: 46ch;
+  margin: 0;
   font-size: clamp(1rem, 1.4vw, 1.2rem);
 }
 
@@ -9487,61 +9543,87 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
    LE CONSTAT v4 — hero, semaine qui draine, dorsale, cibles
    ============================================================ */
 
-/* — Hero — */
+/* — Hero : une une de journal —
+   Le titre tient toute la largeur, personne à côté de lui. Le reste
+   descend dans un ourlet en bas de fenêtre : sous-titre, sources, invite
+   à descendre, sur une seule ligne. On lit le titre, puis l'ourlet. */
 .chero {
   position: relative;
   min-height: 100svh;
   display: flex;
-  align-items: center;
+  flex-direction: column;
   overflow: hidden;
   background: var(--cream);
   isolation: isolate;
-  padding-block: clamp(6rem, 12vh, 9rem);
+  padding-block: clamp(7rem, 16vh, 11rem) clamp(1.5rem, 3.6vh, 2.6rem);
 }
 .chero__bg {
   position: absolute;
   inset: 0;
   z-index: 0;
 }
-.chero__grid {
+/* L'étiquette se pose en haut, le titre descend en bas : la fenêtre est
+   tenue par ses deux extrémités, comme une affiche. Au centre il ne reste
+   que le réseau, et c'est voulu. */
+.chero__une {
   position: relative;
   z-index: 1;
   width: 100%;
-  display: grid;
-  grid-template-columns: 1.02fr 0.98fr;
-  gap: clamp(2rem, 5vw, 5rem);
-  align-items: center;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
+.chero__bloc { margin-top: auto; }
 .chero__title {
-  font-size: clamp(2.7rem, 6vw, 6rem);
+  font-size: clamp(2.9rem, 9.2vw, 9.2rem);
   font-weight: 600;
-  line-height: 1;
-  letter-spacing: -0.045em;
+  line-height: 0.94;
+  letter-spacing: -0.05em;
   color: var(--ink);
-  max-width: 14ch;
-  margin: 0.6rem 0 1.3rem;
+  max-width: 16ch;
+  margin: 0.5rem 0 0;
 }
 .chero__tease {
-  font-size: clamp(1.15rem, 1.9vw, 1.6rem);
+  font-size: clamp(1.1rem, 1.7vw, 1.45rem);
   font-weight: 500;
-  line-height: 1.32;
+  line-height: 1.34;
   letter-spacing: -0.012em;
   color: var(--ink);
-  max-width: 26ch;
-  margin: 0 0 1rem;
+  max-width: 36ch;
+  margin: clamp(1.2rem, 2.4vw, 1.9rem) 0 0;
+}
+
+.chero__pied {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  margin-top: clamp(2.2rem, 6vh, 4.4rem);
+}
+.chero__ourlet {
+  display: block;
+  height: 1px;
+  background: var(--hairline);
+  transform-origin: left center;
+}
+.chero__bande {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr) auto;
+  gap: clamp(1.1rem, 3vw, 3.2rem);
+  align-items: start;
+  padding-top: clamp(0.9rem, 1.8vh, 1.4rem);
 }
 .chero__lead {
   color: var(--muted);
-  max-width: 42ch;
+  max-width: 48ch;
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.55;
 }
 .chero__sources {
   display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.55rem 1rem;
-  margin-top: 1.9rem;
-  padding-top: 1.3rem;
-  border-top: 1px solid var(--hairline);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.45rem;
 }
 .chero__sources-lab {
   font-size: 0.68rem;
@@ -9568,52 +9650,47 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   right: 0;
   color: var(--silver);
 }
-.chero__viz {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 0.8rem;
-}
-.chero__num {
-  font-size: clamp(4.5rem, 11vw, 9rem);
-  font-weight: 600;
-  line-height: 0.9;
-  letter-spacing: -0.05em;
-  color: var(--indigo);
-  font-variant-numeric: tabular-nums;
-}
-.chero__stat-cap {
-  color: var(--muted);
-  max-width: 30ch;
-  line-height: 1.5;
-  margin: 0;
-}
-.chero__stat-foot {
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-}
+/* L'invite à descendre : un libellé et une piste où court un segment.
+   Horizontale, parce qu'elle vit maintenant dans une bande et non plus
+   collée au bord gauche de la fenêtre. */
 .chero__cue {
-  position: absolute;
-  z-index: 2;
-  left: var(--gutter);
-  bottom: clamp(1.4rem, 3.5vh, 2.6rem);
   display: flex;
   align-items: center;
-  gap: 0.7rem;
+  gap: 0.75rem;
   font-size: 0.7rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--muted);
+  white-space: nowrap;
+  justify-self: end;
 }
 .chero__cue i {
-  position: relative; display: block; width: 1px; height: 40px;
-  background: color-mix(in srgb, var(--indigo) 20%, transparent); overflow: hidden;
+  position: relative;
+  display: block;
+  width: 62px;
+  height: 1px;
+  background: color-mix(in srgb, var(--indigo) 20%, transparent);
+  overflow: hidden;
 }
 .chero__cue i::after {
-  content: ''; position: absolute; inset: 0 0 auto 0; height: 45%;
-  background: var(--indigo); animation: heroCue 1.9s cubic-bezier(0.4,0,0.2,1) infinite;
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 42%;
+  background: var(--indigo);
+  animation: cheroCue 1.9s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+/* Flottement lent, partagé par les glyphes réseau ailleurs sur le site. */
+@keyframes cheroFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-22px); }
+}
+@keyframes cheroCue {
+  0% { transform: translateX(-110%); }
+  100% { transform: translateX(245%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .chero__cue i::after { animation: none; }
 }
 
 /* — La semaine qui draine — */
@@ -9868,14 +9945,10 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 }
 
 @media (max-width: 880px) {
-  .chero__grid {
+  .chero__bande {
     grid-template-columns: 1fr;
-    gap: 2.5rem;
+    gap: 1.4rem;
   }
-  .chero__viz {
-    order: -1;
-  }
-  .chero__num { font-size: clamp(3.5rem, 18vw, 5.5rem); }
   .chero__cue { display: none; }
   .cjstat {
     grid-template-columns: 1fr;
@@ -10743,27 +10816,6 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   transform: scale(1.1);
 }
 
-/* Ouverture constat : glyphe réseau 3D flottant */
-.chero__glyph {
-  display: block;
-  width: min(32vw, 340px);
-  aspect-ratio: 1;
-  margin-inline: auto;
-  animation: cheroFloat 9s ease-in-out infinite;
-}
-.chero__glyph .n3d-link { stroke: var(--indigo); }
-.chero__glyph .n3d-node { fill: var(--indigo); }
-@keyframes cheroFloat {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-22px); }
-}
-@media (max-width: 880px) {
-  .chero__viz { order: -1; }
-  .chero__glyph { width: min(58vw, 260px); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .chero__glyph { animation: none; }
-}
 /* Numéro d'étape dans la ligne « parcours » du hero méthode */
 .chero__src em {
   font-style: normal;
@@ -11912,7 +11964,22 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 /* ============================================================
    LE CONSTAT v8 — LA MATIÈRE (WebGL, particules), monde ink
    ============================================================ */
-.cflw { position: relative; height: 660vh; }
+/* La scène épinglée arrive après le crème du hero. On ne peut pas arrondir
+   le bloc collant lui-même : il reste en haut de la fenêtre pendant toute
+   la traversée, et ses angles laisseraient deux encoches claires en
+   permanence. On arrondit donc la SECTION, et on lui donne une lèvre de la
+   hauteur du rayon : le bloc collant démarre juste en dessous, la lèvre
+   défile, la couture est faite. */
+.cflw {
+  position: relative;
+  z-index: 1;
+  height: 660vh;
+  background: #0e0b1f;
+  border-start-start-radius: clamp(1.4rem, 3vw, 2.6rem);
+  border-start-end-radius: clamp(1.4rem, 3vw, 2.6rem);
+  margin-top: calc(-1 * clamp(1.4rem, 3vw, 2.6rem));
+  padding-top: clamp(1.4rem, 3vw, 2.6rem);
+}
 .cflw__holder { position: sticky; top: 0; width: 100%; height: 100svh; overflow: hidden; background: #0e0b1f; color: var(--cream); }
 .cflw__canvas { position: absolute !important; inset: 0; }
 .cflw-loading { height: 100svh; background: #0e0b1f; }
@@ -12646,7 +12713,19 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
    NUMÉRIQUE RESPONSABLE — « L'ALLÈGEMENT » (scène signature)
    88 outils, les superflus s'éteignent, l'essentiel devient feuille.
    ============================================================ */
-.epg { position: relative; height: 340vh; }
+/* Même couture que la scène du constat : on arrondit la section, pas le
+   bloc collant, et une lèvre de la hauteur du rayon laisse le vert clair
+   passer au-dessus. */
+.epg {
+  position: relative;
+  z-index: 1;
+  height: 340vh;
+  background: #053a1e;
+  border-start-start-radius: clamp(1.4rem, 3vw, 2.6rem);
+  border-start-end-radius: clamp(1.4rem, 3vw, 2.6rem);
+  margin-top: calc(-1 * clamp(1.4rem, 3vw, 2.6rem));
+  padding-top: clamp(1.4rem, 3vw, 2.6rem);
+}
 .epg__stage {
   position: sticky;
   top: 0;
@@ -12868,30 +12947,50 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 /* ============================================================
    ÉCO v3 — hero plein écran + fil des stats + chaîne des économies
    ============================================================ */
+/* Le vert plat donnait une page en aplat de gabarit. Les autres pages du
+   site ont toutes un sol : deux foyers lumineux, un grain, et la couleur
+   qui se creuse vers le bas. Celle-ci l'a maintenant aussi. */
 .eco-hero {
   min-height: 96svh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   overflow: hidden;
+  background:
+    radial-gradient(125% 100% at 76% 2%, color-mix(in srgb, #15a85a 30%, transparent) 0%, transparent 58%),
+    radial-gradient(100% 95% at 2% 104%, color-mix(in srgb, #04331b 78%, transparent) 0%, transparent 64%),
+    var(--eco);
 }
+.eco-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0.055;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+/* La feuille tenait entière dans la page, contour net : ça faisait vignette
+   déposée. Agrandie et coupée par le bord, elle redevient ce qu'elle doit
+   être, un filigrane. */
 .eco-hero__leafmark {
   position: absolute;
-  right: 2%;
+  right: -13%;
   top: 50%;
-  width: min(34vw, 460px);
-  transform: translateY(-52%) rotate(24deg);
+  width: min(54vw, 720px);
+  transform: translateY(-50%) rotate(17deg);
   pointer-events: none;
-  opacity: 0.75;
+  opacity: 0.55;
 }
 .eco-hero__leafmark path {
   fill: none;
-  stroke: color-mix(in srgb, #7ddfa8 26%, transparent);
-  stroke-width: 0.55;
+  stroke: color-mix(in srgb, #7ddfa8 20%, transparent);
+  stroke-width: 0.4;
   stroke-linecap: round;
 }
 .eco-hero__leafmark .eco-hero__leafmark-blade {
-  fill: color-mix(in srgb, #7ddfa8 4%, transparent);
+  fill: color-mix(in srgb, #7ddfa8 3%, transparent);
 }
 .eco-hero__cue {
   position: absolute;
@@ -13854,6 +13953,7 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   border-radius: 999px;
   text-align: center;
 }
+.pont--sous { margin-top: clamp(2.4rem, 5vw, 3.6rem); }
 .pont__txt { color: var(--muted); font-size: 0.95rem; }
 .pont__btn {
   display: inline-flex;
@@ -14666,6 +14766,19 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   margin-top: calc(-1 * clamp(1.4rem, 3vw, 2.6rem));
   overflow: hidden;
 }
+/* Et la couture dans l'autre sens : une section claire qui succède à une
+   section sombre remonte par-dessus elle, avec le même arrondi. Sinon on
+   ressort du noir par une ligne droite, ce qui est exactement la coupure
+   qu'on vient d'éviter à l'entrée. */
+.couture-claire {
+  position: relative;
+  z-index: 2;
+  background: var(--couture-fond, var(--cream));
+  border-start-start-radius: clamp(1.4rem, 3vw, 2.6rem);
+  border-start-end-radius: clamp(1.4rem, 3vw, 2.6rem);
+  margin-top: calc(-1 * clamp(1.4rem, 3vw, 2.6rem));
+}
+
 /* Deux bandes sombres qui se suivent ne se recouvrent pas : la seconde
    se poserait sur la première et on verrait un liseré pour rien. */
 .section--eco-band + .eco-cta,

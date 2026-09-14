@@ -37,10 +37,10 @@ const CONTENT = {
         'On vous propose un créneau de 30 minutes, sans engagement.',
         'À l’issue de l’échange, vous recevez un cadrage clair et chiffré.',
       ],
-      meanwhile: 'En attendant, vous pouvez consulter un exemple de bilan complet : exactement ce que vous recevriez à l’issue d’un audit.',
+      meanwhile: 'En attendant, vous pouvez consulter un exemple de bilan complet : exactement ce que vous recevriez à l’issue d’un audit.',
       cta: 'Voir un exemple de bilan',
       home: 'Retour à l’accueil',
-      urgent: 'Besoin de nous joindre plus vite ?',
+      urgent: 'Besoin de nous joindre plus vite ?',
     },
   },
   en: {

@@ -28,7 +28,7 @@ const T = {
     kicker: 'Conseil et ingénierie numérique',
     q1: 'Vous',
     q2: 'êtes…',
-    lead: 'Le site existe en deux versions, parce qu’on ne propose pas la même chose à une entreprise de trois personnes et à une PME de quatre-vingts. Choisissez la vôtre : vous pourrez changer à tout moment, en haut de page.',
+    lead: 'Le site existe en deux versions, parce qu’on ne propose pas la même chose à une entreprise de trois personnes et à une PME de quatre-vingts. Choisissez la vôtre : vous pourrez changer à tout moment, en haut de page.',
     choix: {
       tpe: {
         sigle: 'TPE',
