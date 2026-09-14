@@ -142,7 +142,6 @@ export default function Footer() {
           {visible('/exemple') && <Link to="/exemple">{tabs['/exemple']}</Link>}
           <Link to="/numerique-responsable">{tabs['/numerique-responsable']}</Link>
           <Link to="/a-propos">{tabs['/a-propos']}</Link>
-          <Link to="/contact">{f.talk}</Link>
         </nav>
 
         <div className="footer2__col">
@@ -152,6 +151,10 @@ export default function Footer() {
           <button type="button" className="footer2__card-btn" onClick={() => setCardOpen(true)}>
             {f.card} <span aria-hidden="true">→</span>
           </button>
+          {/* Là où on se déplace. Sans adresse à afficher, la colonne
+              contact n'avait plus qu'un lien répété d'une colonne à
+              l'autre : dire d'où on vient est une information. */}
+          <span className="footer2__zone">{f.zone}</span>
         </div>
       </div>
 

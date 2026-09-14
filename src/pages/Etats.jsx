@@ -14,7 +14,7 @@ import { CONTACT, FORMULAIRE } from '../data/site';
 const CONTENT = {
   fr: {
     notFound: {
-      meta: 'Page introuvable · Reskope',
+      meta: 'Page introuvable',
       code: '404',
       title: 'Cette page n’existe pas.',
       lead: 'Le lien est peut-être ancien, ou l’adresse comporte une coquille. Voici les pages les plus utiles.',
@@ -27,7 +27,7 @@ const CONTENT = {
       cta: 'Retour à l’accueil',
     },
     thanks: {
-      meta: 'Message envoyé · Reskope',
+      meta: 'Message envoyé',
       code: 'Merci',
       title: 'Votre message est parti.',
       lead: 'On vous répond sous 24 h, directement, pas par un accusé de réception automatique. Si votre demande ne relève pas de notre métier, on vous le dira franchement.',
@@ -45,7 +45,7 @@ const CONTENT = {
   },
   en: {
     notFound: {
-      meta: 'Page not found · Reskope',
+      meta: 'Page not found',
       code: '404',
       title: 'This page does not exist.',
       lead: 'The link may be old, or the address contains a typo. Here are the most useful pages.',
@@ -58,7 +58,7 @@ const CONTENT = {
       cta: 'Back to home',
     },
     thanks: {
-      meta: 'Message sent · Reskope',
+      meta: 'Message sent',
       code: 'Thank you',
       title: 'Your message is on its way.',
       lead: 'We reply within 24 h, personally, not with an automated acknowledgement. If your request is outside our scope, we will tell you frankly.',
@@ -71,7 +71,7 @@ const CONTENT = {
       meanwhile: 'In the meantime, you can browse a full example report: exactly what you would receive after an audit.',
       cta: 'See an example report',
       home: 'Back to home',
-      urgent: 'Need to reach me faster?',
+      urgent: 'Need to reach us faster?',
     },
   },
 };

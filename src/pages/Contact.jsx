@@ -106,7 +106,7 @@ const CONTENT = {
     sending: 'Sending…',
     successTitle: 'Message sent!',
     successText: "I'll get back to you within 24 h.",
-    errorText: 'Something went wrong. Please try again or write to me directly.',
+    errorText: 'Something went wrong. Please try again or write to us directly.',
     consent: 'By sending this message, you agree that your data will be used to reply to you, in accordance with the',
     consentLink: 'privacy policy',
     quizEyebrow: 'Even simpler',

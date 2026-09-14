@@ -47,7 +47,7 @@ const CONTENT = {
     posEyebrow: 'Notre position',
     posTitle: "La sobriété n'est pas un argument, c'est une conséquence.",
     posLead:
-      "Un audit qui retire trois outils redondants a un effet réel : des serveurs qui ne tournent plus, du matériel qu'on garde plus longtemps, des données qu'on ne recopie plus. On ne le facture pas en plus, et on n'en fait pas une promesse de plaquette.",
+      "Un audit qui retire trois outils redondants a un effet réel : des serveurs qui ne tournent plus, du matériel qu'on garde plus longtemps, des données qu'on ne recopie plus. On ne le facture pas en plus, et on n'en fait pas une promesse de plaquette.",
     posBtn: 'Parler de votre stack',
     ctaTitle: 'Et si on allégeait vos outils ?',
     ctaLead:
@@ -222,7 +222,11 @@ export default function Ecologie() {
 
   return (
     <Page title={c.metaTitle} description={c.metaDesc}>
-      <div ref={pageRef}>
+      {/* Toute la page est verte, du hero au dernier bloc : le header et le
+          curseur y sont en contraste inversé sur toute la hauteur. Le
+          marqueur est posé sur l'enveloppe, pas section par section, sinon
+          il manque toujours celle qu'on a oubliée. */}
+      <div ref={pageRef} data-nav-dark data-cursor-dark>
         {/* Hero PLEIN ÉCRAN : le titre-réseau respire dans une canopée à deux
             profondeurs, la FEUILLE veille en filigrane, un cue invite. */}
         <div className="eco-hero">

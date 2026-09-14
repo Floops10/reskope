@@ -230,7 +230,7 @@ const T = {
       sending: 'Sending…',
       successTitle: 'Request sent!',
       successText: "I'll get back to you within 24 h, with a first idea of the way forward.",
-      errorText: 'Something went wrong. Please try again, or write to me directly.',
+      errorText: 'Something went wrong. Please try again, or write to us directly.',
       note: 'No strings attached. I adjust it with you during a first conversation.',
       consent: 'By sending, you agree that your data will be used to handle your request, in accordance with the',
       consentLink: 'privacy policy',

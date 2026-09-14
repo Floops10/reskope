@@ -21,7 +21,7 @@ import { HOME_TPE } from '../data/profils';
 
 const CONTENT = {
   fr: {
-    metaTitle: 'Conseil & ingénierie numérique · Reskope',
+    metaTitle: 'Conseil & ingénierie numérique',
     metaDesc:
       'Reskope cartographie et audite vos outils sur le terrain, salarié par salarié, puis relie, simplifie et construit ce qui manque. Démarche ouverte, gains chiffrés.',
 
@@ -124,7 +124,7 @@ const CONTENT = {
   },
 
   en: {
-    metaTitle: 'Digital consulting & engineering · Reskope',
+    metaTitle: 'Digital consulting & engineering',
     metaDesc:
       'Reskope maps and audits your tools on the ground, employee by employee, then connects, simplifies and builds what is missing. Open process, quantified gains.',
 

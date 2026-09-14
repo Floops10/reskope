@@ -68,20 +68,20 @@ const CONTENT = {
     },
     billing: {
       kicker: 'Transparency',
-      title: 'How I bill.',
+      title: 'How we bill.',
       text: 'One day of work = €450. The audit and the retainer are fixed price; the audit is fully deducted if you entrust me with the delivery. Delivery depends on time and complexity, estimated and agreed with you before we start. No surprises on the invoice.',
       note: 'Free quote, valid 30 days. Net prices, VAT not applicable, article 293 B of the French Tax Code. Audit launch rate reserved for the first 3 companies, valid until 31 December 2026.',
     },
     directH: 'Already know what you need?',
-    directP: 'No need to go through the audit: if your problem is clear and you just want to move to delivery, write to me directly. We both save time.',
-    directBtn: 'Write to me directly',
+    directP: 'No need to go through the audit: if your problem is clear and you just want to move to delivery, write to us directly. Everyone saves time.',
+    directBtn: 'Write to us directly',
     qcmEyebrow: 'Not sure what you need?',
     qcmTitle: 'Two minutes to pinpoint what you need.',
     qcmLead:
       'A few questions, and I suggest the most fitting support. Not the most expensive: the most useful.',
     faqEyebrow: 'Frequent questions',
     faqTitle: "What I'm often asked.",
-    faqLead: "A question that's not here? Write to me, I answer fast and frankly.",
+    faqLead: "A question that's not here? Write to us, we answer fast and frankly.",
   },
 };
 

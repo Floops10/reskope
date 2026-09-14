@@ -67,6 +67,10 @@ html.lenis body {
   --ink: #0e0b1f;
   --silver: #b7b3a9;
   --muted: #6e6a61;
+  /* Le gris de lecture passe tout juste la barre de contraste sur le crème.
+     Sur un fond légèrement teinté il tombe en dessous : les blocs posés sur
+     une teinte prennent cette variante, plus dense. */
+  --muted-fort: #5c5951;
   --hairline: #d8d5cb;
 
   --font: 'Neue Einstellung', system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -5455,7 +5459,9 @@ html.eco-theme .footer__net .nf-node {
   font-size: 0.76rem;
   font-weight: 600;
   letter-spacing: 0.04em;
-  color: var(--muted);
+  /* --muted sur le fond très clair de la pastille ne passait pas la barre
+     de contraste (3,87 pour 4,5 attendus à cette taille). */
+  color: color-mix(in srgb, var(--ink) 70%, transparent);
   padding: 0.34rem 0.62rem;
   border-radius: 999px;
   cursor: pointer;
@@ -5514,7 +5520,7 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 }
 .direct-band__text p {
   margin: 0;
-  color: var(--muted);
+  color: var(--muted-fort);
   font-size: 0.96rem;
   line-height: 1.55;
 }
@@ -8236,6 +8242,11 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 }
 /* Scopé aux colonnes UNIQUEMENT : le bouton CTA garde ses propres couleurs */
 .footer2__col a,
+.footer2__zone {
+  margin-top: 0.55rem;
+  font-size: 0.82rem;
+  color: rgba(240, 238, 232, 0.5);
+}
 .footer2__card-btn {
   color: rgba(240, 238, 232, 0.78);
   transition: color 0.25s ease, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);

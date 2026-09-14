@@ -320,7 +320,7 @@ export const OFFERS = {
         'Delivery: integrations, automations, website',
         'Custom tool development if needed',
         'Day-rate billing (estimate provided upfront)',
-        'You choose: I do it all, or you take over',
+        'You choose: we do it all, or you take over',
       ],
       cta: "Let's talk",
       featured: true,
@@ -335,7 +335,7 @@ export const OFFERS = {
     {
       id: 'developpement',
       name: 'Development & automation',
-      tagline: 'Your need is clear, I build it.',
+      tagline: 'Your need is clear, we build it.',
       features: [
         'Custom website or business application',
         'Automations (n8n, BI, artificial intelligence)',
@@ -346,7 +346,7 @@ export const OFFERS = {
       cta: 'Describe my need',
       featured: false,
       detailTitle: 'What it actually delivers',
-      detail: `You have a clear need: a website, a business app, an automation, an integration. No prior audit needed. I build from mockup to deployment, no middleman. Everything is estimated in days before we start, you know what you are paying and why.`,
+      detail: `You have a clear need: a website, a business app, an automation, an integration. No prior audit needed. We build from mockup to deployment, no middleman. Everything is estimated in days before we start, you know what you are paying and why.`,
       pricingFactors: [
         `Functional complexity (pages, business logic, APIs)`,
         `Chosen technologies (no-code, development, AI)`,
@@ -411,7 +411,7 @@ export const FAQ = {
     },
     {
       q: 'Does the report commit me to the delivery phase?',
-      a: 'No. The report is a standalone deliverable: you can apply it yourself, with your team, or entrust the delivery to me.',
+      a: 'No. The report is a standalone deliverable: you can apply it yourself, with your team, or entrust the delivery to us.',
     },
     {
       q: 'Do you work with small organizations?',
@@ -419,7 +419,7 @@ export const FAQ = {
     },
     {
       q: 'What if the report gives me nothing?',
-      a: 'You do not pay for it. You have seven days after delivery to tell me in writing: I either revise the report at no extra cost, or cancel the invoice. The details are in the terms of sale.',
+      a: 'You do not pay for it. You have seven days after delivery to tell us in writing: we either revise the report at no extra cost, or cancel the invoice. The details are in the terms of sale.',
     },
   ],
 };

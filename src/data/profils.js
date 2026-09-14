@@ -13,7 +13,7 @@
 
 export const HOME_TPE = {
   fr: {
-    metaTitle: 'Sites, boutiques et identité de marque pour TPE · Reskope',
+    metaTitle: 'Sites, boutiques et identité de marque pour TPE',
     metaDesc:
       'On construit ce qui vous manque : site vitrine, boutique en ligne, prise de rendez-vous, identité de marque. Facturé à la journée, code et accès à votre nom.',
 
@@ -73,7 +73,7 @@ export const HOME_TPE = {
     ctaBtn: 'Parlons de votre projet',
   },
   en: {
-    metaTitle: 'Websites, shops and brand identity for small businesses · Reskope',
+    metaTitle: 'Websites, shops and brand identity for small businesses',
     metaDesc:
       'We build what you are missing: website, online shop, booking, brand identity. Billed by the day, code and access in your name.',
 
@@ -266,9 +266,9 @@ export const PRICES_TPE = {
 
 export const OFFRES_TPE = {
   fr: {
-    metaTitle: 'Offres & tarifs TPE · site, réservation, liaisons, marque',
+    metaTitle: 'Offres & tarifs TPE · site, réservation, marque, lancement',
     metaDesc:
-      'Quatre chantiers courts, prix affichés : site dès 1 900 €, réservation dès 1 400 €, liaisons entre outils à 450 €/jour, identité de marque dès 1 600 €. Ce qui est fixe, ce qui varie.',
+      'Quatre chantiers courts, prix affichés : site et boutique dès 1 900 €, prise de rendez-vous dès 1 400 €, identité de marque dès 1 600 €, aide au lancement dès 1 200 €. Ce qui est fixe, ce qui varie.',
     title: 'Quatre chantiers, quatre façons de gagner du temps.',
     directP: 'Si votre besoin est clair et que vous voulez passer directement à la réalisation, écrivez-nous. On gagne du temps tous les deux.',
     lead: 'Chaque chantier est différent, mais les tarifs sont clairs dès le départ. On définit ensemble le périmètre, vous savez ce que vous payez et pourquoi, et vous pouvez vous arrêter à la fin de chaque étape.',
@@ -280,15 +280,15 @@ export const OFFRES_TPE = {
     },
   },
   en: {
-    metaTitle: 'Offers & pricing for small businesses · site, booking, integrations, brand',
+    metaTitle: 'Offers & pricing for small businesses · site, booking, brand, launch',
     metaDesc:
-      'Four short projects, prices shown: website from €1,900, booking from €1,400, integrations at €450/day, brand identity from €1,600. What is fixed, what varies.',
+      'Four short projects, prices shown: website and shop from €1,900, booking from €1,400, brand identity from €1,600, launch support from €1,200. What is fixed, what varies.',
     title: 'Four projects, four ways to win time back.',
-    directP: 'If your need is clear and you want to go straight to delivery, write to me. It saves us both time.',
+    directP: 'If your need is clear and you want to go straight to delivery, write to us. It saves everyone time.',
     lead: 'Every project is different, but pricing is clear from the start. We define the scope together, you know what you pay and why, and you can stop at the end of any stage.',
     billing: {
       kicker: 'Transparency',
-      title: 'How I bill.',
+      title: 'How we bill.',
       text: 'One day on the job = €450. Short projects are fixed-price, announced before we start; the rest is time spent, estimated and approved with you. We move in small steps you approve one by one, and you can stop at the end of any of them. No surprises on the invoice.',
       note: 'Free quote, valid 30 days. Net prices, VAT not applicable, article 293 B of the French tax code. Code, source files and access are handed over at the end, whatever happens next.',
     },

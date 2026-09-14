@@ -11,8 +11,15 @@ import { layoutWord } from '../lib/netfont';
 
    Deux modes :
    - autonome (défaut) : formation déclenchée par ScrollTrigger ;
-   - piloté (`active` fourni) : le parent décide (rail caméra HomeCinema) —
-     true => formation, false => reset.
+   - piloté (`active` fourni) : le parent décide (rail caméra HomeCinema).
+     `arme` dit si la phrase est encore DEVANT nous. C'est ce qui règle un
+     défaut visible : la sortie de scène est scrubée (elle n'avance que si
+     on fait défiler) alors que le démontage du réseau, lui, joue en temps
+     réel. Qui s'arrêtait de défiler pile à la bascule voyait le titre se
+     défaire tout seul et la légende rester seule au milieu de l'écran.
+     On ne démonte donc plus en sortie : c'est le fondu de la scène, titre
+     et légende ensemble, qui emporte l'ensemble. On ne remonte la phrase
+     que si on revient en arrière, pour qu'elle se reforme à la descente.
    reduced-motion / onglet caché : réseau déjà formé (statique). */
 const PAD = 12;
 
@@ -35,7 +42,7 @@ export function phraseAspect(text) {
   return Math.max(...text.split(' ').filter(Boolean).map((w) => buildWord(w).aspect));
 }
 
-export default function NetPhrase({ text, index = 0, maxAspect, active }) {
+export default function NetPhrase({ text, index = 0, maxAspect, active, arme = true }) {
   const rootRef = useRef(null);
   const apiRef = useRef(null);
   const words = useMemo(() => text.split(' ').filter(Boolean).map(buildWord), [text]);
@@ -127,14 +134,16 @@ export default function NetPhrase({ text, index = 0, maxAspect, active }) {
     return () => { apiRef.current = null; };
   }, { scope: rootRef, dependencies: [text] });
 
-  /* Mode piloté : le parent bascule `active` */
+  /* Mode piloté : le parent bascule `active`. On ne remonte la phrase que
+     si elle est repassée DEVANT nous ; une phrase déjà traversée reste
+     formée et s'en va avec le fondu de sa scène. */
   useEffect(() => {
     if (!controlled) return;
     const api = apiRef.current;
     if (!api) return;
     if (active) api.play();
-    else api.reset();
-  }, [active, controlled]);
+    else if (arme) api.reset();
+  }, [active, arme, controlled]);
 
   return (
     <div className="netphrase" ref={rootRef} aria-label={text} style={{ '--np-max-aspect': aspect.toFixed(3) }}>

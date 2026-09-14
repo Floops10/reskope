@@ -39,7 +39,7 @@ function LegalPage({ meta, eyebrow, title, lead, sections, updated }) {
 /* ————————————————— Mentions légales ————————————————— */
 const MENTIONS = {
   fr: {
-    meta: 'Mentions légales · Reskope',
+    meta: 'Mentions légales',
     eyebrow: 'Informations',
     title: 'Mentions légales.',
     lead: "Les informations légales relatives à l'éditeur et à l'hébergement de ce site.",
@@ -76,7 +76,7 @@ const MENTIONS = {
     ],
   },
   en: {
-    meta: 'Legal notice · Reskope',
+    meta: 'Legal notice',
     eyebrow: 'Information',
     title: 'Legal notice.',
     lead: 'Legal information about the publisher and hosting of this site.',
@@ -117,7 +117,7 @@ const MENTIONS = {
 /* ————————————————— Confidentialité ————————————————— */
 const PRIVACY = {
   fr: {
-    meta: 'Politique de confidentialité · Reskope',
+    meta: 'Politique de confidentialité',
     eyebrow: 'Vos données',
     title: 'Politique de confidentialité.',
     lead: 'Ce que ce site collecte (très peu), pourquoi, où vont vos données, et vos droits.',
@@ -158,7 +158,7 @@ const PRIVACY = {
     ],
   },
   en: {
-    meta: 'Privacy policy · Reskope',
+    meta: 'Privacy policy',
     eyebrow: 'Your data',
     title: 'Privacy policy.',
     lead: 'What this site collects (very little), why, where your data goes, and your rights.',
@@ -203,7 +203,7 @@ const PRIVACY = {
 /* ————————————————— CGU ————————————————— */
 const TERMS = {
   fr: {
-    meta: "Conditions générales d'utilisation · Reskope",
+    meta: "Conditions générales d'utilisation",
     eyebrow: 'Cadre',
     title: "Conditions générales d'utilisation.",
     lead: "Les règles simples qui encadrent l'utilisation de ce site.",
@@ -236,7 +236,7 @@ const TERMS = {
     ],
   },
   en: {
-    meta: 'Terms of use · Reskope',
+    meta: 'Terms of use',
     eyebrow: 'Framework',
     title: 'Terms of use.',
     lead: 'The simple rules governing the use of this site.',
@@ -273,7 +273,7 @@ const TERMS = {
 /* ————————————————— CGV ————————————————— */
 const SALES = {
   fr: {
-    meta: 'Conditions générales de vente · Reskope',
+    meta: 'Conditions générales de vente',
     eyebrow: 'Prestations',
     title: 'Conditions générales de vente.',
     lead: "Le cadre des prestations d'audit, de mise en œuvre, de développement et de suivi.",
@@ -343,7 +343,7 @@ const SALES = {
     ],
   },
   en: {
-    meta: 'Terms of sale · Reskope',
+    meta: 'Terms of sale',
     eyebrow: 'Services',
     title: 'Terms of sale.',
     lead: 'The framework for audit, delivery, development and retainer engagements.',

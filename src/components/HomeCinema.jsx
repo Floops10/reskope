@@ -258,6 +258,7 @@ export default function HomeCinema({ c }) {
                     index={i}
                     maxAspect={maxAspect}
                     active={flat ? true : activeIdx === 3 + i}
+                    arme={flat ? false : activeIdx <= 3 + i}
                   />
                   <p className="netphrase__sub">{o.sub}</p>
                 </div>
