@@ -7,7 +7,8 @@ import { GLYPH_SHAPES } from '../lib/net3d';
 import Net3D from './Net3D';
 import SwapLabel from './SwapLabel';
 import { useT, useLang, LangToggle } from '../i18n';
-import { ProfilToggle } from '../profil';
+import { ProfilToggle, useProfil } from '../profil';
+import { PAGES_PROFIL } from '../data/profils';
 import { CONTACT } from '../data/site';
 import { openCalModal, isCalConfigured } from '../lib/cal';
 
@@ -26,8 +27,14 @@ export default function Nav() {
   const [dark, setDark] = useState(false);
   const { pathname } = useLocation();
   const { lang } = useLang();
+  const { profil } = useProfil();
   const t = useT();
-  const tabs = Object.entries(t.nav.tabs);
+  /* Une page réservée à l'autre profil n'a rien à faire dans le menu :
+     proposer un exemple d'audit à une entreprise de trois personnes,
+     c'est promettre une prestation qu'on ne lui vendra pas. L'URL reste
+     valide, seul le chemin de navigation disparaît. */
+  const tabs = Object.entries(t.nav.tabs)
+    .filter(([to]) => !PAGES_PROFIL[to] || PAGES_PROFIL[to] === profil);
 
   /* Deux CTA distincts dans le header : « Écrire » mène au formulaire,
      « Réserver » ouvre l'agenda. Un seul bouton pour les deux intentions

@@ -13836,6 +13836,9 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 @media (max-width: 1100px) { .nav__profil .proftoggle__label { display: none; } }
 @media (max-width: 760px) { .nav__profil { display: none; } }
 .menu2__profil { margin-right: 0.4rem; }
+/* Le pied du menu portait deux boutons et une bascule ; avec la seconde
+   il déborde du panneau. On l'autorise à passer à la ligne. */
+.menu2__foot-actions { flex-wrap: wrap; row-gap: 0.9rem; }
 
 /* Le pont entre les deux versions du site. */
 .section--tight { padding-block: clamp(2rem, 4vw, 3.5rem); }
@@ -13867,3 +13870,216 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 }
 .pont__btn span { transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1); }
 .pont__btn:hover span { transform: translateX(5px); }
+
+/* ---------- la question d'entrée : TPE ou PME ---------- */
+
+.chp {
+  position: fixed;
+  inset: 0;
+  z-index: 9997;
+  display: grid;
+  place-items: center;
+  padding: clamp(1rem, 4vw, 2.5rem);
+}
+.chp__fond {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, var(--ink) 82%, transparent);
+  backdrop-filter: blur(10px) saturate(120%);
+  animation: chp-fond 0.5s ease both;
+}
+@keyframes chp-fond { from { opacity: 0; } to { opacity: 1; } }
+
+.chp__boite {
+  position: relative;
+  width: min(100%, 720px);
+  max-height: 92svh;
+  overflow-y: auto;
+  padding: clamp(1.8rem, 4vw, 3rem);
+  border-radius: 22px;
+  background: var(--cream);
+  box-shadow: 0 40px 120px -50px rgba(14, 11, 31, 0.8);
+  animation: chp-boite 0.72s cubic-bezier(0.22, 1, 0.36, 1) 0.12s both;
+}
+@keyframes chp-boite {
+  from { opacity: 0; transform: translateY(22px) scale(0.985); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .chp__fond, .chp__boite { animation: none; }
+}
+
+.chp__logo { width: 1.9rem; height: auto; color: var(--indigo); display: block; }
+.chp__kicker {
+  margin-top: 1.3rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--indigo);
+}
+.chp__t {
+  margin-top: 0.5rem;
+  font-size: clamp(1.7rem, 3.6vw, 2.5rem);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1.08;
+}
+.chp__lead {
+  margin-top: 0.9rem;
+  max-width: 56ch;
+  font-size: 0.98rem;
+  line-height: 1.62;
+  color: var(--muted);
+}
+
+.chp__choix {
+  display: grid;
+  gap: 0.9rem;
+  grid-template-columns: 1fr;
+  margin-top: clamp(1.6rem, 3vw, 2.2rem);
+}
+@media (min-width: 620px) { .chp__choix { grid-template-columns: 1fr 1fr; } }
+
+/* Chaque choix est un nœud du réseau qui s'allume : c'est le langage de
+   la marque, pas un bouton de formulaire. */
+.chp__opt {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 1.4rem 1.3rem 1.5rem;
+  border: 1px solid var(--hairline);
+  border-radius: 16px;
+  background: color-mix(in srgb, #ffffff 55%, var(--cream));
+  font-family: var(--font);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.35s ease, background 0.35s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.chp__opt:hover, .chp__opt:focus-visible {
+  border-color: var(--indigo);
+  background: #fff;
+  transform: translateY(-3px);
+}
+.chp__node {
+  display: block;
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+  border: 2px solid var(--indigo);
+  background: transparent;
+  transition: background 0.35s ease;
+}
+.chp__opt:hover .chp__node, .chp__opt:focus-visible .chp__node { background: var(--indigo); }
+.chp__sigle {
+  display: block;
+  margin-top: 0.9rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+}
+.chp__taille {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--indigo);
+}
+.chp__quoi {
+  display: block;
+  margin-top: 0.7rem;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--muted);
+}
+.chp__fleche {
+  position: absolute;
+  right: 1.2rem;
+  top: 1.25rem;
+  color: var(--indigo);
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.chp__opt:hover .chp__fleche { transform: translateX(5px); }
+
+.chp__passer {
+  display: block;
+  margin: 1.4rem auto 0;
+  border: 0;
+  background: none;
+  padding: 0.4rem;
+  font-family: var(--font);
+  font-size: 0.86rem;
+  color: var(--muted);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.chp__passer:hover { color: var(--ink); }
+
+/* ---------- page réservée à l'autre profil ---------- */
+
+/* Ni redirection, ni contenu masqué : on dit à qui la page s'adresse et
+   on propose la bascule. Le bandeau se glisse sous le header fixe, donc
+   il porte sa propre marge haute. */
+.resv {
+  position: relative;
+  z-index: 3;
+  padding: calc(var(--nav-h, 74px) + 1rem) 0 0.4rem;
+  background: var(--cream-shade);
+}
+.resv__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 1.4rem;
+  padding-block: 1.1rem 1.2rem;
+}
+.resv__node {
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  background: var(--indigo);
+  flex: none;
+}
+.resv__txt {
+  flex: 1 1 22rem;
+  min-width: 0;
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--muted);
+}
+.resv__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem 1.3rem; flex: 0 1 auto; }
+/* Sous 1000 px les deux actions ne tiennent plus sur la même ligne que le
+   texte : elles passent dessous plutôt que de sortir du cadre. */
+@media (max-width: 1180px) {
+  /* Seules les actions passent dessous : le nœud reste collé à sa phrase,
+     sinon il se retrouve seul sur une ligne au-dessus. */
+  .resv__actions { flex-basis: 100%; }
+  .resv__txt { flex: 1 1 12rem; }
+}
+.resv__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border: 0;
+  background: none;
+  padding: 0;
+  font-family: var(--font);
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--indigo);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.resv__btn span { transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1); }
+.resv__btn:hover span { transform: translateX(5px); }
+.resv__lien {
+  font-size: 0.88rem;
+  color: var(--muted);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  white-space: nowrap;
+}
+.resv__lien:hover { color: var(--ink); }

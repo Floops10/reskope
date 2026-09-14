@@ -354,6 +354,50 @@ export const OFFRES_TPE = {
   },
 };
 
+/* Les pages qui ne concernent qu'un profil.
+
+   L'exemple de bilan est le compte rendu d'un audit mené poste par poste
+   chez une PME. Chez une entreprise de trois personnes, cette prestation
+   n'existe pas : la page n'a rien à y faire. On la retire donc du menu
+   en version TPE.
+
+   On ne la SUPPRIME pas pour autant : l'URL reste valide, elle garde sa
+   valeur pour les moteurs, et quiconque y arrive par un lien externe la
+   lit normalement — avec un bandeau qui dit franchement à qui elle
+   s'adresse et propose la bascule. Rediriger de force serait hostile. */
+export const PAGES_PROFIL = { '/exemple': 'pme' };
+
+export const RESERVE = {
+  fr: {
+    pme: {
+      txt: 'Ce bilan est un exemple d’audit mené poste par poste, une prestation qui s’adresse aux PME de dix personnes et plus. Vous consultez le site en version TPE.',
+      act: 'Passer en version PME',
+      autre: 'Voir les offres TPE',
+      autreTo: '/offres',
+    },
+    tpe: {
+      txt: 'Cette page s’adresse aux entreprises de moins de dix personnes. Vous consultez le site en version PME.',
+      act: 'Passer en version TPE',
+      autre: 'Voir les offres PME',
+      autreTo: '/offres',
+    },
+  },
+  en: {
+    pme: {
+      txt: 'This report is an example of a desk-by-desk audit, a service aimed at SMEs of ten people and above. You are browsing the small-business version of the site.',
+      act: 'Switch to the SME version',
+      autre: 'See small-business offers',
+      autreTo: '/offres',
+    },
+    tpe: {
+      txt: 'This page is aimed at businesses under ten people. You are browsing the SME version of the site.',
+      act: 'Switch to the small-business version',
+      autre: 'See SME offers',
+      autreTo: '/offres',
+    },
+  },
+};
+
 /* Le pont entre les deux versions : personne ne doit se retrouver enfermé
    dans son profil. */
 export const PASSERELLE = {

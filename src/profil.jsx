@@ -19,14 +19,17 @@ import { useLang } from './i18n';
    disparaître en CSS seul, sans plomberie dans chaque page.
    ============================================================ */
 
-const ProfilContext = createContext({ profil: 'pme', setProfil: () => {} });
+const ProfilContext = createContext({
+  profil: 'pme', setProfil: () => {}, choisi: true, demander: () => {}, passer: () => {},
+});
 
 const VALIDES = ['tpe', 'pme'];
+const CLE = 'reskope-profil';
 
 export function ProfilProvider({ children }) {
   const [profil, setProfilState] = useState(() => {
     if (typeof localStorage !== 'undefined') {
-      const s = localStorage.getItem('reskope-profil');
+      const s = localStorage.getItem(CLE);
       if (VALIDES.includes(s)) return s;
     }
     /* Par défaut la PME : c'est le contenu historique du site, celui qui
@@ -34,21 +37,42 @@ export function ProfilProvider({ children }) {
     return 'pme';
   });
 
+  /* `choisi` distingue « n'a pas encore répondu » de « a répondu PME ».
+     Sans cette nuance, on ne saurait pas à qui poser la question, et on
+     la reposerait à chaque visite — ce qui est le meilleur moyen de se
+     faire fermer au deuxième passage. */
+  const [choisi, setChoisi] = useState(() => {
+    if (typeof localStorage === 'undefined') return true;
+    return VALIDES.includes(localStorage.getItem(CLE));
+  });
+
   useEffect(() => {
     document.documentElement.dataset.profil = profil;
-    try {
-      localStorage.setItem('reskope-profil', profil);
-    } catch {
-      /* navigation privée : le choix vaut pour la session, c'est tout */
-    }
   }, [profil]);
 
-  const setProfil = useCallback((p) => {
-    if (VALIDES.includes(p)) setProfilState(p);
+  const setProfil = useCallback((p, memoriser = true) => {
+    if (!VALIDES.includes(p)) return;
+    setProfilState(p);
+    if (memoriser) {
+      setChoisi(true);
+      try {
+        localStorage.setItem(CLE, p);
+      } catch {
+        /* navigation privée : le choix vaut pour la session, c'est tout */
+      }
+    }
   }, []);
 
+  /* Rouvrir la question depuis n'importe où. */
+  const demander = useCallback(() => setChoisi(false), []);
+
+  /* « Je regarde d'abord » : on ferme sans rien retenir. La question ne
+     revient pas pendant la visite, et le réglage reste dans le header.
+     On ne mémorise pas un non-choix comme s'il en était un. */
+  const passer = useCallback(() => setChoisi(true), []);
+
   return (
-    <ProfilContext.Provider value={{ profil, setProfil }}>
+    <ProfilContext.Provider value={{ profil, setProfil, choisi, demander, passer }}>
       {children}
     </ProfilContext.Provider>
   );

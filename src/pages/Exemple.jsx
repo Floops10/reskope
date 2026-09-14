@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import ReservePme from '../components/ReservePme';
 import Page from '../components/Page';
 import MorphTitle from '../components/MorphTitle';
 import NetWord from '../components/NetWord';
@@ -349,6 +350,10 @@ export default function Exemple() {
 
   return (
     <Page title={b.metaTitle} description={b.metaDesc}>
+      {/* L'exemple de bilan est un audit poste par poste : il ne
+          concerne pas une entreprise de moins de dix personnes. */}
+      <ReservePme pour="pme" />
+
       {/* Hero COMPACT : une phrase, une animation, le bilan juste dessous */}
       <BilanHero key={lang} hero={b.hero} />
 
