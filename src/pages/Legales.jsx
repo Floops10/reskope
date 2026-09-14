@@ -7,9 +7,12 @@ import { CONTACT } from '../data/site';
 /* Pages légales : mentions, confidentialité, CGU, CGV.
    Sobres et lisibles (prose), même squelette pour les quatre.
 
-   ⚠️ À FINALISER avant mise en ligne réelle : les champs marqués
-   [À COMPLÉTER : …] attendent tes informations d'entreprise (forme
-   juridique, SIRET, adresse, régime de TVA, éventuel médiateur, date). */
+   ⚠️ À FINALISER avant mise en ligne réelle. Ce qui était déjà public
+   ailleurs est rempli : le SIRET, qui figure au dos du livret, et le régime
+   de TVA, déjà annoncé sur la page des offres. Les [À COMPLÉTER : …] qui
+   restent demandent des informations que seul l'éditeur détient : forme
+   juridique, adresse du siège, code APE, délais de paiement et de réserve,
+   et le médiateur de la consommation si la clientèle est grand public. */
 
 function LegalPage({ meta, eyebrow, title, lead, sections, updated }) {
   return (
@@ -43,13 +46,13 @@ const MENTIONS = {
     eyebrow: 'Informations',
     title: 'Mentions légales.',
     lead: "Les informations légales relatives à l'éditeur et à l'hébergement de ce site.",
-    updated: 'Dernière mise à jour : [À COMPLÉTER : date].',
+    updated: 'Dernière mise à jour : 14 septembre 2026.',
     sections: [
       { h: 'Éditeur du site', p: [
         `Le site Reskope est édité par Florian Bouchart, [À COMPLÉTER : forme juridique, ex. entrepreneur individuel / micro-entreprise].`,
         'Siège : [À COMPLÉTER : adresse du siège].',
-        'SIRET : [À COMPLÉTER : n° SIRET] · Code APE : [À COMPLÉTER : code APE].',
-        'TVA : [À COMPLÉTER : « TVA non applicable, art. 293 B du CGI » en franchise en base, ou n° de TVA intracommunautaire si assujetti].',
+        'SIRET : 939 285 003 00017 · Code APE : [À COMPLÉTER : code APE].',
+        'TVA : non applicable, article 293 B du CGI (franchise en base).',
         `Contact : ${CONTACT.email}`,
       ] },
       { h: 'Directeur de la publication', p: [
@@ -80,13 +83,13 @@ const MENTIONS = {
     eyebrow: 'Information',
     title: 'Legal notice.',
     lead: 'Legal information about the publisher and hosting of this site.',
-    updated: 'Last updated: [TO COMPLETE: date].',
+    updated: 'Last updated: 14 September 2026.',
     sections: [
       { h: 'Publisher', p: [
         'The Reskope website is published by Florian Bouchart, [TO COMPLETE: legal form, e.g. sole proprietor / micro-enterprise].',
         'Registered address: [TO COMPLETE: registered address].',
-        'SIRET: [TO COMPLETE: SIRET number] · APE code: [TO COMPLETE: APE code].',
-        'VAT: [TO COMPLETE: "VAT not applicable, art. 293 B of the French Tax Code" under the franchise scheme, or intra-community VAT number if liable].',
+        'SIRET: 939 285 003 00017 · APE code: [TO COMPLETE: APE code].',
+        'VAT: not applicable, article 293 B of the French Tax Code (small-business exemption).',
         `Contact: ${CONTACT.email}`,
       ] },
       { h: 'Publication director', p: [
@@ -121,7 +124,7 @@ const PRIVACY = {
     eyebrow: 'Vos données',
     title: 'Politique de confidentialité.',
     lead: 'Ce que ce site collecte (très peu), pourquoi, où vont vos données, et vos droits.',
-    updated: 'Dernière mise à jour : [À COMPLÉTER : date].',
+    updated: 'Dernière mise à jour : 14 septembre 2026.',
     sections: [
       { h: 'Responsable du traitement', p: [
         `Le responsable du traitement est Florian Bouchart (Reskope), [À COMPLÉTER : adresse]. Pour toute question relative à vos données : ${CONTACT.email}`,
@@ -162,7 +165,7 @@ const PRIVACY = {
     eyebrow: 'Your data',
     title: 'Privacy policy.',
     lead: 'What this site collects (very little), why, where your data goes, and your rights.',
-    updated: 'Last updated: [TO COMPLETE: date].',
+    updated: 'Last updated: 14 September 2026.',
     sections: [
       { h: 'Data controller', p: [
         `The data controller is Florian Bouchart (Reskope), [TO COMPLETE: address]. For any question about your data: ${CONTACT.email}`,
@@ -207,7 +210,7 @@ const TERMS = {
     eyebrow: 'Cadre',
     title: "Conditions générales d'utilisation.",
     lead: "Les règles simples qui encadrent l'utilisation de ce site.",
-    updated: 'Dernière mise à jour : [À COMPLÉTER : date].',
+    updated: 'Dernière mise à jour : 14 septembre 2026.',
     sections: [
       { h: 'Objet', p: [
         "Les présentes conditions encadrent l'accès et l'utilisation du site Reskope, site vitrine présentant les services d'audit, de conseil et d'ingénierie numérique proposés par Reskope. En utilisant le site, vous acceptez ces conditions.",
@@ -240,7 +243,7 @@ const TERMS = {
     eyebrow: 'Framework',
     title: 'Terms of use.',
     lead: 'The simple rules governing the use of this site.',
-    updated: 'Last updated: [TO COMPLETE: date].',
+    updated: 'Last updated: 14 September 2026.',
     sections: [
       { h: 'Purpose', p: [
         'These terms govern access to and use of the Reskope website, a showcase site presenting the audit, consulting and digital engineering services offered by Reskope. By using the site, you accept these terms.',
@@ -277,7 +280,7 @@ const SALES = {
     eyebrow: 'Prestations',
     title: 'Conditions générales de vente.',
     lead: "Le cadre des prestations d'audit, de mise en œuvre, de développement et de suivi.",
-    updated: 'Dernière mise à jour : [À COMPLÉTER : date].',
+    updated: 'Dernière mise à jour : 14 septembre 2026.',
     sections: [
       { h: 'Objet et champ d’application', p: [
         "Les présentes conditions générales de vente (CGV) régissent les prestations de conseil, d'audit numérique, de développement, d'automatisation et de suivi fournies par Reskope à ses clients professionnels. Toute commande implique l'acceptation sans réserve des présentes CGV, qui prévalent sur tout autre document du client.",
@@ -294,7 +297,7 @@ const SALES = {
       { h: 'Prix et TVA', p: [
         "Les prix sont exprimés en euros et s'entendent nets. Le tarif de référence est de 450 € par jour d'intervention, sauf forfait précisé au devis (par exemple l'audit ou l'abonnement de suivi).",
         "L'audit est facturé au forfait selon l'effectif de la structure auditée. Un tarif de lancement, réservé aux trois premières entreprises accompagnées, est applicable jusqu'au 31 décembre 2026 ; au-delà de cette date ou de ce nombre, le tarif standard s'applique. Le montant de l'audit est intégralement déduit du devis de mise en œuvre lorsque celle-ci est confiée à Reskope.",
-        'TVA : [À COMPLÉTER : « TVA non applicable, art. 293 B du CGI » en franchise en base, ou taux de TVA applicable].',
+        'TVA : non applicable, article 293 B du CGI (franchise en base).',
       ] },
       { h: 'Garantie bilan', p: [
         "Si, à la remise du bilan d'audit, le client estime que celui-ci ne lui apporte aucun élément exploitable, il dispose de sept (7) jours calendaires pour le signaler par écrit, en motivant sa position. Reskope propose alors, au choix du client, soit une reprise du bilan sans supplément, soit l'annulation de la facture correspondante.",
@@ -347,7 +350,7 @@ const SALES = {
     eyebrow: 'Services',
     title: 'Terms of sale.',
     lead: 'The framework for audit, delivery, development and retainer engagements.',
-    updated: 'Last updated: [TO COMPLETE: date].',
+    updated: 'Last updated: 14 September 2026.',
     sections: [
       { h: 'Purpose and scope', p: [
         'These terms of sale govern the consulting, digital audit, development, automation and retainer services provided by Reskope to its professional clients. Any order implies unreserved acceptance of these terms, which prevail over any other document from the client.',
@@ -364,7 +367,7 @@ const SALES = {
       { h: 'Price and VAT', p: [
         'Prices are in euros and are net. The reference rate is €450 per day of work, unless a fixed package is stated in the quote (e.g. the audit or the retainer).',
         'The audit is charged as a fixed package based on the headcount of the audited organisation. A launch rate, reserved for the first three companies supported, applies until 31 December 2026; beyond that date or that number, the standard rate applies. The audit amount is fully deducted from the delivery quote when the delivery is entrusted to Reskope.',
-        'VAT: [TO COMPLETE: "VAT not applicable, art. 293 B of the French Tax Code" under the franchise scheme, or applicable VAT rate].',
+        'VAT: not applicable, article 293 B of the French Tax Code (small-business exemption).',
       ] },
       { h: 'Report guarantee', p: [
         'If, upon delivery of the audit report, the client considers that it provides no actionable element, they have seven (7) calendar days to say so in writing, stating their reasons. Reskope then offers, at the client’s choice, either a revision of the report at no extra cost, or cancellation of the corresponding invoice.',
