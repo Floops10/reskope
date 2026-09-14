@@ -329,13 +329,13 @@ export const OFFRES_TPE = {
     metaDesc:
       'Quatre chantiers courts, prix affichés : site dès 1 900 €, réservation dès 1 400 €, liaisons entre outils à 450 €/jour, identité de marque dès 1 600 €. Ce qui est fixe, ce qui varie.',
     title: 'Quatre chantiers, quatre façons de gagner du temps.',
-    directP: 'Si votre besoin est clair et que vous voulez passer directement à la réalisation, écrivez-moi. On gagne du temps tous les deux.',
+    directP: 'Si votre besoin est clair et que vous voulez passer directement à la réalisation, écrivez-nous. On gagne du temps tous les deux.',
     lead: 'Chaque chantier est différent, mais les tarifs sont clairs dès le départ. On définit ensemble le périmètre, vous savez ce que vous payez et pourquoi, et vous pouvez vous arrêter à la fin de chaque étape.',
     billing: {
       kicker: 'Transparence',
-      title: 'Comment je facture.',
+      title: 'Comment on facture.',
       text: 'Un jour d’intervention = 450 €. Les chantiers courts sont au forfait, annoncé avant de démarrer ; le reste est au temps passé, estimé et validé avec vous. On avance par petites étapes que vous validez une par une, et vous pouvez vous arrêter à la fin de chacune. Aucune surprise sur la facture.',
-      note: 'Devis gratuit, valable 30 jours. Tarifs nets — TVA non applicable, article 293 B du CGI. Le code, les fichiers sources et les accès vous sont remis à la fin, quelle que soit la suite.',
+      note: 'Devis gratuit, valable 30 jours. Tarifs nets, TVA non applicable, article 293 B du CGI. Le code, les fichiers sources et les accès vous sont remis à la fin, quelle que soit la suite.',
     },
   },
   en: {
@@ -349,7 +349,7 @@ export const OFFRES_TPE = {
       kicker: 'Transparency',
       title: 'How I bill.',
       text: 'One day on the job = €450. Short projects are fixed-price, announced before we start; the rest is time spent, estimated and approved with you. We move in small steps you approve one by one, and you can stop at the end of any of them. No surprises on the invoice.',
-      note: 'Free quote, valid 30 days. Net prices — VAT not applicable, article 293 B of the French tax code. Code, source files and access are handed over at the end, whatever happens next.',
+      note: 'Free quote, valid 30 days. Net prices, VAT not applicable, article 293 B of the French tax code. Code, source files and access are handed over at the end, whatever happens next.',
     },
   },
 };

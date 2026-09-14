@@ -152,7 +152,7 @@ export const JALONS = {
     },
     {
       n: '04', label: 'Mise en œuvre', title: 'On exécute, jalon par jalon.',
-      text: `Les quick wins d'abord, puis les chantiers de fond. Vous cochez chaque étape avec moi, à votre rythme.`,
+      text: `Les quick wins d'abord, puis les chantiers de fond. Vous cochez chaque étape avec nous, à votre rythme.`,
       deliver: 'Des outils qui travaillent enfin pour vous.', here: false,
     },
     {
@@ -206,7 +206,7 @@ export const OFFERS = {
       cta: 'Demander un audit',
       featured: false,
       detailTitle: 'Ce que ça donne concrètement',
-      detail: `Je passe 2 à 5 jours sur le terrain avec vos équipes, de visu. J'analyse chaque outil utilisé, chaque usage réel, chaque friction. À la fin, vous recevez un bilan priorisé par impact, pas par complexité technique, que vous gardez quelle que soit la suite. Vous n'avez aucune obligation de continuer avec moi.`,
+      detail: `On passe 2 à 5 jours sur le terrain avec vos équipes, de visu. On analyse chaque outil utilisé, chaque usage réel, chaque friction. À la fin, vous recevez un bilan priorisé par impact, pas par complexité technique, que vous gardez quelle que soit la suite. Vous n'avez aucune obligation de continuer avec nous.`,
       pricingFactors: [
         `Nombre d'équipes ou de sites à couvrir`,
         `Complexité de l'écosystème d'outils`,
@@ -216,13 +216,13 @@ export const OFFERS = {
     {
       id: 'audit-plus',
       name: 'Audit + Mise en œuvre',
-      tagline: 'On identifie, je règle.',
+      tagline: 'On identifie, on règle.',
       features: [
         `Tout l'audit numérique, inclus`,
         'Réalisation : intégrations, automatisations, site web',
         `Développement d'outils sur-mesure si besoin`,
         'Facturable à la journée (estimation fournie en amont)',
-        'Vous choisissez : je fais tout, ou vous reprenez la main',
+        'Vous choisissez : on fait tout, ou vous reprenez la main',
       ],
       cta: 'En discuter',
       featured: true,
@@ -237,7 +237,7 @@ export const OFFERS = {
     {
       id: 'developpement',
       name: 'Développement & automatisation',
-      tagline: 'Votre besoin est cadré, je construis.',
+      tagline: 'Votre besoin est cadré, on construit.',
       features: [
         'Site web ou application métier sur-mesure',
         'Automatisations (n8n, BI, intelligence artificielle)',
@@ -248,7 +248,7 @@ export const OFFERS = {
       cta: 'Décrire mon besoin',
       featured: false,
       detailTitle: 'Ce que ça donne concrètement',
-      detail: `Vous avez un besoin clair : un site, une application métier, une automatisation, une intégration. Pas besoin d'audit préalable. Je construis de la maquette au déploiement, sans intermédiaire. Tout est estimé en jours avant de démarrer, vous savez ce que vous payez et pourquoi.`,
+      detail: `Vous avez un besoin clair : un site, une application métier, une automatisation, une intégration. Pas besoin d'audit préalable. On construit de la maquette au déploiement, sans intermédiaire. Tout est estimé en jours avant de démarrer, vous savez ce que vous payez et pourquoi.`,
       pricingFactors: [
         `Complexité fonctionnelle (pages, logique métier, APIs)`,
         `Technologies retenues (no-code, développement, IA)`,
@@ -258,7 +258,7 @@ export const OFFERS = {
     {
       id: 'suivi',
       name: 'Suivi mensuel',
-      tagline: 'Je reste dans la boucle.',
+      tagline: 'On reste dans la boucle.',
       features: [
         'Contrôles réguliers de vos outils et automatisations',
         'Petites modifications à la demande',
@@ -269,7 +269,7 @@ export const OFFERS = {
       cta: 'Parlons du suivi',
       featured: false,
       detailTitle: 'Ce que ça donne concrètement',
-      detail: `Je reste disponible après la mission. Contrôles réguliers, petites corrections, réponses rapides. Un seul interlocuteur qui connaît déjà vos outils, pas besoin de tout réexpliquer à chaque fois. Résiliable à tout moment, sans pénalité.`,
+      detail: `On reste disponibles après la mission. Contrôles réguliers, petites corrections, réponses rapides. Des gens qui connaissent déjà vos outils, pas besoin de tout réexpliquer à chaque fois. Résiliable à tout moment, sans pénalité.`,
       pricingFactors: [
         `Volume d'intervention mensuel estimé`,
         `Nombre d'outils et automatisations à surveiller`,
@@ -385,7 +385,7 @@ export const FAQ = {
     },
     {
       q: 'Et si le bilan ne m’apporte rien ?',
-      a: `Vous ne le payez pas. Vous disposez de sept jours après la remise pour me le dire par écrit : je reprends le bilan sans supplément, ou j'annule la facture. Le détail figure dans les conditions générales de vente.`,
+      a: `Vous ne le payez pas. Vous disposez de sept jours après la remise pour nous le dire par écrit : on reprend le bilan sans supplément, ou on annule la facture. Le détail figure dans les conditions générales de vente.`,
     },
   ],
   en: [

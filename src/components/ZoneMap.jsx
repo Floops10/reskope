@@ -23,7 +23,7 @@ const CONTENT = {
   fr: {
     eyebrow: 'Zone d’intervention',
     title: 'Sur le terrain, pas à distance.',
-    lead: 'Basé à Valenciennes, j’interviens sur place dans tout le Hainaut et les Hauts-de-France. L’audit se fait chez vous, salarié par salarié — c’est ce qui en fait la valeur.',
+    lead: 'Basés à Valenciennes et à Lille, on intervient sur place dans tout le Hainaut et les Hauts-de-France. L’audit se fait chez vous, salarié par salarié : c’est ce qui en fait la valeur.',
     radius: 'Déplacement sans frais dans un rayon de 60 km',
     beyond: 'Au-delà, les frais sont annoncés dans le devis, jamais après.',
     itinerary: 'Ouvrir l’itinéraire',
@@ -32,7 +32,7 @@ const CONTENT = {
   en: {
     eyebrow: 'Service area',
     title: 'On site, not remote.',
-    lead: 'Based in Valenciennes, I work on site across the Hainaut area and the Hauts-de-France region. The audit happens at your premises, employee by employee — that is what makes it worth something.',
+    lead: 'Based in Valenciennes and Lille, we work on site across the Hainaut area and the Hauts-de-France region. The audit happens at your premises, employee by employee: that is what makes it worth something.',
     radius: 'No travel charge within a 60 km radius',
     beyond: 'Beyond that, travel costs are stated in the quote, never afterwards.',
     itinerary: 'Open directions',

@@ -25,7 +25,7 @@ const CONTENT = {
 
     /* — 1. Hero — */
     heroTitle: 'Vos équipes perdent des heures dans leurs outils.',
-    line1: "Des outils qui ne se parlent pas, des données éparpillées, des usages que personne n'a cartographiés. Un coût invisible — mais bien réel.",
+    line1: "Des outils qui ne se parlent pas, des données éparpillées, des usages que personne n'a cartographiés. Un coût invisible, mais bien réel.",
     line2: "Reskope cartographie votre écosystème, puis relie, simplifie et construit ce qui manque : du site à l'outil métier, jusqu'aux automatisations. Au grand jour, jalon après jalon.",
     mark1: 'cartographiés',
     mark2: 'construit',
@@ -62,7 +62,7 @@ const CONTENT = {
     toolsEyebrow: 'Outils maîtrisés',
     toolsTitle: 'Le terrain de jeu.',
     toolsLead:
-      'Une vingtaine d’outils que je maîtrise, connecte ou remplace. En voici quelques-uns — et si le vôtre n’y est pas, c’est justement le métier.',
+      'Une vingtaine d’outils qu’on maîtrise, qu’on connecte ou qu’on remplace. En voici quelques-uns ; si le vôtre n’y est pas, c’est justement le métier.',
 
     /* — 5. Philosophie — */
     whyEyebrow: 'Notre différence',
@@ -95,10 +95,10 @@ const CONTENT = {
     /* — 7. Engagements — Reskope démarre : aucun chiffre de performance
        client tant qu'il n'y a pas de client. Uniquement des engagements
        tenables et vérifiables. */
-    statsEyebrow: 'Mes engagements',
-    statsTitle: 'Ce que je m’engage à tenir.',
+    statsEyebrow: 'Nos engagements',
+    statsTitle: 'Ce qu’on s’engage à tenir.',
     stats: [
-      { label: 'outils que je maîtrise et sur lesquels j’interviens', display: '20', value: 20, prefix: '', suffix: '', decimals: 0 },
+      { label: 'outils qu’on maîtrise et sur lesquels on intervient', display: '20', value: 20, prefix: '', suffix: '', decimals: 0 },
       { label: 'jours maximum entre le premier entretien et la remise du bilan', display: '10', value: 10, prefix: '', suffix: '', decimals: 0 },
       { label: 'de la démarche au grand jour : accès, jalons, livrables', display: '100 %', value: 100, prefix: '', suffix: ' %', decimals: 0 },
       { label: 'bilan garanti : s’il ne vous apporte rien d’exploitable, vous ne le payez pas', display: '0 €', value: null },
@@ -127,7 +127,7 @@ const CONTENT = {
       'Reskope maps and audits your tools on the ground, employee by employee, then connects, simplifies and builds what is missing. Open process, quantified gains.',
 
     heroTitle: 'Your teams lose hours inside their tools.',
-    line1: "Tools that don't talk to each other, scattered data, usage no one has mapped. A hidden cost — but a very real one.",
+    line1: "Tools that don't talk to each other, scattered data, usage no one has mapped. A hidden cost, but a very real one.",
     line2: 'Reskope maps your ecosystem, then connects, simplifies and builds what is missing: from websites to business tools and automations. In the open, milestone by milestone.',
     mark1: 'mapped',
     mark2: 'builds',
@@ -161,7 +161,7 @@ const CONTENT = {
     toolsEyebrow: 'Tools we master',
     toolsTitle: 'The playing field.',
     toolsLead:
-      "Around twenty tools I master, connect or replace. Here are a few — and if yours isn't listed, that's precisely the job.",
+      "Around twenty tools we master, connect or replace. Here are a few; if yours isn't listed, that's precisely the job.",
 
     whyEyebrow: 'Our difference',
     whyTitle: 'Not a firm that delivers a deck.',
@@ -185,7 +185,7 @@ const CONTENT = {
       {
         id: 'deploiement',
         title: 'Deployment',
-        text: 'We build, integrate and test. Then we hand back a system that runs — and teams who know how to use it.',
+        text: 'We build, integrate and test. Then we hand back a system that runs, and teams who know how to use it.',
       },
     ],
 

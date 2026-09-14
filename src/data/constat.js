@@ -33,7 +33,7 @@ export const CONSTAT = {
         kicker: 'Le travail autour du travail',
         value: 58, suffix: ' %', display: '58 %', decimals: 0,
         title: 'du temps passe à coordonner le travail. Pas à le faire.',
-        desc: 'Réunions de statut, relances, mises à jour d’outils, chasse aux validations : le « work about work » dévore la majorité de la semaine — et il ne figure dans aucune fiche de poste.',
+        desc: 'Réunions de statut, relances, mises à jour d’outils, chasse aux validations : le « work about work » dévore la majorité de la semaine, et il ne figure dans aucune fiche de poste.',
         source: {
           label: 'Asana · Anatomy of Work Global Index 2023',
           url: 'https://asana.com/resources/anatomy-of-work',
@@ -78,7 +78,7 @@ export const CONSTAT = {
         kicker: 'L’empilement d’outils',
         value: 93, suffix: '', display: '93', decimals: 0,
         title: 'applications déployées en moyenne par entreprise.',
-        desc: 'Chaque outil ajouté promet un gain. Sans vue d’ensemble, il ajoute surtout un silo, une licence, des doublons — et encore plus de bascules.',
+        desc: 'Chaque outil ajouté promet un gain. Sans vue d’ensemble, il ajoute surtout un silo, une licence, des doublons, et encore plus de bascules.',
         source: {
           label: 'Okta · Businesses at Work 2024',
           url: 'https://www.okta.com/reports/businesses-at-work/',
@@ -120,7 +120,7 @@ export const CONSTAT = {
         kicker: 'Work about work',
         value: 58, suffix: '%', display: '58%', decimals: 0,
         title: 'of the time goes into coordinating work. Not doing it.',
-        desc: 'Status meetings, follow-ups, tool updates, chasing approvals: “work about work” eats most of the week — and appears in no job description.',
+        desc: 'Status meetings, follow-ups, tool updates, chasing approvals: “work about work” eats most of the week, and it appears in no job description.',
         source: {
           label: 'Asana · Anatomy of Work Global Index 2023',
           url: 'https://asana.com/resources/anatomy-of-work',
@@ -155,7 +155,7 @@ export const CONSTAT = {
           label: 'Harvard Business Review (2022) · the “toggle tax”',
           url: 'https://hbr.org/2022/08/how-much-time-and-energy-do-we-waste-toggling-between-applications',
         },
-        calc: '≈ 4h per week measured by the study × 47 worked weeks ≈ 188h per year — about 5 full 35-hour weeks. At a loaded cost of €30/h: ≈ €5,600 per person per year.',
+        calc: '≈ 4h per week measured by the study × 47 worked weeks ≈ 188h per year, about 5 full 35-hour weeks. At a loaded cost of €30/h: ≈ €5,600 per person per year.',
         chart: 'spark',
         theme: 'ink',
         chartData: {},
@@ -165,7 +165,7 @@ export const CONSTAT = {
         kicker: 'Tool sprawl',
         value: 93, suffix: '', display: '93', decimals: 0,
         title: 'applications deployed on average per company.',
-        desc: 'Every added tool promises a gain. Without an overview, it mostly adds a silo, a license, duplicates — and even more toggling.',
+        desc: 'Every added tool promises a gain. Without an overview, it mostly adds a silo, a license, duplicates, and even more toggling.',
         source: {
           label: 'Okta · Businesses at Work 2024',
           url: 'https://www.okta.com/reports/businesses-at-work/',

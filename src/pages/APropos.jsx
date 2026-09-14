@@ -21,33 +21,43 @@ import { useLang } from '../i18n';
    5. LES COMPÉTENCES = nœuds en cascade.
    6. Clôture personnelle. */
 
-const PHOTO = 'https://www.image2url.com/r2/default/images/1782253442600-884214d2-7945-4d3c-b79f-6b7586efd15b.png';
+/* Les deux portraits sont servis par le site lui-même. Avant, la photo
+   venait d'un hébergeur tiers : une requête sortante à chaque visite, une
+   dépendance sur laquelle on n'a aucune main, et un seul visage alors
+   qu'ils sont deux. */
+const PHOTOS = {
+  thomy: `${import.meta.env.BASE_URL}thomy.jpg`,
+  florian: `${import.meta.env.BASE_URL}florian.jpg`,
+};
 
 const reduced = () =>
   typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const CONTENT = {
   fr: {
-    metaTitle: 'À propos · le digital vu du terrain',
+    metaTitle: 'À propos · Thomy et Florian, le digital vu du terrain',
     metaDesc:
-      "Florian Bouchart, fondateur de Reskope. Une conviction : la productivité se gagne en comprenant ceux qui font le travail. Mes engagements et ce qui est efficace selon votre taille.",
+      "Thomy et Florian, les deux personnes derrière Reskope. Une conviction : la productivité se gagne en comprenant ceux qui font le travail. Nos engagements, et ce qui est efficace selon votre taille.",
     eyebrow: 'À propos',
     title: "Terrain d'abord, technique ensuite.",
-    lead: "Reskope, c'est une conviction : la productivité ne se décrète pas d'en haut. Elle se gagne en comprenant ceux qui font le travail.",
-    photoAlt: 'Florian Bouchart, fondateur de Reskope',
-    hello: "Bonjour, moi c'est Florian.",
-    bio: [
-      "Je ne fais pas du conseil à la chaîne. Pour chaque client, je m'investis comme s'il s'agissait de ma propre entreprise à faire grandir.",
-      "C'est une passion avant d'être un métier. Je passe le temps qu'il faut sur chaque mission, parce que je veux un résultat concret et durable, pas une présentation qui fait joli. La qualité passe avant le reste : je ne bâcle jamais un projet pour aller plus vite ou facturer davantage.",
-      "Conseil, ingénierie numérique et développement web : trois leviers que je combine pour vous rendre du temps et remettre vos outils au service de vos équipes. C'est dans ce travail concret que je veux m'engager pleinement aujourd'hui.",
+    lead: "Reskope, c'est une conviction : la productivité ne se décrète pas d'en haut. Elle se gagne en comprenant ceux qui font le travail. On est deux à la porter.",
+    duo: [
+      { id: 'thomy', nom: 'Thomy', role: 'Stratégie · Modèle · Financement', alt: 'Thomy, cofondatrice de Reskope' },
+      { id: 'florian', nom: 'Florian', role: 'Sites · Outils métier · Cartographie', alt: 'Florian Bouchart, cofondateur de Reskope' },
     ],
-    principesEyebrow: 'Mes engagements',
-    principesTitle: 'Ce sur quoi je ne transige jamais.',
+    hello: "Bonjour, nous c'est Thomy et Florian.",
+    bio: [
+      "On ne fait pas du conseil à la chaîne. Sur chaque dossier, on s'investit comme s'il s'agissait de notre propre entreprise à faire grandir.",
+      "Thomy tient le sens, la stratégie et l'identité : ce que vous voulez faire, le modèle qui tient, et jusqu'à la recherche de financement. Florian tient la technique : les sites, les outils métier, et les logiciels qu'on relie entre eux. Les deux métiers se nourrissent l'un l'autre, et c'est ce qui fait qu'un dossier avance d'un seul tenant.",
+      "C'est une passion avant d'être un métier. On passe le temps qu'il faut sur chaque mission, parce qu'on veut un résultat concret et durable, pas une présentation qui fait joli. La qualité passe avant le reste : on ne bâcle jamais un projet pour aller plus vite ou facturer davantage.",
+    ],
+    principesEyebrow: 'Nos engagements',
+    principesTitle: 'Ce sur quoi on ne transige pas.',
     principes: [
-      { num: '01', title: "Je m'investis comme si c'était la mienne", text: "Votre entreprise, je la traite comme la mienne. Je m'implique sur la durée, je cherche à la faire grandir, pas à boucler une mission au plus vite." },
-      { num: '02', title: 'La qualité passe avant tout', text: "Je préfère un chantier vraiment bien fait à trois bâclés. Je ne sacrifie jamais le résultat pour aller plus vite ou facturer davantage. Le travail doit tenir dans le temps." },
+      { num: '01', title: "On s'investit comme si c'était la nôtre", text: "Votre entreprise, on la traite comme la nôtre. On s'implique sur la durée, on cherche à la faire grandir, pas à boucler une mission au plus vite." },
+      { num: '02', title: 'La qualité passe avant tout', text: "On préfère un chantier vraiment bien fait à trois bâclés. On ne sacrifie jamais le résultat pour aller plus vite ou facturer davantage. Le travail doit tenir dans le temps." },
       { num: '03', title: 'Tout au grand jour', text: "Démarche posée à l'avance, bilan montré avant que vous achetiez. Vous savez toujours où va votre budget, et pourquoi." },
-      { num: '04', title: 'Votre autonomie, pas votre dépendance', text: "Mon but n'est pas de vous lier à moi. À la fin, vos équipes maîtrisent leurs outils et continuent sans moi. Un système qui tient debout tout seul." },
+      { num: '04', title: 'Votre autonomie, pas votre dépendance', text: "Le but n'est pas de vous lier à nous. À la fin, vos équipes maîtrisent leurs outils et continuent sans nous. Un système qui tient debout tout seul." },
     ],
     sizeEyebrow: 'Selon nous',
     sizeTitle: 'Ce qui est efficace dépend de votre taille.',
@@ -61,11 +71,13 @@ const CONTENT = {
     skillsTitle: 'Du besoin à la solution.',
     skills: [
       'Recueil du besoin & entretiens',
+      'Stratégie & modèle économique',
       'Cartographie des process',
       'Priorisation (impact / effort)',
       'Cahier des charges & cadrage (AMOA)',
+      'Identité de marque & direction artistique',
       'Automatisation (no-code & code)',
-      'Développement web',
+      'Développement web & outils métier',
       'Conduite du changement',
     ],
     ctaH: 'On se parle ?',
@@ -75,24 +87,27 @@ const CONTENT = {
   en: {
     metaTitle: 'About · the digital, seen from the ground',
     metaDesc:
-      'Florian Bouchart, founder of Reskope. One conviction: productivity is won by understanding those who do the work. What I stand for, and what works depending on your size.',
+      'Thomy and Florian, the two people behind Reskope. One conviction: productivity is won by understanding those who do the work. What we stand for, and what works depending on your size.',
     eyebrow: 'About',
     title: 'Field first, tech second.',
-    lead: 'Reskope is a conviction: productivity is not decreed from the top. It is won by understanding those who do the work.',
-    photoAlt: 'Florian Bouchart, founder of Reskope',
-    hello: "Hi, I'm Florian.",
-    bio: [
-      "I don't do assembly-line consulting. For every client, I get involved as if it were my own company to grow.",
-      "It's a passion before it's a job. I spend the time each mission needs, because I want a concrete, lasting result, not a presentation that just looks nice. Quality comes before everything: I never rush a project to go faster or bill more.",
-      'Consulting, digital engineering and web development: three levers I combine to give you back time and put your tools back at the service of your teams. This concrete work is what I want to fully commit to today.',
+    lead: 'Reskope is a conviction: productivity is not decreed from the top. It is won by understanding those who do the work. There are two of us behind it.',
+    duo: [
+      { id: 'thomy', nom: 'Thomy', role: 'Strategy · Model · Funding', alt: 'Thomy, co-founder of Reskope' },
+      { id: 'florian', nom: 'Florian', role: 'Websites · Business tools · Mapping', alt: 'Florian Bouchart, co-founder of Reskope' },
     ],
-    principesEyebrow: 'My commitments',
-    principesTitle: 'What I never compromise on.',
+    hello: "Hi, we're Thomy and Florian.",
+    bio: [
+      "We don't do assembly-line consulting. On every engagement, we get involved as if it were our own company to grow.",
+      'Thomy holds meaning, strategy and identity: what you want to do, the model that holds, and all the way to raising funds. Florian holds the technical side: the websites, the business tools, and the software we connect to each other. The two trades feed each other, and that is what makes an engagement move as one piece.',
+      "It's a passion before it's a job. We spend the time each mission needs, because we want a concrete, lasting result, not a presentation that just looks nice. Quality comes before everything: we never rush a project to go faster or bill more.",
+    ],
+    principesEyebrow: 'Our commitments',
+    principesTitle: 'What we never compromise on.',
     principes: [
-      { num: '01', title: 'I commit as if it were mine', text: "Your company, I treat as my own. I get involved for the long run, I try to grow it, not just close a mission as fast as possible." },
-      { num: '02', title: 'Quality comes first', text: "I'd rather do one job really well than three badly. I never sacrifice the result to go faster or bill more. The work has to last." },
+      { num: '01', title: 'We commit as if it were ours', text: 'Your company, we treat as our own. We get involved for the long run, we try to grow it, not just close a mission as fast as possible.' },
+      { num: '02', title: 'Quality comes first', text: "We'd rather do one job really well than three badly. We never sacrifice the result to go faster or bill more. The work has to last." },
       { num: '03', title: 'Everything out in the open', text: 'Process set in advance, report shown before you buy. You always know where your budget goes, and why.' },
-      { num: '04', title: 'Your autonomy, not your dependence', text: "My goal isn't to tie you to me. In the end, your teams master their tools and carry on without me. A system that stands on its own." },
+      { num: '04', title: 'Your autonomy, not your dependence', text: "The goal isn't to tie you to us. In the end, your teams master their tools and carry on without us. A system that stands on its own." },
     ],
     sizeEyebrow: 'In our view',
     sizeTitle: 'What works depends on your size.',
@@ -106,11 +121,13 @@ const CONTENT = {
     skillsTitle: 'From the need to the solution.',
     skills: [
       'Needs gathering & interviews',
+      'Strategy & business model',
       'Process mapping',
       'Prioritization (impact / effort)',
       'Specifications & scoping (business analysis)',
+      'Brand identity & art direction',
       'Automation (no-code & code)',
-      'Web development',
+      'Web development & business tools',
       'Change management',
     ],
     ctaH: 'Shall we talk?',
@@ -132,12 +149,14 @@ export default function APropos() {
     gsap.from(root.querySelectorAll('.ahero__reveal'), {
       y: 30, autoAlpha: 0, duration: 0.9, ease: 'power3.out', stagger: 0.09, delay: 0.15,
     });
-    const mask = root.querySelector('.ahero__photo-mask');
+    const masks = root.querySelectorAll('.ahero__photo-mask');
     const img = root.querySelector('.ahero__img');
-    if (mask && img) {
-      gsap.fromTo(mask,
+    if (masks.length && img) {
+      /* Les deux portraits se dévoilent l'un après l'autre, pas ensemble :
+         l'œil les lit alors comme deux personnes, pas comme une image. */
+      gsap.fromTo(masks,
         { clipPath: 'inset(100% 0% 0% 0% round 18px)' },
-        { clipPath: 'inset(0% 0% 0% 0% round 18px)', duration: 1.3, ease: 'power4.inOut', delay: 0.35 });
+        { clipPath: 'inset(0% 0% 0% 0% round 18px)', duration: 1.3, ease: 'power4.inOut', delay: 0.35, stagger: 0.14 });
       /* parallaxe UNIQUEMENT vers le bas : le visage reste toujours cadré */
       gsap.fromTo(img, { yPercent: 0, scale: 1.06 }, {
         yPercent: 8, scale: 1, ease: 'none',
@@ -216,8 +235,21 @@ export default function APropos() {
               <span className="ahero__glyph" aria-hidden="true">
                 <Net3D shape={GLYPH_SHAPES[1]} size={120} speed={0.6} tiltX={0.45} nodeR={2.8} />
               </span>
-              <div className="ahero__photo-mask">
-                <img className="ahero__img" src={PHOTO} alt={c.photoAlt} loading="eager" />
+              {/* Deux visages, pas un. Chaque portrait porte son nom et son
+                  domaine : c'est la première chose qu'on doit comprendre
+                  en arrivant ici. */}
+              <div className="ahero__duo">
+                {c.duo.map((p) => (
+                  <figure className="ahero__pf" key={p.id}>
+                    <div className="ahero__photo-mask">
+                      <img className="ahero__img" src={PHOTOS[p.id]} alt={p.alt} loading="eager" />
+                    </div>
+                    <figcaption className="ahero__pf-cap">
+                      <span className="ahero__pf-nom">{p.nom}</span>
+                      <span className="ahero__pf-role">{p.role}</span>
+                    </figcaption>
+                  </figure>
+                ))}
               </div>
             </div>
           </div>

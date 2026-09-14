@@ -14,7 +14,7 @@ const PHRASES = {
     '/offres':                 ['Prix affichés, devis gratuit.', 'L’audit est déduit si on continue.', 'Bilan garanti ou non facturé.'],
     '/exemple':                ['Le livrable, avant de payer.', 'Voici exactement ce que vous recevez.', 'Un audit réel, détaillé.'],
     '/a-propos':               ['Un seul interlocuteur, du début à la fin.', 'Terrain d’abord, technique ensuite.', 'Pas de sous-traitance.'],
-    '/contact':                ['Réponse sous 24 h, directement par moi.', 'Trente minutes, sans engagement.', 'S’il n’y a rien à faire, je vous le dis.'],
+    '/contact':                ['Réponse sous 24 h, par l’un de nous deux.', 'Trente minutes, sans engagement.', 'S’il n’y a rien à faire, on vous le dit.'],
     '/numerique-responsable':  ['Moins d’outils, moins de serveurs.', 'Simplifier, c’est consommer moins.', 'Sobriété, sans greenwashing.'],
     _default:                  ['Cartographier. Relier. Simplifier.', 'Reprenez le contrôle.'],
   },

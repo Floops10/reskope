@@ -46,7 +46,7 @@ const MENTIONS = {
     updated: 'Dernière mise à jour : [À COMPLÉTER : date].',
     sections: [
       { h: 'Éditeur du site', p: [
-        `Le site Reskope est édité par Florian Bouchart, [À COMPLÉTER : forme juridique — ex. entrepreneur individuel / micro-entreprise].`,
+        `Le site Reskope est édité par Florian Bouchart, [À COMPLÉTER : forme juridique, ex. entrepreneur individuel / micro-entreprise].`,
         'Siège : [À COMPLÉTER : adresse du siège].',
         'SIRET : [À COMPLÉTER : n° SIRET] · Code APE : [À COMPLÉTER : code APE].',
         'TVA : [À COMPLÉTER : « TVA non applicable, art. 293 B du CGI » en franchise en base, ou n° de TVA intracommunautaire si assujetti].',
@@ -83,7 +83,7 @@ const MENTIONS = {
     updated: 'Last updated: [TO COMPLETE: date].',
     sections: [
       { h: 'Publisher', p: [
-        'The Reskope website is published by Florian Bouchart, [TO COMPLETE: legal form — e.g. sole proprietor / micro-enterprise].',
+        'The Reskope website is published by Florian Bouchart, [TO COMPLETE: legal form, e.g. sole proprietor / micro-enterprise].',
         'Registered address: [TO COMPLETE: registered address].',
         'SIRET: [TO COMPLETE: SIRET number] · APE code: [TO COMPLETE: APE code].',
         'VAT: [TO COMPLETE: "VAT not applicable, art. 293 B of the French Tax Code" under the franchise scheme, or intra-community VAT number if liable].',
@@ -283,7 +283,7 @@ const SALES = {
         "Les présentes conditions générales de vente (CGV) régissent les prestations de conseil, d'audit numérique, de développement, d'automatisation et de suivi fournies par Reskope à ses clients professionnels. Toute commande implique l'acceptation sans réserve des présentes CGV, qui prévalent sur tout autre document du client.",
       ] },
       { h: 'Prestataire', p: [
-        'Reskope — Florian Bouchart, [À COMPLÉTER : forme juridique, SIRET, adresse]. Coordonnées complètes dans les mentions légales.',
+        'Reskope, Florian Bouchart, [À COMPLÉTER : forme juridique, SIRET, adresse]. Coordonnées complètes dans les mentions légales.',
       ] },
       { h: 'Prestations', p: [
         "Reskope propose quatre types de prestations : l'audit numérique (diagnostic terrain et bilan priorisé), l'audit assorti de la mise en œuvre, le développement et l'automatisation sur-mesure, et le suivi mensuel. Le périmètre précis de chaque mission est défini au devis.",
@@ -353,7 +353,7 @@ const SALES = {
         'These terms of sale govern the consulting, digital audit, development, automation and retainer services provided by Reskope to its professional clients. Any order implies unreserved acceptance of these terms, which prevail over any other document from the client.',
       ] },
       { h: 'Provider', p: [
-        'Reskope — Florian Bouchart, [TO COMPLETE: legal form, SIRET, address]. Full details in the legal notice.',
+        'Reskope, Florian Bouchart, [TO COMPLETE: legal form, SIRET, address]. Full details in the legal notice.',
       ] },
       { h: 'Services', p: [
         'Reskope offers four types of engagement: the digital audit (on-site diagnosis and prioritized report), the audit combined with delivery, custom development and automation, and the monthly retainer. The precise scope of each engagement is defined in the quote.',

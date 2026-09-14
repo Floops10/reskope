@@ -94,16 +94,16 @@ const MOTS = {
     label: 'Vous êtes',
     tpe: 'TPE',
     pme: 'PME',
-    tpeTitre: 'TPE — de 1 à 10 personnes',
-    pmeTitre: 'PME — de 10 à 250 personnes',
+    tpeTitre: 'TPE : de 1 à 10 personnes',
+    pmeTitre: 'PME : de 10 à 250 personnes',
   },
   en: {
     aria: 'Size of your organisation',
     label: 'You are',
     tpe: 'SMB',
     pme: 'SME',
-    tpeTitre: 'Small business — 1 to 10 people',
-    pmeTitre: 'SME — 10 to 250 people',
+    tpeTitre: 'Small business: 1 to 10 people',
+    pmeTitre: 'SME: 10 to 250 people',
   },
 };
 

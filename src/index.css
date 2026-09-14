@@ -14083,3 +14083,30 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   white-space: nowrap;
 }
 .resv__lien:hover { color: var(--ink); }
+
+/* ---------- les deux portraits, à propos ---------- */
+
+.ahero__duo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(0.8rem, 2vw, 1.4rem);
+  width: 100%;
+}
+.ahero__pf { margin: 0; min-width: 0; }
+.ahero__pf .ahero__photo-mask { width: 100%; }
+.ahero__pf-cap { display: block; margin-top: 0.9rem; }
+.ahero__pf-nom {
+  display: block;
+  font-size: clamp(1rem, 1.6vw, 1.25rem);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+.ahero__pf-role {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.64rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--indigo);
+  opacity: 0.85;
+}
