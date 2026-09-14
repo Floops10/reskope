@@ -226,6 +226,14 @@ export default function Nav() {
         <div className="menu2__layer" aria-hidden="true" ref={layerRef} />
         <div className="menu2__panel" ref={panelRef} aria-hidden={!open}>
 
+          {/* La version du site est la première chose que le menu montre.
+              Elle était en bas, après deux boutons : sur téléphone, où le
+              sélecteur du header ne tient pas, personne ne découvrait qu'il
+              existe deux versions. C'est un réglage, il se pose en tête. */}
+          <div className="menu2__head">
+            <ProfilToggle className="menu2__profil" />
+          </div>
+
           <nav className="menu2__links" aria-label="Pages">
             {tabs.map(([to, label], i) => (
               <NavLink
@@ -260,7 +268,6 @@ export default function Nav() {
                   <span className="btn__arrow" aria-hidden="true">→</span>
                 </button>
               )}
-              <ProfilToggle className="menu2__profil" />
               <LangToggle className="menu2__lang" />
             </div>
           </div>

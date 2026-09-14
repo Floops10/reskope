@@ -8490,8 +8490,12 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--muted);
-  margin: 0;
+  margin: 0 0 clamp(1rem, 2.5vh, 1.6rem);
 }
+/* La bascule en tête de menu : le libellé reste visible, même sur mobile,
+   parce que c'est là que la plupart des visiteurs la découvriront. */
+.menu2__head .proftoggle__label { display: inline; }
+.menu2__head .proftoggle { gap: 0.7rem; }
 .menu2__links {
   display: flex;
   flex-direction: column;
@@ -13990,7 +13994,11 @@ html.eco-theme .crumb__node { background: rgba(125, 223, 168, 0.55); }
 }
 .nav--dark .proftoggle__label { color: rgba(240, 238, 232, 0.7); }
 @media (max-width: 1100px) { .nav__profil .proftoggle__label { display: none; } }
-@media (max-width: 760px) { .nav__profil { display: none; } }
+@media (max-width: 760px) {
+  /* Elle reste, mais sans libellé et un peu plus serrée : c'est le réglage
+     principal du site, il ne peut pas disparaître avec la largeur. */
+  .nav__profil .langtoggle__opt { padding: 0.3rem 0.5rem; font-size: 0.72rem; }
+}
 .menu2__profil { margin-right: 0.4rem; }
 /* Le pied du menu portait deux boutons et une bascule ; avec la seconde
    il déborde du panneau. On l'autorise à passer à la ligne. */
@@ -14205,7 +14213,9 @@ html.eco-theme .crumb__node { background: rgba(125, 223, 168, 0.55); }
   margin: 0;
   font-size: 0.92rem;
   line-height: 1.55;
-  color: var(--muted);
+  /* Le bandeau est posé sur le crème foncé : le gris de lecture standard
+     n'y passe plus la barre de contraste. */
+  color: var(--muted-fort);
 }
 .resv__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem 1.3rem; flex: 0 1 auto; }
 /* Sous 1000 px les deux actions ne tiennent plus sur la même ligne que le
@@ -14234,7 +14244,7 @@ html.eco-theme .crumb__node { background: rgba(125, 223, 168, 0.55); }
 .resv__btn:hover span { transform: translateX(5px); }
 .resv__lien {
   font-size: 0.88rem;
-  color: var(--muted);
+  color: var(--muted-fort);
   text-decoration: underline;
   text-underline-offset: 3px;
   white-space: nowrap;
