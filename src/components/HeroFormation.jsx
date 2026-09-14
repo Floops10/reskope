@@ -312,7 +312,10 @@ export default function HeroFormation({ c }) {
               <SwapLabel>{c.primary}</SwapLabel>
               <span className="btn__arrow" aria-hidden="true">→</span>
             </Link>
-            <Link to="/pourquoi" className="btn btn--ghost">
+            {/* La destination suit la version : « le constat » n'existe
+                qu'en PME, et un bouton qui mène à une page retirée du
+                menu est le meilleur moyen de perdre quelqu'un. */}
+            <Link to={c.ghostTo || '/pourquoi'} className="btn btn--ghost">
               <SwapLabel>{c.ghost}</SwapLabel>
             </Link>
           </div>

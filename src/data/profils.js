@@ -30,6 +30,8 @@ export const HOME_TPE = {
       { title: 'Aide au lancement', sub: 'Le modèle, les chiffres, les fournisseurs. Avant d’ouvrir, et avant d’emprunter.' },
     ],
     primary: 'Démarrer un projet',
+    ghost: 'Ce qu’on construit',
+    ghostTo: '/offres',
     sting: 'Un seul interlocuteur. Les clés à la fin.',
 
     longPhrase:
@@ -88,6 +90,8 @@ export const HOME_TPE = {
       { title: 'Launch support', sub: 'The model, the figures, the suppliers. Before you open, and before you borrow.' },
     ],
     primary: 'Start a project',
+    ghost: 'What we build',
+    ghostTo: '/offres',
     sting: 'One contact. The keys at the end.',
 
     longPhrase:
