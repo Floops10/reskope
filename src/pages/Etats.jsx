@@ -3,6 +3,8 @@ import Page from '../components/Page';
 import { Reveal, RevealItem } from '../components/Reveal';
 import { LogoMark } from '../components/Logo';
 import { useLang } from '../i18n';
+import { useProfil } from '../profil';
+import { ETATS_TPE } from '../data/profils';
 import { CONTACT } from '../data/site';
 
 /* Pages d'état : 404 (route inconnue) et remerciement (après envoi d'une
@@ -20,7 +22,7 @@ const CONTENT = {
         { to: '/offres', label: 'Les offres et les tarifs' },
         { to: '/exemple', label: 'Un exemple de bilan complet' },
         { to: '/methode', label: 'La méthode, jalon par jalon' },
-        { to: '/contact', label: 'Me contacter directement' },
+        { to: '/contact', label: 'Nous contacter directement' },
       ],
       cta: 'Retour à l’accueil',
     },
@@ -38,7 +40,7 @@ const CONTENT = {
       meanwhile: 'En attendant, vous pouvez consulter un exemple de bilan complet : exactement ce que vous recevriez à l’issue d’un audit.',
       cta: 'Voir un exemple de bilan',
       home: 'Retour à l’accueil',
-      urgent: 'Besoin de me joindre plus vite ?',
+      urgent: 'Besoin de nous joindre plus vite ?',
     },
   },
   en: {
@@ -76,7 +78,13 @@ const CONTENT = {
 
 export function NotFound() {
   const { lang } = useLang();
-  const c = CONTENT[lang].notFound;
+  const { profil } = useProfil();
+  /* L'exemple de bilan ne concerne que les PME : en version TPE, on
+     remplace le lien plutôt que d'envoyer dans un cul-de-sac. */
+  const base = CONTENT[lang].notFound;
+  const c = profil === 'tpe'
+    ? { ...base, links: base.links.map((l) => (l.to === '/exemple' ? ETATS_TPE[lang].notFoundLien : l)) }
+    : base;
 
   return (
     <Page title={c.meta} description={c.lead}>
@@ -112,7 +120,10 @@ export function NotFound() {
 
 export function Merci() {
   const { lang } = useLang();
-  const c = CONTENT[lang].thanks;
+  const { profil } = useProfil();
+  const c = profil === 'tpe'
+    ? { ...CONTENT[lang].thanks, ...ETATS_TPE[lang] }
+    : CONTENT[lang].thanks;
 
   return (
     <Page title={c.meta} description={c.lead}>
@@ -141,7 +152,7 @@ export function Merci() {
 
             <RevealItem>
               <div className="state-page__actions">
-                <Link to="/exemple" className="btn btn--primary">
+                <Link to={c.to || '/exemple'} className="btn btn--primary">
                   {c.cta}<span className="btn__arrow" aria-hidden="true">→</span>
                 </Link>
                 <Link to="/" className="btn btn--ghost">{c.home}</Link>

@@ -6,7 +6,7 @@ import { Reveal, RevealItem } from '../components/Reveal';
 import { useLang } from '../i18n';
 import { OFFERS, FAQ } from '../data/site';
 import { useProfil } from '../profil';
-import { OFFERS_TPE, PRICES_TPE, OFFRES_TPE, PASSERELLE } from '../data/profils';
+import { OFFERS_TPE, PRICES_TPE, OFFRES_TPE, FAQ_TPE, PASSERELLE } from '../data/profils';
 
 const OffersShowcase = lazy(() => import('../components/OffersShowcase'));
 
@@ -126,7 +126,7 @@ export default function Offres() {
   const offers = profil === 'tpe' ? OFFERS_TPE[lang] : OFFERS[lang];
   const prices = profil === 'tpe' ? PRICES_TPE[lang] : c.prices;
   const pont = PASSERELLE[lang][profil];
-  const faq = FAQ[lang];
+  const faq = profil === 'tpe' ? FAQ_TPE[lang] : FAQ[lang];
 
   return (
     <Page title={c.metaTitle} description={c.metaDesc}>

@@ -597,12 +597,68 @@ export const APROPOS_TPE = {
    selon la taille de celui qui écrit. */
 export const CONTACT_TPE = {
   fr: {
+    metaTitle: 'Contact · parlons de votre projet',
+    title: 'Parlons de votre projet.',
     lead: 'Décrivez votre besoin en trois lignes. On vous répond sous 24 h, franchement : si ce n’est pas pour nous, on vous le dit.',
     quizLead: 'Le questionnaire cerne votre besoin et prépare votre demande : vous validez, on a tout.',
   },
   en: {
+    metaTitle: 'Contact · let us talk about your project',
+    title: 'Let us talk about your project.',
     lead: 'Describe your need in three lines. We reply within 24 h, frankly: if it is not for us, we say so.',
     quizLead: 'The questionnaire pins down your need and prepares your request: you confirm, we have everything.',
+  },
+};
+
+
+/* La FAQ, version TPE. Celle du site répond sur l'audit, le bilan et les
+   effectifs : trois sujets qui ne se posent pas à cinq personnes. Ici on
+   répond aux vraies questions d'un patron de TPE — délai, propriété du
+   code, et ce qui se passe s'il veut arrêter en cours de route. */
+export const FAQ_TPE = {
+  fr: [
+    { q: 'Combien de temps pour avoir mon site en ligne ?',
+      a: `Un site vitrine sobre sort en cinq à huit jours de travail, étalés sur deux à trois semaines pour laisser le temps des allers-retours. Une boutique demande davantage, autour de dix à quinze jours. Le nombre exact est écrit dans le devis avant qu'on commence.` },
+    { q: 'Est-ce que le code m’appartient à la fin ?',
+      a: `Oui, entièrement, et sans condition. Le code, les fichiers sources, l'hébergement et les noms de domaine sont mis à votre nom. Vous pouvez reprendre le travail avec n'importe qui, ou le continuer vous-même. Rien n'est verrouillé de notre côté.` },
+    { q: 'Et si je veux arrêter en cours de route ?',
+      a: `Vous pouvez vous arrêter à la fin de n'importe quelle étape. On avance par petites étapes que vous validez une par une, donc vous ne payez jamais pour quelque chose que vous n'avez pas vu fonctionner. Ce qui est fait vous reste, sources comprises.` },
+    { q: 'Faut-il remplacer les outils qu’on utilise déjà ?',
+      a: `Presque jamais. La plupart du temps il suffit de les faire parler entre eux : le devis part en facture, la facture part chez le comptable, et vous arrêtez de retaper les mêmes lignes. On ne remplace que ce qui coince vraiment, et on vous dit pourquoi.` },
+    { q: 'Vous travaillez avec des entreprises d’une seule personne ?',
+      a: `Oui. Un artisan seul, un commerce de deux personnes : c'est souvent là que quelques heures rendues chaque semaine changent le plus de choses. En revanche, on ne vous vendra pas un audit poste par poste : à cette taille, ça n'a pas de sens.` },
+  ],
+  en: [
+    { q: 'How long before my site is live?',
+      a: `A plain website takes five to eight working days, spread over two or three weeks to leave room for feedback. A shop takes longer, around ten to fifteen days. The exact number is written into the quote before we start.` },
+    { q: 'Do I own the code at the end?',
+      a: `Yes, entirely and unconditionally. Code, source files, hosting and domain names are put in your name. You can hand the work to anyone else, or carry on yourself. Nothing is locked on our side.` },
+    { q: 'What if I want to stop halfway?',
+      a: `You can stop at the end of any step. We move in small steps you approve one by one, so you never pay for something you have not seen working. What is done stays yours, sources included.` },
+    { q: 'Do we have to replace the tools we already use?',
+      a: `Almost never. Most of the time it is enough to make them talk to each other: the quote becomes an invoice, the invoice reaches your accountant, and you stop retyping the same lines. We only replace what really gets in the way, and we tell you why.` },
+    { q: 'Do you work with one-person businesses?',
+      a: `Yes. A sole trader, a two-person shop: that is often where a few hours given back each week change the most. What we will not sell you is a desk-by-desk audit: at that size it makes no sense.` },
+  ],
+};
+
+/* Les pages d'état (404, message envoyé) renvoient vers l'exemple de
+   bilan. En version TPE cette page est réservée à l'autre profil : on
+   renvoie donc ailleurs plutôt que dans un cul-de-sac. */
+export const ETATS_TPE = {
+  fr: {
+    notFoundLien: { to: '/offres', label: 'Ce qu’on construit, et à quel prix' },
+    meanwhile: 'En attendant, vous pouvez regarder ce qu’on construit et à quel prix : tout est affiché.',
+    cta: 'Voir ce qu’on construit',
+    to: '/offres',
+    urgent: 'Besoin de nous joindre plus vite ?',
+  },
+  en: {
+    notFoundLien: { to: '/offres', label: 'What we build, and what it costs' },
+    meanwhile: 'In the meantime, you can look at what we build and what it costs: everything is on the page.',
+    cta: 'See what we build',
+    to: '/offres',
+    urgent: 'Need to reach us faster?',
   },
 };
 
