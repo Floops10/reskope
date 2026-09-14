@@ -26,9 +26,11 @@ export default function CTASection({ title, text }) {
               {c.primary}
               <span className="btn__arrow" aria-hidden="true">→</span>
             </Link>
-            <a className="btn btn--ghost" href={`mailto:${CONTACT.email}`}>
-              {c.secondary}
-            </a>
+            {CONTACT.ouverte && (
+              <a className="btn btn--ghost" href={`mailto:${CONTACT.email}`}>
+                {c.secondary}
+              </a>
+            )}
           </RevealItem>
         </Reveal>
       </div>

@@ -245,9 +245,11 @@ export default function Nav() {
           </nav>
 
           <div className="menu2__foot">
-            <div className="menu2__contact">
-              <a href={`mailto:${CONTACT.email}`} className="menu2__contact-link">{CONTACT.email}</a>
-            </div>
+            {CONTACT.ouverte && (
+              <div className="menu2__contact">
+                <a href={`mailto:${CONTACT.email}`} className="menu2__contact-link">{CONTACT.email}</a>
+              </div>
+            )}
             <div className="menu2__foot-actions">
               <Link to="/contact" className="btn btn--ghost">
                 <SwapLabel>{t.nav.cta}</SwapLabel>

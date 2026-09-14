@@ -4,13 +4,16 @@ import { instant } from '../lib/scrub';
 import Net3D from './Net3D';
 import { GLYPH_SHAPES } from '../lib/net3d';
 import { Reveal, RevealItem } from './Reveal';
-import { CONTACT } from '../data/site';
+import { Link } from 'react-router-dom';
+import { useLang } from '../i18n';
+import { CONTACT, FORMULAIRE } from '../data/site';
 import { openCalModal, CAL_FALLBACK_URL, isCalConfigured } from '../lib/cal';
 
 /* PRENDRE RENDEZ-VOUS — la scène reste entièrement dans la DA Reskope ;
    Cal.com n'apparaît qu'en surcouche, au clic (voir src/lib/cal.js). */
 
 export default function Booking({ c }) {
+  const { lang } = useLang();
   const rootRef = useRef(null);
   const [state, setState] = useState('idle'); // idle | loading | ready | error
 
@@ -74,7 +77,12 @@ export default function Booking({ c }) {
           )}
 
           <p className="bk__alt">
-            {c.or} <a className="link" href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
+            {c.or}{' '}
+            {CONTACT.ouverte ? (
+              <a className="link" href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
+            ) : (
+              <Link className="link" to="/contact">{FORMULAIRE[lang] || FORMULAIRE.fr}</Link>
+            )}
           </p>
         </div>
 

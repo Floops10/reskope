@@ -147,7 +147,7 @@ export default function Footer() {
 
         <div className="footer2__col">
           <span className="footer2__heading">{f.contact}</span>
-          <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
+          {CONTACT.ouverte && <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>}
           <Link to="/contact">{f.talk}</Link>
           <button type="button" className="footer2__card-btn" onClick={() => setCardOpen(true)}>
             {f.card} <span aria-hidden="true">→</span>

@@ -4924,9 +4924,14 @@ html.eco-theme .scrollnet {
 }
 
 /* Bande verte intérieure + filet réseau */
+/* La bande était à un cheveu du vert de la page : la couture arrondie ne
+   se voyait pas et la page n'avait plus de rythme. Elle descend nettement
+   plus bas, avec un foyer en haut à droite pour ne pas être un aplat. */
 .section--eco-band {
   position: relative;
-  background: #0a5f2f;
+  background:
+    radial-gradient(90% 80% at 84% 0%, color-mix(in srgb, #0B6B35 62%, transparent) 0%, transparent 62%),
+    #04381d;
   overflow: hidden;
 }
 .section--eco-band .container {
@@ -13029,6 +13034,17 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 .eco-fact__label { color: var(--cream); font-weight: 600; }
 .eco-fact__detail { color: rgba(240, 238, 232, 0.78); }
 .eco-fact__source { color: rgba(240, 238, 232, 0.45); }
+.eco-fact__source--lien {
+  text-decoration: none;
+  transition: color 0.25s ease;
+}
+.eco-fact__source--lien span {
+  display: inline-block;
+  margin-left: 0.28em;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.eco-fact__source--lien:hover { color: #7ddfa8; }
+.eco-fact__source--lien:hover span { transform: translate(2px, -2px); }
 
 /* La chaîne des économies */
 .eco-chain {
@@ -13812,10 +13828,14 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 /* ============================================================
    FIL D'ARIANE
    ============================================================ */
+/* Le fil d'Ariane est le dernier bloc clair avant le pied sombre. Il doit
+   donc passer SOUS lui : au même plan, c'est l'ordre du DOM qui décide, et
+   le pied arrive en dernier. Le rembourrage du bas compense ce que le
+   recouvrement lui mange, sinon le texte se retrouve collé au bord. */
 .crumb {
   position: relative;
-  z-index: 2;
-  padding-block: 1.1rem;
+  z-index: 1;
+  padding-block: 1.1rem calc(1.1rem + clamp(1.4rem, 3vw, 2.6rem));
   background: var(--cream);
   border-top: 1px solid color-mix(in srgb, var(--ink) 8%, transparent);
 }
@@ -13835,6 +13855,14 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   transition: color 0.25s ease;
 }
 .crumb a:hover { color: var(--indigo); }
+html.eco-theme .crumb {
+  background: var(--eco);
+  border-top-color: rgba(240, 238, 232, 0.14);
+}
+html.eco-theme .crumb a { color: rgba(240, 238, 232, 0.7); }
+html.eco-theme .crumb a:hover { color: var(--cream); }
+html.eco-theme .crumb [aria-current='page'] { color: var(--cream); }
+html.eco-theme .crumb__node { background: rgba(125, 223, 168, 0.55); }
 .crumb [aria-current='page'] { color: var(--ink); font-weight: 500; }
 .crumb__sep { display: flex; align-items: center; }
 .crumb__node {
@@ -14772,7 +14800,7 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
    qu'on vient d'éviter à l'entrée. */
 .couture-claire {
   position: relative;
-  z-index: 2;
+  z-index: 1;
   background: var(--couture-fond, var(--cream));
   border-start-start-radius: clamp(1.4rem, 3vw, 2.6rem);
   border-start-end-radius: clamp(1.4rem, 3vw, 2.6rem);

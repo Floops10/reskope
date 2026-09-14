@@ -5,7 +5,7 @@ import { LogoMark } from '../components/Logo';
 import { useLang } from '../i18n';
 import { useProfil } from '../profil';
 import { ETATS_TPE } from '../data/profils';
-import { CONTACT } from '../data/site';
+import { CONTACT, FORMULAIRE } from '../data/site';
 
 /* Pages d'état : 404 (route inconnue) et remerciement (après envoi d'une
    demande). Toutes deux ramènent vers une action utile plutôt que de laisser
@@ -163,7 +163,12 @@ export function Merci() {
             </RevealItem>
 
             <RevealItem as="p" className="state-page__urgent">
-              {c.urgent} <a className="link" href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
+              {c.urgent}{' '}
+              {CONTACT.ouverte ? (
+                <a className="link" href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
+              ) : (
+                <Link className="link" to="/contact">{FORMULAIRE[lang] || FORMULAIRE.fr}</Link>
+              )}
             </RevealItem>
           </Reveal>
         </div>

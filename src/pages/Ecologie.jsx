@@ -32,9 +32,9 @@ const CONTENT = {
     factsEyebrow: 'Le constat',
     factsTitle: 'Le numérique « invisible » a un coût bien réel.',
     facts: [
-      { num: 68, suffix: ' %', stat: '68 %', label: 'des licences SaaS sous-utilisées', detail: 'Chaque application inutilisée fait tourner des serveurs, stocke vos données et facture une licence. Rien ne le justifie.', source: 'Gartner, 2023' },
-      { num: 9.4, decimals: 1, stat: '9,4', label: 'applications par salarié en moyenne', detail: 'Chaque app est un silo. Plus il y en a, plus la donnée est dupliquée, vieillie, et énergivore à maintenir.', source: 'Okta, Businesses at Work, 2023' },
-      { num: 2, prefix: '× ', stat: '× 2', label: 'moins de stockage et de doublons', detail: "En passant de 6 à 3 outils, nos clients divisent leurs données redondantes, et l'empreinte de stockage qui va avec.", source: 'Estimation Reskope' },
+      { num: 93, stat: '93', label: 'applications déployées en moyenne dans une entreprise', detail: "Chacune est un silo. Plus il y en a, plus la donnée est recopiée, vieillie, et coûteuse à maintenir en vie.", source: 'Okta, Businesses at Work 2024', url: 'https://www.okta.com/sites/default/files/2024-04/Okta-2024_Businesses_at_Work.pdf' },
+      { num: 4.4, decimals: 1, suffix: ' %', stat: '4,4 %', label: "de l'empreinte carbone de la France vient du numérique", detail: "L'essentiel part dans la fabrication des équipements, pas dans leur usage. Un outil de moins, c'est du matériel qu'on ne remplace pas.", source: 'ADEME, impact environnemental du numérique, 2022', url: 'https://infos.ademe.fr/magazine-janvier-2025/numerique-quel-impact-environnemental-en-2022/' },
+      { num: 2, prefix: '× ', stat: '× 2', label: 'moins de doublons en passant de six outils à trois', detail: "Une donnée saisie une fois au lieu de deux, c'est une sauvegarde, une synchronisation et un stockage en moins. Le calcul est arithmétique.", source: 'Ordre de grandeur Reskope' },
     ],
     savingsEyebrow: "Ce qu'un projet économise",
     savingsTitle: 'Quatre économies, au-delà du temps gagné.',
@@ -45,9 +45,9 @@ const CONTENT = {
       { title: "Moins de temps, donc moins d'énergie", text: "Le temps gagné par vos équipes, c'est aussi moins de réunions, moins d'e-mails, moins d'allers-retours numériques. La productivité rejoint la sobriété." },
     ],
     posEyebrow: 'Notre position',
-    posTitle: 'On ne vend pas du « green », on évite du superflu.',
+    posTitle: "La sobriété n'est pas un argument, c'est une conséquence.",
     posLead:
-      "Pas de greenwashing : la sobriété n'est pas un argument ajouté, c'est la conséquence directe de notre travail. Un audit qui supprime trois outils redondants a un effet écologique réel, et il est gratuit pour la planète comme pour votre budget.",
+      "Un audit qui retire trois outils redondants a un effet réel : des serveurs qui ne tournent plus, du matériel qu'on garde plus longtemps, des données qu'on ne recopie plus. On ne le facture pas en plus, et on n'en fait pas une promesse de plaquette.",
     posBtn: 'Parler de votre stack',
     ctaTitle: 'Et si on allégeait vos outils ?',
     ctaLead:
@@ -74,9 +74,9 @@ const CONTENT = {
     factsEyebrow: 'The reality',
     factsTitle: '“Invisible” digital has a very real cost.',
     facts: [
-      { num: 68, suffix: '%', stat: '68%', label: 'of SaaS licenses underused', detail: 'Every unused app keeps servers running, stores your data and bills a license. Nothing justifies it.', source: 'Gartner, 2023' },
-      { num: 9.4, decimals: 1, stat: '9.4', label: 'apps per employee on average', detail: 'Every app is a silo. The more there are, the more data is duplicated, stale and energy-hungry to maintain.', source: 'Okta, Businesses at Work, 2023' },
-      { num: 2, prefix: '× ', stat: '× 2', label: 'less storage and fewer duplicates', detail: 'Going from 6 to 3 tools, our clients halve their redundant data, and the storage footprint that goes with it.', source: 'Reskope estimate' },
+      { num: 93, stat: '93', label: 'apps deployed in the average company', detail: 'Each one is a silo. The more there are, the more data is copied, stale, and expensive to keep alive.', source: 'Okta, Businesses at Work 2024', url: 'https://www.okta.com/sites/default/files/2024-04/Okta-2024_Businesses_at_Work.pdf' },
+      { num: 4.4, decimals: 1, suffix: '%', stat: '4.4%', label: "of France's carbon footprint comes from digital", detail: 'Most of it sits in manufacturing the devices, not in running them. One tool less is hardware you do not replace.', source: 'ADEME, environmental impact of digital, 2022', url: 'https://infos.ademe.fr/magazine-janvier-2025/numerique-quel-impact-environnemental-en-2022/' },
+      { num: 2, prefix: '× ', stat: '× 2', label: 'fewer duplicates going from six tools to three', detail: 'Data entered once instead of twice means one backup, one sync and one storage bill less. The maths is arithmetic.', source: 'Reskope order of magnitude' },
     ],
     savingsEyebrow: 'What a project saves',
     savingsTitle: 'Four savings, beyond the time gained.',
@@ -87,9 +87,9 @@ const CONTENT = {
       { title: 'Less time, so less energy', text: 'The time your teams save also means fewer meetings, fewer emails, fewer digital back-and-forths. Productivity meets sobriety.' },
     ],
     posEyebrow: 'Our stance',
-    posTitle: "We don't sell “green”, we avoid the superfluous.",
+    posTitle: 'Sobriety is not an argument, it is a consequence.',
     posLead:
-      'No greenwashing: sobriety is not an add-on argument, it is the direct consequence of our work. An audit that removes three redundant tools has a real ecological effect, and it is free for the planet as much as for your budget.',
+      'An audit that removes three redundant tools has a real effect: servers that stop running, hardware kept longer, data no longer copied twice. We do not bill it as an extra, and we do not turn it into a brochure promise.',
     posBtn: 'Talk about your stack',
     ctaTitle: 'What if we lightened your tools?',
     ctaLead:
@@ -284,7 +284,16 @@ export default function Ecologie() {
                     </span>
                     <span className="eco-fact__label">{f.label}</span>
                     <p className="eco-fact__detail">{f.detail}</p>
-                    <span className="eco-fact__source">{f.source}</span>
+                    {/* Un chiffre sans lien, c'est un chiffre qu'on demande de
+                        croire sur parole. Quand l'étude est en ligne, on y mène. */}
+                    {f.url ? (
+                      <a className="eco-fact__source eco-fact__source--lien" href={f.url} target="_blank" rel="noopener noreferrer">
+                        {f.source}
+                        <span aria-hidden="true">↗</span>
+                      </a>
+                    ) : (
+                      <span className="eco-fact__source">{f.source}</span>
+                    )}
                   </div>
                 ))}
               </div>
@@ -348,9 +357,11 @@ export default function Ecologie() {
                   {c.ctaPrimary}
                   <span className="btn__arrow" aria-hidden="true">→</span>
                 </Link>
-                <a className="btn btn--eco" href={`mailto:${CONTACT.email}`}>
-                  {c.ctaSecondary}
-                </a>
+                {CONTACT.ouverte && (
+                  <a className="btn btn--eco" href={`mailto:${CONTACT.email}`}>
+                    {c.ctaSecondary}
+                  </a>
+                )}
               </RevealItem>
             </Reveal>
           </div>

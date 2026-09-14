@@ -227,10 +227,12 @@ export default function Contact() {
                 </ol>
               </div>
 
-              <p className="ctc__direct ctc__reveal">
-                <span>{c.directLabel}</span>
-                <a href={`mailto:${CONTACT.email}`} className="link link--lg">{CONTACT.email}</a>
-              </p>
+              {CONTACT.ouverte && (
+                <p className="ctc__direct ctc__reveal">
+                  <span>{c.directLabel}</span>
+                  <a href={`mailto:${CONTACT.email}`} className="link link--lg">{CONTACT.email}</a>
+                </p>
+              )}
             </div>
 
             {/* Le formulaire, dans le premier écran */}

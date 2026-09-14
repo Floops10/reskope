@@ -5,6 +5,18 @@
 
 export const CONTACT = {
   email: 'hello@reskope.fr',
+  /* La boîte n'est pas ouverte : le nom de domaine n'est pas encore déposé.
+     Une adresse affichée qui renvoie un message d'erreur coûte plus cher
+     qu'une adresse absente, alors tant que ce drapeau est à false tout ce
+     qui menait à un mailto mène au formulaire — lui, il arrive. Le jour où
+     la boîte existe, passer à true : rien d'autre à toucher. */
+  ouverte: false,
+};
+
+/* Le libellé de repli, quand on ne peut pas donner d'adresse. */
+export const FORMULAIRE = {
+  fr: 'Passer par le formulaire',
+  en: 'Use the form',
 };
 
 /* ------------------------------------------------------------------
