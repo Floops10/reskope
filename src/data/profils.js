@@ -13,38 +13,38 @@
 
 export const HOME_TPE = {
   fr: {
-    metaTitle: 'Sites, outils et automatisations pour TPE · Reskope',
+    metaTitle: 'Sites, boutiques et identité de marque pour TPE · Reskope',
     metaDesc:
-      'Reskope construit ce qui vous manque et répare ce qui coince : site vitrine, boutique, prise de réservation, liaisons entre vos outils. Facturé à la journée, code et accès à votre nom.',
+      'On construit ce qui vous manque : site vitrine, boutique en ligne, prise de rendez-vous, identité de marque. Facturé à la journée, code et accès à votre nom.',
 
-    heroTitle: 'Vous passez vos soirées sur ce qui devrait tourner tout seul.',
-    line1: 'Un site qui date, des devis recopiés à la main, un agenda qui ne parle à rien. Chaque heure passée là-dessus est une heure en moins sur votre métier.',
-    line2: 'Reskope construit ce qui vous manque et répare ce qui coince : site vitrine, boutique, prise de réservation, liaisons entre vos outils. Facturé à la journée, et vous repartez avec les clés.',
-    mark1: 'recopiés',
-    mark2: 'construit',
-    closing: 'Moins de saisie. Plus de métier.',
+    heroTitle: 'On construit ce qui vous manque.',
+    line1: 'Pas de site, ou un site qui date. Des rendez-vous pris au téléphone. Une image qui ne vous ressemble plus. Rien de tout ça n’est un problème d’outils : c’est ce qui n’existe pas encore.',
+    line2: 'Reskope conçoit et développe votre site, votre boutique, votre prise de rendez-vous, et pose l’identité qui va avec. Facturé à la journée, par petites étapes, et vous repartez avec les clés.',
+    mark1: 'n’existe pas encore',
+    mark2: 'les clés',
+    closing: 'Ce qui vous manque. Construit.',
     offerings: [
       { title: 'Site et boutique', sub: 'Un site qui tient debout, une boutique qui encaisse, des pages qui servent.' },
-      { title: 'Prise de réservation', sub: 'Créneaux, confirmation, rappel la veille. Vous ne rappelez plus personne.' },
-      { title: 'Liaisons entre outils', sub: 'Devis vers facture, export comptable, alertes. Fini la double saisie.' },
+      { title: 'Prise de rendez-vous', sub: 'Créneaux en ligne, confirmation, rappel la veille. Vous ne rappelez plus personne.' },
       { title: 'Identité de marque', sub: 'Le positionnement d’abord, les couleurs ensuite. Des règles, pas une image.' },
+      { title: 'Aide au lancement', sub: 'Le modèle, les chiffres, les fournisseurs. Avant d’ouvrir, et avant d’emprunter.' },
     ],
     primary: 'Démarrer un projet',
     sting: 'Un seul interlocuteur. Les clés à la fin.',
 
     longPhrase:
-      'Reskope, c’est un partenaire technique qui construit ce qui vous manque, répare ce qui coince, et vous laisse les clés. Moins de saisie, plus de temps pour votre vrai métier.',
+      'Reskope, c’est un partenaire technique qui construit ce qui vous manque, le met en ligne, vous montre comment il marche, et vous laisse le code. Vous n’avez besoin de personne pour continuer.',
 
     svTitle: 'Ce qu’on construit, concrètement.',
     services: [
       'Site vitrine',
       'Boutique en ligne',
-      'Prise de réservation',
+      'Prise de rendez-vous',
+      'Identité de marque',
       'Fichier clients',
       'Programme de fidélité',
-      'Liaisons entre outils',
-      'Reprise d’un outil existant',
-      'Identité de marque',
+      'Modèle économique & chiffres',
+      'Reprise d’un site existant',
     ],
 
     whyTitle: 'Pas une agence qui livre une maquette.',
@@ -53,67 +53,56 @@ export const HOME_TPE = {
 
     pillarsTitle: 'Trois étapes, zéro surprise.',
     pillars: [
-      {
-        id: 'audit',
-        title: 'Cadrage',
-        text: 'Une demi-journée pour comprendre votre métier et ce qui vous prend du temps. On écrit ce qu’on fait, en combien de jours et pour quel prix. Vous décidez après.',
-      },
-      {
-        id: 'conception',
-        title: 'Construction',
-        text: 'On avance par petites étapes, facturées à la journée. Vous voyez chaque brique fonctionner avant qu’on passe à la suivante, et vous pouvez vous arrêter à la fin de chacune.',
-      },
-      {
-        id: 'deploiement',
-        title: 'Prise en main',
-        text: 'On met en ligne, on vous montre comment ça marche, et on vous remet le code, les fichiers sources et les accès à votre nom. Ensuite, vous êtes libre.',
-      },
+      { id: 'audit', title: 'Cadrage', text: 'Une demi-journée pour comprendre ce que vous vendez et à qui. On écrit ce qu’on fait, en combien de jours et pour quel prix. Vous décidez après.' },
+      { id: 'conception', title: 'Construction', text: 'On avance par petites étapes, facturées à la journée. Vous voyez chaque brique fonctionner avant qu’on passe à la suivante, et vous pouvez vous arrêter à la fin de chacune.' },
+      { id: 'deploiement', title: 'Les clés', text: 'On met en ligne, on vous montre comment ça marche, et on vous remet le code, les fichiers sources et les accès à votre nom. Ensuite, vous êtes libre.' },
     ],
 
-    exploreTitle: 'Explorez à votre rythme.',
-    dest: [
-      { to: '/pourquoi', label: 'Le constat', desc: 'Le temps perdu, et pour qui on agit' },
-      { to: '/methode', label: 'La méthode', desc: '5 jalons, en toute transparence' },
-      { to: '/offres', label: 'Offres', desc: 'Facturé à la journée, devis détaillé' },
-      { to: '/numerique-responsable', label: 'Numérique responsable', desc: 'Moins d’outils, moins d’empreinte' },
+    statsEyebrow: 'Nos engagements',
+    statsTitle: 'Ce qu’on s’engage à tenir.',
+    stats: [
+      { label: 'jours pour un site vitrine sobre, mis en ligne et vérifié', display: '5', value: 5, prefix: '', suffix: '', decimals: 0 },
+      { label: 'du code et des fichiers sources remis, à votre nom', display: '100 %', value: 100, prefix: '', suffix: ' %', decimals: 0 },
+      { label: 'de la démarche au grand jour : étapes, prix, accès', display: '100 %', value: 100, prefix: '', suffix: ' %', decimals: 0 },
+      { label: 'donnée gardée de notre côté une fois la mission finie', display: '0', value: null },
     ],
 
-    ctaSub: 'Un premier échange de 30 minutes, sans engagement. Vous nous dites ce qui vous prend du temps, et on vous dit franchement si on peut vous en faire gagner.',
+    ctaSub: 'Un premier échange de 30 minutes, sans engagement. Vous nous dites ce que vous voulez construire, et on vous dit franchement en combien de temps et pour quel prix.',
     ctaBtn: 'Parlons de votre projet',
   },
   en: {
-    metaTitle: 'Websites, tools and automation for small businesses · Reskope',
+    metaTitle: 'Websites, shops and brand identity for small businesses · Reskope',
     metaDesc:
-      'Reskope builds what you are missing and fixes what gets in the way: website, online shop, booking, links between your tools. Billed by the day, code and access in your name.',
+      'We build what you are missing: website, online shop, booking, brand identity. Billed by the day, code and access in your name.',
 
-    heroTitle: 'You spend your evenings on what should run by itself.',
-    line1: 'A dated website, quotes retyped by hand, a calendar that talks to nothing. Every hour spent there is an hour away from your trade.',
-    line2: 'Reskope builds what you are missing and fixes what gets in the way: website, shop, booking, links between your tools. Billed by the day, and you leave with the keys.',
-    mark1: 'retyped',
-    mark2: 'builds',
-    closing: 'Less typing. More trade.',
+    heroTitle: 'We build what you are missing.',
+    line1: 'No website, or one that has aged. Appointments taken by phone. An image that no longer looks like you. None of that is a tooling problem: it is what does not exist yet.',
+    line2: 'Reskope designs and builds your website, your shop, your booking system, and sets the identity that goes with it. Billed by the day, in small steps, and you leave with the keys.',
+    mark1: 'does not exist yet',
+    mark2: 'the keys',
+    closing: 'What you are missing. Built.',
     offerings: [
       { title: 'Website and shop', sub: 'A site that stands up, a shop that takes payment, pages that earn their place.' },
       { title: 'Online booking', sub: 'Slots, confirmation, reminder the day before. You stop calling people back.' },
-      { title: 'Links between tools', sub: 'Quote to invoice, accounting export, alerts. No more double entry.' },
       { title: 'Brand identity', sub: 'Positioning first, colours second. Rules, not an image.' },
+      { title: 'Launch support', sub: 'The model, the figures, the suppliers. Before you open, and before you borrow.' },
     ],
     primary: 'Start a project',
     sting: 'One contact. The keys at the end.',
 
     longPhrase:
-      'Reskope is a technical partner who builds what you are missing, fixes what gets in the way, and hands you the keys. Less typing, more time for your real trade.',
+      'Reskope is a technical partner who builds what you are missing, puts it live, shows you how it works, and leaves you the code. You need nobody to carry on.',
 
     svTitle: 'What we build, concretely.',
     services: [
       'Website',
       'Online shop',
       'Online booking',
+      'Brand identity',
       'Client records',
       'Loyalty programme',
-      'Links between tools',
-      'Rework of an existing tool',
-      'Brand identity',
+      'Business model & figures',
+      'Rework of an existing site',
     ],
 
     whyTitle: 'Not an agency that delivers a mockup.',
@@ -122,21 +111,67 @@ export const HOME_TPE = {
 
     pillarsTitle: 'Three steps, no surprises.',
     pillars: [
-      { id: 'audit', title: 'Framing', text: 'Half a day to understand your trade and what eats your time. We write what we will do, in how many days and for what price. You decide afterwards.' },
+      { id: 'audit', title: 'Framing', text: 'Half a day to understand what you sell and to whom. We write what we will do, in how many days and for what price. You decide afterwards.' },
       { id: 'conception', title: 'Build', text: 'We move in small steps, billed by the day. You see each brick work before we move to the next, and you can stop at the end of any of them.' },
-      { id: 'deploiement', title: 'Handover', text: 'We put it live, show you how it works, and hand over the code, the source files and the access in your name. Then you are free.' },
+      { id: 'deploiement', title: 'The keys', text: 'We put it live, show you how it works, and hand over the code, the source files and the access in your name. Then you are free.' },
     ],
 
-    exploreTitle: 'Explore at your own pace.',
-    dest: [
-      { to: '/pourquoi', label: 'The findings', desc: 'Time lost, and who we act for' },
-      { to: '/methode', label: 'The method', desc: '5 milestones, in full transparency' },
-      { to: '/offres', label: 'Offers', desc: 'Billed by the day, detailed quote' },
-      { to: '/numerique-responsable', label: 'Responsible digital', desc: 'Fewer tools, smaller footprint' },
+    statsEyebrow: 'Our commitments',
+    statsTitle: 'What we commit to.',
+    stats: [
+      { label: 'days for a plain website, live and checked', display: '5', value: 5, prefix: '', suffix: '', decimals: 0 },
+      { label: 'of the code and source files handed over, in your name', display: '100%', value: 100, prefix: '', suffix: '%', decimals: 0 },
+      { label: 'of the process in the open: steps, price, access', display: '100%', value: 100, prefix: '', suffix: '%', decimals: 0 },
+      { label: 'data kept on our side once the engagement ends', display: '0', value: null },
     ],
 
-    ctaSub: 'A first 30-minute conversation, no commitment. You tell us what eats your time, and we tell you frankly whether we can give some back.',
+    ctaSub: 'A first 30-minute conversation, no commitment. You tell us what you want to build, and we tell you frankly how long it takes and what it costs.',
     ctaBtn: 'Talk about your project',
+  },
+};
+
+/* Les deux chiffres qui posent le sujet chez une TPE. Ils ne parlent pas
+   de désordre — il n'y a rien à ranger chez quelqu'un qui n'a pas encore
+   d'outils — mais du fait que presque tout le monde sait que c'est
+   indispensable, et qu'un tiers ne l'a toujours pas fait. */
+export const PREUVES_TPE = {
+  fr: {
+    eyebrow: 'Vous le savez déjà',
+    titre: 'Ce n’est pas la conviction qui manque.',
+    lead: 'C’est le temps, et quelqu’un à qui confier le travail. Les deux chiffres ci-dessous ne viennent pas de nous.',
+    items: [
+      {
+        v: '95 %',
+        t: 'des TPE et PME jugent leur présence sur internet indispensable ou utile à leur activité',
+        src: 'Afnic · Réussir avec le web, 6ᵉ édition',
+        url: 'https://www.afnic.fr/observatoire-ressources/actualites/etude-afnic-la-presence-en-ligne-des-tpe-et-pme-francaises-progresse-leurs-pratiques-de-securite-aussi/',
+      },
+      {
+        v: '1 sur 3',
+        t: 'n’a pourtant toujours pas de site internet : 67 % seulement en sont équipées',
+        src: 'Afnic · Réussir avec le web, 6ᵉ édition',
+        url: 'https://www.afnic.fr/observatoire-ressources/actualites/etude-afnic-la-presence-en-ligne-des-tpe-et-pme-francaises-progresse-leurs-pratiques-de-securite-aussi/',
+      },
+    ],
+  },
+  en: {
+    eyebrow: 'You already know',
+    titre: 'Conviction is not what is missing.',
+    lead: 'Time is, and someone to hand the work to. The two figures below are not ours.',
+    items: [
+      {
+        v: '95%',
+        t: 'of French small businesses consider their online presence essential or useful to their activity',
+        src: 'Afnic · Réussir avec le web, 6th edition',
+        url: 'https://www.afnic.fr/observatoire-ressources/actualites/etude-afnic-la-presence-en-ligne-des-tpe-et-pme-francaises-progresse-leurs-pratiques-de-securite-aussi/',
+      },
+      {
+        v: '1 in 3',
+        t: 'still has no website at all: only 67% of them are equipped with one',
+        src: 'Afnic · Réussir avec le web, 6th edition',
+        url: 'https://www.afnic.fr/observatoire-ressources/actualites/etude-afnic-la-presence-en-ligne-des-tpe-et-pme-francaises-progresse-leurs-pratiques-de-securite-aussi/',
+      },
+    ],
   },
 };
 
@@ -356,21 +391,23 @@ export const OFFRES_TPE = {
 
 /* Les pages qui ne concernent qu'un profil.
 
-   L'exemple de bilan est le compte rendu d'un audit mené poste par poste
-   chez une PME. Chez une entreprise de trois personnes, cette prestation
-   n'existe pas : la page n'a rien à y faire. On la retire donc du menu
-   en version TPE.
+   Deux pages ne concernent que les PME. L'exemple de bilan est le compte
+   rendu d'un audit mené poste par poste. Et « le constat » démontre le
+   coût du désordre numérique : chez quelqu'un qui n'a pas encore de
+   site, il n'y a pas de désordre, il y a une absence. Les deux sortent
+   donc du menu en version TPE, et la version TPE pose son propre sujet
+   sur l'accueil, avec ses propres chiffres.
 
    On ne la SUPPRIME pas pour autant : l'URL reste valide, elle garde sa
    valeur pour les moteurs, et quiconque y arrive par un lien externe la
    lit normalement — avec un bandeau qui dit franchement à qui elle
    s'adresse et propose la bascule. Rediriger de force serait hostile. */
-export const PAGES_PROFIL = { '/exemple': 'pme' };
+export const PAGES_PROFIL = { '/exemple': 'pme', '/pourquoi': 'pme' };
 
 export const RESERVE = {
   fr: {
     pme: {
-      txt: 'Ce bilan est un exemple d’audit mené poste par poste, une prestation qui s’adresse aux PME de dix personnes et plus. Vous consultez le site en version TPE.',
+      txt: 'Cette page s’adresse aux PME de dix personnes et plus : elle part d’un parc d’outils déjà en place. Vous consultez le site en version TPE.',
       act: 'Passer en version PME',
       autre: 'Voir les offres TPE',
       autreTo: '/offres',
@@ -384,7 +421,7 @@ export const RESERVE = {
   },
   en: {
     pme: {
-      txt: 'This report is an example of a desk-by-desk audit, a service aimed at SMEs of ten people and above. You are browsing the small-business version of the site.',
+      txt: 'This page is aimed at SMEs of ten people and above: it starts from a set of tools already in place. You are browsing the small-business version of the site.',
       act: 'Switch to the SME version',
       autre: 'See small-business offers',
       autreTo: '/offres',
@@ -399,94 +436,7 @@ export const RESERVE = {
 };
 
 
-/* ============================================================
-   LE CONSTAT, VERSION TPE.
 
-   Les chiffres sourcés ne changent pas : ils portent sur un salarié
-   « de bureau », pas sur la taille de l'entreprise. Ce qui change, c'est
-   l'ÉCHELLE de la démonstration et la personne à qui on parle. Chiffrer
-   une équipe de vingt personnes devant un patron qui en a quatre, c'est
-   le meilleur moyen de lui faire fermer la page.
-   ============================================================ */
-export const POURQUOI_TPE = {
-  fr: {
-    metaTitle: 'Le constat · le temps que vos outils vous prennent',
-    metaDesc:
-      'Près de la moitié de la semaine part dans les e-mails et la recherche d’information. Les chiffres sourcés, ramenés à une entreprise de cinq personnes.',
-    heroTitle: 'Le temps que personne ne compte.',
-    heroTease:
-      'Chaque semaine, vos outils vous prennent des heures. On a mesuré combien, et surtout pourquoi.',
-    heroLead:
-      'Devis recopiés, agenda qui ne parle à rien, information qu’on cherche deux fois : ce temps n’apparaît sur aucune facture. Il sort pourtant de votre semaine, et souvent de vos soirées.',
-    bridgeTitle: 'Et chez vous ?',
-    bridgeText:
-      'Ces chiffres ne sortent pas d’une plaquette commerciale. Si une seule de ces heures se vérifie chez vous, un chantier bien choisi la rend pour de bon.',
-    bridgeBtn: 'Voir ce qu’on construit',
-    film: {
-      costValue: 116000,
-      costCap: 'Pour une entreprise de cinq personnes, c’est déjà plus de cent mille euros par an.',
-      costCalc: '16,5 h × 47 semaines × 5 personnes × 30 €/h chargé ≈ 116 000 € par an.',
-      teamCaption: 'Une entreprise de cinq personnes.',
-      orderText: 'Chaque heure rendue, c’est une heure de plus sur votre métier, ou une soirée de moins au bureau.',
-      synthCap: 'Ce temps a un coût. Le récupérer en a un aussi, bien plus petit.',
-    },
-    targetsTitle: 'Pour ceux qui se reconnaissent ici.',
-    targets: [
-      { title: 'L’artisan', size: 'Jusqu’à 10 personnes', desc: 'Devis, factures, planning, échanges clients : tout est dispersé, et une bonne partie se fait le soir. Deux ou trois liaisons bien choisies rendent plusieurs heures par semaine.', cta: 'Voir ce qu’on construit', to: '/offres' },
-      { title: 'Le commerce et le service', size: 'De 2 à 10 personnes', desc: 'Vous prenez les rendez-vous au téléphone, vous rappelez la veille, vous relancez à la main. Tout ça se fait sans vous, et mieux.', cta: 'Voir les offres', to: '/offres' },
-      { title: 'La jeune structure', size: 'Moins de 5 personnes', desc: 'Vous démarrez, vous n’avez pas encore de mauvaises habitudes. C’est le meilleur moment pour poser des outils justes, et une marque qui vous ressemble.', cta: 'Voir la méthode', to: '/methode' },
-    ],
-  },
-  en: {
-    metaTitle: 'The findings · the time your tools take from you',
-    metaDesc:
-      'Nearly half the week goes into email and hunting for information. The sourced figures, brought down to a five-person business.',
-    heroTitle: 'The time nobody counts.',
-    heroTease: 'Every week, your tools take hours from you. We measured how many, and above all why.',
-    heroLead:
-      'Quotes retyped, a calendar that talks to nothing, information you look for twice: that time appears on no invoice. It still comes out of your week, and often out of your evenings.',
-    bridgeTitle: 'And at your place?',
-    bridgeText:
-      'These figures do not come from a sales brochure. If even one of those hours holds true for you, a well-chosen project gives it back for good.',
-    bridgeBtn: 'See what we build',
-    film: {
-      costValue: 116000,
-      costCap: 'For a five-person business, that is already more than a hundred thousand euros a year.',
-      costCalc: '16.5 h × 47 weeks × 5 people × €30/h loaded ≈ €116,000 per year.',
-      teamCaption: 'A five-person business.',
-      orderText: 'Every hour given back is an hour more on your trade, or an evening less at the desk.',
-      synthCap: 'That time has a cost. Getting it back has one too, a much smaller one.',
-    },
-    targetsTitle: 'For those who recognize themselves here.',
-    targets: [
-      { title: 'The craftsman', size: 'Up to 10 people', desc: 'Quotes, invoices, scheduling, client messages: all scattered, and a good part of it done in the evening. Two or three well-chosen links give back several hours a week.', cta: 'See what we build', to: '/offres' },
-      { title: 'Retail and services', size: 'From 2 to 10 people', desc: 'You take bookings by phone, you call back the day before, you chase by hand. All of that runs without you, and better.', cta: 'See the offers', to: '/offres' },
-      { title: 'The young business', size: 'Under 5 people', desc: 'You are starting out, with no bad habits yet. It is the best moment to set up the right tools, and a brand that looks like you.', cta: 'See the method', to: '/methode' },
-    ],
-  },
-};
-
-/* La seule carte du constat qui parle vraiment de taille : chez Okta la
-   moyenne est mesurée sur des grands comptes. On la ramène à l'échelle
-   d'une TPE plutôt que de laisser un chiffre qui ne parle à personne. */
-export const CONSTAT_TPE = {
-  fr: {
-    apps: {
-      kicker: 'L’empilement d’outils',
-      title: 'applications déployées en moyenne par entreprise.',
-      desc: 'Même à cinq, les outils s’accumulent : un pour les devis, un pour la compta, un pour le planning, un pour les photos de chantier. Chacun promet un gain et ajoute une saisie.',
-      calc: 'Moyenne mesurée sur le parc clients Okta (grands comptes). Dans une TPE française, on compte plutôt 5 à 15 outils : le mécanisme de dispersion est identique, à plus petite échelle.',
-    },
-  },
-  en: {
-    apps: {
-      kicker: 'The tool pile-up',
-      title: 'applications deployed on average per company.',
-      desc: 'Even at five people, tools pile up: one for quotes, one for accounting, one for scheduling, one for site photos. Each promises a gain and adds an entry.',
-      calc: 'Average measured across Okta’s customer base (large accounts). In a French small business it is more like 5 to 15 tools: the scattering mechanism is identical, at a smaller scale.',
-    },
-  },
-};
 
 
 /* ============================================================
@@ -664,8 +614,8 @@ export const ETATS_TPE = {
    dans son profil. */
 export const PASSERELLE = {
   fr: {
-    tpe: { txt: 'Vous dirigez plutôt une PME de dix personnes ou plus ?', act: 'Voir la version PME' },
-    pme: { txt: 'Vous êtes plutôt une TPE de moins de dix personnes ?', act: 'Voir la version TPE' },
+    tpe: { txt: 'Vous dirigez plutôt une PME de dix personnes ou plus ? Le sujet n’est plus de construire, mais de remettre de l’ordre.', act: 'Voir la version PME' },
+    pme: { txt: 'Vous êtes plutôt une TPE de moins de dix personnes ? On construit plutôt qu’on n’audite.', act: 'Voir la version TPE' },
   },
   en: {
     tpe: { txt: 'Do you actually run an SME of ten people or more?', act: 'See the SME version' },

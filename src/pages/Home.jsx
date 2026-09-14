@@ -3,6 +3,7 @@ import HeroFormation from '../components/HeroFormation';
 import HomeCinema from '../components/HomeCinema';
 import LongPhrase from '../components/LongPhrase';
 import AvantApres from '../components/AvantApres';
+import PreuvesTpe from '../components/PreuvesTpe';
 import { useLang } from '../i18n';
 import { useProfil } from '../profil';
 import { HOME_TPE } from '../data/profils';
@@ -236,7 +237,12 @@ export default function Home() {
       {/* 2 — La marque en une phrase (mots révélés au scrub) */}
       <LongPhrase text={c.longPhrase} />
 
-      {/* 3 — Avant / après : la nuée d'outils se range en R au scroll.
+      {/* 3 — En version TPE seulement : les deux chiffres qui posent le
+             sujet. La version PME a une page entière pour ça (« Le
+             constat »), qui ne vaut rien chez quelqu'un sans outils. */}
+      {profil === 'tpe' && <PreuvesTpe />}
+
+      {/* 4 — Avant / après : la nuée d'outils se range en R au scroll.
              C'est le message de la marque en une seule image, et les
              chiffres de part et d'autre changent selon le profil. */}
       <AvantApres key={`aap-${profil}`} />

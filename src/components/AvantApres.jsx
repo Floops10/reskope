@@ -76,20 +76,25 @@ function construire() {
   return { ordre, chaos, liensR, liensSat, liensChaos, hub: R.hub, nR, total };
 }
 
+/* Le titre change de sens selon la version, et ce n'est pas une nuance
+   de vocabulaire : chez une PME on REMET EN ORDRE un parc qui existe,
+   chez une TPE on CONSTRUIT ce qui n'existe pas encore. Raconter le
+   désordre à quelqu'un qui n'a pas d'outils, c'est parler d'un problème
+   qu'il n'a pas. */
 const T = {
   fr: {
-    eyebrow: 'Avant, après',
-    titre: 'Le même parc d’outils. Remis en ordre.',
     avant: 'Aujourd’hui',
     apres: 'Après',
     cue: 'Continuez à faire défiler',
+    pme: { eyebrow: 'Avant, après', titre: 'Le même parc d’outils. Remis en ordre.' },
+    tpe: { eyebrow: 'Avant, après', titre: 'Ce qui vous manque. Construit.' },
   },
   en: {
-    eyebrow: 'Before, after',
-    titre: 'The same set of tools. Put back in order.',
     avant: 'Today',
     apres: 'After',
     cue: 'Keep scrolling',
+    pme: { eyebrow: 'Before, after', titre: 'The same set of tools. Put back in order.' },
+    tpe: { eyebrow: 'Before, after', titre: 'What you are missing. Built.' },
   },
 };
 
@@ -102,8 +107,8 @@ const ETATS = {
       apres: [['1', 'tableau de vos outils, coût par coût'], ['1', 'endroit qui fait foi'], ['1', 'plan de chantiers chiffré en jours']],
     },
     tpe: {
-      avant: [['6', 'outils qui ne se parlent pas'], ['2', 'fois la même ligne à retaper'], ['0', 'soirée tranquille']],
-      apres: [['1', 'site qui travaille pour vous'], ['0', 'ressaisie d’un outil à l’autre'], ['1', 'jeu de clés, à votre nom']],
+      avant: [['0', 'site, ou un site qui date de 2016'], ['2 h', 'par semaine à prendre des rendez-vous au téléphone'], ['0', 'client qui vous trouve le dimanche soir']],
+      apres: [['1', 'site en ligne, à votre nom'], ['1', 'agenda qui se remplit tout seul'], ['1', 'jeu de clés, code et sources compris']],
     },
   },
   en: {
@@ -112,8 +117,8 @@ const ETATS = {
       apres: [['1', 'table of your tools, cost by cost'], ['1', 'place that is authoritative'], ['1', 'plan of work priced in days']],
     },
     tpe: {
-      avant: [['6', 'tools that do not talk to each other'], ['2', 'times the same line to retype'], ['0', 'quiet evening']],
-      apres: [['1', 'site that works for you'], ['0', 're-entry from one tool to another'], ['1', 'set of keys, in your name']],
+      avant: [['0', 'website, or one dating from 2016'], ['2 h', 'a week taking appointments by phone'], ['0', 'customer finding you on a Sunday evening']],
+      apres: [['1', 'site live, in your name'], ['1', 'calendar that fills itself'], ['1', 'set of keys, code and sources included']],
     },
   },
 };
@@ -121,7 +126,8 @@ const ETATS = {
 export default function AvantApres() {
   const { lang } = useLang();
   const { profil } = useProfil();
-  const t = T[lang] || T.fr;
+  const base = T[lang] || T.fr;
+  const t = { ...base, ...(base[profil] || base.pme) };
   const e = (ETATS[lang] || ETATS.fr)[profil] || ETATS.fr.pme;
 
   const hote = useRef(null);
@@ -140,14 +146,18 @@ export default function AvantApres() {
     const scene = el.querySelector('.aap__scene');
     const collant = el.querySelector('.aap__sticky');
 
-    /* La bascule du clair vers le sombre se FAIT, elle ne se coupe pas :
-       le fond et l'encre s'interpolent sur les premiers et les derniers
-       pour cent de la course. Sans ça, on passe d'un coup du crème au
-       noir, et ça se voit comme une couture. */
+    /* Le passage au sombre est un RIDEAU, pas un changement de couleur.
+       Un panneau monte depuis le bas de l'écran, coins arrondis, et
+       s'ouvre jusqu'au plein cadre ; il redescend en sortant. Interpoler
+       une teinte de fond donnait une couture qu'on voyait à l'œil : ici
+       il se passe quelque chose, et la page en dessous reste visible
+       pendant l'ouverture.
+       L'encre du texte, elle, suit bien la couverture du rideau. */
     const CREME = [240, 238, 232];
     const ENCRE = [14, 11, 31];
     const melange = (a, b, k) => `rgb(${a.map((v, i) => Math.round(v + (b[i] - v) * k)).join(',')})`;
     const palier = (v, d, f) => Math.min(Math.max((v - d) / (f - d), 0), 1);
+    const doux = (v) => v * v * (3 - 2 * v);
 
     const rendre = (p) => {
       const q = easeInOut(Math.min(Math.max(p, 0), 1));
@@ -197,16 +207,17 @@ export default function AvantApres() {
 
       if (scene) scene.dataset.etat = q > 0.55 ? 'apres' : 'avant';
 
-      /* p brut, pas q : la teinte doit suivre le scroll linéairement,
-         sinon l'adoucissement de la courbe retarde le noir. */
+      /* p brut, pas q : le rideau suit le scroll linéairement, sinon
+         l'adoucissement de la courbe le fait traîner. */
       const brut = Math.min(Math.max(p, 0), 1);
-      const nuit = Math.min(palier(brut, 0, 0.16), 1 - palier(brut, 0.86, 1));
+      const nuit = doux(Math.min(palier(brut, 0, 0.18), 1 - palier(brut, 0.84, 1)));
       if (collant) {
-        collant.style.setProperty('--aap-fond', melange(CREME, ENCRE, nuit));
+        collant.style.setProperty('--aap-y', `${((1 - nuit) * 100).toFixed(2)}%`);
+        collant.style.setProperty('--aap-x', `${((1 - nuit) * 7).toFixed(2)}vw`);
+        collant.style.setProperty('--aap-rad', `${((1 - nuit) * 40).toFixed(1)}px`);
         collant.style.setProperty('--aap-encre', melange(ENCRE, CREME, nuit));
-        collant.style.setProperty('--aap-voile', nuit.toFixed(3));
-        /* Le header ne passe en clair que quand le fond l'est vraiment. */
-        if (nuit > 0.55) el.setAttribute('data-nav-dark', '');
+        /* Le header ne passe en clair que quand le rideau le couvre. */
+        if (nuit > 0.72) el.setAttribute('data-nav-dark', '');
         else el.removeAttribute('data-nav-dark');
       }
     };
@@ -229,6 +240,8 @@ export default function AvantApres() {
   return (
     <section className="aap" ref={hote} aria-labelledby="aap-t">
       <div className="aap__sticky">
+        {/* Le rideau : un panneau sombre qui monte et s'ouvre. */}
+        <div className="aap__rideau" aria-hidden="true" />
         <div className="container aap__inner">
           <header className="aap__head">
             <p className="eyebrow eyebrow--index">{t.eyebrow}</p>

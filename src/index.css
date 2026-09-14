@@ -14126,8 +14126,9 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
      l'ordre, c'est ce qui laisse le temps de comprendre. */
   height: 320svh;
 }
-/* Fond et encre viennent du composant, interpolés au scroll : la section
-   entre dans le noir et en ressort, au lieu de le trancher. */
+/* La page reste crème : c'est un RIDEAU sombre qui monte par-dessus.
+   Interpoler la couleur du fond donnait une couture visible ; ici un
+   panneau s'ouvre, et la page en dessous reste là pendant l'ouverture. */
 .aap__sticky {
   position: sticky;
   top: 0;
@@ -14135,10 +14136,19 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   display: flex;
   align-items: center;
   overflow: hidden;
-  background: var(--aap-fond, var(--cream));
+  background: var(--cream);
   color: var(--aap-encre, var(--ink));
-  transition: none;
 }
+.aap__rideau {
+  position: absolute;
+  inset: 0 var(--aap-x, 7vw);
+  transform: translateY(var(--aap-y, 100%));
+  border-radius: var(--aap-rad, 40px) var(--aap-rad, 40px) 0 0;
+  background: var(--ink);
+  pointer-events: none;
+  will-change: transform;
+}
+.aap__inner { position: relative; z-index: 1; }
 .aap__inner { width: 100%; }
 .aap__head { text-align: center; margin-bottom: clamp(1.4rem, 3vh, 2.6rem); }
 .aap__head .eyebrow { color: var(--aap-encre, var(--ink)); opacity: 0.6; }
@@ -14374,3 +14384,47 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   letter-spacing: 0.06em;
   color: rgba(240, 238, 232, 0.45);
 }
+
+/* ---------- les deux chiffres sourcés, version TPE ---------- */
+
+.prv { padding: clamp(4rem, 9vw, 7.5rem) 0; background: var(--cream-shade); }
+.prv__head { max-width: 62ch; }
+.prv__lead { margin-top: 1rem; }
+.prv__grid {
+  display: grid;
+  gap: clamp(2rem, 5vw, 4rem);
+  grid-template-columns: 1fr;
+  margin-top: clamp(2.4rem, 5vw, 3.6rem);
+}
+@media (min-width: 720px) { .prv__grid { grid-template-columns: 1fr 1fr; } }
+.prv__item { border-top: 1px solid var(--hairline); padding-top: 1.6rem; }
+.prv__v {
+  display: block;
+  font-size: clamp(3rem, 7vw, 5rem);
+  font-weight: 600;
+  letter-spacing: -0.05em;
+  line-height: 0.92;
+  color: var(--indigo);
+}
+.prv__t {
+  display: block;
+  margin-top: 1rem;
+  max-width: 34ch;
+  font-size: 1.02rem;
+  line-height: 1.55;
+  color: var(--muted);
+}
+/* La source est cliquable : un chiffre qui sert à convaincre quelqu'un
+   de dépenser doit pouvoir être vérifié en un geste. */
+.prv__src {
+  display: inline-block;
+  margin-top: 1.1rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--indigo);
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, currentColor 35%, transparent);
+  padding-bottom: 0.15rem;
+}
+.prv__src:hover { border-bottom-color: currentColor; }
