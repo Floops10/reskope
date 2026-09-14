@@ -13,6 +13,8 @@ import { GLYPH_SHAPES } from '../lib/net3d';
 import { Reveal, RevealItem } from '../components/Reveal';
 import { useLang } from '../i18n';
 import { CONSTAT } from '../data/constat';
+import { useProfil } from '../profil';
+import { POURQUOI_TPE, CONSTAT_TPE } from '../data/profils';
 
 /* LE CONSTAT — l'étude de marché en expérience (niveau home) :
    1. HERO plein écran : titre morph + la semaine qui s'évapore (47 %).
@@ -178,14 +180,31 @@ function TargetsShow({ eyebrow, title, targets }) {
 
 export default function Pourquoi() {
   const { lang } = useLang();
-  const c = CONTENT[lang];
-  const data = CONSTAT[lang];
+  const { profil } = useProfil();
+
+  /* Les chiffres sourcés valent pour un salarié de bureau, quelle que
+     soit la taille de la boîte. Ce qui change en version TPE, c'est
+     l'échelle de la démonstration : chiffrer une équipe de vingt devant
+     un patron qui en a quatre, c'est le perdre. */
+  const c = profil === 'tpe'
+    ? { ...CONTENT[lang], ...POURQUOI_TPE[lang], film: { ...CONTENT[lang].film, ...POURQUOI_TPE[lang].film } }
+    : CONTENT[lang];
+
+  const data = profil === 'tpe'
+    ? {
+      ...CONSTAT[lang],
+      cards: CONSTAT[lang].cards.map((k) => (CONSTAT_TPE[lang][k.id] ? { ...k, ...CONSTAT_TPE[lang][k.id] } : k)),
+    }
+    : CONSTAT[lang];
 
   return (
     <Page title={c.metaTitle} description={c.metaDesc}>
 
       {/* 1 — Ouverture : statement + accroche + sources, glyphe réseau 3D */}
+      {/* key={profil} : ces deux scènes composent leur texte au montage.
+          Sans remontage, on garderait les phrases du profil précédent. */}
       <ConstatHero
+        key={`hero-${profil}`}
         eyebrow={c.eyebrow}
         title={c.heroTitle}
         teaser={c.heroTease}
@@ -199,6 +218,7 @@ export default function Pourquoi() {
              les 3 causes, puis tout converge et dessine le R */}
       <Suspense fallback={<div className="cflw-loading" aria-hidden="true" />}>
         <ConstatFlow
+          key={profil}
           cards={data.cards}
           film={c.film}
           sourceLabel={data.sourceLabel}
@@ -238,7 +258,7 @@ export default function Pourquoi() {
       </section>
 
       {/* 4 — Pour qui */}
-      <TargetsShow eyebrow={c.targetsEyebrow} title={c.targetsTitle} targets={c.targets} />
+      <TargetsShow key={`cibles-${profil}`} eyebrow={c.targetsEyebrow} title={c.targetsTitle} targets={c.targets} />
 
     </Page>
   );

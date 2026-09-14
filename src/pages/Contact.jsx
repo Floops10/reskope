@@ -9,6 +9,8 @@ import ZoneMap from '../components/ZoneMap';
 import { Reveal, RevealItem } from '../components/Reveal';
 import { gsap, useGSAP } from '../lib/gsap';
 import { useLang } from '../i18n';
+import { useProfil } from '../profil';
+import { CONTACT_TPE } from '../data/profils';
 import { CONTACT, FORMSUBMIT_URL } from '../data/site';
 
 /* CONTACT — clair, net, fonctionnel.
@@ -136,7 +138,8 @@ const CONTENT = {
 
 export default function Contact() {
   const { lang } = useLang();
-  const c = CONTENT[lang];
+  const { profil } = useProfil();
+  const c = profil === 'tpe' ? { ...CONTENT[lang], ...CONTACT_TPE[lang] } : CONTENT[lang];
   const rootRef = useRef(null);
   const navigate = useNavigate();
   const [form, setForm] = useState({ name: '', email: '', message: '' });

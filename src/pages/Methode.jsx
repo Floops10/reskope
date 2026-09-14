@@ -4,6 +4,8 @@ import Page from '../components/Page';
 import { Reveal, RevealItem } from '../components/Reveal';
 import { useLang } from '../i18n';
 import { JALONS } from '../data/site';
+import { useProfil } from '../profil';
+import { JALONS_TPE, METHODE_TPE } from '../data/profils';
 
 const MethodeFlight = lazy(() => import('../components/MethodeFlight'));
 
@@ -26,7 +28,7 @@ const CONTENT = {
     },
     calloutTitle: 'Le livrable : un bilan que vous gardez.',
     calloutText:
-      "À la fin de l'audit, vous repartez avec un document clair : constats, cartographie, recommandations priorisées et gains estimés. Vous l'appliquez vous-même ou vous m'en confiez la mise en œuvre.",
+      "À la fin de l'audit, vous repartez avec un document clair : constats, cartographie, recommandations priorisées et gains estimés. Vous l'appliquez vous-même, ou vous nous en confiez la mise en œuvre.",
     calloutBtn: 'Voir un exemple de bilan',
   },
   en: {
@@ -42,22 +44,29 @@ const CONTENT = {
     },
     calloutTitle: 'The deliverable: a report you keep.',
     calloutText:
-      'At the end of the audit, you leave with a clear document: findings, mapping, prioritized recommendations and estimated gains. You apply it yourself, or you entrust the delivery to me.',
+      'At the end of the audit, you leave with a clear document: findings, mapping, prioritized recommendations and estimated gains. You apply it yourself, or you entrust the delivery to us.',
     calloutBtn: 'See an example report',
   },
 };
 
 export default function Methode() {
   const { lang } = useLang();
-  const c = CONTENT[lang];
-  const jalons = JALONS[lang];
+  const { profil } = useProfil();
+  const tpe = profil === 'tpe';
+  /* Chez cinq personnes il n'y a personne à interroger pendant trois
+     jours : le parcours part d'un cadrage court et enchaîne sur la
+     construction. Même transparence, autre rythme. */
+  const c = tpe
+    ? { ...CONTENT[lang], ...METHODE_TPE[lang], film: { ...CONTENT[lang].film, ...METHODE_TPE[lang].film } }
+    : CONTENT[lang];
+  const jalons = tpe ? JALONS_TPE[lang] : JALONS[lang];
 
   return (
     <Page title={c.metaTitle} description={c.metaDesc}>
 
       {/* 1 — Le vol : la traversée de la structure-réseau */}
       <Suspense fallback={<div className="mfl-loading" aria-hidden="true" />}>
-        <MethodeFlight jalons={jalons} film={c.film} labels={c.labels} />
+        <MethodeFlight key={profil} jalons={jalons} film={c.film} labels={c.labels} />
       </Suspense>
 
       {/* 2 — Le livrable */}
@@ -67,7 +76,7 @@ export default function Methode() {
             <RevealItem as="h2" className="h2">{c.calloutTitle}</RevealItem>
             <RevealItem as="p" className="lead">{c.calloutText}</RevealItem>
             <RevealItem>
-              <Link className="btn btn--ghost" to="/exemple">
+              <Link className="btn btn--ghost" to={c.calloutTo || '/exemple'}>
                 {c.calloutBtn}
                 <span className="btn__arrow" aria-hidden="true">→</span>
               </Link>

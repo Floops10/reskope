@@ -10,6 +10,8 @@ import Stagger from '../components/Stagger';
 import { Reveal, RevealItem } from '../components/Reveal';
 import { gsap, SplitText, ScrollTrigger, useGSAP } from '../lib/gsap';
 import { useLang } from '../i18n';
+import { useProfil } from '../profil';
+import { APROPOS_TPE } from '../data/profils';
 
 /* À PROPOS — « LE PORTRAIT » (v3, refonte entière).
    1. HERO intégré plein écran : titre morphing (police réseau au survol),
@@ -138,7 +140,10 @@ const CONTENT = {
 
 export default function APropos() {
   const { lang } = useLang();
-  const c = CONTENT[lang];
+  const { profil } = useProfil();
+  /* Seuls les paliers de taille changent : parler de « 80 à 200
+     personnes » à une entreprise de quatre ne l'aide en rien. */
+  const c = profil === 'tpe' ? { ...CONTENT[lang], ...APROPOS_TPE[lang] } : CONTENT[lang];
   const pageRef = useRef(null);
 
   useGSAP(() => {

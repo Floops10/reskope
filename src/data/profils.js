@@ -398,6 +398,214 @@ export const RESERVE = {
   },
 };
 
+
+/* ============================================================
+   LE CONSTAT, VERSION TPE.
+
+   Les chiffres sourcés ne changent pas : ils portent sur un salarié
+   « de bureau », pas sur la taille de l'entreprise. Ce qui change, c'est
+   l'ÉCHELLE de la démonstration et la personne à qui on parle. Chiffrer
+   une équipe de vingt personnes devant un patron qui en a quatre, c'est
+   le meilleur moyen de lui faire fermer la page.
+   ============================================================ */
+export const POURQUOI_TPE = {
+  fr: {
+    metaTitle: 'Le constat · le temps que vos outils vous prennent',
+    metaDesc:
+      'Près de la moitié de la semaine part dans les e-mails et la recherche d’information. Les chiffres sourcés, ramenés à une entreprise de cinq personnes.',
+    heroTitle: 'Le temps que personne ne compte.',
+    heroTease:
+      'Chaque semaine, vos outils vous prennent des heures. On a mesuré combien, et surtout pourquoi.',
+    heroLead:
+      'Devis recopiés, agenda qui ne parle à rien, information qu’on cherche deux fois : ce temps n’apparaît sur aucune facture. Il sort pourtant de votre semaine, et souvent de vos soirées.',
+    bridgeTitle: 'Et chez vous ?',
+    bridgeText:
+      'Ces chiffres ne sortent pas d’une plaquette commerciale. Si une seule de ces heures se vérifie chez vous, un chantier bien choisi la rend pour de bon.',
+    bridgeBtn: 'Voir ce qu’on construit',
+    film: {
+      costValue: 116000,
+      costCap: 'Pour une entreprise de cinq personnes, c’est déjà plus de cent mille euros par an.',
+      costCalc: '16,5 h × 47 semaines × 5 personnes × 30 €/h chargé ≈ 116 000 € par an.',
+      teamCaption: 'Une entreprise de cinq personnes.',
+      orderText: 'Chaque heure rendue, c’est une heure de plus sur votre métier, ou une soirée de moins au bureau.',
+      synthCap: 'Ce temps a un coût. Le récupérer en a un aussi, bien plus petit.',
+    },
+    targetsTitle: 'Pour ceux qui se reconnaissent ici.',
+    targets: [
+      { title: 'L’artisan', size: 'Jusqu’à 10 personnes', desc: 'Devis, factures, planning, échanges clients : tout est dispersé, et une bonne partie se fait le soir. Deux ou trois liaisons bien choisies rendent plusieurs heures par semaine.', cta: 'Voir ce qu’on construit', to: '/offres' },
+      { title: 'Le commerce et le service', size: 'De 2 à 10 personnes', desc: 'Vous prenez les rendez-vous au téléphone, vous rappelez la veille, vous relancez à la main. Tout ça se fait sans vous, et mieux.', cta: 'Voir les offres', to: '/offres' },
+      { title: 'La jeune structure', size: 'Moins de 5 personnes', desc: 'Vous démarrez, vous n’avez pas encore de mauvaises habitudes. C’est le meilleur moment pour poser des outils justes, et une marque qui vous ressemble.', cta: 'Voir la méthode', to: '/methode' },
+    ],
+  },
+  en: {
+    metaTitle: 'The findings · the time your tools take from you',
+    metaDesc:
+      'Nearly half the week goes into email and hunting for information. The sourced figures, brought down to a five-person business.',
+    heroTitle: 'The time nobody counts.',
+    heroTease: 'Every week, your tools take hours from you. We measured how many, and above all why.',
+    heroLead:
+      'Quotes retyped, a calendar that talks to nothing, information you look for twice: that time appears on no invoice. It still comes out of your week, and often out of your evenings.',
+    bridgeTitle: 'And at your place?',
+    bridgeText:
+      'These figures do not come from a sales brochure. If even one of those hours holds true for you, a well-chosen project gives it back for good.',
+    bridgeBtn: 'See what we build',
+    film: {
+      costValue: 116000,
+      costCap: 'For a five-person business, that is already more than a hundred thousand euros a year.',
+      costCalc: '16.5 h × 47 weeks × 5 people × €30/h loaded ≈ €116,000 per year.',
+      teamCaption: 'A five-person business.',
+      orderText: 'Every hour given back is an hour more on your trade, or an evening less at the desk.',
+      synthCap: 'That time has a cost. Getting it back has one too, a much smaller one.',
+    },
+    targetsTitle: 'For those who recognize themselves here.',
+    targets: [
+      { title: 'The craftsman', size: 'Up to 10 people', desc: 'Quotes, invoices, scheduling, client messages: all scattered, and a good part of it done in the evening. Two or three well-chosen links give back several hours a week.', cta: 'See what we build', to: '/offres' },
+      { title: 'Retail and services', size: 'From 2 to 10 people', desc: 'You take bookings by phone, you call back the day before, you chase by hand. All of that runs without you, and better.', cta: 'See the offers', to: '/offres' },
+      { title: 'The young business', size: 'Under 5 people', desc: 'You are starting out, with no bad habits yet. It is the best moment to set up the right tools, and a brand that looks like you.', cta: 'See the method', to: '/methode' },
+    ],
+  },
+};
+
+/* La seule carte du constat qui parle vraiment de taille : chez Okta la
+   moyenne est mesurée sur des grands comptes. On la ramène à l'échelle
+   d'une TPE plutôt que de laisser un chiffre qui ne parle à personne. */
+export const CONSTAT_TPE = {
+  fr: {
+    apps: {
+      kicker: 'L’empilement d’outils',
+      title: 'applications déployées en moyenne par entreprise.',
+      desc: 'Même à cinq, les outils s’accumulent : un pour les devis, un pour la compta, un pour le planning, un pour les photos de chantier. Chacun promet un gain et ajoute une saisie.',
+      calc: 'Moyenne mesurée sur le parc clients Okta (grands comptes). Dans une TPE française, on compte plutôt 5 à 15 outils : le mécanisme de dispersion est identique, à plus petite échelle.',
+    },
+  },
+  en: {
+    apps: {
+      kicker: 'The tool pile-up',
+      title: 'applications deployed on average per company.',
+      desc: 'Even at five people, tools pile up: one for quotes, one for accounting, one for scheduling, one for site photos. Each promises a gain and adds an entry.',
+      calc: 'Average measured across Okta’s customer base (large accounts). In a French small business it is more like 5 to 15 tools: the scattering mechanism is identical, at a smaller scale.',
+    },
+  },
+};
+
+
+/* ============================================================
+   LA MÉTHODE, VERSION TPE.
+
+   Les cinq jalons du site partent d'un audit mené salarié par salarié.
+   Chez une entreprise de cinq personnes il n'y a personne à interroger
+   pendant trois jours : le parcours commence par un cadrage court et
+   enchaîne sur la construction. Même transparence, autre rythme.
+   ============================================================ */
+export const JALONS_TPE = {
+  fr: [
+    { n: '01', label: 'Cadrage', title: 'On comprend votre métier.',
+      text: `Une demi-journée chez vous ou en visio : ce que vous vendez, comment vous travaillez, et ce qui vous prend du temps tous les jours.`,
+      deliver: 'Le périmètre écrit, et le prix.', here: true },
+    { n: '02', label: 'Devis', title: 'On chiffre avant de commencer.',
+      text: `Ce qu'on fait, poste par poste : ce qui est au forfait, ce qui est à la journée, et le total. Vous décidez ensuite, sans engagement.`,
+      deliver: 'Un devis détaillé, valable 30 jours.', here: false },
+    { n: '03', label: 'Construction', title: 'On avance par petites étapes.',
+      text: `Vous voyez chaque brique fonctionner avant qu'on passe à la suivante. Rien n'est caché jusqu'à la livraison, et vous pouvez vous arrêter à la fin de chacune.`,
+      deliver: 'Des morceaux qui marchent, un par un.', here: false },
+    { n: '04', label: 'Mise en ligne', title: 'On installe et on vérifie.',
+      text: `Le site, l'outil ou la liaison passent en production. On teste avec vous, sur vos vrais dossiers, pas sur un jeu d'essai.`,
+      deliver: 'Ce qui est prévu, en ligne et vérifié.', here: false },
+    { n: '05', label: 'Les clés', title: 'Vous repartez avec tout.',
+      text: `Le code, les fichiers sources, l'hébergement et les accès à votre nom. Une demi-journée de prise en main, et vous êtes libre de continuer seul.`,
+      deliver: 'Les clés, et personne à qui demander la permission.', here: false },
+  ],
+  en: [
+    { n: '01', label: 'Framing', title: 'We understand your trade.',
+      text: `Half a day at your place or by video: what you sell, how you work, and what eats your time every day.`,
+      deliver: 'The scope, written down, and the price.', here: true },
+    { n: '02', label: 'Quote', title: 'We price before we start.',
+      text: `What we will do, item by item: what is fixed-price, what is by the day, and the total. You decide afterwards, no commitment.`,
+      deliver: 'A detailed quote, valid 30 days.', here: false },
+    { n: '03', label: 'Build', title: 'We move in small steps.',
+      text: `You see each brick work before we move to the next. Nothing is hidden until delivery, and you can stop at the end of any of them.`,
+      deliver: 'Working pieces, one at a time.', here: false },
+    { n: '04', label: 'Go live', title: 'We install and check.',
+      text: `The site, the tool or the integration goes into production. We test with you, on your real files, not on a demo set.`,
+      deliver: 'What was planned, live and verified.', here: false },
+    { n: '05', label: 'The keys', title: 'You leave with everything.',
+      text: `Code, source files, hosting and access in your name. Half a day of handover, and you are free to carry on alone.`,
+      deliver: 'The keys, and nobody to ask permission from.', here: false },
+  ],
+};
+
+export const METHODE_TPE = {
+  fr: {
+    metaTitle: 'La méthode · du cadrage aux clés, étape par étape',
+    metaDesc:
+      'Cadrage, devis, construction par petites étapes, mise en ligne, remise des clés. Rien n’est engagé avant d’être chiffré, et vous pouvez vous arrêter à la fin de chaque étape.',
+    film: {
+      introTitle: 'On construit, vous gardez la main.',
+      introText: 'Des outils qui vous prennent du temps aujourd’hui. Un parcours court pour les remettre à leur place.',
+      synthCap: 'Cinq étapes. Et les clés à la fin.',
+    },
+    calloutTitle: 'Le livrable : un outil qui tourne, et le code avec.',
+    calloutText:
+      'À la fin, vous repartez avec ce qui a été construit, les fichiers sources, l’hébergement et les accès à votre nom. Vous faites vos modifications vous-même, ou vous nous les confiez : dans les deux cas, rien ne vous retient.',
+    calloutBtn: 'Voir ce qu’on construit',
+    calloutTo: '/offres',
+  },
+  en: {
+    metaTitle: 'The method · from framing to the keys, step by step',
+    metaDesc:
+      'Framing, quote, build in small steps, go live, handover. Nothing is committed before it is priced, and you can stop at the end of any step.',
+    film: {
+      introTitle: 'We build, you keep control.',
+      introText: 'Tools that take your time today. A short journey to put them back in their place.',
+      synthCap: 'Five steps. And the keys at the end.',
+    },
+    calloutTitle: 'The deliverable: a tool that runs, and the code with it.',
+    calloutText:
+      'At the end you leave with what was built, the source files, the hosting and the access in your name. You make your own changes, or you entrust them to us: either way, nothing holds you back.',
+    calloutBtn: 'See what we build',
+    calloutTo: '/offres',
+  },
+};
+
+
+/* À propos : les paliers de taille. En version TPE, parler de « 80 à 200
+   personnes » ne sert à rien ; on redescend l'échelle là où le lecteur
+   se trouve vraiment. Le reste de la page (les deux portraits, la bio,
+   les engagements) vaut pour tout le monde. */
+export const APROPOS_TPE = {
+  fr: {
+    sizeTitle: 'Ce qui est efficace dépend de votre taille.',
+    sizeLead: 'Il n’y a pas d’outil universel. Ce qui marche à deux ne marche pas à dix. Voici notre lecture, par palier.',
+    tiers: [
+      { range: '1 à 3 pers.', label: 'Vous, et peut-être une main', principle: 'Un seul endroit, et zéro double saisie.', detail: 'À ce stade, chaque outil en plus est une charge. L’objectif : un endroit pour les clients, un pour les devis et factures, et une liaison entre les deux pour ne jamais retaper la même ligne.', wins: ['Site vitrine', 'Devis vers facture', 'Agenda relié'] },
+      { range: '3 à 6 pers.', label: 'Petite équipe', principle: 'Automatiser ce qui revient toutes les semaines.', detail: 'Les rendez-vous, les rappels, les relances : tout ce qui se répète peut se faire sans vous. C’est là qu’on récupère les premières heures, et ce sont souvent des soirées.', wins: ['Prise de réservation', 'Rappels automatiques', 'Fichier clients'] },
+      { range: '6 à 10 pers.', label: 'Structure qui s’installe', principle: 'Relier avant d’acheter du neuf.', detail: 'Vos habitudes sont prises et elles fonctionnent. Plutôt que d’imposer un nouvel outil, on relie ceux que vous avez déjà et on remplace seulement ce qui coince vraiment.', wins: ['Liaisons entre outils', 'Reprise d’un outil ancien', 'Identité de marque'] },
+    ],
+  },
+  en: {
+    sizeTitle: 'What works depends on your size.',
+    sizeLead: 'There is no universal tool. What works at two does not work at ten. Here is our reading, by tier.',
+    tiers: [
+      { range: '1 to 3 people', label: 'You, and maybe one pair of hands', principle: 'One place, and zero double entry.', detail: 'At this stage every extra tool is a burden. The goal: one place for clients, one for quotes and invoices, and a link between the two so you never retype the same line.', wins: ['Website', 'Quote to invoice', 'Linked calendar'] },
+      { range: '3 to 6 people', label: 'Small team', principle: 'Automate what comes back every week.', detail: 'Appointments, reminders, follow-ups: everything repetitive can run without you. That is where the first hours come back, and they are often evenings.', wins: ['Online booking', 'Automatic reminders', 'Client records'] },
+      { range: '6 to 10 people', label: 'A business settling in', principle: 'Connect before buying new.', detail: 'Your habits are set and they work. Rather than imposing a new tool, we connect the ones you already have and replace only what really gets in the way.', wins: ['Tool integrations', 'Rework of an older tool', 'Brand identity'] },
+    ],
+  },
+};
+
+/* Contact : ce qu'on promet à l'écran n'est pas tout à fait la même chose
+   selon la taille de celui qui écrit. */
+export const CONTACT_TPE = {
+  fr: {
+    lead: 'Décrivez votre besoin en trois lignes. On vous répond sous 24 h, franchement : si ce n’est pas pour nous, on vous le dit.',
+    quizLead: 'Le questionnaire cerne votre besoin et prépare votre demande : vous validez, on a tout.',
+  },
+  en: {
+    lead: 'Describe your need in three lines. We reply within 24 h, frankly: if it is not for us, we say so.',
+    quizLead: 'The questionnaire pins down your need and prepares your request: you confirm, we have everything.',
+  },
+};
+
 /* Le pont entre les deux versions : personne ne doit se retrouver enfermé
    dans son profil. */
 export const PASSERELLE = {
