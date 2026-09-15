@@ -11,6 +11,18 @@ export function instant() {
   );
 }
 
+/* La même question, mais sans le « l'onglet est caché ». Une animation
+   déclenchée par le visiteur lui-même (un survol, un focus) ne peut pas
+   commencer dans un onglet caché ; en revanche, la monter dépend de l'état
+   de l'onglet au moment du MONTAGE, et un onglet ouvert en arrière-plan
+   resterait figé une fois revenu au premier plan. Le navigateur ralentit
+   déjà requestAnimationFrame dans les onglets cachés : il n'y a rien à
+   économiser de plus. */
+export function mouvementRefuse() {
+  if (typeof window === 'undefined') return true;
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
 export function pinProgress(el) {
   const total = el.offsetHeight - window.innerHeight;
   if (total <= 0) return 0;

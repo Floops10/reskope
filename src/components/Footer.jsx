@@ -61,24 +61,49 @@ export default function Footer() {
       });
     }
 
-    /* Colonnes : cascade discrète */
-    gsap.from(rootRef.current.querySelectorAll('.footer2__col'), {
-      y: 30, autoAlpha: 0, duration: 0.7, ease: 'power3.out', stagger: 0.08,
-      scrollTrigger: { trigger: rootRef.current.querySelector('.footer2__grid'), start: 'top 88%' },
+    /* Colonnes : chaque ligne monte derrière son propre masque, colonne
+       après colonne. Une cascade d'opacité sur trois blocs entiers ne se
+       voit pas ; ligne à ligne, si. */
+    gsap.from(rootRef.current.querySelectorAll('.footer2__col > *'), {
+      yPercent: 105, autoAlpha: 0, duration: 0.65, ease: 'power4.out', stagger: 0.035,
+      scrollTrigger: { trigger: rootRef.current.querySelector('.footer2__grid'), start: 'top 90%' },
     });
 
-    /* Wordmark géant : balayage de révélation + lettres qui montent */
+    /* Le générique de fin : les lettres du nom, dans l'alphabet réseau de
+       la marque, montent une à une derrière leur masque. Un balayage de
+       clip faisait passer un rideau sur un mot déjà écrit ; ici le mot
+       s'écrit. Et une fois posé, il répond au curseur : les lettres se
+       soulèvent sur son passage, comme une touche qu'on effleure. */
     const word = wordRef.current;
-    gsap.fromTo(word,
-      { clipPath: 'inset(0 100% 0 0)' },
-      {
-        clipPath: 'inset(0 0% 0 0)', duration: 1.4, ease: 'power4.inOut',
-        scrollTrigger: { trigger: word, start: 'top 96%' },
-      });
-    gsap.from(word, {
-      yPercent: 24, duration: 1.4, ease: 'power4.out',
+    const lettres = [...word.querySelectorAll('.footer2__lettre > i')];
+    gsap.from(lettres, {
+      yPercent: 118, duration: 1, ease: 'power4.out', stagger: 0.055,
       scrollTrigger: { trigger: word, start: 'top 96%' },
     });
+
+    let detacheVague = null;
+    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      const vers = lettres.map((ch) => gsap.quickTo(ch, 'y', { duration: 0.6, ease: 'power3.out' }));
+      const zone = word.parentNode;
+      const onde = (e) => {
+        const r = zone.getBoundingClientRect();
+        const x = e.clientX - r.left;
+        lettres.forEach((ch, i) => {
+          const c = ch.getBoundingClientRect();
+          const d = (c.left + c.width / 2 - r.left) - x;
+          /* Une cloche : la lettre sous le curseur monte le plus, ses
+             voisines suivent en s'amortissant. */
+          vers[i](-26 * Math.exp(-((d / 190) ** 2)));
+        });
+      };
+      const repos = () => lettres.forEach((_, i) => vers[i](0));
+      zone.addEventListener('pointermove', onde);
+      zone.addEventListener('pointerleave', repos);
+      detacheVague = () => {
+        zone.removeEventListener('pointermove', onde);
+        zone.removeEventListener('pointerleave', repos);
+      };
+    }
 
     /* Parallaxe des couches de poussière : l'univers a de la profondeur */
     [0, 1, 2].forEach((layer) => {
@@ -90,7 +115,15 @@ export default function Footer() {
         });
     });
 
-    return () => split?.revert();
+    /* La poussière s'allume : au lieu d'être là depuis toujours, l'univers
+       prend feu quand le pied de page arrive. */
+    gsap.from(rootRef.current.querySelectorAll('.footer2__dust'), {
+      autoAlpha: 0, scale: 0.2, duration: 0.9, ease: 'power2.out',
+      stagger: { each: 0.004, from: 'random' },
+      scrollTrigger: { trigger: rootRef.current, start: 'top 85%' },
+    });
+
+    return () => { split?.revert(); detacheVague?.(); };
   }, { scope: rootRef });
 
   return (
@@ -159,8 +192,16 @@ export default function Footer() {
       </div>
 
       {/* Générique de fin : le wordmark en police réseau */}
+      {/* Le générique de fin. Les lettres sont découpées dans le balisage
+          plutôt que par un plugin : elles doivent monter derrière leur
+          masque ET répondre au curseur, et un découpage qui se défait au
+          démontage rendait les deux fragiles. */}
       <div className="footer2__word-wrap" aria-hidden="true">
-        <span className="footer2__word" ref={wordRef}>Reskope</span>
+        <span className="footer2__word" ref={wordRef}>
+          {'Reskope'.split('').map((l, i) => (
+            <span className="footer2__lettre" key={i}><i>{l}</i></span>
+          ))}
+        </span>
       </div>
 
       <div className="container footer2__legal">

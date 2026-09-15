@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import Page from '../components/Page';
 import MorphTitle from '../components/MorphTitle';
-import Tilt from '../components/Tilt';
+import Paliers from '../components/Paliers';
 import Net3D from '../components/Net3D';
 import HeroNetwork from '../components/HeroNetwork';
 import { GLYPH_SHAPES } from '../lib/net3d';
@@ -353,22 +353,11 @@ export default function APropos() {
               </RevealItem>
               <RevealItem as="p" className="lead">{c.sizeLead}</RevealItem>
             </Reveal>
-            <div className="tgt-grid about-tiers">
-              {c.tiers.map((t, i) => (
-                <Tilt className="tgt" key={t.range} max={7}>
-                  <span className="tgt__glyph" aria-hidden="true">
-                    <Net3D shape={GLYPH_SHAPES[i % GLYPH_SHAPES.length]} size={72} speed={0.8} tiltX={0.5} nodeR={2.6} />
-                  </span>
-                  <span className="tgt__size">{t.range}</span>
-                  <h3 className="tgt__title">{t.label}</h3>
-                  <p className="about-tier__principle">{t.principle}</p>
-                  <p className="tgt__desc">{t.detail}</p>
-                  <ul className="about-tier__wins">
-                    {t.wins.map((w) => <li key={w}>{w}</li>)}
-                  </ul>
-                </Tilt>
-              ))}
-            </div>
+            {/* Trois encadrés arrondis avec bordure, pastille d'effectif,
+                titre, ligne colorée, filet de séparation et liste à puces :
+                sept signaux de gabarit pour dire que plus on est nombreux,
+                plus le sol se peuple. Maintenant le sol se peuple. */}
+            <Paliers tiers={c.tiers} />
           </div>
         </section>
 

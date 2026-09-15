@@ -7,7 +7,7 @@ import ConstatHero from '../components/ConstatHero';
 
 const ConstatFlow = lazy(() => import('../components/ConstatFlow'));
 import MorphTitle from '../components/MorphTitle';
-import Tilt from '../components/Tilt';
+import { VolumeTournant as CasVolume } from '../components/Paliers';
 import Net3D from '../components/Net3D';
 import { GLYPH_SHAPES } from '../lib/net3d';
 import { Reveal, RevealItem } from '../components/Reveal';
@@ -158,20 +158,21 @@ function TargetsShow({ eyebrow, title, targets, pont, versTpe }) {
           </RevealItem>
         </Reveal>
 
-        <div className="tgt-grid">
+        {/* Trois encadrés arrondis avec pastille d'effectif, titre, texte
+            et flèche : le gabarit qu'on voit partout. Ce sont trois
+            situations, elles se lisent comme trois situations. */}
+        <div className="plr plr--cas">
           {targets.map((t, i) => (
-            <Tilt className="tgt" key={t.title} max={7}>
-              <span className="tgt__glyph" aria-hidden="true">
-                <Net3D shape={GLYPH_SHAPES[i % GLYPH_SHAPES.length]} size={72} speed={0.8} tiltX={0.5} nodeR={2.6} />
-              </span>
-              <span className="tgt__size">{t.size}</span>
-              <h3 className="tgt__title">{t.title}</h3>
-              <p className="tgt__desc">{t.desc}</p>
-              <Link className="tgt__link" to={t.to}>
+            <div className="plr__item" key={t.title}>
+              <CasVolume nom={`palier${i + 1}`} />
+              <p className="plr__taille">{t.size}</p>
+              <p className="plr__mask"><span className="plr__t">{t.title}</span></p>
+              <p className="plr__d">{t.desc}</p>
+              <Link className="plr__lien" to={t.to}>
                 {t.cta}
                 <span aria-hidden="true">→</span>
               </Link>
-            </Tilt>
+            </div>
           ))}
         </div>
 

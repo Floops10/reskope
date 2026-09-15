@@ -26,12 +26,6 @@ const CONTENT = {
       'Reskope cartographie et audite vos outils sur le terrain, salarié par salarié, puis relie, simplifie et construit ce qui manque. Démarche ouverte, gains chiffrés.',
 
     /* — 1. Hero — */
-    /* La première ligne de la page dit deux choses en une : le métier, et
-       la version qu'on est en train de lire. Quelqu'un qui arrive par un
-       lien partagé ne passe pas par la porte d'entrée et ne sait pas que le
-       site existe en deux versions ; il l'apprend ici, en une ligne. */
-    heroSur: 'Conseil et ingénierie numérique · version PME, de 10 à 250 personnes',
-    heroBascule: 'Vous êtes moins de dix ? Voir la version TPE',
     heroTitle: 'Vos équipes perdent des heures dans leurs outils.',
     /* Le premier écran annonçait un problème sans jamais dire ce qu'on
        vend. Cette ligne le dit, avec les quatre verbes qu'on retrouve
@@ -138,9 +132,6 @@ const CONTENT = {
     metaTitle: 'Digital consulting & engineering',
     metaDesc:
       'Reskope maps and audits your tools on the ground, employee by employee, then connects, simplifies and builds what is missing. Open process, quantified gains.',
-
-    heroSur: 'Digital consulting & engineering · SME version, 10 to 250 people',
-    heroBascule: 'Fewer than ten of you? See the small-business version',
     heroTitle: 'Your teams lose hours inside their tools.',
     heroDit: 'We go through every tool, connect what needs connecting, build what is missing, and train your teams.',
     line1: "Tools that don't talk to each other, the same information typed in three times, and subscriptions nobody opens any more. It shows on no invoice, and it costs you anyway.",

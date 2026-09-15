@@ -1,8 +1,8 @@
-import { useRef } from 'react';
+import { useRef, useState, useEffect, useCallback } from 'react';
 import { gsap, useGSAP } from '../lib/gsap';
 import { useLang } from '../i18n';
 import { PREUVES_TPE } from '../data/profils';
-import { instant } from '../lib/scrub';
+import { instant, mouvementRefuse } from '../lib/scrub';
 import { champ, VIEWBOX_CHAMP } from '../lib/figures';
 
 /* ============================================================
@@ -19,10 +19,38 @@ import { champ, VIEWBOX_CHAMP } from '../lib/figures';
    même langue, il n'y a pas de raison que les chiffres en parlent une autre.
    ============================================================ */
 
+/* Le champ tourne lui aussi quand on le survole : cent blocs vus sous un
+   seul angle, c'est une image ; vus sous tous les angles, c'est un objet
+   qu'on peut inspecter, et on voit bien que les creux sont au fond. */
+const VITESSE = 1 / 11;
+
 function Champ({ item, i }) {
   const racine = useRef(null);
   const valeurRef = useRef(null);
-  const { sol, volumes } = champ(item.n);
+  const [survol, setSurvol] = useState(false);
+  const [theta, setTheta] = useState(0);
+  const tour = useRef({ t: 0, raf: 0, dernier: 0 });
+
+  useEffect(() => {
+    const e = tour.current;
+    if (mouvementRefuse()) return undefined;
+    if (!survol && e.t % (Math.PI * 2) === 0) return undefined;
+    e.dernier = 0;
+    const cible = survol ? Infinity : Math.ceil(e.t / (Math.PI * 2)) * Math.PI * 2;
+    const pas = (ms) => {
+      if (!e.dernier) e.dernier = ms;
+      const dt = Math.min((ms - e.dernier) / 1000, 0.05);
+      e.dernier = ms;
+      e.t = Math.min(e.t + dt * VITESSE * Math.PI * 2, cible);
+      setTheta(e.t);
+      if (e.t < cible) e.raf = requestAnimationFrame(pas);
+      else { e.t %= Math.PI * 2; e.raf = 0; }
+    };
+    e.raf = requestAnimationFrame(pas);
+    return () => { cancelAnimationFrame(e.raf); e.raf = 0; };
+  }, [survol]);
+
+  const { sol, volumes } = champ(item.n, theta);
 
   useGSAP(() => {
     const el = racine.current;
@@ -59,8 +87,19 @@ function Champ({ item, i }) {
     }, 0.5);
   }, { scope: racine, dependencies: [item.n] });
 
+  const entrer = useCallback(() => setSurvol(true), []);
+  const sortir = useCallback(() => setSurvol(false), []);
+
   return (
-    <div className="pv3" ref={racine}>
+    <div
+      className="pv3"
+      ref={racine}
+      onPointerEnter={entrer}
+      onPointerLeave={sortir}
+      onFocus={entrer}
+      onBlur={sortir}
+      tabIndex={0}
+    >
       <svg className="pv3__champ" viewBox={VIEWBOX_CHAMP} aria-hidden="true">
         <g className="pv3__sol">
           {sol.lignes.map((l, k) => <line key={k} x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2} />)}

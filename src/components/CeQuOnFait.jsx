@@ -1,8 +1,8 @@
-import { useRef } from 'react';
+import { useRef, useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { gsap, useGSAP } from '../lib/gsap';
-import { instant } from '../lib/scrub';
-import { figure, VIEWBOX } from '../lib/figures';
+import { instant, mouvementRefuse } from '../lib/scrub';
+import { projeter, VIEWBOX } from '../lib/figures';
 import { useLang } from '../i18n';
 import { useProfil } from '../profil';
 import { FAIT } from '../data/profils';
@@ -12,36 +12,69 @@ import { FAIT } from '../data/profils';
 
    Le visiteur arrivait sur une accroche, puis huit écrans de traversée
    avant de savoir ce qu'on vend. Ce bloc est posé juste sous l'accroche :
-   quatre choses, dites avec des verbes, et le détail des prix laissé à la
-   page des offres. Personne n'a envie d'un tarif avant d'avoir compris ce
-   qu'il achète.
+   quatre choses, dites avec des verbes, et le détail laissé à la page des
+   offres.
 
-   La disposition est celle d'une planche technique, pas d'une rangée de
-   cartes. Une réglure court en haut sur toute la largeur ; de cette
-   réglure descend une cote par volume, avec son nom en petites capitales ;
-   le volume est posé au bout, et la phrase sert de légende. Le nom n'est
-   donc pas un grand titre avec un petit texte dessous : c'est une
-   étiquette, et c'est la phrase qui porte le propos.
-
-   Et elle se construit : la réglure se trace de gauche à droite, les noms
-   arrivent dans l'ordre, les cotes descendent, les sols apparaissent, les
-   volumes se lèvent, les légendes suivent. Sept temps, deux secondes.
+   Le dessin est celui des livrets, mais il n'est pas figé. Les volumes sont
+   gardés en coordonnées de monde et projetés à chaque image : au survol, la
+   scène fait un tour complet sur elle-même et le dessin se nomme en même
+   temps, chaque étiquette suivant la pièce qu'elle désigne. Sur le papier
+   on ne peut montrer qu'un angle ; ici on les montre tous.
    ============================================================ */
 
-function Figure({ nom }) {
-  const { sol, volumes, cote, reperes } = figure(nom);
+/* Vitesse du tour, en tours par seconde. Un tour en huit secondes : assez
+   lent pour qu'on voie la forme, assez vif pour qu'on comprenne qu'elle
+   tourne sans avoir à attendre. */
+const VITESSE = 1 / 8;
+
+function useAngle(actif) {
+  const [theta, setTheta] = useState(0);
+  const ref = useRef({ t: 0, raf: 0, dernier: 0, sens: 0 });
+
+  useEffect(() => {
+    const e = ref.current;
+    if (mouvementRefuse()) return undefined;
+
+    /* À la sortie du survol, on ne revient pas en arrière : on finit le
+       tour jusqu'au prochain multiple de 360°. Un objet qui repart à
+       reculons trahit l'animation ; un objet qui finit son tour, non. */
+    e.sens = actif ? 1 : (e.t % (Math.PI * 2) === 0 ? 0 : 1);
+    if (!e.sens) return undefined;
+
+    e.dernier = 0;
+    const cible = actif ? Infinity : Math.ceil(e.t / (Math.PI * 2)) * Math.PI * 2;
+
+    const pas = (ms) => {
+      if (!e.dernier) e.dernier = ms;
+      const dt = Math.min((ms - e.dernier) / 1000, 0.05);
+      e.dernier = ms;
+      e.t = Math.min(e.t + dt * VITESSE * Math.PI * 2, cible);
+      setTheta(e.t);
+      if (e.t < cible) e.raf = requestAnimationFrame(pas);
+      else { e.t %= Math.PI * 2; e.raf = 0; }
+    };
+    e.raf = requestAnimationFrame(pas);
+    return () => { cancelAnimationFrame(e.raf); e.raf = 0; };
+  }, [actif]);
+
+  return theta;
+}
+
+function Figure({ nom, theta }) {
+  const { sol, volumes, cote, reperes } = projeter(nom, theta);
   return (
     <svg className="axo" viewBox={VIEWBOX} aria-hidden="true">
       {/* La cote descend du haut du cadre jusqu'au sommet du volume : elle
-          relie le nom à ce qu'il nomme, et elle touche toujours, quelle que
-          soit la hauteur de la figure. */}
+          relie le nom à ce qu'il nomme, et elle suit la rotation. */}
       <line className="axo__cote" x1={cote.x} y1={cote.y1} x2={cote.x} y2={cote.y2} />
+
       <g className="axo__sol">
         {sol.lignes.map((l, i) => (
           <line key={i} x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2} />
         ))}
         <polygon className="axo__cadre" points={sol.cadre} />
       </g>
+
       {volumes.map((v, i) => (
         <g className="axo__v" key={i}>
           {v.faces && v.faces.map((f, k) => <polygon key={k} className={f.cls} points={f.d} />)}
@@ -52,9 +85,7 @@ function Figure({ nom }) {
       ))}
 
       {/* Les repères : au survol, le dessin se nomme. Une amorce part de la
-          pièce concernée et le mot se pose au bout. C'est ce que font les
-          planches du livret, et ça évite d'écrire à côté du dessin ce que
-          le dessin peut dire lui-même. */}
+          pièce concernée et le mot se pose au bout. */}
       <g className="axo__reperes">
         {reperes.map((r, i) => (
           <g key={i}>
@@ -65,6 +96,28 @@ function Figure({ nom }) {
         ))}
       </g>
     </svg>
+  );
+}
+
+function Item({ it }) {
+  const [survol, setSurvol] = useState(false);
+  const theta = useAngle(survol);
+  const entrer = useCallback(() => setSurvol(true), []);
+  const sortir = useCallback(() => setSurvol(false), []);
+
+  return (
+    <div
+      className="fait__item"
+      onPointerEnter={entrer}
+      onPointerLeave={sortir}
+      onFocus={entrer}
+      onBlur={sortir}
+      tabIndex={0}
+    >
+      <h3 className="fait__nom">{it.nom}</h3>
+      <span className="fait__dessin"><Figure nom={it.figure} theta={theta} /></span>
+      <p className="fait__quoi">{it.quoi}</p>
+    </div>
   );
 }
 
@@ -86,32 +139,28 @@ export default function CeQuOnFait() {
       scrollTrigger: { trigger: el.querySelector('.fait__planche'), start: 'top 82%' },
     });
 
-    tl.from(el.querySelector('.fait__regle'), {
-      scaleX: 0, transformOrigin: 'left center', duration: 0.9, ease: 'power3.inOut',
-    }, 0);
-
     tl.from(el.querySelectorAll('.fait__nom'), {
       yPercent: 110, duration: 0.7, ease: 'power4.out', stagger: 0.09,
-    }, 0.32);
+    }, 0);
 
     tl.from(el.querySelectorAll('.axo__cote'), {
       scaleY: 0, transformOrigin: 'top center', duration: 0.5, ease: 'power2.out', stagger: 0.09,
-    }, 0.5);
+    }, 0.2);
 
     el.querySelectorAll('.axo').forEach((svg, i) => {
       const lignes = svg.querySelectorAll('.axo__sol line, .axo__cadre');
       const vols = svg.querySelectorAll('.axo__v');
       /* Le sol d'abord, les volumes ensuite : un volume ne flotte pas, il
          se pose sur quelque chose. */
-      tl.from(lignes, { opacity: 0, duration: 0.4, ease: 'none', stagger: 0.01 }, 0.62 + i * 0.09)
+      tl.from(lignes, { opacity: 0, duration: 0.4, ease: 'none', stagger: 0.01 }, 0.3 + i * 0.09)
         .from(vols, {
           y: 4.5, autoAlpha: 0, duration: 0.62, ease: 'back.out(1.6)', stagger: 0.05,
-        }, 0.74 + i * 0.09);
+        }, 0.42 + i * 0.09);
     });
 
     tl.from(el.querySelectorAll('.fait__quoi'), {
       y: 14, autoAlpha: 0, duration: 0.6, ease: 'power3.out', stagger: 0.07,
-    }, 0.95);
+    }, 0.62);
 
     gsap.from(el.querySelectorAll('.fait__pied > *'), {
       y: 16, autoAlpha: 0, duration: 0.7, ease: 'power3.out', stagger: 0.08,
@@ -126,15 +175,8 @@ export default function CeQuOnFait() {
         <h2 className="fait__titre" id="fait-t">{c.titre}</h2>
 
         <div className="fait__planche">
-          <span className="fait__regle" aria-hidden="true" />
           <div className="fait__rangee">
-            {c.items.map((it) => (
-              <div className="fait__item" key={it.nom}>
-                <h3 className="fait__nom">{it.nom}</h3>
-                <span className="fait__dessin"><Figure nom={it.figure} /></span>
-                <p className="fait__quoi">{it.quoi}</p>
-              </div>
-            ))}
+            {c.items.map((it) => <Item key={it.nom} it={it} />)}
           </div>
         </div>
 
