@@ -17,6 +17,8 @@ export const HOME_TPE = {
     metaDesc:
       'On construit ce qui vous manque : site vitrine, boutique en ligne, prise de rendez-vous, identité de marque. Facturé à la journée, code et accès à votre nom.',
 
+    heroSur: 'Conseil et ingénierie numérique · version TPE, de 1 à 10 personnes',
+    heroBascule: 'Vous êtes plus de dix ? Voir la version PME',
     heroTitle: 'On construit ce qui vous manque.',
     heroDit: 'Votre site, votre boutique, votre prise de rendez-vous et l’identité qui va avec. Et vous repartez avec les clés.',
     line1: 'Pas de site, ou un site qui date. Des rendez-vous pris au téléphone. Une image qui ne vous ressemble plus. Rien de tout ça n’est un problème d’outils : c’est ce qui n’existe pas encore.',
@@ -78,6 +80,8 @@ export const HOME_TPE = {
     metaDesc:
       'We build what you are missing: website, online shop, booking, brand identity. Billed by the day, code and access in your name.',
 
+    heroSur: 'Digital consulting & engineering · small-business version, 1 to 10 people',
+    heroBascule: 'More than ten of you? See the SME version',
     heroTitle: 'We build what you are missing.',
     heroDit: 'Your site, your shop, your booking, and the identity that goes with it. And you leave with the keys.',
     line1: 'No website, or one that has aged. Appointments taken by phone. An image that no longer looks like you. None of that is a tooling problem: it is what does not exist yet.',
@@ -268,7 +272,7 @@ export const PRICES_TPE = {
 
 export const OFFRES_TPE = {
   fr: {
-    metaTitle: 'Offres & tarifs TPE · site, réservation, marque, lancement',
+    metaTitle: 'Nos offres TPE · site, réservation, marque, lancement',
     metaDesc:
       'Quatre chantiers courts : site et boutique, prise de rendez-vous, identité de marque, aide au lancement. Le prix dépend de votre projet, il est écrit avant qu’on commence, et il ne bouge plus.',
     title: 'Quatre chantiers, quatre façons de gagner du temps.',
@@ -282,7 +286,7 @@ export const OFFRES_TPE = {
     },
   },
   en: {
-    metaTitle: 'Offers & pricing for small businesses · site, booking, brand, launch',
+    metaTitle: 'Our offers for small businesses · site, booking, brand, launch',
     metaDesc:
       'Four short projects: website and shop, booking, brand identity, launch support. The price depends on your project, it is written down before we start, and it does not move.',
     title: 'Four projects, four ways to win time back.',

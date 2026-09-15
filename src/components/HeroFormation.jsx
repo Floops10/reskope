@@ -10,6 +10,7 @@ import { buildR3D, GLYPH_SHAPES, project, lerp3, easeInOut } from '../lib/net3d'
 import HeroNetwork from './HeroNetwork';
 import Net3D from './Net3D';
 import SwapLabel from './SwapLabel';
+import { useProfil } from '../profil';
 
 /* HERO FORMATION v4.
    TITRE : statement pleine largeur (2 lignes). Au survol, chaque lettre
@@ -39,6 +40,7 @@ const GLYPH_DIRS = [
 ];
 
 export default function HeroFormation({ c }) {
+  const { profil, setProfil } = useProfil();
   const rootRef = useRef(null);
   const svgRef = useRef(null);
   const wrapRef = useRef(null);
@@ -47,6 +49,7 @@ export default function HeroFormation({ c }) {
   const visualRef = useRef(null);
   const actionsRef = useRef(null);
   const ditRef = useRef(null);
+  const surRef = useRef(null);
   const glyphRefs = useRef([]);
 
   const shape = useMemo(() => buildR3D(16, 0.66), []);
@@ -115,6 +118,7 @@ export default function HeroFormation({ c }) {
         const fondu = 1 - clamp01((p - 0.46) / 0.16);
         gsap.set(actionsRef.current, { autoAlpha: fondu });
         if (ditRef.current) gsap.set(ditRef.current, { autoAlpha: fondu });
+        if (surRef.current) gsap.set(surRef.current, { autoAlpha: fondu });
         const { els, vecs } = charData;
         for (let i = 0; i < els.length; i++) {
           const d = easeInOut(clamp01((p - 0.56 - i * 0.0045) / 0.3));
@@ -192,6 +196,7 @@ export default function HeroFormation({ c }) {
     if (split) {
       intro.from(split.chars, { yPercent: 112, autoAlpha: 0, duration: 0.9, stagger: 0.013 }, 0.12);
     }
+    if (surRef.current) intro.from(surRef.current, { y: 14, autoAlpha: 0, duration: 0.6 }, 0.05);
     if (ditRef.current) intro.from(ditRef.current, { y: 20, autoAlpha: 0, duration: 0.7 }, 0.5);
     intro.from(actionsRef.current, { y: 24, autoAlpha: 0, duration: 0.7 }, 0.6);
 
@@ -320,6 +325,25 @@ export default function HeroFormation({ c }) {
         </div>
 
         <div className="container heroform__copy">
+          {/* La ligne qui dit dans quelle version on est, et comment en
+              changer. C'est la moitié de ce qu'il faut comprendre en dix
+              secondes : l'autre moitié, c'est ce qu'on vend, et elle est
+              juste en dessous. */}
+          {c.heroSur && (
+            <p className="heroform__sur" ref={surRef}>
+              <span className="heroform__sur-txt">{c.heroSur}</span>
+              {c.heroBascule && (
+                <button
+                  type="button"
+                  className="heroform__bascule"
+                  onClick={() => setProfil(profil === 'tpe' ? 'pme' : 'tpe')}
+                >
+                  {c.heroBascule}
+                  <span aria-hidden="true">→</span>
+                </button>
+              )}
+            </p>
+          )}
           <div className="heroform__titlewrap" ref={wrapRef}>
             <h1 className="heroform__title" ref={titleRef}>{c.heroTitle}</h1>
             <div className="heroform__title heroform__title--net" ref={netTitleRef} aria-hidden="true">

@@ -6952,6 +6952,42 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   opacity: 0;
   will-change: transform, opacity;
 }
+/* La ligne de version, tout en haut du premier écran : le métier, la
+   version qu'on lit, et le moyen d'en changer. Elle se lit avant le titre
+   parce qu'elle répond à « est-ce que c'est pour moi ». */
+.heroform__sur {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem 1.1rem;
+  margin: 0 0 clamp(1rem, 2.4vh, 1.7rem);
+  font-size: 0.7rem;
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.heroform__bascule {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 0;
+  background: none;
+  padding: 0;
+  font: inherit;
+  letter-spacing: 0.14em;
+  color: var(--indigo);
+  cursor: pointer;
+  border-bottom: 1px solid color-mix(in srgb, var(--indigo) 30%, transparent);
+  padding-bottom: 2px;
+  transition: border-color 0.25s ease;
+}
+.heroform__bascule span { transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1); }
+.heroform__bascule:hover { border-bottom-color: var(--indigo); }
+.heroform__bascule:hover span { transform: translateX(4px); }
+@media (max-width: 720px) {
+  .heroform__sur { font-size: 0.64rem; letter-spacing: 0.13em; gap: 0.35rem 0.8rem; }
+}
+
 /* La ligne qui dit l'offre, entre le titre et les deux boutons. */
 .heroform__dit {
   max-width: 46ch;
@@ -15004,4 +15040,20 @@ html.eco-theme .crumb__node { background: rgba(125, 223, 168, 0.55); }
 }
 @media (prefers-reduced-motion: reduce) {
   .axo__v { opacity: 1 !important; }
+}
+
+/* ════════════════════════════════════════════════════════════
+   LE RYTHME SUR TÉLÉPHONE
+
+   Les scènes épinglées sont calibrées pour une molette. Au pouce, la même
+   longueur devient un couloir : la page d'accueil faisait treize écrans,
+   le constat six et demi. On serre toutes les scènes d'environ un tiers
+   sous 880 px. Rien n'est retiré, tout se joue plus vite.
+   ════════════════════════════════════════════════════════════ */
+@media (max-width: 880px) {
+  .cflw { height: 440vh; }
+  .ofs { height: 400vh; }
+  .epg { height: 240vh; }
+  .mfl { height: 480vh; }
+  .long-phrase { height: 110svh; }
 }

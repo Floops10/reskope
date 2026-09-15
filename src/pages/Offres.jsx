@@ -12,7 +12,7 @@ const OffersShowcase = lazy(() => import('../components/OffersShowcase'));
 
 const CONTENT = {
   fr: {
-    metaTitle: 'Offres & tarifs · cartographie, mise en ordre, outils, suivi',
+    metaTitle: 'Nos offres · ce que contient chaque chantier',
     metaDesc:
       "Quatre façons de travailler ensemble : audit et cartographie, mise en ordre, outils sur mesure, formation et suivi. Le prix dépend de votre situation, il est écrit avant qu’on commence, et il ne bouge plus.",
     eyebrow: 'Offres',
@@ -48,7 +48,7 @@ const CONTENT = {
     faqLead: "Une question qui n'est pas là ? Écrivez-nous, on répond vite et franchement.",
   },
   en: {
-    metaTitle: 'Offers & pricing · mapping, tidy-up, tools, support',
+    metaTitle: 'Our offers · what each project contains',
     metaDesc:
       'Four ways to work together: audit and mapping, tidy-up, tools built for you, training and support. The price depends on your situation, it is written down before we start, and it does not move.',
     eyebrow: 'Offers',

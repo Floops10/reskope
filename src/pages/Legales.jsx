@@ -295,7 +295,7 @@ const SALES = {
         "Chaque mission fait l'objet d'un devis personnalisé, gratuit et sans engagement. Les prix affichés sur le site sont indicatifs (« à partir de ») et ne constituent pas une offre ferme. Le contrat est formé à l'acceptation écrite du devis par le client (signature ou accord par e-mail).",
       ] },
       { h: 'Prix et TVA', p: [
-        "Les prix sont exprimés en euros et s'entendent nets. Aucun barème n'est publié : le montant de chaque prestation, au forfait ou au temps passé, est fixé au devis et accepté avant tout commencement d'exécution.",
+        "Les prix sont exprimés en euros et s'entendent nets. Aucun barème n'est publié : le montant de chaque prestation, au forfait ou au temps passé, est fixé au devis et accepté avant tout commencement d'exécution.",
         "Aucun tarif n'est publié : le prix est établi mission par mission et figure au devis, accepté avant tout commencement d'exécution. Le montant de l'audit est intégralement déduit du devis de mise en œuvre lorsque celle-ci est confiée à Reskope.",
         'TVA : non applicable, article 293 B du CGI (franchise en base).',
       ] },
