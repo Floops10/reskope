@@ -66,6 +66,11 @@ export default function Footer() {
        voit pas ; ligne à ligne, si. */
     gsap.from(rootRef.current.querySelectorAll('.footer2__col > *'), {
       yPercent: 105, autoAlpha: 0, duration: 0.65, ease: 'power4.out', stagger: 0.035,
+      /* Sans clearProps, une ligne pouvait rester sur son décalage de départ
+         et se poser sur la suivante — c'est ce qui faisait passer « Carte de
+         visite » par-dessus la ville. Une fois montée, la ligne ne garde
+         aucune transformation. */
+      clearProps: 'transform,visibility,opacity',
       scrollTrigger: { trigger: rootRef.current.querySelector('.footer2__grid'), start: 'top 90%' },
     });
 

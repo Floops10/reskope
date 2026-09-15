@@ -8347,6 +8347,12 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   display: inline-block;
   overflow: hidden;
   vertical-align: bottom;
+  /* Le masque ne doit couper QUE par le bas, là d'où les lettres montent.
+     Le R de la police réseau dépasse de son cadre de ligne : à ras, son
+     nœud du haut se faisait trancher au survol, et lui seul. On ouvre le
+     masque vers le haut sans déplacer la lettre. */
+  padding-top: 0.18em;
+  margin-top: -0.18em;
 }
 .footer2__lettre > i {
   display: inline-block;
@@ -8392,16 +8398,20 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   }
   /* Trois groupes dans deux colonnes laissent forcément un trou : le
      troisième prend la largeur entière et met ses entrées côte à côte. */
+  /* En ligne, mais qui se replie : en colonnes rigides, les trois entrées
+     se chevauchaient dès que la place manquait. */
   .footer2__grid > div:last-child {
     grid-column: 1 / -1;
-    display: grid;
-    grid-template-columns: auto auto auto;
-    justify-content: start;
-    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
     column-gap: clamp(1.2rem, 4vw, 2.4rem);
-    row-gap: 0.2rem;
+    row-gap: 0.15rem;
   }
-  .footer2__grid > div:last-child .footer2__heading { grid-column: 1 / -1; margin-bottom: 0.2rem; }
+  .footer2__grid > div:last-child .footer2__heading {
+    flex: 1 0 100%;
+    margin-bottom: 0.2rem;
+  }
   .footer2__net {
     display: none;
   }
