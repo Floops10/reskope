@@ -1,37 +1,86 @@
 import { useRef } from 'react';
 import { gsap, useGSAP } from '../lib/gsap';
-import { useCountUp } from '../hooks/useCountUp';
 import { useLang } from '../i18n';
 import { PREUVES_TPE } from '../data/profils';
 import { instant } from '../lib/scrub';
+import { champ, VIEWBOX_CHAMP } from '../lib/figures';
 
 /* ============================================================
    Les deux chiffres qui posent le sujet, version TPE.
 
-   La version PME a une page entière pour ça, « Le constat ». Ce
-   raisonnement ne tient pas chez quelqu'un qui n'a pas encore de site :
-   il n'y a pas de désordre, il y a une absence. Ici on pose le sujet en
-   deux chiffres, et on s'arrête là.
+   Un pourcentage écrit en gros, c'est une affirmation : on le croit ou on
+   ne le croit pas. Cent blocs posés sur un sol, dont quatre-vingt-quinze
+   pleins et cinq en fil de fer, c'est une quantité : on peut la compter.
+   Le chiffre monte pendant que les blocs se lèvent, et les deux arrivent
+   ensemble au même endroit.
 
-   Pas d'intertitre, pas de grande phrase d'introduction : les chiffres
-   sont le propos. Un bandeau qui empile sur-titre, titre et chapô avant
-   de dire quoi que ce soit, c'est du remplissage — et ça se voit.
-
-   Le fond reste celui de la page. Une bande d'une autre couleur pour
-   trois lignes de texte découpe la page pour rien.
+   Le dessin est celui des livrets : même projection, mêmes trois indigos
+   sur les trois faces. La page verte et la planche de l'accueil parlent la
+   même langue, il n'y a pas de raison que les chiffres en parlent une autre.
    ============================================================ */
 
-function Chiffre({ item, i }) {
-  const [ref, valeur] = useCountUp(item.n, { duration: 1500 + i * 220 });
+function Champ({ item, i }) {
+  const racine = useRef(null);
+  const valeurRef = useRef(null);
+  const { sol, volumes } = champ(item.n);
+
+  useGSAP(() => {
+    const el = racine.current;
+    const blocs = el.querySelectorAll('.pv3__b');
+    const val = valeurRef.current;
+    const ecrire = (v) => { val.firstChild.nodeValue = String(Math.round(v)); };
+
+    if (instant()) { ecrire(item.n); return; }
+
+    ecrire(0);
+    gsap.set(blocs, { autoAlpha: 0, y: 3 });
+
+    const tl = gsap.timeline({
+      scrollTrigger: { trigger: el, start: 'top 76%' },
+      delay: i * 0.18,
+    });
+
+    /* Le sol se trace d'un trait, puis les blocs arrivent du fond vers
+       l'avant, dans l'ordre où ils sont posés. Le compteur suit la même
+       durée : quand le dernier bloc se pose, le chiffre est juste. */
+    tl.from(el.querySelectorAll('.pv3__sol line'), {
+      opacity: 0, duration: 0.5, ease: 'none', stagger: 0.02,
+    }, 0);
+    tl.to(blocs, {
+      autoAlpha: 1, y: 0, duration: 0.42, ease: 'power2.out',
+      stagger: { each: 0.011, from: 'start' },
+    }, 0.22);
+    tl.to({ v: 0 }, {
+      v: item.n, duration: blocs.length * 0.011 + 0.42, ease: 'none',
+      onUpdate() { ecrire(this.targets()[0].v); },
+    }, 0.22);
+    tl.from(el.querySelectorAll('.pv3__t, .pv3__src'), {
+      y: 14, autoAlpha: 0, duration: 0.6, ease: 'power3.out', stagger: 0.07,
+    }, 0.5);
+  }, { scope: racine, dependencies: [item.n] });
+
   return (
-    <div className="prv__item">
-      <span className="prv__rule" aria-hidden="true" />
-      <span className="prv__v" ref={ref}>
-        {Math.round(valeur)}
+    <div className="pv3" ref={racine}>
+      <svg className="pv3__champ" viewBox={VIEWBOX_CHAMP} aria-hidden="true">
+        <g className="pv3__sol">
+          {sol.lignes.map((l, k) => <line key={k} x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2} />)}
+        </g>
+        {volumes.map((v, k) => (
+          <g className="pv3__b" key={k}>
+            {v.faces && v.faces.map((f, q) => <polygon key={q} className={f.cls} points={f.d} />)}
+            {v.lignes && v.lignes.map((l, q) => (
+              <line key={q} className="axo-f" x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2} />
+            ))}
+          </g>
+        ))}
+      </svg>
+
+      <p className="pv3__v">
+        <span ref={valeurRef}>{item.n}</span>
         <em>{item.unite}</em>
-      </span>
-      <span className="prv__t">{item.t}</span>
-      <a className="prv__src" href={item.url} target="_blank" rel="noopener noreferrer">
+      </p>
+      <p className="pv3__t">{item.t}</p>
+      <a className="pv3__src" href={item.url} target="_blank" rel="noopener noreferrer">
         {item.src}
       </a>
     </div>
@@ -41,30 +90,13 @@ function Chiffre({ item, i }) {
 export default function PreuvesTpe() {
   const { lang } = useLang();
   const c = PREUVES_TPE[lang] || PREUVES_TPE.fr;
-  const racine = useRef(null);
-
-  useGSAP(() => {
-    if (instant()) return;
-    const el = racine.current;
-    /* Le trait se trace, le chiffre monte, la phrase suit : trois temps
-       très courts qui donnent au bloc le même vocabulaire d'entrée que
-       le reste du site, au lieu d'une apparition brute. */
-    gsap.from(el.querySelectorAll('.prv__rule'), {
-      scaleX: 0, transformOrigin: 'left center', duration: 0.9, ease: 'power3.out',
-      stagger: 0.14, scrollTrigger: { trigger: el, start: 'top 78%' },
-    });
-    gsap.from(el.querySelectorAll('.prv__t, .prv__src, .prv__intro'), {
-      y: 18, autoAlpha: 0, duration: 0.7, ease: 'power3.out', stagger: 0.06,
-      scrollTrigger: { trigger: el, start: 'top 74%' },
-    });
-  }, { scope: racine, dependencies: [lang] });
 
   return (
-    <section className="prv" ref={racine} aria-label={c.intro}>
+    <section className="prv" aria-label={c.intro}>
       <div className="container">
         <p className="prv__intro">{c.intro}</p>
         <div className="prv__grid">
-          {c.items.map((it, i) => <Chiffre key={it.n} item={it} i={i} />)}
+          {c.items.map((it, i) => <Champ key={it.n} item={it} i={i} />)}
         </div>
       </div>
     </section>

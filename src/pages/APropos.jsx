@@ -188,16 +188,28 @@ export default function APropos() {
       gsap.to(q2, { y: 60, ease: 'none', scrollTrigger: { trigger: root.querySelector('.astory'), start: 'top bottom', end: 'bottom top', scrub: true } });
     }
 
-    /* LES ENGAGEMENTS : chaque grande ligne monte derrière son masque,
-       puis son texte se dévoile — et repart si on remonte */
+    /* LES ENGAGEMENTS : l'engagement monte derrière son masque, et la
+       justification s'éclaire mot à mot pendant qu'on descend. On lit donc
+       l'affirmation d'un bloc, puis sa raison au rythme du défilement. */
     root.querySelectorAll('.serment').forEach((el) => {
-      const row = el.querySelector('.serment__row');
-      const text = el.querySelector('.serment__text');
+      const dit = el.querySelector('.serment__dit');
+      const suite = el.querySelector('.serment__suite');
       const tl = gsap.timeline({
-        scrollTrigger: { trigger: el, start: 'top 84%', toggleActions: 'play none none reverse' },
+        scrollTrigger: { trigger: el, start: 'top 86%', toggleActions: 'play none none reverse' },
       });
-      tl.fromTo(row, { yPercent: 120 }, { yPercent: 0, duration: 0.85, ease: 'power4.out' }, 0)
-        .fromTo(text, { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, duration: 0.6, ease: 'power3.out' }, 0.28);
+      tl.fromTo(dit, { yPercent: 118 }, { yPercent: 0, duration: 0.8, ease: 'power4.out' }, 0);
+
+      let sp = null;
+      try {
+        sp = new SplitText(suite, { type: 'words' });
+        gsap.set(sp.words, { opacity: 0.16 });
+        gsap.to(sp.words, {
+          opacity: 1, ease: 'none', stagger: 0.28, duration: 0.3,
+          scrollTrigger: { trigger: el, start: 'top 76%', end: 'bottom 62%', scrub: 0.7 },
+        });
+      } catch {
+        tl.fromTo(suite, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6 }, 0.3);
+      }
     });
 
     /* LES PALIERS : entrée rideau (le langage des cartes du site) */
@@ -287,18 +299,21 @@ export default function APropos() {
                 <MorphTitle as="h2" text={c.principesTitle} textClass="h2" id="principes-title" />
               </RevealItem>
             </Reveal>
+            {/* Ce bloc était une liste numérotée : 01, un gros titre, un
+                petit texte gris dessous, un filet de séparation, et le tout
+                qui glissait au survol. C'est le gabarit qu'on voit partout.
+                Ce sont des engagements : ils se lisent comme des phrases,
+                pas comme un tableau. L'engagement ouvre la phrase en encre,
+                la justification la termine en gris, et rien ne les sépare
+                que du blanc. */}
             <div className="serments">
               {c.principes.map((m) => (
-                <div className="serment" key={m.num}>
-                  <div className="serment__mask">
-                    <div className="serment__row">
-                      <span className="serment__num">{m.num}</span>
-                      <span className="serment__node" aria-hidden="true" />
-                      <h3 className="serment__title">{m.title}</h3>
-                    </div>
-                  </div>
-                  <p className="serment__text">{m.text}</p>
-                </div>
+                <p className="serment" key={m.title}>
+                  <span className="serment__mask">
+                    <span className="serment__dit">{m.title}.</span>
+                  </span>
+                  <span className="serment__suite">{m.text}</span>
+                </p>
               ))}
             </div>
           </div>

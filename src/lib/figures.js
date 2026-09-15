@@ -1,5 +1,7 @@
 import { volume, fil, plan, ordonner } from './axo';
 
+const C30F = Math.cos(Math.PI / 6);
+
 /* ============================================================
    LES FIGURES — huit petites scènes en axonométrie, au vocabulaire
    du livret : des volumes posés sur un sol quadrillé.
@@ -111,9 +113,70 @@ function vitrine() {
 
 const FIGURES = { inventaire, liaison, chantier, estrade, creneaux, cadre, rampe, vitrine };
 
-/* Rend une figure prête à poser dans un <svg> : le sol, puis les volumes
-   du plus lointain au plus proche. */
+/* ── Un pourcentage, en volume ──────────────────────────────────────
+   Cent blocs sur un sol, dont N pleins et le reste en fil de fer. Une
+   barre de progression dit « quatre-vingt-quinze pour cent » ; cent blocs
+   posés côte à côte le montrent, et on peut les compter. Ils se lèvent un
+   par un pendant que le chiffre monte : c'est la même information dite
+   deux fois, une fois en chiffres et une fois en volume. */
+const CHAMP = { n: 10, pas: 1.55, c: 1.15 };
+export const CADRE_CHAMP = (() => {
+  /* Mesuré sur la géométrie réelle : la diagonale du sol donne l'étendue en
+     x, la hauteur d'un bloc donne le débord en haut. */
+  const t = CHAMP.n * CHAMP.pas;
+  const demi = t * C30F + 0.8;
+  return { x: -demi, y: -2.3, w: 2 * demi, h: t + 3.1 };
+})();
+export const VIEWBOX_CHAMP =
+  `${CADRE_CHAMP.x.toFixed(2)} ${CADRE_CHAMP.y.toFixed(2)} ${CADRE_CHAMP.w.toFixed(2)} ${CADRE_CHAMP.h.toFixed(2)}`;
+
+export function champ(pourcent) {
+  const pleins = Math.round(Math.max(0, Math.min(100, pourcent)));
+  const v = [];
+  let k = 0;
+  /* On remplit rangée par rangée en partant du fond : le bloc suivant
+     arrive toujours devant le précédent, jamais derrière. */
+  for (let j = 0; j < CHAMP.n; j++) {
+    for (let i = 0; i < CHAMP.n; i++) {
+      const x = i * CHAMP.pas, y = j * CHAMP.pas;
+      const plein = k < pleins;
+      v.push(plein ? bloc(x, y, CHAMP.c, CHAMP.c, 1.5)
+                   : { ...fil(x, y, CHAMP.c, CHAMP.c, 0, 1.5), creux: true });
+      k++;
+    }
+  }
+  const t = CHAMP.n * CHAMP.pas;
+  return { sol: plan(t, t, CHAMP.pas * 2), volumes: ordonner(v), pleins };
+}
+
+/* Le point le plus haut de la figure : c'est là que la cote vient
+   s'attacher. On le cherche dans la géométrie plutôt que de le régler à la
+   main, sinon chaque changement de volume décroche le trait. */
+function sommet(volumes) {
+  let mx = 0, my = Infinity;
+  for (const v of volumes) {
+    if (v.faces) for (const f of v.faces) for (const p of f.d.split(' ')) {
+      const [x, y] = p.split(',').map(Number);
+      if (y < my) { my = y; mx = x; }
+    }
+    if (v.lignes) for (const l of v.lignes) {
+      if (l.y1 < my) { my = l.y1; mx = l.x1; }
+      if (l.y2 < my) { my = l.y2; mx = l.x2; }
+    }
+  }
+  return { x: mx, y: my };
+}
+
+/* Rend une figure prête à poser dans un <svg> : le sol, les volumes du plus
+   lointain au plus proche, et la cote qui descend du haut du cadre jusqu'au
+   sommet du dessin. */
 export function figure(nom) {
   const f = FIGURES[nom] || FIGURES.inventaire;
-  return { sol: plan(SOL.W, SOL.D, SOL.pas), volumes: ordonner(f()) };
+  const volumes = ordonner(f());
+  const s = sommet(volumes);
+  return {
+    sol: plan(SOL.W, SOL.D, SOL.pas),
+    volumes,
+    cote: { x: s.x, y1: CADRE.y, y2: s.y - 0.7 },
+  };
 }

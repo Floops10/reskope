@@ -13170,57 +13170,41 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
    À PROPOS v2 — serments, paliers-cartes, chaîne de compétences
    ============================================================ */
 /* LES ENGAGEMENTS : grandes lignes typographiques */
-.serments { border-top: 1px solid var(--hairline); margin-top: clamp(1.6rem, 4vh, 2.6rem); }
-.serment { border-bottom: 1px solid var(--hairline); padding: clamp(1.4rem, 3.5vh, 2.2rem) 0; }
-.serment__mask { overflow: hidden; }
-.serment__row {
+/* LES ENGAGEMENTS — des phrases, pas un tableau.
+
+   La version d'avant était une liste : un numéro, une pastille, un grand
+   titre, un petit texte gris, un filet, et un glissement au survol. Six
+   signaux de gabarit pour quatre phrases. Ici il ne reste que les phrases,
+   dans un corps de lecture généreux : l'engagement en encre ouvre, la
+   raison en gris termine, et le blanc fait la séparation. */
+.serments {
+  margin-top: clamp(2rem, 5vh, 3.4rem);
   display: flex;
-  align-items: baseline;
-  gap: clamp(0.9rem, 2.5vw, 1.8rem);
-  will-change: transform;
-  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  flex-direction: column;
+  gap: clamp(2rem, 5vh, 3.6rem);
+  max-width: 62ch;
 }
-.serment:hover .serment__row { transform: translateX(14px); }
-.serment__num {
-  font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  color: var(--indigo);
-  font-variant-numeric: tabular-nums;
-}
-.serment__node {
-  flex: none;
-  width: 10px; height: 10px;
-  border-radius: 50%;
-  background: var(--cream-shade);
-  border: 1.5px solid var(--hairline);
-  align-self: center;
-  transition: background 0.4s ease, border-color 0.4s ease, transform 0.4s ease;
-}
-.serment:hover .serment__node {
-  background: var(--indigo);
-  border-color: var(--indigo);
-  transform: scale(1.3);
-}
-.serment__title {
-  font-size: clamp(1.5rem, 3.4vw, 2.7rem);
-  font-weight: 600;
-  line-height: 1.05;
-  letter-spacing: -0.03em;
+.serment {
   margin: 0;
-  color: var(--ink);
-  transition: color 0.35s ease;
-}
-.serment:hover .serment__title { color: var(--indigo); }
-.serment__text {
-  margin: 0.7rem 0 0;
-  padding-left: calc(0.78rem + 10px + clamp(0.9rem, 2.5vw, 1.8rem) * 2);
+  font-size: clamp(1.15rem, 1.9vw, 1.55rem);
+  line-height: 1.45;
+  letter-spacing: -0.012em;
   color: var(--muted);
-  line-height: 1.6;
-  max-width: 66ch;
 }
+.serment__mask {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+}
+.serment__dit {
+  display: block;
+  color: var(--ink);
+  font-weight: 600;
+  letter-spacing: -0.022em;
+}
+.serment__suite { display: block; }
 @media (max-width: 700px) {
-  .serment__text { padding-left: 0; }
+  .serment { font-size: 1.1rem; }
 }
 
 /* PALIERS : compléments aux cartes .tgt */
@@ -14571,64 +14555,65 @@ html.eco-theme .crumb__node { background: rgba(125, 223, 168, 0.55); }
 
 /* Même fond que la page : découper une bande d'une autre couleur pour
    trois lignes de texte casse la lecture pour rien. */
-.prv { padding: clamp(5rem, 11vw, 9rem) 0; }
+.prv { padding: clamp(4.5rem, 10vw, 8rem) 0; }
 .prv__intro {
   font-size: 0.72rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--muted);
-  margin: 0 0 clamp(2.4rem, 5vw, 3.6rem);
+  margin: 0 0 clamp(1.6rem, 3.5vw, 2.6rem);
 }
 .prv__grid {
   display: grid;
-  gap: clamp(3rem, 7vw, 5.5rem);
+  gap: clamp(3rem, 7vw, 5rem);
   grid-template-columns: 1fr;
 }
-@media (min-width: 760px) { .prv__grid { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 820px) { .prv__grid { grid-template-columns: 1fr 1fr; } }
 
-.prv__item { position: relative; padding-top: 1.8rem; }
-.prv__rule {
-  position: absolute;
-  left: 0; top: 0; right: 0;
-  height: 2px;
-  background: var(--indigo);
-  transform-origin: left center;
-}
-/* Les chiffres sont le propos : ils sont dimensionnés comme un titre,
-   pas comme une donnée dans un tableau. */
-.prv__v {
+/* Le champ de cent blocs : il occupe la moitié haute, le chiffre se pose
+   dessous, au ras du sol, comme la cote d'un plan. */
+.prv .pv3 { position: relative; }
+.pv3__champ {
   display: block;
-  font-size: clamp(4.5rem, 13vw, 9.5rem);
+  width: min(100%, 420px);
+  height: auto;
+  overflow: visible;
+  margin-bottom: clamp(0.6rem, 1.6vw, 1.1rem);
+}
+.pv3__sol line { stroke: var(--indigo); stroke-width: 0.13; opacity: 0.24; }
+.pv3__v {
+  display: flex;
+  align-items: baseline;
+  gap: 0.12em;
+  margin: 0;
+  font-size: clamp(3.4rem, 9vw, 6.4rem);
   font-weight: 600;
-  letter-spacing: -0.055em;
-  line-height: 0.86;
+  letter-spacing: -0.05em;
+  line-height: 0.9;
   color: var(--indigo);
   font-variant-numeric: tabular-nums;
 }
-.prv__v em { font-style: normal; font-size: 0.52em; letter-spacing: -0.03em; }
-.prv__t {
-  display: block;
-  margin-top: 1.6rem;
-  max-width: 32ch;
-  font-size: clamp(1.02rem, 1.3vw, 1.18rem);
+.pv3__v em { font-style: normal; font-size: 0.42em; letter-spacing: -0.02em; }
+.pv3__t {
+  margin: clamp(0.9rem, 2vw, 1.3rem) 0 0;
+  max-width: 34ch;
+  font-size: clamp(1rem, 1.3vw, 1.16rem);
   line-height: 1.55;
   color: var(--ink);
 }
-/* La source est cliquable : un chiffre qui sert à convaincre quelqu'un
-   de dépenser doit pouvoir être vérifié en un geste. */
-.prv__src {
+.pv3__src {
   display: inline-block;
-  margin-top: 1.3rem;
+  margin-top: 1.1rem;
   font-size: 0.72rem;
   letter-spacing: 0.13em;
   text-transform: uppercase;
   color: var(--muted);
   text-decoration: none;
-  border-bottom: 1px solid color-mix(in srgb, currentColor 30%, transparent);
-  padding-bottom: 0.2rem;
-  transition: color 0.3s ease, border-color 0.3s ease;
+  border-bottom: 1px solid var(--hairline);
+  padding-bottom: 2px;
+  transition: color 0.25s ease, border-color 0.25s ease;
 }
-.prv__src:hover { color: var(--indigo); border-bottom-color: currentColor; }
+.pv3__src:hover { color: var(--indigo); border-color: var(--indigo); }
 
 /* ════════════════════════════════════════════════════════════
    LE SOMMAIRE QUI SE REMPLIT
@@ -14775,17 +14760,18 @@ html.eco-theme .crumb__node { background: rgba(125, 223, 168, 0.55); }
 }
 
 /* ════════════════════════════════════════════════════════════
-   CE QU'ON FAIT — la planche axonométrique de l'accueil
+   CE QU'ON FAIT — la planche technique
 
-   Pas de cartes : aucun cadre, aucun fond, aucun numéro, aucune flèche,
-   aucun changement au survol. Ce qui tient la rangée ensemble, c'est que
-   les quatre sols sont dessinés à la même échelle et dans le même cadre :
-   leurs quadrillages s'alignent d'une colonne à l'autre et la rangée se
-   lit comme une seule planche. C'est le procédé du livret.
+   Ce n'est pas une rangée de cartes, et la différence tient à trois
+   choses. Une réglure court en haut sur toute la largeur : c'est elle qui
+   fait la planche, pas les quatre colonnes. De cette réglure descend une
+   cote par volume, et le nom est posé dessus en petites capitales, comme
+   un repère de plan. Et les sols des quatre volumes sont dessinés à la
+   même échelle, donc leurs quadrillages s'alignent d'un bout à l'autre.
 
-   Le nom et la phrase sont presque de la même taille. Un grand titre avec
-   une légende minuscule en dessous, c'est la mise en page qu'on voit
-   partout ; ici les deux lignes se lisent d'un seul mouvement.
+   Le nom n'est donc pas un grand titre avec un petit texte dessous : il
+   est plus petit que la phrase qu'il coiffe. C'est la phrase qui porte le
+   propos, le nom sert à la ranger.
    ════════════════════════════════════════════════════════════ */
 
 .fait {
@@ -14807,19 +14793,47 @@ html.eco-theme .crumb__node { background: rgba(125, 223, 168, 0.55); }
   max-width: 24ch;
   margin: 0 0 clamp(2.6rem, 6vw, 4.4rem);
 }
+
+.fait__planche { position: relative; }
+.fait__regle {
+  display: block;
+  height: 1px;
+  background: color-mix(in srgb, var(--indigo) 34%, transparent);
+}
 .fait__rangee {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: clamp(1.6rem, 3.4vw, 3rem);
+  gap: clamp(1.4rem, 3vw, 2.6rem);
   align-items: start;
+}
+.fait__item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-top: 0.85rem;
+}
+/* Le nom : une étiquette de plan, pas un titre. */
+.fait__nom {
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  line-height: 1.35;
+  color: var(--indigo);
+  margin: 0;
+  max-width: 20ch;
 }
 .fait__dessin {
   display: block;
-  /* Plafonnée : au-delà, le dessin écrase la phrase qu'il illustre. La
-     largeur est la même pour les quatre, donc les sols restent à la même
-     échelle et leurs quadrillages s'alignent d'une colonne à l'autre. */
   width: min(100%, 250px);
-  margin-bottom: clamp(0.9rem, 2vw, 1.4rem);
+  margin-top: 0.75rem;
+}
+/* La cote : le trait qui relie le nom à ce qu'il nomme. Elle est dessinée
+   dans le SVG et s'arrête au sommet réel du volume, donc elle touche. */
+.axo__cote {
+  stroke: color-mix(in srgb, var(--indigo) 38%, transparent);
+  stroke-width: 0.17;
+  transform-box: view-box;
 }
 .axo {
   display: block;
@@ -14850,21 +14864,13 @@ html.eco-theme .crumb__node { background: rgba(125, 223, 168, 0.55); }
   stroke-width: 0.28;
   opacity: 0.42;
 }
-.fait__nom {
-  font-size: clamp(1rem, 1.35vw, 1.12rem);
-  font-weight: 600;
-  line-height: 1.24;
-  letter-spacing: -0.018em;
-  color: var(--ink);
-  margin: 0 0 0.5rem;
-  max-width: 22ch;
-}
+/* La légende : c'est elle qu'on lit, elle est donc plus grosse que le nom. */
 .fait__quoi {
-  font-size: 0.94rem;
+  font-size: 0.96rem;
   line-height: 1.55;
-  color: var(--muted);
-  margin: 0;
-  max-width: 34ch;
+  color: var(--ink);
+  margin: clamp(0.6rem, 1.4vw, 1rem) 0 0;
+  max-width: 32ch;
 }
 .fait__pied {
   display: flex;
@@ -14884,12 +14890,16 @@ html.eco-theme .crumb__node { background: rgba(125, 223, 168, 0.55); }
   color: var(--muted);
 }
 @media (max-width: 1080px) {
-  .fait__rangee { grid-template-columns: repeat(2, 1fr); gap: clamp(2rem, 5vw, 3rem); }
-  .fait__quoi { max-width: 40ch; }
+  .fait__rangee { grid-template-columns: repeat(2, 1fr); row-gap: clamp(2.4rem, 5vw, 3.4rem); }
+  /* À deux colonnes la réglure du haut ne coiffe plus que la première
+     rangée : chaque élément reprend donc son propre filet. */
+  .fait__item { border-top: 1px solid color-mix(in srgb, var(--indigo) 22%, transparent); }
+  .fait__regle { display: none; }
+  .fait__quoi { max-width: 38ch; }
 }
 @media (max-width: 520px) {
   .fait__rangee { grid-template-columns: 1fr; }
-  .fait__dessin { width: min(74%, 260px); }
+  .fait__dessin { width: min(78%, 270px); }
 }
 @media (prefers-reduced-motion: reduce) {
   .axo__v { opacity: 1 !important; }

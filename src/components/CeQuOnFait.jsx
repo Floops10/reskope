@@ -8,7 +8,7 @@ import { useProfil } from '../profil';
 import { FAIT } from '../data/profils';
 
 /* ============================================================
-   CE QU'ON FAIT — la réponse, tout de suite.
+   CE QU'ON FAIT — la planche.
 
    Le visiteur arrivait sur une accroche, puis huit écrans de traversée
    avant de savoir ce qu'on vend. Ce bloc est posé juste sous l'accroche :
@@ -16,16 +16,26 @@ import { FAIT } from '../data/profils';
    page des offres. Personne n'a envie d'un tarif avant d'avoir compris ce
    qu'il achète.
 
-   Le dessin est celui des livrets : sol quadrillé, volumes en axonométrie,
-   les trois indigos de la charte sur les trois faces. Les quatre sols sont
-   à la même échelle et se prolongent l'un l'autre, donc la rangée se lit
-   comme une planche, pas comme quatre vignettes posées côte à côte.
+   La disposition est celle d'une planche technique, pas d'une rangée de
+   cartes. Une réglure court en haut sur toute la largeur ; de cette
+   réglure descend une cote par volume, avec son nom en petites capitales ;
+   le volume est posé au bout, et la phrase sert de légende. Le nom n'est
+   donc pas un grand titre avec un petit texte dessous : c'est une
+   étiquette, et c'est la phrase qui porte le propos.
+
+   Et elle se construit : la réglure se trace de gauche à droite, les noms
+   arrivent dans l'ordre, les cotes descendent, les sols apparaissent, les
+   volumes se lèvent, les légendes suivent. Sept temps, deux secondes.
    ============================================================ */
 
 function Figure({ nom }) {
-  const { sol, volumes } = figure(nom);
+  const { sol, volumes, cote } = figure(nom);
   return (
     <svg className="axo" viewBox={VIEWBOX} aria-hidden="true">
+      {/* La cote descend du haut du cadre jusqu'au sommet du volume : elle
+          relie le nom à ce qu'il nomme, et elle touche toujours, quelle que
+          soit la hauteur de la figure. */}
+      <line className="axo__cote" x1={cote.x} y1={cote.y1} x2={cote.x} y2={cote.y2} />
       <g className="axo__sol">
         {sol.lignes.map((l, i) => (
           <line key={i} x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2} />
@@ -54,22 +64,44 @@ export default function CeQuOnFait() {
     if (instant()) return;
     const el = racine.current;
 
-    /* Le sol se trace, puis les volumes se posent dessus, un par un et de
-       gauche à droite. C'est l'ordre dans lequel on construit vraiment. */
+    /* Une seule ligne de temps pour toute la planche : elle se monte dans
+       l'ordre où on dessinerait le plan. Quatre timelines indépendantes
+       déclenchées chacune de leur côté donnaient quatre petites entrées
+       identiques, c'est exactement ce qui fait « gabarit ». */
+    const tl = gsap.timeline({
+      scrollTrigger: { trigger: el.querySelector('.fait__planche'), start: 'top 82%' },
+    });
+
+    tl.from(el.querySelector('.fait__regle'), {
+      scaleX: 0, transformOrigin: 'left center', duration: 0.9, ease: 'power3.inOut',
+    }, 0);
+
+    tl.from(el.querySelectorAll('.fait__nom'), {
+      yPercent: 110, duration: 0.7, ease: 'power4.out', stagger: 0.09,
+    }, 0.32);
+
+    tl.from(el.querySelectorAll('.axo__cote'), {
+      scaleY: 0, transformOrigin: 'top center', duration: 0.5, ease: 'power2.out', stagger: 0.09,
+    }, 0.5);
+
     el.querySelectorAll('.axo').forEach((svg, i) => {
       const lignes = svg.querySelectorAll('.axo__sol line, .axo__cadre');
       const vols = svg.querySelectorAll('.axo__v');
-      const tl = gsap.timeline({
-        scrollTrigger: { trigger: svg.closest('.fait__item'), start: 'top 88%' },
-        delay: i * 0.12,
-      });
-      tl.from(lignes, { opacity: 0, duration: 0.5, ease: 'none', stagger: 0.012 }, 0)
-        .from(vols, { y: 5, autoAlpha: 0, duration: 0.7, ease: 'power3.out', stagger: 0.07 }, 0.18);
+      /* Le sol d'abord, les volumes ensuite : un volume ne flotte pas, il
+         se pose sur quelque chose. */
+      tl.from(lignes, { opacity: 0, duration: 0.4, ease: 'none', stagger: 0.01 }, 0.62 + i * 0.09)
+        .from(vols, {
+          y: 4.5, autoAlpha: 0, duration: 0.62, ease: 'back.out(1.6)', stagger: 0.05,
+        }, 0.74 + i * 0.09);
     });
 
-    gsap.from(el.querySelectorAll('.fait__nom, .fait__quoi'), {
-      y: 16, autoAlpha: 0, duration: 0.7, ease: 'power3.out', stagger: 0.05,
-      scrollTrigger: { trigger: el.querySelector('.fait__rangee'), start: 'top 84%' },
+    tl.from(el.querySelectorAll('.fait__quoi'), {
+      y: 14, autoAlpha: 0, duration: 0.6, ease: 'power3.out', stagger: 0.07,
+    }, 0.95);
+
+    gsap.from(el.querySelectorAll('.fait__pied > *'), {
+      y: 16, autoAlpha: 0, duration: 0.7, ease: 'power3.out', stagger: 0.08,
+      scrollTrigger: { trigger: el.querySelector('.fait__pied'), start: 'top 92%' },
     });
   }, { scope: racine, dependencies: [lang, profil] });
 
@@ -79,14 +111,17 @@ export default function CeQuOnFait() {
         <p className="fait__sur">{c.sur}</p>
         <h2 className="fait__titre" id="fait-t">{c.titre}</h2>
 
-        <div className="fait__rangee">
-          {c.items.map((it) => (
-            <div className="fait__item" key={it.nom}>
-              <span className="fait__dessin"><Figure nom={it.figure} /></span>
-              <h3 className="fait__nom">{it.nom}</h3>
-              <p className="fait__quoi">{it.quoi}</p>
-            </div>
-          ))}
+        <div className="fait__planche">
+          <span className="fait__regle" aria-hidden="true" />
+          <div className="fait__rangee">
+            {c.items.map((it) => (
+              <div className="fait__item" key={it.nom}>
+                <h3 className="fait__nom">{it.nom}</h3>
+                <span className="fait__dessin"><Figure nom={it.figure} /></span>
+                <p className="fait__quoi">{it.quoi}</p>
+              </div>
+            ))}
+          </div>
         </div>
 
         <div className="fait__pied">
