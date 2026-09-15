@@ -174,9 +174,26 @@ function Lien({ a, bDest, z, pose, pic = 0, seed }) {
     point.current.position.set(lerp(deb[0], fin[0], u), z, lerp(deb[1], fin[1], u));
   });
 
+  /* Les deux bouts d'une liaison sont des nœuds : le schéma se lit alors
+     comme un réseau posé sur les volumes, et pas seulement comme des cubes
+     reliés par un trait. */
+  const bouts = (
+    <>
+      <mesh position={[deb[0], z, deb[1]]}>
+        <boxGeometry args={[0.52, 0.52, 0.52]} />
+        <meshBasicMaterial color="#A79CF7" toneMapped={false} />
+      </mesh>
+      <mesh position={[fin[0], z, fin[1]]}>
+        <boxGeometry args={[0.52, 0.52, 0.52]} />
+        <meshBasicMaterial color="#A79CF7" toneMapped={false} />
+      </mesh>
+    </>
+  );
+
   if (!pose) {
     return (
       <group>
+        {bouts}
         {perles.map((p, i) => (
           <mesh key={i} position={p}>
             <boxGeometry args={[0.42, 0.42, 0.42]} />
@@ -189,6 +206,7 @@ function Lien({ a, bDest, z, pose, pic = 0, seed }) {
 
   return (
     <group>
+      {bouts}
       <mesh position={[(deb[0] + fin[0]) / 2, z, (deb[1] + fin[1]) / 2]} rotation={[0, -angle, 0]}>
         <boxGeometry args={[longueur, 0.3, 0.3]} />
         <meshBasicMaterial color="#6B5BEA" toneMapped={false} />

@@ -56,12 +56,22 @@ export function svgSchema({ blocs, liens, sol, titre, note, police }) {
   const cy = sol.D / 2;
   const theta = 0;
 
-  const volumes = blocs
-    .map((bl) => ({
-      bl,
-      v: projeterPave(pave(bl.x, bl.y, bl.w, bl.d, 0, bl.h, bl.etat === 'creux'), theta, cx, cy),
-    }))
-    .sort((a, b) => a.v.prof - b.v.prof);
+  /* Chaque outil vaut deux volumes : la cage, qui dit la place qu'il prend,
+     et la part pleine, qui dit ce qu'on en tire. L'écart entre les deux est
+     la seule chose qu'on cherche sur ce plan. */
+  const volumes = [];
+  blocs.forEach((bl) => {
+    const u = typeof bl.u === 'number' ? bl.u : (bl.etat === 'creux' ? 0 : 1);
+    const cage = projeterPave(pave(bl.x, bl.y, bl.w, bl.d, 0, bl.h, true), theta, cx, cy);
+    if (u < 0.97) volumes.push({ bl, v: cage, cage: true });
+    if (u > 0.02) {
+      volumes.push({
+        bl,
+        v: projeterPave(pave(bl.x, bl.y, bl.w, bl.d, 0, bl.h * u, false), theta, cx, cy),
+      });
+    }
+  });
+  volumes.sort((a, b) => (a.v.prof - b.v.prof) || (a.cage ? -1 : 1));
 
   const quadrillage = projeterSol(sol.W, sol.D, sol.pas, theta, cx, cy);
 
@@ -91,7 +101,12 @@ export function svgSchema({ blocs, liens, sol, titre, note, police }) {
      volume, et on le remonte d'un cran tant qu'il mord sur un nom déjà posé.
      0,58 par caractère est la largeur moyenne de la police à ce corps. */
   const poses = [];
-  const etiquettes = volumes.map(({ bl }) => {
+  const vus = new Set();
+  const etiquettes = volumes.filter(({ bl }) => {
+    if (vus.has(bl.id)) return false;
+    vus.add(bl.id);
+    return true;
+  }).map(({ bl }) => {
     const [px, py] = centreDe(bl);
     const demi = (String(bl.nom).length * 0.58) / 2 + 0.4;
     let haut = py - 1.5;

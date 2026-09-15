@@ -6,7 +6,7 @@ import App from './App.jsx';
 import Porte from './pages/Porte.jsx';
 import { LangProvider } from './i18n.jsx';
 import {
-  ProfilProvider, useProfil, profilMemorise, cheminInterne, BASE,
+  ProfilProvider, useProfil, profilMemorise, porteDejaVue, cheminInterne, BASE,
 } from './profil.jsx';
 
 /* ============================================================
@@ -31,9 +31,13 @@ function Racine() {
      La réécriture se fait dans un effet, pas pendant le rendu : React
      n'aime pas qu'on touche à l'historique en plein rendu, et la règle
      vaut aussi quand ça « marche quand même ». */
+  /* On ne saute la porte que si elle a déjà été vue DANS CETTE VISITE, ou
+     si l'adresse demande une page précise : un lien profond ne doit jamais
+     tomber sur une question. */
   const memoire = profilMemorise();
   const interne = cheminInterne();
-  const aRattacher = !profil && (memoire || interne !== '/') ? (memoire || 'pme') : null;
+  const saute = interne !== '/' || (memoire && porteDejaVue());
+  const aRattacher = !profil && saute ? (memoire || 'pme') : null;
 
   useEffect(() => {
     if (!aRattacher) return;

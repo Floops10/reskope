@@ -122,7 +122,7 @@ function Item({ it, mots, onOuvrir }) {
         onClick={() => onOuvrir(it.figure)}
         onFocus={entrer}
         onBlur={sortir}
-        aria-label={`${it.nom} — ${mots.ouvrir}`}
+        aria-label={`${it.nom}, ${mots.ouvrir}`}
       >
         <Figure nom={it.figure} theta={theta} />
       </button>

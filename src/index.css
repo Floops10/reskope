@@ -8225,8 +8225,9 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 /* Scopé aux colonnes UNIQUEMENT : le bouton CTA garde ses propres couleurs */
 .footer2__col a,
 .footer2__zone {
-  margin-top: 0.55rem;
-  font-size: 0.82rem;
+  margin-top: 0;
+  padding-block: 0.28rem;
+  font-size: 0.88rem;
   /* Sur l'indigo du pied de page, le crème doit rester assez dense pour se
      lire : à 0,5 d'opacité on tombait à 3,33:1, sous la barre des 4,5. */
   color: rgba(240, 238, 232, 0.72);
@@ -8277,8 +8278,14 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: clamp(1.5rem, 4vw, 3rem);
+  /* Trois colonnes égales, alignées en haut. Sans align-items, une colonne
+     plus courte que les autres se centrait et les titres ne se suivaient
+     plus d'une colonne à l'autre : c'est ce qui donnait l'impression de
+     rangement approximatif. */
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: start;
+  column-gap: clamp(1.4rem, 4vw, 3.4rem);
+  row-gap: clamp(1.8rem, 4vh, 2.6rem);
   padding-bottom: clamp(2.5rem, 6vh, 4rem);
   border-bottom: 1px solid rgba(240, 238, 232, 0.16);
 }
@@ -8286,13 +8293,14 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 0.55rem;
+  gap: 0.1rem;
   font-size: 0.92rem;
 }
 .footer2__heading {
-  font-size: 0.86rem;
-  color: rgba(240, 238, 232, 0.66);
-  margin-bottom: 0.5rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--cream);
+  margin-bottom: 0.7rem;
 }
 .footer2__col a:hover {
   transform: translateX(4px);
@@ -8380,14 +8388,29 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 }
 @media (max-width: 880px) {
   .footer2__grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+  /* Trois groupes dans deux colonnes laissent forcément un trou : le
+     troisième prend la largeur entière et met ses entrées côte à côte. */
+  .footer2__grid > div:last-child {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    justify-content: start;
+    align-items: center;
+    column-gap: clamp(1.2rem, 4vw, 2.4rem);
+    row-gap: 0.2rem;
+  }
+  .footer2__grid > div:last-child .footer2__heading { grid-column: 1 / -1; margin-bottom: 0.2rem; }
   .footer2__net {
     display: none;
   }
   .footer2__word {
     font-size: clamp(3.2rem, 16vw, 6rem);
   }
+}
+@media (max-width: 520px) {
+  .footer2__grid { grid-template-columns: minmax(0, 1fr); }
 }
 
 /* ============================================================
@@ -15441,3 +15464,40 @@ html.eco-theme .crumb__node { background: rgba(125, 223, 168, 0.55); }
   .atl__scene { height: clamp(360px, 52vh, 480px); }
   .atl__aide { position: static; margin-top: 0.8rem; max-width: none; }
 }
+
+/* L'atelier : la palette d'outils courants et le niveau d'utilisation */
+.atl__palette { display: flex; flex-direction: column; gap: 0.55rem; }
+.atl__palette-titre { font-size: 0.9rem; color: var(--muted-fort); }
+.atl__puces { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.atl__puce {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border: 1px solid var(--hairline);
+  background: var(--cream-light);
+  padding: 0.34rem 0.6rem 0.34rem 0.7rem;
+  border-radius: 999px;
+  font: inherit;
+  font-size: 0.84rem;
+  color: var(--ink);
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+.atl__puce span { color: var(--indigo); font-weight: 600; }
+.atl__puce:hover { background: var(--indigo); border-color: var(--indigo); color: var(--cream); }
+.atl__puce:hover span { color: var(--cream); }
+
+.atl__usages { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.15rem; }
+.atl__usage {
+  border: 1px solid var(--hairline);
+  background: var(--cream);
+  padding: 0.3rem 0.62rem;
+  border-radius: 999px;
+  font: inherit;
+  font-size: 0.82rem;
+  color: var(--muted-fort);
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+.atl__usage:hover { color: var(--ink); }
+.atl__usage.is-on { background: var(--indigo); border-color: var(--indigo); color: var(--cream); }

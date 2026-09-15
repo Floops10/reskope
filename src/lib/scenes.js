@@ -90,7 +90,7 @@ const inventaire = {
     },
     {
       ids: ['metier'],
-      fr: { nom: 'Le plus coûteux', dit: 'Le bloc le plus haut n’est pas forcément le plus utile. On regarde ce qu’il vous rend vraiment, et ce qu’une alternative ferait pour moins cher — sans jamais vous pousser à changer pour changer.' },
+      fr: { nom: 'Le plus coûteux', dit: 'Le bloc le plus haut n’est pas forcément le plus utile. On regarde ce qu’il vous rend vraiment, et ce qu’une alternative ferait pour moins cher, sans jamais vous pousser à changer pour changer.' },
       en: { nom: 'The most expensive', dit: 'The tallest block is not necessarily the most useful. We look at what it really gives you, and what a cheaper alternative would do, without ever pushing you to change for the sake of it.' },
     },
   ],
@@ -111,7 +111,7 @@ const liaison = {
   liens: [],
   fr: {
     titre: 'On relie ce qui ne se parle pas',
-    intro: 'À gauche, là où l’information naît. À droite, là où elle doit arriver. Au milieu, aujourd’hui, il n’y a rien — alors quelqu’un fait le trajet à la main, plusieurs fois par jour.',
+    intro: 'À gauche, là où l’information naît. À droite, là où elle doit arriver. Au milieu, aujourd’hui, il n’y a rien, alors quelqu’un fait le trajet à la main, plusieurs fois par jour.',
     fin: 'On branche ce que vous avez déjà. Rien à racheter, rien à migrer de force.',
   },
   en: {
@@ -400,7 +400,7 @@ const cadre = {
   liens: [],
   fr: {
     titre: 'On pose votre identité',
-    intro: 'Au centre, ce que vous vendez vraiment — souvent pas ce qui est écrit sur la devanture. Autour, le cadre : quatre règles qui tiennent, et tout ce qui n’y rentre pas reste dehors.',
+    intro: 'Au centre, ce que vous vendez vraiment, qui n’est souvent pas ce qui est écrit sur la devanture. Autour, le cadre : quatre règles qui tiennent, et tout ce qui n’y rentre pas reste dehors.',
     fin: 'Ce n’est pas un logo qu’on vend : c’est le cadre qui permet de décider vite, ensuite, sans nous.',
   },
   en: {
@@ -479,7 +479,7 @@ const rampe = {
     {
       ids: [],
       mots: ['m4', 'reste'],
-      fr: { nom: 'L’ouverture', dit: 'Le strict nécessaire pour ouvrir : le site, la prise de rendez-vous, la facturation. Le bloc resté en fil de fer, c’est tout le reste — il attend que ça tourne, et souvent il n’est jamais nécessaire.' },
+      fr: { nom: 'L’ouverture', dit: 'Le strict nécessaire pour ouvrir : le site, la prise de rendez-vous, la facturation. Le bloc resté en fil de fer, c’est tout le reste : il attend que ça tourne, et souvent il n’est jamais nécessaire.' },
       en: { nom: 'Opening day', dit: 'The bare minimum to open: the site, the bookings, the invoicing. The block left as a wireframe is everything else. It waits until things are running, and often it is never needed at all.' },
     },
   ],
@@ -505,7 +505,7 @@ export const FIGURE_OFFRE = {
 /* Les libellés de l'explorateur lui-même. */
 export const EXPL_MOTS = {
   fr: {
-    ouvrir: 'Ouvrir en trois dimensions',
+    ouvrir: 'Ouvrir en 3D',
     fermer: 'Fermer',
     tourner: 'Faites glisser pour tourner, molette pour approcher',
     etape: 'Étape suivante',
@@ -513,7 +513,7 @@ export const EXPL_MOTS = {
     atelier: 'Poser votre propre schéma',
   },
   en: {
-    ouvrir: 'Open in three dimensions',
+    ouvrir: 'Open in 3D',
     fermer: 'Close',
     tourner: 'Drag to turn, scroll to zoom',
     etape: 'Next step',

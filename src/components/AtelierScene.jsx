@@ -38,77 +38,97 @@ function cubeColore(teinte) {
 }
 
 function Bloc({ bl, geo, choisi, surLien, onDown, onEnter, onLeave }) {
-  const maille = useRef(null);
-  const etat = useRef({ h: bl.h });
+  const plein = useRef(null);
+  const cage = useRef(null);
+  const noeud = useRef(null);
+  const etat = useRef({ h: bl.h, u: bl.u });
 
   const cx = bl.x + bl.w / 2 - SOL.W / 2;
   const cz = bl.y + bl.d / 2 - SOL.D / 2;
 
+  /* Deux volumes au même endroit : la cage dit la place que l'outil prend
+     chez vous, la part pleine dit ce que vous en tirez vraiment. L'écart
+     entre les deux est tout le sujet. */
   useFrame((_, dt) => {
+    const k = Math.min(dt * 8, 1);
     const e = etat.current;
-    e.h += (bl.h - e.h) * Math.min(dt * 8, 1);
-    const m = maille.current;
-    if (!m) return;
-    const h = Math.max(e.h, 0.05);
-    m.scale.set(bl.w, h, bl.d);
-    m.position.set(cx, h / 2, cz);
+    e.h += (bl.h - e.h) * k;
+    e.u += (bl.u - e.u) * k;
+    const hp = Math.max(e.h * e.u, 0.001);
+    if (plein.current) {
+      plein.current.scale.set(bl.w, hp, bl.d);
+      plein.current.position.set(cx, hp / 2, cz);
+      plein.current.visible = e.u > 0.02;
+    }
+    if (cage.current) {
+      cage.current.scale.set(bl.w, Math.max(e.h, 0.05), bl.d);
+      cage.current.position.set(cx, Math.max(e.h, 0.05) / 2, cz);
+      cage.current.visible = e.u < 0.97;
+    }
+    if (noeud.current) noeud.current.position.set(cx, Math.max(e.h, 0.05) + 0.55, cz);
   });
 
   const commun = {
-    ref: maille,
     onPointerDown: (e) => { e.stopPropagation(); onDown(bl.id, e); },
     onPointerOver: (e) => { e.stopPropagation(); onEnter(bl.id); },
     onPointerOut: () => onLeave(bl.id),
   };
 
-  const halo = (choisi || surLien) && (
-    <mesh position={[cx, 0.06, cz]} rotation={[-Math.PI / 2, 0, 0]}>
-      <planeGeometry args={[bl.w + 1.1, bl.d + 1.1]} />
-      <meshBasicMaterial color={surLien ? '#A79CF7' : '#1C0CB3'} transparent opacity={0.3} />
-    </mesh>
-  );
-
-  if (bl.etat === 'creux') {
-    return (
-      <group>
-        {halo}
-        <mesh {...commun}>
-          <boxGeometry args={[1, 1, 1]} />
-          <meshBasicMaterial visible={false} />
-          <Edges threshold={1} color="#1C0CB3" />
-        </mesh>
-      </group>
-    );
-  }
-
   return (
     <group>
-      {halo}
-      <mesh {...commun} geometry={geo}>
+      {(choisi || surLien) && (
+        <mesh position={[cx, 0.06, cz]} rotation={[-Math.PI / 2, 0, 0]}>
+          <planeGeometry args={[bl.w + 1.1, bl.d + 1.1]} />
+          <meshBasicMaterial color={surLien ? '#A79CF7' : '#1C0CB3'} transparent opacity={0.3} />
+        </mesh>
+      )}
+
+      <mesh ref={plein} {...commun} geometry={geo}>
         <meshBasicMaterial vertexColors toneMapped={false} />
         <Edges threshold={15} color={choisi ? '#F0EEE8' : '#130982'} />
+      </mesh>
+
+      <mesh ref={cage} {...commun}>
+        <boxGeometry args={[1, 1, 1]} />
+        <meshBasicMaterial visible={false} />
+        <Edges threshold={1} color={choisi ? '#F0EEE8' : '#5B4BE6'} />
+      </mesh>
+
+      {/* Le nœud : c'est par lui que passent les liaisons. Un système
+          d'information est un réseau autant qu'un parc de volumes. */}
+      <mesh ref={noeud} {...commun}>
+        <boxGeometry args={[0.5, 0.5, 0.5]} />
+        <meshBasicMaterial color={choisi ? '#F0EEE8' : '#A79CF7'} toneMapped={false} />
       </mesh>
     </group>
   );
 }
 
 function Fil({ a, c }) {
-  const pa = [a.x + a.w / 2 - SOL.W / 2, a.h, a.y + a.d / 2 - SOL.D / 2];
-  const pc = [c.x + c.w / 2 - SOL.W / 2, c.h, c.y + c.d / 2 - SOL.D / 2];
-  const dx = pc[0] - pa[0];
-  const dz = pc[2] - pa[2];
-  const dy = pc[1] - pa[1];
-  const L = Math.hypot(dx, dy, dz) || 1;
-  const milieu = [(pa[0] + pc[0]) / 2, (pa[1] + pc[1]) / 2, (pa[2] + pc[2]) / 2];
-  const q = useMemo(() => {
-    const dir = new THREE.Vector3(dx, dy, dz).normalize();
-    return new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(1, 0, 0), dir);
-  }, [dx, dy, dz]);
+  const ax = a.x + a.w / 2 - SOL.W / 2, ay = a.h + 0.55, az = a.y + a.d / 2 - SOL.D / 2;
+  const bx = c.x + c.w / 2 - SOL.W / 2, by = c.h + 0.55, bz = c.y + c.d / 2 - SOL.D / 2;
+  /* Un arc, pas une corde tendue : deux liaisons entre les mêmes rangées se
+     confondaient, et une ligne droite passait au travers des volumes. */
+  const geo = useMemo(() => {
+    const n = 14;
+    const pic = 0.9 + Math.hypot(bx - ax, bz - az) * 0.06;
+    const pts = [];
+    let prec = null;
+    for (let i = 0; i <= n; i++) {
+      const u = i / n;
+      const p = [ax + (bx - ax) * u, ay + (by - ay) * u + pic * Math.sin(u * Math.PI), az + (bz - az) * u];
+      if (prec) pts.push(...prec, ...p);
+      prec = p;
+    }
+    const g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.Float32BufferAttribute(pts, 3));
+    return g;
+  }, [ax, ay, az, bx, by, bz]);
+
   return (
-    <mesh position={milieu} quaternion={q}>
-      <boxGeometry args={[L, 0.26, 0.26]} />
-      <meshBasicMaterial color="#6B5BEA" toneMapped={false} />
-    </mesh>
+    <lineSegments geometry={geo}>
+      <lineBasicMaterial color="#6B5BEA" transparent opacity={0.9} />
+    </lineSegments>
   );
 }
 
@@ -156,7 +176,7 @@ function Cadrage({ camRef }) {
 }
 
 function Plateau({ blocs, liens, choisi, lienDe, mode, onChoisir, onDeplacer, onPoser, onLier, onTraine }) {
-  const geos = useMemo(() => ({ plein: cubeColore('plein'), neuf: cubeColore('neuf') }), []);
+  const geo = useMemo(() => cubeColore('plein'), []);
   const [survol, setSurvol] = useState(null);
   const [traine, setTraine] = useState(null);
   const bouge = useRef(false);
@@ -238,7 +258,7 @@ function Plateau({ blocs, liens, choisi, lienDe, mode, onChoisir, onDeplacer, on
         <Bloc
           key={bl.id}
           bl={bl}
-          geo={geos[bl.etat === 'neuf' ? 'neuf' : 'plein']}
+          geo={geo}
           choisi={choisi === bl.id}
           surLien={lienDe === bl.id || (mode === 'lier' && survol === bl.id)}
           onDown={surBloc}
@@ -250,7 +270,7 @@ function Plateau({ blocs, liens, choisi, lienDe, mode, onChoisir, onDeplacer, on
       {blocs.map((bl) => (
         <Html
           key={`m${bl.id}`}
-          position={[bl.x + bl.w / 2 - SOL.W / 2, bl.h + 1.1, bl.y + bl.d / 2 - SOL.D / 2]}
+          position={[bl.x + bl.w / 2 - SOL.W / 2, bl.h + 1.5, bl.y + bl.d / 2 - SOL.D / 2]}
           center
           zIndexRange={[6, 0]}
           style={{ pointerEvents: 'none' }}

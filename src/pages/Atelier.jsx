@@ -2,7 +2,7 @@ import { useState, useMemo, useCallback, useEffect, lazy, Suspense } from 'react
 import { useNavigate } from 'react-router-dom';
 import Page from '../components/Page';
 import { useLang } from '../i18n';
-import { CASE, SOL, mondeDe } from '../lib/atelier';
+import { CASE, SOL, USAGES, mondeDe, nomUsage } from '../lib/atelier';
 import { svgSchema, svgVersPng, telecharger, chargerPolice } from '../lib/exportAxo';
 
 const AtelierScene = lazy(() => import('../components/AtelierScene'));
@@ -28,21 +28,34 @@ const CLE = 'reskope.atelier.v1';
 
 const DEPART = {
   fr: [
-    { nom: 'Logiciel métier', h: 5.6, etat: 'plein' },
-    { nom: 'Comptabilité', h: 3.6, etat: 'plein' },
-    { nom: 'Devis et factures', h: 3.2, etat: 'plein' },
-    { nom: 'Messagerie', h: 2.8, etat: 'plein' },
-    { nom: 'Planning', h: 2.2, etat: 'plein' },
-    { nom: 'Drive', h: 2, etat: 'plein' },
+    { nom: 'Logiciel métier', h: 5.6, u: 0.6 },
+    { nom: 'Comptabilité', h: 3.6, u: 0.8 },
+    { nom: 'Devis et factures', h: 3.2, u: 1 },
+    { nom: 'Messagerie', h: 2.8, u: 1 },
+    { nom: 'Planning', h: 2.2, u: 0.4 },
+    { nom: 'Drive', h: 2, u: 0.2 },
   ],
   en: [
-    { nom: 'Core software', h: 5.6, etat: 'plein' },
-    { nom: 'Accounting', h: 3.6, etat: 'plein' },
-    { nom: 'Quotes and invoices', h: 3.2, etat: 'plein' },
-    { nom: 'Email', h: 2.8, etat: 'plein' },
-    { nom: 'Scheduling', h: 2.2, etat: 'plein' },
-    { nom: 'Drive', h: 2, etat: 'plein' },
+    { nom: 'Core software', h: 5.6, u: 0.6 },
+    { nom: 'Accounting', h: 3.6, u: 0.8 },
+    { nom: 'Quotes and invoices', h: 3.2, u: 1 },
+    { nom: 'Email', h: 2.8, u: 1 },
+    { nom: 'Scheduling', h: 2.2, u: 0.4 },
+    { nom: 'Drive', h: 2, u: 0.2 },
   ],
+};
+
+/* La palette : les outils qu'on retrouve chez presque tout le monde. Un clic
+   les pose, nommés. Poser une case vide puis taper un nom marchait, mais
+   c'était trois gestes pour quelque chose qu'on allait écrire à l'identique
+   dans neuf entreprises sur dix. */
+const PALETTE = {
+  fr: ['Comptabilité', 'Paie', 'CRM', 'Devis et factures', 'Stock', 'Caisse',
+    'Messagerie', 'Drive', 'Planning', 'Site web', 'Réseaux sociaux',
+    'Sauvegarde', 'Signature', 'Suivi du temps', 'Logiciel métier'],
+  en: ['Accounting', 'Payroll', 'CRM', 'Quotes and invoices', 'Stock', 'Till',
+    'Email', 'Drive', 'Scheduling', 'Website', 'Social media',
+    'Backup', 'E-signature', 'Time tracking', 'Core software'],
 };
 
 const CONTENT = {
@@ -52,7 +65,7 @@ const CONTENT = {
       'Posez vos outils sur un plan, reliez ceux qui se parlent, et voyez en deux minutes ce que personne n’a jamais dessiné chez vous. Gratuit, sans compte, et le dessin s’emporte.',
     eyebrow: 'L’atelier',
     titre: 'Dessinez votre système d’information.',
-    lead: 'Un bloc par outil que vous payez. Sa hauteur, c’est la place qu’il prend chez vous — ce qu’il coûte, ou ce qu’il vous fait perdre. Reliez ceux qui se parlent vraiment. En deux minutes vous avez le plan que personne n’a jamais dessiné chez vous.',
+    lead: 'Un bloc par outil que vous payez. Sa hauteur, c’est la place qu’il prend chez vous : ce qu’il coûte, ou ce qu’il vous fait perdre. Reliez ceux qui se parlent vraiment. En deux minutes vous avez le plan que personne n’a jamais dessiné chez vous.',
     aide: [
       'Cliquez une case vide pour poser un outil.',
       'Glissez un bloc pour le déplacer, cliquez-le pour le renommer.',
@@ -66,17 +79,20 @@ const CONTENT = {
     nomDefaut: 'Nouvel outil',
     champNom: 'Nom de l’outil',
     place: 'La place qu’il prend',
-    jamais: 'On ne l’ouvre jamais',
+    usage: 'Ce que vous en tirez',
+    ajouter: 'Les outils qu’on retrouve partout',
     supprimer: 'Retirer cet outil',
     releve: 'Ce que dit votre plan',
     outils: (n) => `${n} outil${n > 1 ? 's' : ''} posé${n > 1 ? 's' : ''}`,
-    dormants: (n) => `${n} payé${n > 1 ? 's' : ''} sans être ouvert${n > 1 ? 's' : ''}`,
+    dormants: (n) => `${n} presque jamais ouvert${n > 1 ? 's' : ''}`,
+    tiedes: (n) => `${n} à moitié exploité${n > 1 ? 's' : ''}`,
     isoles: (n) => `${n} relié${n > 1 ? 's' : ''} à rien`,
     liens: (n) => `${n} liaison${n > 1 ? 's' : ''}`,
     verdicts: {
       vide: 'Posez un premier bloc : vous verrez le reste venir tout seul.',
       isoles: 'Des outils qui ne sont reliés à rien, ce sont des informations qu’une personne recopie à la main d’un écran à l’autre. C’est là que part le temps que personne ne compte.',
       dormants: 'Un outil qu’on paie sans l’ouvrir se remarque rarement tout seul : il passe en prélèvement, tous les mois, pendant des années.',
+      tiedes: 'Des outils utilisés à moitié coûtent le prix plein. C’est rarement l’outil qui est en cause : c’est qu’on ne l’a jamais vraiment installé dans les habitudes de l’équipe.',
       doublons: 'Deux outils portent le même nom sur votre plan. C’est presque toujours deux abonnements pour un seul besoin, arrivés à deux ans d’écart.',
       propre: 'Rien d’alarmant sur ce plan : les outils sont reliés et vous les ouvrez tous. Gardez ce dessin, il vaudra le jour où quelqu’un proposera d’en ajouter un.',
     },
@@ -96,7 +112,7 @@ const CONTENT = {
       'Place your tools on a plan, connect the ones that talk to each other, and see in two minutes what nobody has ever drawn at your company. Free, no account, and the drawing is yours to keep.',
     eyebrow: 'The workshop',
     titre: 'Map your information system.',
-    lead: 'One block per tool you pay for. Its height is the room it takes up — what it costs, or what it makes you lose. Connect the ones that really talk to each other. In two minutes you have the plan nobody has ever drawn at your company.',
+    lead: 'One block per tool you pay for. Its height is the room it takes up: what it costs, or what it makes you lose. Connect the ones that really talk to each other. In two minutes you have the plan nobody has ever drawn at your company.',
     aide: [
       'Click an empty cell to place a tool.',
       'Drag a block to move it, click it to rename it.',
@@ -110,17 +126,20 @@ const CONTENT = {
     nomDefaut: 'New tool',
     champNom: 'Tool name',
     place: 'The room it takes',
-    jamais: 'Nobody ever opens it',
+    usage: 'What you get out of it',
+    ajouter: 'The tools almost everyone has',
     supprimer: 'Remove this tool',
     releve: 'What your plan says',
     outils: (n) => `${n} tool${n > 1 ? 's' : ''} placed`,
-    dormants: (n) => `${n} paid for and never opened`,
+    dormants: (n) => `${n} barely ever opened`,
+    tiedes: (n) => `${n} half used`,
     isoles: (n) => `${n} connected to nothing`,
     liens: (n) => `${n} connection${n > 1 ? 's' : ''}`,
     verdicts: {
       vide: 'Place a first block: the rest follows on its own.',
       isoles: 'Tools connected to nothing mean information a person retypes by hand from one screen to the next. That is where the time nobody counts goes.',
       dormants: 'A tool you pay for without opening rarely gets noticed: it goes out by direct debit, every month, for years.',
+      tiedes: 'Tools used at half capacity cost the full price. It is rarely the tool that is at fault: it was never properly settled into the team\u2019s habits.',
       doublons: 'Two tools share the same name on your plan. That is almost always two subscriptions for one need, bought two years apart.',
       propre: 'Nothing alarming here: the tools are connected and you open all of them. Keep this drawing, it will be worth having the day somebody suggests adding one more.',
     },
@@ -143,10 +162,12 @@ const neuf = () => `o${Date.now().toString(36)}${(compteur++).toString(36)}`;
 function lire() {
   try {
     const d = JSON.parse(localStorage.getItem(CLE) || '{}');
-    return {
-      blocs: Array.isArray(d.blocs) ? d.blocs : [],
-      liens: Array.isArray(d.liens) ? d.liens : [],
-    };
+    /* Les premiers plans ne connaissaient qu'un état « jamais ouvert » : on
+       le relit comme un usage nul plutôt que de les perdre. */
+    const blocs = (Array.isArray(d.blocs) ? d.blocs : []).map((b) => ({
+      ...b, u: typeof b.u === 'number' ? b.u : (b.etat === 'creux' ? 0 : 1),
+    }));
+    return { blocs, liens: Array.isArray(d.liens) ? d.liens : [] };
   } catch {
     return { blocs: [], liens: [] };
   }
@@ -179,9 +200,26 @@ export default function Atelier() {
   const poser = useCallback((cell) => {
     if (!libre(cell.col, cell.row)) return;
     const id = neuf();
-    setBlocs((v) => [...v, { id, col: cell.col, row: cell.row, h: 2.6, etat: 'plein', nom: c.nomDefaut }]);
+    setBlocs((v) => [...v, { id, col: cell.col, row: cell.row, h: 3, u: 0.6, nom: c.nomDefaut }]);
     setChoisi(id);
   }, [libre, c.nomDefaut]);
+
+  /* La première case libre, en balayant de gauche à droite puis de haut en
+     bas : c'est là qu'on s'attend à voir apparaître ce qu'on vient d'ajouter. */
+  const premiereLibre = useCallback(() => {
+    for (let row = 0; row < CASE.rows; row++) {
+      for (let col = 0; col < CASE.cols; col++) if (libre(col, row)) return { col, row };
+    }
+    return null;
+  }, [libre]);
+
+  const poserNomme = useCallback((nom) => {
+    const cell = premiereLibre();
+    if (!cell) return;
+    const id = neuf();
+    setBlocs((v) => [...v, { id, ...cell, h: 3, u: 0.6, nom }]);
+    setChoisi(id);
+  }, [premiereLibre]);
 
   const deplacer = useCallback((id, cell) => {
     setBlocs((v) => {
@@ -214,7 +252,7 @@ export default function Atelier() {
   /* Un parc ne se range pas en ligne : l'exemple arrive éparpillé, comme il
      l'est vraiment chez les gens. C'est le désordre de départ qu'on vient
      regarder en face. */
-  const PLACES = [[0, 1], [2, 0], [4, 1], [1, 3], [3, 3], [5, 2]];
+  const PLACES = [[1, 1], [3, 0], [5, 1], [2, 3], [4, 4], [6, 3]];
   const exemple = () => {
     const v = DEPART[lang].map((b, i) => ({
       ...b, id: neuf(), col: PLACES[i][0], row: PLACES[i][1],
@@ -227,11 +265,8 @@ export default function Atelier() {
   /* Cliquer une case vide reste le geste le plus court, mais il faut l'avoir
      deviné : le bouton pose l'outil dans la première case libre. */
   const poserAuto = () => {
-    for (let row = 0; row < CASE.rows; row++) {
-      for (let col = 0; col < CASE.cols; col++) {
-        if (libre(col, row)) { poser({ col, row }); return; }
-      }
-    }
+    const cell = premiereLibre();
+    if (cell) poser(cell);
   };
 
   const vider = () => { setBlocs([]); setLiens([]); setChoisi(null); setLienDe(null); };
@@ -241,7 +276,8 @@ export default function Atelier() {
   const lecture = useMemo(() => {
     const relies = new Set(liens.flatMap((l) => [l.de, l.vers]));
     const isoles = blocs.filter((b) => !relies.has(b.id)).length;
-    const dormants = blocs.filter((b) => b.etat === 'creux').length;
+    const dormants = blocs.filter((b) => b.u <= 0.2).length;
+    const tiedes = blocs.filter((b) => b.u > 0.2 && b.u <= 0.6).length;
     const noms = blocs.map((b) => b.nom.trim().toLowerCase());
     const doublons = noms.some((n, i) => n && noms.indexOf(n) !== i);
     let verdict = c.verdicts.propre;
@@ -249,13 +285,15 @@ export default function Atelier() {
     else if (doublons) verdict = c.verdicts.doublons;
     else if (isoles > 1) verdict = c.verdicts.isoles;
     else if (dormants) verdict = c.verdicts.dormants;
-    return { isoles, dormants, verdict, total: blocs.length, liens: liens.length };
+    else if (tiedes > 1) verdict = c.verdicts.tiedes;
+    return { isoles, dormants, tiedes, verdict, total: blocs.length, liens: liens.length };
   }, [blocs, liens, c.verdicts]);
 
   const releve = [
     c.outils(lecture.total),
     c.liens(lecture.liens),
     lecture.dormants ? c.dormants(lecture.dormants) : null,
+    lecture.tiedes ? c.tiedes(lecture.tiedes) : null,
     lecture.isoles ? c.isoles(lecture.isoles) : null,
   ].filter(Boolean);
 
@@ -282,7 +320,7 @@ export default function Atelier() {
   };
 
   const envoyer = () => {
-    const detail = blocs.map((b) => `- ${b.nom}${b.etat === 'creux' ? ' (jamais ouvert)' : ''}`).join('\n');
+    const detail = blocs.map((b) => `- ${b.nom} : ${nomUsage(b.u, lang).toLowerCase()}`).join('\n');
     navigate('/contact', { state: { message: c.message(`${releve.join(' · ')}\n\n${detail}`) } });
   };
 
@@ -334,6 +372,18 @@ export default function Atelier() {
                 )}
               </div>
 
+              <div className="atl__palette">
+                <span className="atl__palette-titre">{c.ajouter}</span>
+                <div className="atl__puces">
+                  {PALETTE[lang].map((nom) => (
+                    <button type="button" key={nom} className="atl__puce" onClick={() => poserNomme(nom)}>
+                      {nom}
+                      <span aria-hidden="true">+</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
               {bloc && (
                 <div className="atl__fiche">
                   <label className="atl__champ">
@@ -356,14 +406,22 @@ export default function Atelier() {
                     />
                   </div>
 
-                  <label className="atl__bascule">
-                    <input
-                      type="checkbox"
-                      checked={bloc.etat === 'creux'}
-                      onChange={(e) => modifier(bloc.id, { etat: e.target.checked ? 'creux' : 'plein' })}
-                    />
-                    <span>{c.jamais}</span>
-                  </label>
+                  <div className="atl__champ">
+                    <span>{c.usage}</span>
+                    <div className="atl__usages">
+                      {USAGES.map((u) => (
+                        <button
+                          type="button"
+                          key={u.v}
+                          className={`atl__usage${Math.abs(bloc.u - u.v) < 0.01 ? ' is-on' : ''}`}
+                          onClick={() => modifier(bloc.id, { u: u.v })}
+                          aria-pressed={Math.abs(bloc.u - u.v) < 0.01}
+                        >
+                          {u[lang === 'en' ? 'en' : 'fr']}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
 
                   <button type="button" className="atl__retirer" onClick={() => retirer(bloc.id)}>
                     {c.supprimer}

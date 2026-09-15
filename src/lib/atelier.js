@@ -7,9 +7,29 @@
    case est prise » sans calcul de collision.
    ════════════════════════════════════════════════════════════ */
 
-export const CASE = { w: 4, d: 3.5, cols: 6, rows: 5 };
+export const CASE = { w: 4, d: 3.5, cols: 8, rows: 6 };
 export const SOL = { W: CASE.w * CASE.cols, D: CASE.d * CASE.rows, pas: CASE.w };
 export const BLOC = { w: 3, d: 2.6 };
+
+/* LE NIVEAU D'UTILISATION — ce qui manquait pour que le plan dise quelque
+   chose. Un outil ne se résume pas à ce qu'il coûte : ce qui compte, c'est
+   l'écart entre la place qu'il prend et ce qu'on en tire. Le bloc porte donc
+   les deux : sa hauteur est la place, et la part pleine est l'usage. Un
+   grand volume presque vide se repère d'un coup d'œil, sans légende. */
+export const USAGES = [
+  { v: 1, fr: 'À plein', en: 'Fully' },
+  { v: 0.8, fr: 'Presque à plein', en: 'Almost fully' },
+  { v: 0.6, fr: 'Moyennement', en: 'Moderately' },
+  { v: 0.4, fr: 'Peu', en: 'Little' },
+  { v: 0.2, fr: 'Presque pas', en: 'Barely' },
+  { v: 0, fr: 'Pas du tout', en: 'Not at all' },
+];
+
+export function nomUsage(u, lang = 'fr') {
+  let p = USAGES[0];
+  for (const x of USAGES) if (Math.abs(x.v - u) < Math.abs(p.v - u)) p = x;
+  return p[lang === 'en' ? 'en' : 'fr'];
+}
 
 /* D'une case vers le monde des livrets (x, y au sol, z vers le haut). */
 export function mondeDe(bl) {

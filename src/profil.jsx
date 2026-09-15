@@ -44,6 +44,21 @@ export function cheminInterne(pathname = window.location.pathname) {
   return p ? `/${p}` : '/';
 }
 
+/* La porte s'ouvre à chaque VISITE, pas une fois pour toutes. Le choix
+   reste mémorisé pour pré-cocher la bonne case et pour les liens profonds,
+   mais quelqu'un qui revient le lendemain repasse par la question : c'est
+   elle qui dit, en dix secondes, que le site a deux versions. Dans un même
+   onglet, on ne la revoit pas. */
+const CLE_VISITE = 'reskope-porte-vue';
+
+export function porteDejaVue() {
+  try { return sessionStorage.getItem(CLE_VISITE) === '1'; } catch { return false; }
+}
+
+export function marquerPorteVue() {
+  try { sessionStorage.setItem(CLE_VISITE, '1'); } catch { /* navigation privée */ }
+}
+
 export function profilMemorise() {
   try {
     const s = localStorage.getItem(CLE);
@@ -83,7 +98,9 @@ export function ProfilProvider({ children }) {
      l'adresse vient d'être réécrite (lien ancien sans version, ou retour
      d'un visiteur qui avait déjà choisi). */
   const adopter = useCallback((p) => {
-    if (PROFILS.includes(p)) setProfilState(p);
+    if (!PROFILS.includes(p)) return;
+    marquerPorteVue();
+    setProfilState(p);
   }, []);
 
   /* Les boutons précédent et suivant du navigateur doivent pouvoir
