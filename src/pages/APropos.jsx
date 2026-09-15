@@ -219,9 +219,8 @@ export default function APropos() {
       });
       tl.fromTo(dit, { yPercent: 118 }, { yPercent: 0, duration: 0.8, ease: 'power4.out' }, 0);
 
-      let sp = null;
       try {
-        sp = new SplitText(suite, { type: 'words' });
+        const sp = new SplitText(suite, { type: 'words' });
         gsap.set(sp.words, { opacity: 0.16 });
         gsap.to(sp.words, {
           opacity: 1, ease: 'none', stagger: 0.28, duration: 0.3,
