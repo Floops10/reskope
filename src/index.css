@@ -12930,12 +12930,20 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 }
 .eco-hero__leafmark path {
   fill: none;
-  stroke: color-mix(in srgb, #7ddfa8 20%, transparent);
-  stroke-width: 0.4;
+  stroke: color-mix(in srgb, #7ddfa8 18%, transparent);
+  stroke-width: 0.32;
   stroke-linecap: round;
 }
+/* Le limbe et la nervure centrale portent le dessin ; les nervures
+   secondaires restent en retrait, sinon le filigrane devient un grillage. */
 .eco-hero__leafmark .eco-hero__leafmark-blade {
-  fill: color-mix(in srgb, #7ddfa8 3%, transparent);
+  fill: color-mix(in srgb, #7ddfa8 4%, transparent);
+  stroke: color-mix(in srgb, #7ddfa8 30%, transparent);
+  stroke-width: 0.5;
+}
+.eco-hero__leafmark .eco-hero__leafmark-rib {
+  stroke: color-mix(in srgb, #7ddfa8 26%, transparent);
+  stroke-width: 0.42;
 }
 .eco-hero__cue {
   position: absolute;

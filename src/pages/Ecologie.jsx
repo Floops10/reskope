@@ -7,6 +7,7 @@ import { Reveal, RevealItem } from '../components/Reveal';
 import CubeGlyph from '../components/CubeGlyph';
 import { gsap, SplitText, useGSAP } from '../lib/gsap';
 import { useLang } from '../i18n';
+import { cheminFeuille } from '../lib/feuille';
 import { CONTACT } from '../data/site';
 
 const reduced = () =>
@@ -104,25 +105,7 @@ const CONTENT = {
    que sur cette page), même moteur 3D que le Constat et les Offres. */
 const EcoAllege = lazy(() => import('../components/EcoAllege'));
 
-/* La feuille du hero (filigrane) : MÊME profil botanique que la scène 3D,
-   projeté en 2D — pointe fine, base arrondie, nervure courbée, tige. */
-function heroLeafPath() {
-  const W = (t) => 30 * Math.pow(Math.sin(Math.PI * Math.min(t, 0.999)), 0.72) * (1 - 0.34 * t);
-  const B = (t) => 8 * Math.sin(Math.PI * t * 0.92);
-  const pt = (t, side) => `${50 + B(t) + side * W(t)},${106 - 96 * t}`;
-  const steps = Array.from({ length: 25 }, (_, k) => (k + 1) / 26);
-  const left = steps.map((t) => pt(t, -1));
-  const right = [...steps].reverse().map((t) => pt(t, 1));
-  const outline = `M50,106 L${left.join(' L')} L50,10 L${right.join(' L')} Z`;
-  const mid = `M50,104 Q${50 + B(0.5)},${106 - 48} 50,12`;
-  const stem = `M50,106 Q48,114 44,119`;
-  const veins = [0.22, 0.4, 0.58, 0.74].map((t0) => {
-    const t1 = Math.min(t0 + 0.14, 0.96);
-    return [-1, 1].map((sd) => `M${50 + B(t0)},${106 - 96 * t0} L${pt(t1, sd * 0.94)}`).join(' ');
-  }).join(' ');
-  return { outline, mid, stem, veins };
-}
-const HERO_LEAF = heroLeafPath();
+const HERO_LEAF = cheminFeuille();
 
 export default function Ecologie() {
   const { lang } = useLang();
@@ -226,10 +209,10 @@ export default function Ecologie() {
             profondeurs, la FEUILLE veille en filigrane, un cue invite. */}
         <div className="eco-hero">
           <svg className="eco-hero__leafmark" viewBox="0 0 100 124" aria-hidden="true">
-            <path className="eco-hero__leafmark-blade" d={HERO_LEAF.outline} />
-            <path d={HERO_LEAF.mid} />
-            <path d={HERO_LEAF.veins} />
-            <path d={HERO_LEAF.stem} />
+            <path className="eco-hero__leafmark-blade" d={HERO_LEAF.contour} />
+            <path className="eco-hero__leafmark-rib" d={HERO_LEAF.nervure} />
+            <path d={HERO_LEAF.secondaires} />
+            <path d={HERO_LEAF.tige} />
           </svg>
           {[0, 1].map((layer) => (
             <div className={`eco-hero__dust eco-hero__dust--${layer}`} aria-hidden="true" key={layer}>

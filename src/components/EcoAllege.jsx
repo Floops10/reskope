@@ -2,6 +2,7 @@ import { useRef, useMemo, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { ScrollTrigger, useGSAP } from '../lib/gsap';
+import { largeur, cambrure, epaisseur } from '../lib/feuille';
 
 /* ============================================================
    NUMÉRIQUE RESPONSABLE — « L'ALLÈGEMENT » (WebGL, v4).
@@ -24,54 +25,64 @@ const rnd = (i, s) => { const v = Math.sin(i * 127.1 + s * 311.7) * 43758.5453; 
 const prefersReduced = () =>
   typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-/* ——— La VRAIE feuille ———
-   Axe vertical : base (t=0) en bas arrondie, POINTE fine en haut (t=1).
-   Le limbe se cambre (bend) et se plie légèrement le long de la nervure
-   centrale (z). Une tige part de la base. */
+/* ——— La feuille ———
+   Le profil vient de src/lib/feuille.js : c'est exactement celui du filigrane
+   dessiné derrière le titre de la page. Deux formules différentes pour une
+   seule plante donnaient deux feuilles qui ne se ressemblaient pas.
+   Axe vertical : base arrondie en bas (t=0), pointe fine en haut (t=1), le
+   limbe se cambre et se plie de part et d'autre de la nervure. */
 const L_BASE = -1.75;
 const L_LEN = 4.4;
 const W_MAX = 1.42;
-const leafW = (t) => W_MAX * Math.pow(Math.sin(Math.PI * Math.min(t, 0.999)), 0.72) * (1 - 0.34 * t);
-const leafBend = (t) => 0.34 * Math.sin(Math.PI * t * 0.92);
+const leafW = (t) => W_MAX * largeur(t);
+const leafBend = (t) => 0.34 * cambrure(t);
 const leafPt = (t, side) => {
   const y = L_BASE + L_LEN * t;
   const w = leafW(t);
-  return [leafBend(t) + side * w, y, side * 0.22 * Math.sin(Math.PI * t)];
+  return [leafBend(t) + side * w, y, side * 0.22 * epaisseur(t)];
 };
 const midPt = (t) => [leafBend(t), L_BASE + L_LEN * t, 0];
 
 function buildLeaf() {
   const pts = [];       // cibles des survivants
+  const axial = [];     // où chaque point se trouve le long de l'axe (0 base, 1 pointe)
   const segs = [];      // nervures/contour (paires d'index dans pts)
-  const add = (p) => (pts.push(p), pts.length - 1);
+  const add = (p, t) => (pts.push(p), axial.push(t), pts.length - 1);
 
   /* contour : 2 × 30 points */
   const CN = 30;
   const left = [], right = [];
   for (let k = 1; k <= CN; k++) {
-    const t = k / (CN + 1);
-    left.push(add(leafPt(t, -1)));
-    right.push(add(leafPt(t, 1)));
+    /* Répartition en cosinus : les points se resserrent à la base et à la
+       pointe. En espaçant régulièrement, le dernier point du contour restait
+       à 0,14 de large et la pointe se fendait en V. */
+    const u = k / (CN + 1);
+    const t = 0.5 - 0.5 * Math.cos(Math.PI * u);
+    left.push(add(leafPt(t, -1), t));
+    right.push(add(leafPt(t, 1), t));
   }
   for (let k = 0; k < CN - 1; k++) {
     segs.push([left[k], left[k + 1]]);
     segs.push([right[k], right[k + 1]]);
   }
   /* pointe + base ferment le contour */
-  const tip = add(midPt(1));
-  const base = add(midPt(0));
+  const tip = add(midPt(1), 1);
+  const base = add(midPt(0), 0);
   segs.push([left[CN - 1], tip], [right[CN - 1], tip], [left[0], base], [right[0], base]);
 
   /* nervure centrale : 12 points */
   const mid = [];
-  for (let k = 0; k <= 11; k++) mid.push(add(midPt(0.04 + (k / 11) * 0.92)));
+  for (let k = 0; k <= 11; k++) {
+    const t = 0.04 + (k / 11) * 0.92;
+    mid.push(add(midPt(t), t));
+  }
   for (let k = 0; k < 11; k++) segs.push([mid[k], mid[k + 1]]);
 
   /* nervures latérales : 5 paires, inclinées vers la pointe */
   const veinTs = [0.18, 0.34, 0.5, 0.66, 0.8];
   veinTs.forEach((t0) => {
     [-1, 1].forEach((side) => {
-      const from = add(midPt(t0));
+      const from = add(midPt(t0), t0);
       const chain = [from];
       const VS = 4;
       for (let k = 1; k <= VS; k++) {
@@ -79,7 +90,7 @@ function buildLeaf() {
         const tEdge = Math.min(t0 + 0.14, 0.97);
         const t = t0 + (tEdge - t0) * f;
         const w = leafW(t) * f * 0.94;
-        chain.push(add([leafBend(t) + side * w, L_BASE + L_LEN * t, side * 0.2 * Math.sin(Math.PI * t) * f]));
+        chain.push(add([leafBend(t) + side * w, L_BASE + L_LEN * t, side * 0.2 * epaisseur(t) * f], t));
       }
       for (let k = 0; k < VS; k++) segs.push([chain[k], chain[k + 1]]);
     });
@@ -89,11 +100,15 @@ function buildLeaf() {
   const stem = [];
   for (let k = 0; k <= 5; k++) {
     const f = k / 5;
-    stem.push(add([-0.12 * f * f * 3, L_BASE - f * 1.15, 0]));
+    stem.push(add([-0.12 * f * f * 3, L_BASE - f * 1.15, 0], -0.1 * f));
   }
   for (let k = 0; k < 5; k++) segs.push([stem[k], stem[k + 1]]);
 
-  return { pts, segs };
+  /* Les segments sont rangés du bas vers le haut : la nervure se dessine
+     alors dans l'ordre où une feuille pousse, et il suffit de faire varier
+     la plage de tracé pour la voir se tirer de la tige vers la pointe. */
+  segs.sort((a, b) => Math.max(axial[a[0]], axial[a[1]]) - Math.max(axial[b[0]], axial[b[1]]));
+  return { pts, axial, segs };
 }
 
 function Matter({ progress, mouse, deadRef }) {
@@ -107,7 +122,7 @@ function Matter({ progress, mouse, deadRef }) {
   const DIM = useMemo(() => new THREE.Color('#9fc4ad'), []);
 
   const data = useMemo(() => {
-    const { pts, segs } = buildLeaf();
+    const { pts, axial, segs } = buildLeaf();
     const KEEP = pts.length;                          // ~140 survivants
     /* nuage initial : tous les outils, dispersés en profondeur */
     const cloud = Array.from({ length: N }, (_, i) => [
@@ -119,6 +134,7 @@ function Matter({ progress, mouse, deadRef }) {
     const keepIdx = Array.from({ length: KEEP }, (_, k) => Math.round((k * (N - 1)) / (KEEP - 1)));
     const keepSet = new Set(keepIdx);
     const leafOf = new Map(keepIdx.map((idx, k) => [idx, pts[k]]));
+    const axeOf = new Map(keepIdx.map((idx, k) => [idx, Math.max(axial[k], 0)]));
     const order = Array.from({ length: N }, (_, i) => i)
       .filter((i) => !keepSet.has(i))
       .sort((a, b) => rnd(a, 4) - rnd(b, 4));
@@ -130,14 +146,14 @@ function Matter({ progress, mouse, deadRef }) {
     lineGeo.setAttribute('position', new THREE.Float32BufferAttribute(linePos, 3));
     const seeds = new Float32Array(N);
     for (let i = 0; i < N; i++) seeds[i] = rnd(i, 5);
-    return { cloud, keepSet, leafOf, order, rankOf, lineGeo, seeds, deadTotal: order.length };
+    return { cloud, keepSet, leafOf, axeOf, order, rankOf, lineGeo, seeds, deadTotal: order.length, nbLigne: linePos.length / 3 };
   }, []);
 
   useFrame((state) => {
     const time = state.clock.elapsedTime;
     const p = clamp01(progress.current);
     const m = meshRef.current;
-    const { cloud, keepSet, leafOf, order, rankOf, seeds } = data;
+    const { cloud, keepSet, leafOf, axeOf, order, rankOf, seeds } = data;
 
     let dead = 0;
     for (let i = 0; i < N; i++) {
@@ -145,7 +161,13 @@ function Matter({ progress, mouse, deadRef }) {
       const bob = Math.sin(time * 0.9 + seeds[i] * 9) * 0.05;
       if (keepSet.has(i)) {
         const [lx, ly, lz] = leafOf.get(i);
-        const t = smooth(ph(p, 0.4 + seeds[i] * 0.1, 0.72 + seeds[i] * 0.08));
+        /* Une feuille ne se reconstitue pas au hasard : elle pousse. Chaque
+           point rejoint sa place d'autant plus tard qu'il est haut sur
+           l'axe, et le grain de hasard ne sert qu'à éviter l'effet
+           mécanique d'une rangée qui arrive d'un bloc. */
+        const a = axeOf.get(i);
+        const depart = 0.36 + a * 0.3 + seeds[i] * 0.04;
+        const t = smooth(ph(p, depart, depart + 0.12));
         dummy.position.set(cx + (lx - cx) * t, cy + bob * (1 - t) + (ly - cy) * t, cz + (lz - cz) * t);
         dummy.scale.setScalar(0.045 + t * 0.02);
         cc.copy(CREAM).lerp(GREEN, t);
@@ -168,8 +190,13 @@ function Matter({ progress, mouse, deadRef }) {
       deadRef.current.textContent = `${Math.round((dead / data.deadTotal) * 100)} %`;
     }
 
-    /* nervures : apparition pendant la formation */
-    if (lineMatRef.current) lineMatRef.current.opacity = 0.55 * smooth(ph(p, 0.55, 0.8));
+    /* Les nervures ne s'allument pas : elles se TRACENT, de la tige vers la
+       pointe, en suivant les points qui viennent de se poser. */
+    if (lineMatRef.current) lineMatRef.current.opacity = 0.62 * smooth(ph(p, 0.42, 0.55));
+    if (data.lineGeo) {
+      const avance = smooth(ph(p, 0.42, 0.9));
+      data.lineGeo.setDrawRange(0, Math.max(2, Math.floor(data.nbLigne * avance / 2) * 2));
+    }
 
     /* la feuille respire : ondulation en finale + regard souris */
     if (groupRef.current) {
