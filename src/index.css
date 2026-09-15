@@ -15243,6 +15243,17 @@ html.eco-theme .crumb__node { background: rgba(125, 223, 168, 0.55); }
   background: var(--indigo);
 }
 .expl3d__cta { align-self: flex-start; margin-top: 0.6rem; }
+.expl3d__atelier {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  font-size: 0.92rem;
+  color: var(--indigo);
+  transition: gap 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.expl3d__atelier:hover { gap: 0.85rem; }
 
 @media (max-width: 900px) {
   .expl3d { padding: 0; }
@@ -15288,3 +15299,137 @@ html.eco-theme .crumb__node { background: rgba(125, 223, 168, 0.55); }
 }
 .fait__ouvrir:hover { border-bottom-color: var(--indigo); }
 .fait__ouvrir:hover i { transform: rotate(8deg) skewX(6deg) scale(1.15); }
+
+/* ════════════════════════════════════════════════════════════
+   L'ATELIER — le visiteur pose son propre système d'information
+
+   Le plateau prend la plus grande part : c'est un établi, pas une
+   illustration. La colonne de droite ne porte que ce qui sert à agir —
+   ce qu'on vient de sélectionner, ce que le plan raconte, et de quoi
+   l'emporter.
+   ════════════════════════════════════════════════════════════ */
+.atl { padding-top: clamp(6rem, 14vh, 9rem); }
+.atl__titre { max-width: 18ch; margin: 0.4rem 0 0.9rem; }
+.atl__lead { max-width: 62ch; margin: 0 0 clamp(1.8rem, 5vh, 3rem); }
+
+.atl__plan {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  gap: clamp(1.2rem, 3vw, 2.4rem);
+  align-items: start;
+}
+
+.atl__scene {
+  position: relative;
+  height: clamp(420px, 66vh, 660px);
+  border-radius: clamp(0.9rem, 2vw, 1.4rem);
+  overflow: hidden;
+  background:
+    radial-gradient(120% 100% at 30% 0%, color-mix(in srgb, var(--indigo) 8%, transparent) 0%, transparent 62%),
+    var(--cream-light);
+  touch-action: none;
+}
+.atl__canvas { cursor: grab; }
+.atl__canvas:active { cursor: grabbing; }
+.atl__attente { position: absolute; inset: 0; background: var(--cream-light); }
+
+.atl__aide {
+  position: absolute;
+  left: clamp(0.9rem, 2vw, 1.4rem);
+  bottom: clamp(0.9rem, 2vw, 1.4rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.24rem;
+  pointer-events: none;
+  font-size: 0.84rem;
+  color: var(--muted-fort);
+  max-width: 34ch;
+}
+
+/* Le nom flotte au-dessus de son bloc et tourne avec le plateau. */
+.atl__mot {
+  display: inline-block;
+  white-space: nowrap;
+  padding: 0.22rem 0.6rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--cream) 92%, var(--indigo));
+  border: 1px solid color-mix(in srgb, var(--indigo) 22%, transparent);
+  color: var(--ink);
+  font-size: 0.78rem;
+  line-height: 1.2;
+}
+.atl__mot.is-on { background: var(--indigo); border-color: var(--indigo); color: var(--cream); }
+
+.atl__cote { display: flex; flex-direction: column; gap: clamp(1.1rem, 2.6vh, 1.7rem); }
+.atl__outils { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.atl__mode {
+  border: 1px solid var(--hairline);
+  background: var(--cream-light);
+  padding: 0.5rem 0.95rem;
+  border-radius: 999px;
+  font: inherit;
+  font-size: 0.9rem;
+  color: var(--ink);
+  cursor: pointer;
+  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+}
+.atl__mode:hover { background: var(--cream-shade); }
+.atl__mode.is-on { background: var(--indigo); border-color: var(--indigo); color: var(--cream); }
+.atl__mode--sobre { color: var(--muted-fort); }
+.atl__mode--fort { background: var(--indigo); border-color: var(--indigo); color: var(--cream); }
+.atl__mode--fort:hover { background: var(--indigo-deep); }
+
+.atl__fiche {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding: clamp(0.9rem, 2vw, 1.3rem);
+  border-radius: clamp(0.7rem, 1.4vw, 1rem);
+  background: var(--cream-light);
+}
+.atl__champ { display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.9rem; color: var(--muted-fort); }
+.atl__champ input[type='text'] {
+  font: inherit;
+  font-size: 1rem;
+  color: var(--ink);
+  padding: 0.55rem 0.8rem;
+  border: 1px solid var(--hairline);
+  border-radius: 0.6rem;
+  background: var(--cream);
+}
+.atl__champ input[type='text']:focus-visible { outline: 2px solid var(--indigo); outline-offset: 1px; }
+.atl__champ input[type='range'] { accent-color: var(--indigo); }
+.atl__bascule { display: flex; align-items: center; gap: 0.6rem; font-size: 0.94rem; color: var(--ink); cursor: pointer; }
+.atl__bascule input { accent-color: var(--indigo); width: 17px; height: 17px; }
+.atl__retirer {
+  align-self: flex-start;
+  border: 0;
+  background: none;
+  padding: 0.2rem 0;
+  font: inherit;
+  font-size: 0.88rem;
+  color: var(--muted-fort);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.atl__retirer:hover { color: #a5321f; }
+
+.atl__releve-titre { margin: 0 0 0.5rem; font-size: 1.05rem; font-weight: 600; color: var(--ink); }
+.atl__chiffres { margin: 0 0 0.5rem; font-size: 0.95rem; color: var(--indigo); font-variant-numeric: tabular-nums; }
+.atl__verdict { margin: 0; font-size: 0.98rem; line-height: 1.6; color: var(--ink); max-width: 46ch; }
+
+.atl__boutons { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 0.7rem; }
+.atl__envoyer { width: 100%; justify-content: space-between; }
+.atl__note { margin: 0.7rem 0 0; font-size: 0.84rem; line-height: 1.5; color: var(--muted-fort); max-width: 46ch; }
+.atl__boutons .btn[disabled],
+.atl__envoyer[disabled] { opacity: 0.45; pointer-events: none; }
+
+@media (max-width: 960px) {
+  .atl__plan { grid-template-columns: 1fr; }
+  .atl__scene { height: clamp(360px, 52vh, 480px); }
+  .atl__aide { position: static; margin-top: 0.8rem; max-width: none; }
+}

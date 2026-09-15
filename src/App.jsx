@@ -16,6 +16,7 @@ import Pourquoi from './pages/Pourquoi';
 import Methode from './pages/Methode';
 import Offres from './pages/Offres';
 import Exemple from './pages/Exemple';
+import Atelier from './pages/Atelier';
 import Ecologie from './pages/Ecologie';
 import APropos from './pages/APropos';
 import Contact from './pages/Contact';
@@ -51,6 +52,7 @@ export default function App() {
         <Route path="/methode" element={<Methode />} />
         <Route path="/offres" element={<Offres />} />
         <Route path="/exemple" element={<Exemple />} />
+        <Route path="/atelier" element={<Atelier />} />
         <Route path="/numerique-responsable" element={<Ecologie />} />
         <Route path="/a-propos" element={<APropos />} />
         <Route path="/contact" element={<Contact />} />

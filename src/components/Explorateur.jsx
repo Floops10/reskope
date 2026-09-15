@@ -144,6 +144,13 @@ export default function Explorateur({ figure, onFermer, plus }) {
 
           <p className="expl3d__fin">{c.fin}</p>
 
+          {/* Après avoir regardé notre schéma, on propose de poser le sien :
+              c'est le même plateau, et c'est là qu'on comprend vraiment. */}
+          <Link to="/atelier" className="expl3d__atelier" onClick={onFermer}>
+            {m.atelier}
+            <span aria-hidden="true">→</span>
+          </Link>
+
           {/* Ouvert depuis la page des offres, le volume porte aussi ce que
               contient le chantier et ce qui en fait bouger le prix : on ne
               renvoie pas le visiteur ailleurs pour finir sa lecture. */}

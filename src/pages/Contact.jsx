@@ -132,7 +132,10 @@ export default function Contact() {
   const c = profil === 'tpe' ? { ...CONTENT[lang], ...CONTACT_TPE[lang] } : CONTENT[lang];
   const rootRef = useRef(null);
   const navigate = useNavigate();
-  const [form, setForm] = useState({ name: '', email: '', message: '' });
+  /* L'atelier envoie ici le relevé du schéma qu'on vient de composer : on
+     arrive avec le message déjà écrit, il n'y a plus qu'à signer. */
+  const prepare = typeof window !== 'undefined' ? window.history.state?.usr?.message : null;
+  const [form, setForm] = useState({ name: '', email: '', message: prepare || '' });
   const [trap, setTrap] = useState(''); // honeypot anti-bot : doit rester vide
   const [status, setStatus] = useState('idle'); // idle | sending | sent | error
   const update = (e) => setForm((f) => ({ ...f, [e.target.name]: e.target.value }));

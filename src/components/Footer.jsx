@@ -172,6 +172,7 @@ export default function Footer() {
 
         <nav className="footer2__col" aria-label={f.resources}>
           <span className="footer2__heading">{f.resources}</span>
+          <Link to="/atelier">{tabs['/atelier']}</Link>
           {visible('/exemple') && <Link to="/exemple">{tabs['/exemple']}</Link>}
           <Link to="/numerique-responsable">{tabs['/numerique-responsable']}</Link>
           <Link to="/a-propos">{tabs['/a-propos']}</Link>
