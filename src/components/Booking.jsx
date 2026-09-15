@@ -23,6 +23,19 @@ export default function Booking({ c }) {
       y: 26, autoAlpha: 0, duration: 0.8, ease: 'power3.out', stagger: 0.08,
       scrollTrigger: { trigger: rootRef.current, start: 'top 74%' },
     });
+
+    const tl = gsap.timeline({
+      scrollTrigger: { trigger: rootRef.current.querySelector('.bk__points'), start: 'top 88%' },
+    });
+    tl.from(rootRef.current.querySelectorAll('.bk__point-rule'), {
+      scaleX: 0, transformOrigin: 'left center', duration: 0.7, ease: 'power3.inOut', stagger: 0.12,
+    }, 0);
+    tl.from(rootRef.current.querySelectorAll('.bk__point-value'), {
+      yPercent: 115, duration: 0.7, ease: 'power4.out', stagger: 0.12,
+    }, 0.18);
+    tl.from(rootRef.current.querySelectorAll('.bk__point-label'), {
+      autoAlpha: 0, y: 10, duration: 0.55, ease: 'power2.out', stagger: 0.12,
+    }, 0.34);
   }, { scope: rootRef });
 
   const openCal = async () => {
@@ -49,11 +62,17 @@ export default function Booking({ c }) {
           <RevealItem as="p" className="bk__lead bk__reveal">{c.lead}</RevealItem>
         </Reveal>
 
-        <ul className="bk__points bk__reveal">
+        {/* Les trois faits du rendez-vous. Le filet de chaque colonne se
+            trace de gauche à droite, puis la valeur monte derrière son
+            masque : ils arrivent dans l'ordre, comme trois cotes qu'on
+            poserait sur un plan. La pastille est partie, le filet suffit. */}
+        <ul className="bk__points">
           {c.points.map((p) => (
             <li key={p.label}>
-              <span className="bk__point-node" aria-hidden="true" />
-              <span className="bk__point-value">{p.value}</span>
+              <span className="bk__point-rule" aria-hidden="true" />
+              <span className="bk__point-mask">
+                <span className="bk__point-value">{p.value}</span>
+              </span>
               <span className="bk__point-label">{p.label}</span>
             </li>
           ))}

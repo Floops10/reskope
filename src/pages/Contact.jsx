@@ -31,11 +31,6 @@ const CONTENT = {
     eyebrow: 'Contact',
     title: 'Parlons de vos outils.',
     lead: "Décrivez votre contexte en trois lignes. On vous répond sous 24 h, franchement : s'il n'y a rien à faire, on vous le dit.",
-    points: [
-      'Réponse sous 24 h, par l’un de nous deux',
-      'Un échange de 30 minutes, sans engagement',
-      'Un seul interlocuteur, du diagnostic à la livraison',
-    ],
     nextTitle: 'Ce qui se passe ensuite',
     next: [
       { n: '01', label: 'On échange 30 minutes sur votre contexte' },
@@ -85,12 +80,7 @@ const CONTENT = {
       "A first 30-minute conversation, no strings attached, to understand your context and see whether there's something worth doing.",
     eyebrow: 'Contact',
     title: 'Talk about your tools.',
-    lead: "Describe your context in three lines. I reply within 24 h, frankly: if there is nothing worth doing, I say so.",
-    points: [
-      'Reply within 24 h, directly from me',
-      'A 30-minute conversation, no strings attached',
-      'One point of contact, from diagnosis to delivery',
-    ],
+    lead: "Describe your context in three lines. We reply within 24 h, frankly: if there is nothing worth doing, we say so.",
     nextTitle: 'What happens next',
     next: [
       { n: '01', label: 'We talk for 30 minutes about your context' },
@@ -184,6 +174,17 @@ export default function Contact() {
     gsap.from(root.querySelectorAll('.ctc__reveal'), {
       y: 28, autoAlpha: 0, duration: 0.85, ease: 'power3.out', stagger: 0.08, delay: 0.12,
     });
+
+    /* La suite des événements se dessine : le fil descend du premier point
+       au dernier, et chaque point s'allume quand le fil l'atteint. */
+    const fil = root.querySelector('.ctc__fil i');
+    const pts = root.querySelectorAll('.ctc__steps li > i');
+    if (fil) {
+      const tl = gsap.timeline({ delay: 0.55 });
+      tl.fromTo(fil, { scaleY: 0 }, { scaleY: 1, duration: 0.9, ease: 'power2.inOut' }, 0);
+      tl.fromTo(pts, { scale: 0.2, autoAlpha: 0 },
+        { scale: 1, autoAlpha: 1, duration: 0.4, ease: 'back.out(2.4)', stagger: 0.3 }, 0.1);
+    }
     /* la carte formulaire se révèle par balayage, puis flotte à peine */
     const card = root.querySelector('.ctc__card');
     if (card) {
@@ -212,15 +213,19 @@ export default function Contact() {
               </div>
               <p className="lead ctc__lead ctc__reveal">{c.lead}</p>
 
-              <ul className="ctc__points ctc__reveal">
-                {c.points.map((pt) => (
-                  <li key={pt}><span className="ctc__dot" aria-hidden="true" />{pt}</li>
-                ))}
-              </ul>
+              {/* Il y avait ici deux listes à puces l'une sous l'autre, six
+                  lignes dans le premier écran. La première disait « réponse
+                  sous 24 h, échange de 30 minutes, un seul interlocuteur » :
+                  exactement les trois faits que la prise de rendez-vous
+                  répète plus bas sur la même page. Elle est partie.
 
+                  Reste la suite des événements, et elle est dessinée comme
+                  une suite : un fil qui se trace du premier point au
+                  dernier, et chaque point qui s'allume à son tour. */}
               <div className="ctc__next ctc__reveal">
                 <span className="ctc__next-title">{c.nextTitle}</span>
                 <ol className="ctc__steps">
+                  <span className="ctc__fil" aria-hidden="true"><i /></span>
                   {c.next.map((s) => (
                     <li key={s.n}><i aria-hidden="true" />{s.label}</li>
                   ))}

@@ -13455,21 +13455,48 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   margin: 0.6rem 0 1.1rem;
 }
 .ctc__lead { color: var(--muted); max-width: 42ch; margin-bottom: 1.5rem; }
-.ctc__points { list-style: none; margin: 0 0 1.6rem; padding: 0; display: flex; flex-direction: column; gap: 0.55rem; }
-.ctc__points li { display: flex; align-items: baseline; gap: 0.65rem; color: var(--ink); font-size: 0.98rem; }
-.ctc__dot {
-  flex: none; width: 8px; height: 8px; border-radius: 50%;
-  background: var(--indigo); position: relative; top: -1px;
-}
-.ctc__next { margin-bottom: 1.6rem; }
+/* CE QUI SE PASSE ENSUITE — une suite, dessinée comme une suite.
+   Un fil relie les trois points ; il se trace de haut en bas et chaque
+   point s'allume quand le fil l'atteint. Une liste à puces disait la même
+   chose sans dire qu'il y avait un ordre. */
+.ctc__next { margin-bottom: 1.8rem; }
 .ctc__next-title {
   display: block;
   font-size: 0.66rem; letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--muted); margin-bottom: 0.7rem;
+  color: var(--muted); margin-bottom: 1rem;
 }
-.ctc__steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.45rem; }
-.ctc__steps li { display: flex; align-items: baseline; gap: 0.7rem; color: var(--muted); font-size: 0.94rem; }
-.ctc__steps b { font-size: 0.68rem; font-weight: 600; color: var(--indigo); font-variant-numeric: tabular-nums; }
+.ctc__steps {
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.7rem, 1.6vw, 1rem);
+}
+.ctc__fil {
+  position: absolute;
+  left: 3px;
+  top: 0.42rem;
+  bottom: 0.58rem;
+  width: 1px;
+  background: color-mix(in srgb, var(--indigo) 16%, transparent);
+}
+.ctc__fil i {
+  display: block;
+  height: 100%;
+  background: var(--indigo);
+  transform-origin: top center;
+  opacity: 0.55;
+}
+.ctc__steps li {
+  position: relative;
+  display: block;
+  color: var(--ink);
+  font-size: 0.98rem;
+  line-height: 1.45;
+}
+.ctc__steps li > i { position: absolute; left: -1.5rem; }
 .ctc__direct { display: flex; flex-direction: column; gap: 0.2rem; margin: 0; }
 .ctc__direct span { font-size: 0.66rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
 
@@ -13690,13 +13717,14 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   overflow: hidden;
 }
 /* Même correction que pour le pied de page : la scène de prise de
-   rendez-vous est nuit, le glyphe y était indigo sur indigo. */
+   rendez-vous est nuit, le glyphe y était indigo sur indigo. Et il est
+   descendu dans l'angle : au milieu, il passait par-dessus la troisième
+   colonne de faits et on lisait le texte à travers le réseau. */
 .bk__decor {
   position: absolute;
-  top: 50%;
-  right: -4%;
-  transform: translateY(-50%);
-  opacity: 0.4;
+  bottom: -4%;
+  right: -9%;
+  opacity: 0.3;
   pointer-events: none;
 }
 .bk__decor .n3d-link { stroke: rgba(240, 238, 232, 0.5); }
@@ -13742,22 +13770,22 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   flex-direction: column;
   gap: 0.3rem;
   padding-top: 1.05rem;
-  border-top: 1px solid color-mix(in srgb, var(--cream) 20%, transparent);
 }
-.bk__point-node {
+.bk__point-rule {
   position: absolute;
-  top: -4px;
+  top: 0;
   left: 0;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--cream);
+  right: 0;
+  height: 1px;
+  background: color-mix(in srgb, var(--cream) 30%, transparent);
 }
+.bk__point-mask { display: block; overflow: hidden; padding-bottom: 0.08em; }
 .bk__point-value {
+  display: block;
   font-size: clamp(1.35rem, 2.2vw, 1.75rem);
   font-weight: 600;
   letter-spacing: -0.02em;
-  line-height: 1;
+  line-height: 1.05;
 }
 .bk__point-label {
   font-size: 0.86rem;
@@ -13842,7 +13870,7 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   display: inline-block;
   width: 7px;
   height: 7px;
-  margin-top: 0.42rem;
+  margin-top: 0.4rem;
   border-radius: 50%;
   background: var(--indigo);
   position: relative;
