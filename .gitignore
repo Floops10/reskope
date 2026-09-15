@@ -27,3 +27,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Auditeur de mise en page, temporaire (session de vérification)
+audit-temporaire.js

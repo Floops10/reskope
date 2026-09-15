@@ -12049,7 +12049,11 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 .cflw__kicker {
   display: inline-flex; align-items: center; gap: 0.6rem;
   font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase;
-  color: var(--indigo-bright); margin: 0 0 0.9rem; font-variant-numeric: tabular-nums;
+  /* L'indigo clair sur la nuit du film ne passe pas la barre de contraste à
+     cette taille : on l'éclaircit vers le crème pour ce libellé seulement,
+     les grands chiffres gardent la couleur de la charte. */
+  color: color-mix(in srgb, var(--indigo-bright) 52%, var(--cream));
+  margin: 0 0 0.9rem; font-variant-numeric: tabular-nums;
 }
 .cflw__num {
   font-size: clamp(3rem, 6vw, 5.4rem); font-weight: 600; line-height: 0.92;
@@ -13722,9 +13726,9 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
    colonne de faits et on lisait le texte à travers le réseau. */
 .bk__decor {
   position: absolute;
-  bottom: -4%;
-  right: -9%;
-  opacity: 0.3;
+  bottom: -13%;
+  right: -13%;
+  opacity: 0.26;
   pointer-events: none;
 }
 .bk__decor .n3d-link { stroke: rgba(240, 238, 232, 0.5); }
