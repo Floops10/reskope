@@ -2139,7 +2139,9 @@ html.eco-theme .enav__tab.is-active {
 .faq__a > p {
   overflow: hidden;
   min-height: 0;
-  color: var(--muted);
+  /* La question ouverte prend un fond teinté : le gris de lecture standard
+     n'y passe plus la barre de contraste. */
+  color: var(--muted-fort);
 }
 .faq__item.is-open .faq__a {
   grid-template-rows: 1fr;
@@ -8131,7 +8133,7 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 
 .home-faq__a {
   font-size: clamp(0.875rem, 0.97vw, 0.9375rem);
-  color: var(--muted);
+  color: var(--muted-fort);
   line-height: 1.7;
   padding-bottom: 1.35rem;
   max-width: 68ch;
@@ -12117,16 +12119,17 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   font-size: 0.86rem;
   color: rgba(240, 238, 232, 0.55); margin: 0 0 0.7rem; font-variant-numeric: tabular-nums;
 }
-.ofs__badge { text-transform: none; letter-spacing: 0.05em; font-size: 0.6rem; padding: 0.18rem 0.5rem; border-radius: 999px; background: var(--indigo-bright); color: var(--ink); font-weight: 600; }
+.ofs__badge { letter-spacing: 0.02em; font-size: 0.86rem; padding: 0.22rem 0.6rem; border-radius: 999px; background: var(--cream); color: var(--indigo-deep); font-weight: 600; }
 .ofs__name { font-size: clamp(2rem, 3.6vw, 3.4rem); font-weight: 600; line-height: 1.04; letter-spacing: -0.035em; color: var(--cream); margin: 0 0 0.5rem; }
 .ofs__tagline { font-size: 1.08rem; color: rgba(240, 238, 232, 0.85); margin: 0 0 1.1rem; }
 .ofs__price {
   display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.5rem 0.9rem;
-  padding: 0.9rem 0 1.1rem; margin: 0 0 1.1rem;
-  border-top: 1px solid rgba(240, 238, 232, 0.16); border-bottom: 1px solid rgba(240, 238, 232, 0.16);
+  padding: 0.4rem 0 0; margin: 0 0 1.4rem;
 }
 .ofs__price-amount { font-size: clamp(2.6rem, 4.6vw, 4.1rem); font-weight: 600; letter-spacing: -0.035em; line-height: 1; color: var(--cream); }
-.ofs__price-type { font-size: 0.86rem; color: var(--indigo-bright); border: 1px solid color-mix(in srgb, var(--indigo-bright) 45%, transparent); padding: 0.22rem 0.55rem; border-radius: 999px; }
+/* Encore de l'indigo clair sur la nuit : on l'éclaircit vers le crème
+   pour ce libellé, comme pour les autres petits textes sur fond sombre. */
+.ofs__price-type { font-size: 0.86rem; color: color-mix(in srgb, var(--indigo-bright) 45%, var(--cream)); border: 1px solid color-mix(in srgb, var(--cream) 30%, transparent); padding: 0.22rem 0.55rem; border-radius: 999px; }
 .ofs__price-note { flex-basis: 100%; font-size: 0.88rem; color: rgba(240, 238, 232, 0.75); }
 .ofs__features { list-style: none; margin: 0 0 1.2rem; padding: 0; display: flex; flex-direction: column; gap: 0.6rem; }
 .ofs__features li { display: flex; gap: 0.6rem; font-size: 0.98rem; line-height: 1.45; color: rgba(240, 238, 232, 0.92); }

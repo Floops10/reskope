@@ -1,4 +1,4 @@
-import { pave, projeterPave, projeterSol, PR, tourner, C30, S30 } from './axo';
+import { pave, projeterPave, projeterSol, PR, tourner } from './axo';
 
 /* ============================================================
    LES FIGURES — huit petites scènes en axonométrie, au vocabulaire

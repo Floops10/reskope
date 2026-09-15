@@ -381,7 +381,7 @@ export const FAQ = {
   fr: [
     {
       q: 'Combien de temps dure un audit ?',
-      a: `Selon la taille de l'équipe, comptez de quelques jours à deux semaines entre les entretiens, l'analyse et la restitution du bilan.`,
+      a: `Selon la taille de l'équipe, comptez de quelques jours à deux semaines entre les entretiens, l'analyse et la remise du bilan. Le nombre exact de jours figure au devis, avant qu'on commence.`,
     },
     {
       q: 'Faut-il changer tous nos outils ?',
