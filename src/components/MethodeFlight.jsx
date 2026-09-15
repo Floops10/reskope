@@ -188,9 +188,11 @@ export default function MethodeFlight({ jalons, film, labels }) {
     : ['Before', 'Framing', 'Audit', 'Report', 'Delivery', 'Autonomy'];
 
   const stations = useMemo(() => ([
-    { num: '', kicker: kickers[0], title: film.introTitle, body: film.introText, deliver: '', here: false, pos: [pathX(0.03), pathY(0.03) + 1.7, zAt(0.03)] },
+    { kicker: kickers[0], title: film.introTitle, body: film.introText, deliver: '', here: false, pos: [pathX(0.03), pathY(0.03) + 1.7, zAt(0.03)] },
     ...jalons.map((j, i) => ({
-      num: j.n, kicker: `${labels.milestone} ${j.n} · ${kickers[i + 1]}`,
+      /* « Étape 01 » se lisait comme un gabarit ; le rang se dit en clair,
+         sans zéro devant, et c'est le nom de l'étape qui porte le sens. */
+      kicker: `${labels.milestone} ${Number(j.n)} · ${kickers[i + 1]}`,
       title: j.title, body: j.text, deliver: j.deliver, here: j.here,
       pos: [pathX(CT[i]), pathY(CT[i]) + 1.9, zAt(CT[i])],
     })),
@@ -273,7 +275,6 @@ export default function MethodeFlight({ jalons, film, labels }) {
             const shown = active === i || hoveredStation === i;
             return (
               <article className={`mfl__panel${shown ? ' is-active' : ''}`} key={i}>
-                {s.num && <span className="mfl__num" aria-hidden="true">{s.num}</span>}
                 <p className="mfl__kicker">{s.kicker}{s.here && <span className="mfl__here">{labels.here}</span>}</p>
                 <h2 className="mfl__title">{splitWords(s.title)}</h2>
                 <p className="mfl__body">{splitWords(s.body)}</p>

@@ -20,10 +20,7 @@ const CONTENT = {
     lead: "Chaque mission est différente, donc chaque prix l'est aussi. On regarde votre situation, on définit ensemble le périmètre, et on vous donne le montant par écrit avant de commencer. Ensuite il ne bouge plus, et vous pouvez vous arrêter à la fin de chaque étape.",
     action: 'Pas sûr ? Trouvez votre offre',
     badge: 'Le plus choisi',
-    offerLabel: 'Offre',
     pricingLabel: 'Ce qui influence le tarif',
-    detailLabel: 'Voir les détails',
-    hideLabel: 'Réduire',
     prices: {
       audit: { amount: 'Sur devis', type: 'Forfait, annoncé avant de démarrer', note: 'Le prix dépend du nombre de personnes à rencontrer et du nombre d’outils à ouvrir. On le chiffre en jours après un premier échange, et il est écrit noir sur blanc avant qu’on commence.' },
       'audit-plus': { amount: 'Sur devis', type: 'Audit déduit', note: 'L’audit est intégralement déduit si vous nous confiez la suite. La mise en œuvre est estimée en jours, validée avec vous, et vous pouvez vous arrêter à la fin de chaque étape.' },
@@ -56,10 +53,7 @@ const CONTENT = {
     lead: 'Every engagement is different, so every price is too. We look at your situation, we define the scope together, and we give you the figure in writing before we start. After that it does not move, and you can stop at the end of any step.',
     action: 'Not sure? Find your offer',
     badge: 'Most chosen',
-    offerLabel: 'Offer',
     pricingLabel: 'What influences the price',
-    detailLabel: 'See details',
-    hideLabel: 'Hide',
     prices: {
       audit: { amount: 'On quote', type: 'Fixed price, agreed before we start', note: 'It depends on how many people we meet and how many tools we open. We price it in days after a first conversation, and it is written down before we begin.' },
       'audit-plus': { amount: 'On quote', type: 'Audit deducted', note: 'The audit is fully deducted if you entrust us with the delivery. The work is estimated in days, agreed with you, and you can stop at the end of any step.' },
@@ -139,7 +133,7 @@ export default function Offres() {
           billing={c.billing}
           badge={c.badge}
           intro={{ eyebrow: c.eyebrow, title: c.title, lead: c.lead, action: c.action }}
-          labels={{ offer: c.offerLabel, pricing: c.pricingLabel, detail: c.detailLabel, hide: c.hideLabel }}
+          labels={{ pricing: c.pricingLabel }}
           locale={lang}
         />
       </Suspense>

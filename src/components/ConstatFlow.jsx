@@ -345,13 +345,13 @@ export default function ConstatFlow({ cards, film, sourceLabel, calcLabel, local
         <div className="cflw__copy" ref={copyRef}>
           {/* 01 la semaine */}
           <article className={`cflw__panel${active === 0 ? ' is-active' : ''}`}>
-            <p className="cflw__kicker">01 · {kickers[0]}</p>
+            <p className="cflw__kicker">{kickers[0]}</p>
             <h2 className="cflw__headline">{splitWords(film.weekLabel)}</h2>
             <p className="cflw__body">{splitWords(film.weekText)}</p>
           </article>
           {/* 02 47 % */}
           <article className={`cflw__panel${active === 1 ? ' is-active' : ''}`}>
-            <p className="cflw__kicker">02 · {kickers[1]}</p>
+            <p className="cflw__kicker">{kickers[1]}</p>
             <p className="cflw__num" ref={(el) => { numRefs.current.pct = el; }}>0 %</p>
             <p className="cflw__body">{splitWords(film.lostCap)}</p>
             <div className="cflw__srcrow">
@@ -362,7 +362,7 @@ export default function ConstatFlow({ cards, film, sourceLabel, calcLabel, local
           </article>
           {/* 03 en heures */}
           <article className={`cflw__panel${active === 2 ? ' is-active' : ''}`}>
-            <p className="cflw__kicker">03 · {kickers[2]}</p>
+            <p className="cflw__kicker">{kickers[2]}</p>
             <p className="cflw__num" ref={(el) => { numRefs.current.hrs = el; }}>0 h</p>
             <p className="cflw__body">
               {splitWords(film.hoursCap)}
@@ -371,7 +371,7 @@ export default function ConstatFlow({ cards, film, sourceLabel, calcLabel, local
           </article>
           {/* 04 en euros */}
           <article className={`cflw__panel${active === 3 ? ' is-active' : ''}`}>
-            <p className="cflw__kicker">04 · {kickers[3]}</p>
+            <p className="cflw__kicker">{kickers[3]}</p>
             <p className="cflw__num" ref={(el) => { numRefs.current.eur = el; }}>0 €</p>
             <p className="cflw__body">
               {splitWords(film.costCap)}
@@ -380,7 +380,7 @@ export default function ConstatFlow({ cards, film, sourceLabel, calcLabel, local
           </article>
           {/* 05 le pourquoi */}
           <article className={`cflw__panel${active === 4 ? ' is-active' : ''}`}>
-            <p className="cflw__kicker">05 · {kickers[4]}</p>
+            <p className="cflw__kicker">{kickers[4]}</p>
             <h2 className="cflw__headline">{splitWords(film.whyCap)}</h2>
             <ul className="cflw__causes">
               {whyCards.map((c) => (
@@ -396,7 +396,7 @@ export default function ConstatFlow({ cards, film, sourceLabel, calcLabel, local
           </article>
           {/* 06 l'ordre */}
           <article className={`cflw__panel${active === 5 ? ' is-active' : ''}`}>
-            <p className="cflw__kicker">06 · {kickers[5]}</p>
+            <p className="cflw__kicker">{kickers[5]}</p>
             <h2 className="cflw__headline">{splitWords(film.orderCap)}</h2>
             <p className="cflw__body">{splitWords(film.orderText)}</p>
           </article>
@@ -408,7 +408,7 @@ export default function ConstatFlow({ cards, film, sourceLabel, calcLabel, local
           <span className="cflw__rail-dots">
             {kickers.map((kk, i) => (
               <span className={`cflw__rail-dot${active === i ? ' is-active' : ''}${active >= i ? ' is-on' : ''}`} key={kk}>
-                <b>{String(i + 1).padStart(2, '0')}</b><em>{kk}</em>
+                <em>{kk}</em>
               </span>
             ))}
           </span>

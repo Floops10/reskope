@@ -211,7 +211,6 @@ export default function EcoAllege({ t }) {
   const rootRef = useRef(null);
   const deadRef = useRef(null);
   const capRefs = useRef([]);
-  const stepRefs = useRef([]);
   const progress = useRef(0);
   const mouse = useRef({ x: 0, y: 0 });
   const [, setPhase] = useState(0);
@@ -225,11 +224,6 @@ export default function EcoAllege({ t }) {
       setPhase((prev) => {
         if (prev !== phase) {
           capRefs.current.forEach((cap, i) => cap && cap.classList.toggle('is-on', i === phase));
-          stepRefs.current.forEach((s, i) => {
-            if (!s) return;
-            s.classList.toggle('is-on', i <= phase);
-            s.classList.toggle('is-active', i === phase);
-          });
         }
         return phase;
       });
@@ -282,14 +276,6 @@ export default function EcoAllege({ t }) {
                 <span className="epg__w" key={k} style={{ '--i': k }}>{w}</span>
               ))}
             </p>
-          ))}
-        </div>
-
-        <div className="epg__steps" aria-hidden="true">
-          {t.caps.map((_, i) => (
-            <span className={`epg__step${i === 0 ? ' is-on is-active' : ''}`} key={i} ref={(el) => { stepRefs.current[i] = el; }}>
-              0{i + 1}
-            </span>
           ))}
         </div>
       </div>

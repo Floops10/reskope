@@ -353,7 +353,6 @@ export default function Exemple() {
     window.addEventListener('hashchange', onHash);
     return () => window.removeEventListener('hashchange', onHash);
   }, []);
-  const tabIndex = b.tabs.findIndex((t) => t.id === tab);
 
   return (
     <Page title={b.metaTitle} description={b.metaDesc}>
@@ -368,7 +367,7 @@ export default function Exemple() {
       <section className="section section--tight">
         <div className="container bilan">
           <nav className="bilan__tabs" aria-label={b.hero.eyebrow}>
-            {b.tabs.map((t, i) => (
+            {b.tabs.map((t) => (
               <button
                 key={t.id}
                 type="button"
@@ -376,7 +375,6 @@ export default function Exemple() {
                 aria-current={tab === t.id}
                 onClick={() => goTab(t.id)}
               >
-                <b>{String(i + 1).padStart(2, '0')}</b>
                 <span>{t.label}</span>
               </button>
             ))}
@@ -392,8 +390,6 @@ export default function Exemple() {
                 exit={{ opacity: 0, y: -16 }}
                 transition={{ duration: 0.34, ease: [0.22, 1, 0.36, 1] }}
               >
-                <p className="bilan__index">{String(tabIndex + 1).padStart(2, '0')} / {String(b.tabs.length).padStart(2, '0')}</p>
-
                 {tab === 'resume' && (
                   <>
                     <MorphTitle as="h2" text={b.resume.title} textClass="bilan__h2" />

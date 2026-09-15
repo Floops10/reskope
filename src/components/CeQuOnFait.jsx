@@ -6,6 +6,8 @@ import { projeter, VIEWBOX } from '../lib/figures';
 import { useLang } from '../i18n';
 import { useProfil } from '../profil';
 import { FAIT } from '../data/profils';
+import Explorateur from './Explorateur';
+import { EXPL_MOTS } from '../data/explorateur';
 
 /* ============================================================
    CE QU'ON FAIT — la planche.
@@ -99,7 +101,7 @@ function Figure({ nom, theta }) {
   );
 }
 
-function Item({ it }) {
+function Item({ it, mots, onOuvrir }) {
   const [survol, setSurvol] = useState(false);
   const theta = useAngle(survol);
   const entrer = useCallback(() => setSurvol(true), []);
@@ -110,13 +112,25 @@ function Item({ it }) {
       className="fait__item"
       onPointerEnter={entrer}
       onPointerLeave={sortir}
-      onFocus={entrer}
-      onBlur={sortir}
-      tabIndex={0}
     >
       <h3 className="fait__nom">{it.nom}</h3>
-      <span className="fait__dessin"><Figure nom={it.figure} theta={theta} /></span>
+      {/* Le dessin est un bouton : on le survole, il tourne ; on clique, il
+          s'ouvre en volume et s'explique pièce par pièce. */}
+      <button
+        type="button"
+        className="fait__dessin"
+        onClick={() => onOuvrir(it.figure)}
+        onFocus={entrer}
+        onBlur={sortir}
+        aria-label={`${it.nom} — ${mots.ouvrir}`}
+      >
+        <Figure nom={it.figure} theta={theta} />
+      </button>
       <p className="fait__quoi">{it.quoi}</p>
+      <button type="button" className="fait__ouvrir" onClick={() => onOuvrir(it.figure)}>
+        {mots.ouvrir}
+        <i aria-hidden="true" />
+      </button>
     </div>
   );
 }
@@ -125,6 +139,8 @@ export default function CeQuOnFait() {
   const { lang } = useLang();
   const { profil } = useProfil();
   const c = (FAIT[profil] || FAIT.pme)[lang] || (FAIT[profil] || FAIT.pme).fr;
+  const mots = EXPL_MOTS[lang] || EXPL_MOTS.fr;
+  const [ouverte, setOuverte] = useState(null);
   const racine = useRef(null);
 
   useGSAP(() => {
@@ -176,7 +192,9 @@ export default function CeQuOnFait() {
 
         <div className="fait__planche">
           <div className="fait__rangee">
-            {c.items.map((it) => <Item key={it.nom} it={it} />)}
+            {c.items.map((it) => (
+              <Item key={it.nom} it={it} mots={mots} onOuvrir={setOuverte} />
+            ))}
           </div>
         </div>
 
@@ -188,6 +206,8 @@ export default function CeQuOnFait() {
           </Link>
         </div>
       </div>
+
+      {ouverte && <Explorateur figure={ouverte} onFermer={() => setOuverte(null)} />}
     </section>
   );
 }

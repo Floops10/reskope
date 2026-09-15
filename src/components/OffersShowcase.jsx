@@ -1,10 +1,12 @@
-import { useRef, useMemo, useState, useEffect } from 'react';
+import { useRef, useMemo, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Link } from 'react-router-dom';
 import * as THREE from 'three';
 import { ScrollTrigger, useGSAP } from '../lib/gsap';
-import { lockScroll } from '../lib/smoothScroll';
 import NetWord from './NetWord';
+import Explorateur from './Explorateur';
+import CubeGlyph from './CubeGlyph';
+import { FIGURE_OFFRE, EXPL_MOTS } from '../data/explorateur';
 
 /* ============================================================
    OFFRES — LE SHOWCASE (WebGL, nuit + réseau lumineux).
@@ -21,7 +23,13 @@ import NetWord from './NetWord';
    4 SUIVI            une boucle (on reste)
    5 FACTURATION      un axe de jours (transparence)  comment je facture
 
-   reduced-motion => liste lisible. Détail au clic. Fond indigo profond.
+   Au clic, l'offre s'ouvre en volume : la même géométrie que la planche
+   de l'accueil et que les livrets, montée en trois dimensions, qu'on
+   tourne à la main et dont chaque pièce s'explique. Le détail du chantier
+   et ce qui fait bouger le prix sont dans ce volume, pas dans une fiche
+   séparée : une seule porte par offre.
+
+   reduced-motion => liste lisible. Fond indigo profond.
    ============================================================ */
 
 const INK = '#0b0920';
@@ -181,21 +189,11 @@ export default function OffersShowcase({ offers, prices, billing, badge, labels,
   const progress = useRef(0);
   const mouse = useRef({ x: 0, y: 0 });
   const [active, setActive] = useState(0);
-  const [modal, setModal] = useState(null);       // offre ouverte en popup
+  /* L'offre ouverte en volume, par son rang. L'explorateur porte lui-même
+     le verrouillage du scroll, la touche Échap et le piège à focus. */
+  const [ouverte, setOuverte] = useState(null);
   const reduced = prefersReduced();
-
-  /* Popup : scroll de page verrouillé, Échap pour fermer */
-  useEffect(() => {
-    lockScroll(modal !== null);
-    document.body.style.overflow = modal !== null ? 'hidden' : '';
-    const onKey = (e) => e.key === 'Escape' && setModal(null);
-    window.addEventListener('keydown', onKey);
-    return () => {
-      lockScroll(false);
-      document.body.style.overflow = '';
-      window.removeEventListener('keydown', onKey);
-    };
-  }, [modal]);
+  const mots = EXPL_MOTS[locale] || EXPL_MOTS.fr;
 
   const states = useMemo(buildStates, []);
   const introWord = intro.title.split(' ')[0];
@@ -242,7 +240,7 @@ export default function OffersShowcase({ offers, prices, billing, badge, labels,
           <p className="eyebrow eyebrow--index">{intro.eyebrow}</p>
           <h1 className="ofs-flat__title">{intro.title}</h1>
           <p className="ofs-flat__lead">{intro.lead}</p>
-          {offers.map((o) => {
+          {offers.map((o, oi) => {
             const pr = prices[o.id];
             return (
               <div className={`ofs-flat__card${o.featured ? ' is-featured' : ''}`} key={o.id}>
@@ -252,12 +250,30 @@ export default function OffersShowcase({ offers, prices, billing, badge, labels,
                 </div>
                 <p className="ofs-flat__tag">{o.tagline}</p>
                 <ul>{o.features.map((f, k) => <li key={k}>{f}</li>)}</ul>
-                <Link to="/contact" className="btn btn--ghost">{o.cta}<span className="btn__arrow" aria-hidden="true">→</span></Link>
+                <div className="ofs-flat__actions">
+                  <Link to="/contact" className="btn btn--ghost">{o.cta}<span className="btn__arrow" aria-hidden="true">→</span></Link>
+                  <button type="button" className="ofs__toggle" onClick={() => setOuverte(oi)}>
+                    {mots.ouvrir}
+                    <CubeGlyph className="ofs__cube" />
+                  </button>
+                </div>
               </div>
             );
           })}
           <p className="ofs-flat__billing"><strong>{billing.title}</strong> {billing.text}</p>
         </div>
+        {ouverte !== null && (
+          <Explorateur
+            figure={FIGURE_OFFRE[offers[ouverte].id]}
+            onFermer={() => setOuverte(null)}
+            plus={{
+              detail: offers[ouverte].detail,
+              tarifLabel: labels.pricing,
+              facteurs: offers[ouverte].pricingFactors,
+              cta: { label: offers[ouverte].cta, to: '/contact' },
+            }}
+          />
+        )}
       </section>
     );
   }
@@ -278,6 +294,30 @@ export default function OffersShowcase({ offers, prices, billing, badge, labels,
         </Canvas>
 
         <div className="ofs__scrim" aria-hidden="true" />
+
+        {/* L'emblème n'est pas un décor : c'est l'offre. On peut donc le
+            prendre et entrer dedans. La zone de clic couvre la moitié où il
+            flotte, l'invitation ne se montre qu'au survol pour ne pas
+            encombrer une scène qui doit rester lisible d'un coup d'œil.
+
+            Elle double le bouton du panneau, qui lui reste au clavier et
+            dans la liste des commandes : deux annonces pour une seule
+            action embrouilleraient plus qu'elles n'aideraient. */}
+        {panels[active]?.kind === 'offer' && (
+          <button
+            type="button"
+            className="ofs__entree"
+            onClick={() => setOuverte(active - 1)}
+            data-cursor-label={mots.ouvrir}
+            tabIndex={-1}
+            aria-hidden="true"
+          >
+            <span className="ofs__entree-mot">
+              <CubeGlyph className="ofs__cube" />
+              {mots.ouvrir}
+            </span>
+          </button>
+        )}
 
         <div className="ofs__copy">
           {panels.map((pn, i) => {
@@ -337,9 +377,9 @@ export default function OffersShowcase({ offers, prices, billing, badge, labels,
                   <Link to="/contact" className={`btn ${o.featured ? 'btn--primary' : 'btn--on-dark'}`} data-cursor-label={o.cta}>
                     {o.cta}<span className="btn__arrow" aria-hidden="true">→</span>
                   </Link>
-                  <button type="button" className="ofs__toggle" onClick={() => setModal(i - 1)}>
-                    {labels.detail}
-                    <span className="ofs__toggle-icon" aria-hidden="true" />
+                  <button type="button" className="ofs__toggle" onClick={() => setOuverte(i - 1)}>
+                    {mots.ouvrir}
+                    <CubeGlyph className="ofs__cube" />
                   </button>
                 </div>
               </article>
@@ -361,39 +401,25 @@ export default function OffersShowcase({ offers, prices, billing, badge, labels,
         </div>
       </div>
 
-      {/* Popup détails : son propre scroll, la page reste où elle est */}
-      {modal !== null && (() => {
-        const o = offers[modal];
-        const price = prices[o.id];
+      {/* L'offre ouverte en volume. Le détail du chantier et ce qui fait
+          bouger le prix voyagent avec elle : on lit l'offre en tournant
+          autour, pas dans une fiche posée à côté. */}
+      {ouverte !== null && (() => {
+        const o = offers[ouverte];
         return (
-          <div className="ofsmodal" role="dialog" aria-modal="true" aria-label={o.name}>
-            <div className="ofsmodal__backdrop" onClick={() => setModal(null)} />
-            <div className="ofsmodal__panel" data-lenis-prevent>
-              <button type="button" className="ofsmodal__close" aria-label="Fermer" onClick={() => setModal(null)}>
-                <span aria-hidden="true" />
-              </button>
-              {o.featured && (
-                <p className="ofsmodal__kicker"><span className="ofsmodal__badge">{badge}</span></p>
-              )}
-              <h3 className="ofsmodal__name">{o.name}</h3>
-              <p className="ofsmodal__tagline">{o.tagline}</p>
-              <div className="ofsmodal__price">
-                <span className="ofsmodal__amount">{price.amount}</span>
-                <span className="ofsmodal__type">{price.type}</span>
-              </div>
-              <p className="ofsmodal__note">{price.note}</p>
-              <p className="ofsmodal__text">{o.detail}</p>
-              <p className="ofsmodal__label">{labels.pricing}</p>
-              <ul className="ofsmodal__pricing">
-                {o.pricingFactors.map((f, k) => <li key={k}>{f}</li>)}
-              </ul>
-              <Link to="/contact" className="btn btn--primary ofsmodal__cta" data-cursor-label={o.cta}>
-                {o.cta}<span className="btn__arrow" aria-hidden="true">→</span>
-              </Link>
-            </div>
-          </div>
+          <Explorateur
+            figure={FIGURE_OFFRE[o.id]}
+            onFermer={() => setOuverte(null)}
+            plus={{
+              detail: o.detail,
+              tarifLabel: labels.pricing,
+              facteurs: o.pricingFactors,
+              cta: { label: o.cta, to: '/contact' },
+            }}
+          />
         );
       })()}
+
     </section>
   );
 }

@@ -61,6 +61,9 @@ html.lenis body {
   --indigo: #1c0cb3;
   --indigo-deep: #130982;
   --indigo-bright: #5b4be6;
+  /* Le même indigo, éclairci de ce qu'il faut pour rester lisible sur la
+     nuit : #5b4be6 sur #0b0920 ne donne que 3,35:1, sous la barre. */
+  --indigo-nuit: #8b7ff0;
   --cream: #f0eee8;
   --cream-light: #f7f5f0;
   --cream-shade: #e6e2d7;
@@ -5436,7 +5439,10 @@ html.eco-theme .langtoggle {
   border-color: rgba(240, 238, 232, 0.24);
 }
 html.eco-theme .langtoggle__opt {
-  color: rgba(240, 238, 232, 0.72);
+  /* Sur la pastille posée sur le vert, toute transparence passe sous la
+     barre : le libellé non choisi reste en crème plein, et c'est la
+     pastille remplie qui marque le choix. */
+  color: var(--cream);
 }
 html.eco-theme .langtoggle__opt.is-on {
   background: var(--cream);
@@ -8188,7 +8194,9 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 .footer2__zone {
   margin-top: 0.55rem;
   font-size: 0.82rem;
-  color: rgba(240, 238, 232, 0.5);
+  /* Sur l'indigo du pied de page, le crème doit rester assez dense pour se
+     lire : à 0,5 d'opacité on tombait à 3,33:1, sous la barre des 4,5. */
+  color: rgba(240, 238, 232, 0.72);
 }
 .footer2__card-btn {
   color: rgba(240, 238, 232, 0.78);
@@ -8250,7 +8258,7 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 }
 .footer2__heading {
   font-size: 0.86rem;
-  color: rgba(240, 238, 232, 0.45);
+  color: rgba(240, 238, 232, 0.66);
   margin-bottom: 0.5rem;
 }
 .footer2__col a:hover {
@@ -8314,7 +8322,7 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   gap: 0.8rem 1.6rem;
   padding-block: clamp(1.2rem, 3vh, 2rem);
   font-size: 0.78rem;
-  color: rgba(240, 238, 232, 0.5);
+  color: rgba(240, 238, 232, 0.68);
 }
 .footer2__legal p {
   margin: 0;
@@ -8325,7 +8333,7 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   gap: 0.4rem 1.4rem;
 }
 .footer2__legal-links a {
-  color: rgba(240, 238, 232, 0.55);
+  color: rgba(240, 238, 232, 0.68);
   transition: color 0.25s ease;
 }
 .footer2__legal-links a:hover {
@@ -8921,7 +8929,7 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 }
 .constat-bridge__lab {
   font-size: 0.86rem;
-  color: rgba(240, 238, 232, 0.6);
+  color: rgba(240, 238, 232, 0.76);
 }
 .constat-bridge__chips {
   display: flex;
@@ -11784,7 +11792,7 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 .mcin__hud-dot em { font-style: normal; font-size: 0.72rem; color: var(--cream); }
 .mcin__hud-dot.is-on { opacity: 0.7; }
 .mcin__hud-dot.is-active { opacity: 1; }
-.mcin__hud-dot.is-active em { color: var(--indigo-bright); font-weight: 600; }
+.mcin__hud-dot.is-active em { color: var(--indigo-nuit); font-weight: 600; }
 /* éclosion finale (le fond du stage est déjà crème à ce moment) */
 .mcin__synth { position: absolute; inset: 0; z-index: 6; display: grid; place-items: center; padding-inline: var(--gutter); opacity: 0; pointer-events: none; }
 .mcin__synth p { max-width: 22ch; text-align: center; font-size: clamp(2rem, 5vw, 4.4rem); font-weight: 600; line-height: 1.06; letter-spacing: -0.03em; color: var(--ink); margin: 0; }
@@ -11839,12 +11847,6 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   /* l'entrée ATTEND que la sortie soit finie (fondu exclusif) */
   transition: opacity 0.5s ease 0.3s, visibility 0s linear 0.3s;
 }
-.mfl__num {
-  position: absolute; top: -0.32em; right: 0; z-index: -1;
-  font-size: clamp(3.5rem, 6vw, 6rem); font-weight: 700; line-height: 0.8;
-  letter-spacing: -0.05em; color: color-mix(in srgb, var(--indigo) 12%, transparent);
-  font-variant-numeric: tabular-nums; pointer-events: none;
-}
 .mfl__kicker {
   display: inline-flex; align-items: center; gap: 0.6rem;
   font-size: 0.86rem;
@@ -11886,7 +11888,6 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
     top: auto; bottom: 15vh; transform: none;
   }
   .mfl__title { font-size: clamp(2rem, 8.5vw, 3.2rem); }
-  .mfl__num { font-size: clamp(3rem, 14vw, 5rem); top: -0.5em; }
   .mfl__body { max-width: none; }
   .mfl__hud-dot em { display: none; }
   .mfl__scrim {
@@ -11985,11 +11986,10 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 .cflw__rail-line i { position: absolute; inset: 0; background: var(--indigo-bright); transform: scaleX(0); transform-origin: left; }
 .cflw__rail-dots { display: flex; justify-content: space-between; }
 .cflw__rail-dot { display: flex; align-items: baseline; gap: 0.4rem; opacity: 0.4; transition: opacity 0.3s ease; }
-.cflw__rail-dot b { font-size: 0.62rem; font-weight: 600; color: rgba(240, 238, 232, 0.55); font-variant-numeric: tabular-nums; }
 .cflw__rail-dot em { font-style: normal; font-size: 0.72rem; color: var(--cream); }
 .cflw__rail-dot.is-on { opacity: 0.7; }
 .cflw__rail-dot.is-active { opacity: 1; }
-.cflw__rail-dot.is-active em { color: var(--indigo-bright); font-weight: 600; }
+.cflw__rail-dot.is-active em { color: var(--indigo-nuit); font-weight: 600; }
 /* synthèse */
 .cflw__synth { position: absolute; inset: 0; z-index: 6; display: grid; place-items: center; padding-inline: var(--gutter); opacity: 0; pointer-events: none; background: radial-gradient(110% 100% at 50% 46%, rgba(14, 11, 31, 0.6) 0%, rgba(14, 11, 31, 0.92) 80%); }
 .cflw__synth p { max-width: 22ch; text-align: center; font-size: clamp(1.9rem, 4.4vw, 4rem); font-weight: 600; line-height: 1.08; letter-spacing: -0.03em; color: var(--cream); margin: 0; }
@@ -12138,15 +12138,63 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 .ofs__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.8rem 1.2rem; }
 .ofs__toggle {
   display: inline-flex; align-items: center; gap: 0.5rem; background: none; border: none; cursor: pointer;
-  font: inherit; font-size: 0.82rem; font-weight: 500; color: var(--indigo-bright); padding: 0.3rem 0;
+  font: inherit; font-size: 0.82rem; font-weight: 500; color: var(--indigo-nuit); padding: 0.3rem 0;
 }
-.ofs__toggle-icon { width: 8px; height: 8px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(45deg); transition: transform 0.35s ease; }
-.ofs__toggle[aria-expanded="true"] .ofs__toggle-icon { transform: rotate(-135deg); }
+.ofs__toggle:hover { color: var(--cream); }
+/* Le petit pavé axonométrique : les trois indigos de la charte, la même
+   géométrie que la planche. Sur fond nuit il s'éclaircit, sinon il
+   disparaîtrait dans le bleu profond du fond. */
+.cubg { display: block; overflow: visible; }
+.ofs__cube { width: 15px; height: 17px; flex: none; }
+.ofs__cube .cubg__h { fill: #8f83f0; }
+.ofs__cube .cubg__d { fill: var(--indigo-bright); }
+.ofs__cube .cubg__g { fill: #4436c9; }
+.ofs__toggle:hover .ofs__cube,
+.ofs__entree:hover .ofs__cube { transform: translateY(-2px); }
+.ofs__cube { transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1); }
+@media (max-width: 720px) {
+  .eco-gain__pave { position: static; margin-bottom: 0.5rem; }
+}
+
+/* L'emblème est cliquable : la moitié où il flotte est une porte. Rien ne
+   se montre tant que la souris n'y est pas, pour laisser la scène tranquille. */
+.ofs__entree {
+  position: absolute;
+  z-index: 3;
+  right: 0;
+  top: 0;
+  width: 46%;
+  height: 100%;
+  border: 0;
+  padding: 0;
+  background: none;
+  cursor: pointer;
+  display: grid;
+  place-items: end center;
+  padding-bottom: clamp(5rem, 13vh, 8rem);
+}
+.ofs__entree-mot {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.5rem 1rem 0.5rem 0.8rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, #0b0920 72%, transparent);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  font-size: 0.88rem;
+  color: var(--cream);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.35s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ofs__entree:hover .ofs__entree-mot { opacity: 1; transform: none; }
+.ofs-flat__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.8rem 1.4rem; }
 .ofs__detail { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.42s cubic-bezier(0.22, 1, 0.36, 1); }
 .ofs__detail.is-open { grid-template-rows: 1fr; }
 .ofs__detail-inner { overflow: hidden; min-height: 0; }
 .ofs__detail-text { font-size: 0.88rem; line-height: 1.55; color: rgba(240, 238, 232, 0.7); margin: 1rem 0 0.9rem; }
-.ofs__pricing-label { font-size: 0.86rem; color: var(--indigo-bright); margin: 0 0 0.5rem; }
+.ofs__pricing-label { font-size: 0.86rem; color: var(--indigo-nuit); margin: 0 0 0.5rem; }
 .ofs__pricing { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.4rem; }
 .ofs__pricing li { position: relative; padding-left: 0.95rem; font-size: 0.82rem; color: rgba(240, 238, 232, 0.62); }
 .ofs__pricing li::before { content: '·'; position: absolute; left: 0.15rem; color: var(--indigo-bright); }
@@ -12164,7 +12212,7 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 .ofs__rail-dot em { font-style: normal; font-size: 0.72rem; color: var(--cream); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .ofs__rail-dot.is-on { opacity: 0.7; }
 .ofs__rail-dot.is-active { opacity: 1; }
-.ofs__rail-dot.is-active em { color: var(--indigo-bright); font-weight: 600; }
+.ofs__rail-dot.is-active em { color: var(--indigo-nuit); font-weight: 600; }
 /* mobile : texte en bas, voile en bas */
 @media (max-width: 860px) {
   .ofs__panel { left: var(--gutter); right: var(--gutter); width: auto; max-height: none; top: auto; bottom: 13vh; transform: none; }
@@ -12183,7 +12231,7 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 .ofs-flat__card { padding: 1.4rem 0; }
 .ofs-flat__top { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
 .ofs-flat__top h3 { margin: 0; font-size: 1.3rem; }
-.ofs-flat__price { font-weight: 600; color: var(--indigo-bright); white-space: nowrap; }
+.ofs-flat__price { font-weight: 600; color: var(--indigo-nuit); white-space: nowrap; }
 .ofs-flat__tag { color: rgba(240, 238, 232, 0.6); margin: 0.3rem 0 0.6rem; }
 .ofs-flat__card ul { margin: 0 0 0.8rem; padding-left: 1.1rem; color: rgba(240, 238, 232, 0.8); }
 .ofs-flat__billing { margin-top: 1.6rem; color: rgba(240, 238, 232, 0.7); }
@@ -12229,69 +12277,13 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 .quiz__done { display: inline-flex; width: 54px; height: 54px; border-radius: 50%; background: color-mix(in srgb, var(--indigo) 12%, var(--cream)); position: relative; margin-bottom: 1.1rem; }
 .quiz__done::after { content: ''; position: absolute; left: 20px; top: 14px; width: 11px; height: 20px; border: solid var(--indigo); border-width: 0 2.5px 2.5px 0; transform: rotate(45deg); }
 
-/* ============================================================
-   OFFRES — popup « Voir les détails » (scroll indépendant)
-   ============================================================ */
-.ofsmodal { position: fixed; inset: 0; z-index: 90; display: grid; place-items: center; padding: clamp(0.8rem, 3vw, 2rem); }
-.ofsmodal__backdrop {
-  position: absolute; inset: 0;
-  background: rgba(11, 9, 32, 0.68);
-  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
-  animation: ofsmFade 0.3s ease both;
-}
-.ofsmodal__panel {
-  position: relative;
-  width: min(92vw, 620px);
-  max-height: min(84svh, 760px);
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  -webkit-overflow-scrolling: touch;
-  background: var(--cream-light);
-  color: var(--ink);
-  border-radius: 22px;
-  padding: clamp(1.6rem, 4vw, 2.6rem);
-  box-shadow: 0 60px 120px -50px rgba(0, 0, 0, 0.8);
-  animation: ofsmPop 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-@keyframes ofsmFade { from { opacity: 0; } }
-@keyframes ofsmPop { from { opacity: 0; transform: translateY(26px) scale(0.97); } }
-.ofsmodal__close {
-  position: sticky; top: 0; float: right; z-index: 2;
-  width: 40px; height: 40px; border-radius: 50%;
-  border: 1px solid var(--hairline); background: var(--cream);
-  cursor: pointer; transition: background 0.25s ease, transform 0.3s ease;
-}
-.ofsmodal__close:hover { background: var(--cream-shade); transform: rotate(90deg); }
-.ofsmodal__close span { position: absolute; inset: 0; }
-.ofsmodal__close span::before,
-.ofsmodal__close span::after {
-  content: ''; position: absolute; left: 50%; top: 50%;
-  width: 16px; height: 1.6px; background: var(--ink); border-radius: 2px;
-}
-.ofsmodal__close span::before { transform: translate(-50%, -50%) rotate(45deg); }
-.ofsmodal__close span::after { transform: translate(-50%, -50%) rotate(-45deg); }
-.ofsmodal__kicker { display: inline-flex; align-items: center; gap: 0.6rem; font-size: 0.86rem; color: var(--indigo); margin: 0 0 0.7rem; font-variant-numeric: tabular-nums; }
-.ofsmodal__badge { text-transform: none; letter-spacing: 0.05em; font-size: 0.6rem; padding: 0.18rem 0.5rem; border-radius: 999px; background: var(--indigo); color: var(--cream); font-weight: 600; }
-.ofsmodal__name { font-size: clamp(1.6rem, 4.2vw, 2.2rem); font-weight: 600; letter-spacing: -0.03em; line-height: 1.06; margin: 0 0 0.35rem; }
-.ofsmodal__tagline { color: var(--muted); margin: 0 0 1.2rem; }
-.ofsmodal__price { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.5rem 0.9rem; padding-top: 1rem; border-top: 1px solid var(--hairline); }
-.ofsmodal__amount { font-size: clamp(1.6rem, 4.5vw, 2.2rem); font-weight: 600; letter-spacing: -0.03em; color: var(--indigo); }
-.ofsmodal__type { font-size: 0.86rem; color: var(--indigo); border: 1px solid color-mix(in srgb, var(--indigo) 35%, transparent); padding: 0.22rem 0.55rem; border-radius: 999px; }
-.ofsmodal__note { font-size: 0.9rem; color: var(--muted); margin: 0.4rem 0 1.2rem; }
-.ofsmodal__text { font-size: 1.02rem; line-height: 1.65; color: var(--ink); margin: 0 0 1.4rem; }
-.ofsmodal__label { font-size: 0.86rem; color: var(--indigo); margin: 0 0 0.6rem; }
-.ofsmodal__pricing { list-style: none; margin: 0 0 1.6rem; padding: 0; display: flex; flex-direction: column; gap: 0.5rem; }
-.ofsmodal__pricing li { position: relative; padding-left: 1.1rem; font-size: 0.95rem; line-height: 1.5; color: var(--muted); }
-.ofsmodal__pricing li::before { content: ''; position: absolute; left: 0; top: 0.55em; width: 7px; height: 7px; border-radius: 50%; background: var(--indigo); }
-.ofsmodal__cta { width: 100%; justify-content: space-between; }
-@media (prefers-reduced-motion: reduce) {
-  .ofsmodal__backdrop, .ofsmodal__panel { animation: none; }
-}
-
 /* Offres — lisibilité mobile : le texte vit dans une CARTE DE VERRE
    (les animations restent visibles autour, mais ne se battent plus avec
    la lecture) et le canvas se calme légèrement. */
 @media (max-width: 860px) {
+  /* Le panneau occupe tout le bas et porte déjà son bouton : une seconde
+     invitation au même endroit ferait doublon, et il n'y a pas de survol ici. */
+  .ofs__entree { display: none; }
   .ofs__panel {
     left: 0.8rem;
     right: 0.8rem;
@@ -12380,16 +12372,13 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   text-align: left; border-left: 2px solid var(--hairline); border-radius: 0 10px 10px 0;
   transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, padding-left 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.bilan__tab b { font-size: 0.66rem; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--muted); transition: color 0.25s ease; }
 .bilan__tab:hover { color: var(--ink); background: color-mix(in srgb, var(--indigo) 5%, transparent); }
 .bilan__tab.is-on {
   color: var(--indigo); border-left-color: var(--indigo);
   background: color-mix(in srgb, var(--indigo) 8%, transparent);
   padding-left: 1.15rem;
 }
-.bilan__tab.is-on b { color: var(--indigo); }
 .bilan__panelwrap { min-height: 560px; }
-.bilan__index { font-size: 0.7rem; letter-spacing: 0.2em; color: var(--muted); font-variant-numeric: tabular-nums; margin: 0 0 0.6rem; }
 .bilan__h2 { font-size: clamp(1.7rem, 3vw, 2.5rem); font-weight: 600; letter-spacing: -0.03em; line-height: 1.08; margin: 0 0 0.9rem; color: var(--ink); }
 .bilan__intro { color: var(--muted); line-height: 1.6; max-width: 62ch; margin: 0 0 1.8rem; }
 .bilan-note { font-size: 0.84rem; color: var(--muted); margin: 1rem 0 0; }
@@ -12561,7 +12550,6 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   .bilan__tabs::-webkit-scrollbar { display: none; }
   .bilan__tab { flex: none; border-left: 0; border: 1px solid var(--hairline); border-radius: 999px; padding: 0.5rem 0.95rem; font-size: 0.85rem; white-space: nowrap; background: var(--cream-light); }
   .bilan__tab.is-on { background: var(--indigo); color: var(--cream); border-color: var(--indigo); padding-left: 0.95rem; }
-  .bilan__tab.is-on b { color: color-mix(in srgb, var(--cream) 75%, transparent); }
   .bilan__panelwrap { min-height: 420px; }
   .bilan-stats { grid-template-columns: 1fr 1fr; }
   .bilan-points { grid-template-columns: 1fr; }
@@ -12795,40 +12783,6 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   transform: none;
   transition-delay: calc(0.15s + var(--i) * 0.045s);
 }
-/* Les 3 temps de la scène */
-.epg__steps {
-  position: absolute;
-  z-index: 2;
-  left: 50%;
-  bottom: clamp(1.2rem, 3vh, 2rem);
-  transform: translateX(-50%);
-  display: flex;
-  gap: 1.4rem;
-}
-.epg__step {
-  font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  color: rgba(240, 238, 232, 0.35);
-  font-variant-numeric: tabular-nums;
-  position: relative;
-  padding-top: 0.55rem;
-  transition: color 0.4s ease;
-}
-.epg__step::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 50%;
-  transform: translateX(-50%);
-  width: 22px; height: 2px;
-  border-radius: 2px;
-  background: rgba(240, 238, 232, 0.18);
-  transition: background 0.4s ease;
-}
-.epg__step.is-on { color: rgba(240, 238, 232, 0.7); }
-.epg__step.is-on::before { background: rgba(125, 223, 168, 0.5); }
-.epg__step.is-active { color: #7ddfa8; }
-.epg__step.is-active::before { background: #7ddfa8; }
 @media (max-width: 860px) {
   .epg { height: 300vh; }
   .epg__board { inset: 12% 4% 30%; }
@@ -12997,81 +12951,92 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 .eco-fact__source--lien:hover { color: #7ddfa8; }
 .eco-fact__source--lien:hover span { transform: translate(2px, -2px); }
 
-/* La chaîne des économies */
-.eco-chain {
-  position: relative;
-  margin-top: clamp(2rem, 5vh, 3.4rem);
-  padding-left: clamp(2.2rem, 5vw, 3.4rem);
+/* LES QUATRE ÉCONOMIES — un escalier, pas une liste numérotée.
+
+   La version d'avant posait un 01 / 02 / 03 en gros chiffres le long d'un
+   rail vertical : c'est le gabarit qu'on retrouve sur la moitié des sites,
+   et il ne disait rien que le texte ne disait déjà. Ici chaque économie
+   découle de la précédente, alors elle se décale d'un cran vers la droite.
+   L'ordre se voit dans la position, pas dans un numéro. */
+.eco-gains {
+  margin-top: clamp(2.2rem, 6vh, 4rem);
   display: flex;
   flex-direction: column;
-  gap: clamp(2rem, 5vh, 3.2rem);
+  gap: clamp(2.2rem, 6vh, 3.6rem);
 }
-.eco-chain__rail {
-  position: absolute;
-  left: 8px;
-  top: 0.4rem;
-  bottom: 0.4rem;
-  width: 2px;
-  background: rgba(240, 238, 232, 0.14);
-  border-radius: 2px;
-  overflow: hidden;
-}
-.eco-chain__rail i {
-  position: absolute; inset: 0;
-  background: #7ddfa8;
-  transform: scaleY(0);
-  transform-origin: top;
-  display: block;
-}
-.eco-chain__item {
+.eco-gain {
   position: relative;
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 0.4rem 1.2rem;
+  max-width: 62ch;
+  margin-left: calc(var(--k) * clamp(0rem, 3.2vw, 2.6rem));
   will-change: transform, opacity;
 }
-.eco-chain__node {
-  position: absolute;
-  left: calc(-1 * clamp(2.2rem, 5vw, 3.4rem) + 3px);
-  top: 0.5rem;
-  width: 12px; height: 12px;
-  border-radius: 50%;
-  border: 2px solid rgba(240, 238, 232, 0.35);
-  background: transparent;
-  transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
-}
-.eco-chain__item.is-on .eco-chain__node {
-  background: #7ddfa8;
-  border-color: #7ddfa8;
-  box-shadow: 0 0 14px color-mix(in srgb, #7ddfa8 60%, transparent);
-}
-.eco-chain__num {
-  align-self: start;
-  font-size: clamp(1.9rem, 3.4vw, 2.7rem);
-  font-weight: 700;
-  line-height: 1;
-  letter-spacing: -0.04em;
-  color: rgba(240, 238, 232, 0.28);
-  font-variant-numeric: tabular-nums;
-  min-width: 2ch;
-  transition: color 0.5s ease;
-}
-.eco-chain__item.is-on .eco-chain__num { color: #7ddfa8; }
-.eco-chain__title {
-  font-size: clamp(1.3rem, 2.4vw, 1.9rem);
+.eco-gain__titre {
+  font-size: clamp(1.35rem, 2.6vw, 2.05rem);
   font-weight: 600;
-  letter-spacing: -0.02em;
-  margin: 0 0 0.45rem;
+  letter-spacing: -0.025em;
+  line-height: 1.12;
+  margin: 0 0 0.5rem;
   color: var(--cream);
 }
-.eco-chain__text {
-  margin: 0;
-  line-height: 1.6;
-  max-width: 58ch;
-  color: rgba(240, 238, 232, 0.82);
+/* Le pavé : le même petit volume que partout ailleurs, mais il RÉTRÉCIT
+   d'une économie à l'autre. On parle de « moins de » quatre fois de suite ;
+   autant que le signe le dise lui aussi. */
+.eco-gain__pave {
+  position: absolute;
+  left: calc(-1 * clamp(1.5rem, 3.4vw, 2.6rem));
+  top: 0.1em;
+  width: calc(clamp(1rem, 2vw, 1.5rem) - var(--k) * 0.16rem);
+  height: auto;
+  overflow: visible;
+  opacity: 0.32;
+  transform: translateY(6px);
+  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
+.eco-gain.is-on .eco-gain__pave { opacity: 1; transform: none; }
+.eco-gain__pave .cubg__h { fill: #7ddfa8; }
+.eco-gain__pave .cubg__d { fill: #3f9e69; }
+.eco-gain__pave .cubg__g { fill: #2b7b50; }
+.eco-gain__texte {
+  margin: 0;
+  line-height: 1.62;
+  color: rgba(240, 238, 232, 0.86);
+}
+@media (max-width: 720px) {
+  .eco-gain { margin-left: 0; }
+}
+
 /* Morph réseau version éco */
 .morph__net--eco { color: #7ddfa8; }
+
+/* LE CRÈME SUR LE VERT — densités mesurées.
+
+   #0B6B35 est un vert clair : du crème à 0,6 d'opacité n'y atteint que
+   3,08:1, là où il en faut 4,5. Sur cette page, la hiérarchie se fait donc
+   par la taille et la graisse, pas par l'effacement. Chaque valeur ci-
+   dessous est celle qui remonte son texte au-dessus de la barre sur le fond
+   qu'il occupe vraiment : le vert de la page, celui de la bande, celui des
+   cartes de faits. */
+html.eco-theme .eyebrow--index,
+html.eco-theme .eyebrow--eco,
+html.eco-theme .pagehead__lead,
+html.eco-theme .eco__lead,
+html.eco-theme .eco-cta__lead { color: rgba(240, 238, 232, 0.93); }
+html.eco-theme .eco-fact__source { color: rgba(240, 238, 232, 0.74); }
+html.eco-theme .eco-fact__source--lien span { color: inherit; }
+html.eco-theme .epg__kicker { color: rgba(240, 238, 232, 0.66); }
+html.eco-theme .footer2__col a,
+html.eco-theme .footer2__zone { color: rgba(240, 238, 232, 0.9); }
+
+/* Le panneau du menu reste crème sur la page verte : les réglages qu'il
+   contient gardent donc les couleurs du fond clair, sinon le libellé non
+   choisi s'écrivait crème sur crème — invisible. */
+html.eco-theme .menu2__panel .langtoggle {
+  background: color-mix(in srgb, #ffffff 55%, var(--cream));
+  border-color: var(--hairline);
+}
+html.eco-theme .menu2__panel .langtoggle__opt { color: color-mix(in srgb, var(--ink) 70%, transparent); }
+html.eco-theme .menu2__panel .langtoggle__opt.is-on { background: var(--eco); color: var(--cream); }
+html.eco-theme .menu2__panel .langtoggle__opt:not(.is-on):hover { color: var(--ink); }
 
 /* ============================================================
    À PROPOS v2 — serments, paliers-cartes, chaîne de compétences
@@ -13190,7 +13155,7 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 .epg__canvas { position: absolute !important; inset: 0; }
 .epg-loading { height: 100svh; background: #053a1e; }
 .epg__glow { z-index: 1; }
-.epg__hud, .epg__caps, .epg__steps { z-index: 2; }
+.epg__hud, .epg__caps { z-index: 2; }
 
 /* ============================================================
    À PROPOS v3 — hero portrait + récit
@@ -13750,7 +13715,9 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   max-width: 52ch;
   font-size: 0.8rem;
   line-height: 1.5;
-  color: color-mix(in srgb, var(--cream) 48%, transparent);
+  /* Sur l'indigo, 48 % de crème ne donne que 3,16:1 : c'est une mention
+     qu'on doit pouvoir lire, pas un filigrane. */
+  color: color-mix(in srgb, var(--cream) 74%, transparent);
 }
 
 @media (max-width: 720px) {
@@ -13817,7 +13784,7 @@ html.eco-theme .crumb {
   background: var(--eco);
   border-top-color: rgba(240, 238, 232, 0.14);
 }
-html.eco-theme .crumb a { color: rgba(240, 238, 232, 0.7); }
+html.eco-theme .crumb a { color: rgba(240, 238, 232, 0.93); }
 html.eco-theme .crumb a:hover { color: var(--cream); }
 html.eco-theme .crumb [aria-current='page'] { color: var(--cream); }
 html.eco-theme .crumb__node { background: rgba(125, 223, 168, 0.55); }
@@ -13916,7 +13883,7 @@ html.eco-theme .crumb__node { background: rgba(125, 223, 168, 0.55); }
   color: var(--muted);
   white-space: nowrap;
 }
-.nav--dark .proftoggle__label { color: rgba(240, 238, 232, 0.7); }
+.nav--dark .proftoggle__label { color: rgba(240, 238, 232, 0.88); }
 @media (max-width: 1100px) { .nav__profil .proftoggle__label { display: none; } }
 @media (max-width: 760px) {
   /* Elle reste, mais sans libellé et un peu plus serrée : c'est le réglage
@@ -14745,7 +14712,14 @@ html.eco-theme .crumb__node { background: rgba(125, 223, 168, 0.55); }
   display: block;
   width: min(100%, 250px);
   margin-top: 0.75rem;
+  border: 0;
+  padding: 0;
+  background: none;
+  cursor: pointer;
+  border-radius: 6px;
 }
+.fait__dessin:focus-visible { outline: 2px solid var(--indigo); outline-offset: 8px; }
+.fait__dessin:focus { outline: none; }
 /* La cote : le trait qui relie le nom à ce qu'il nomme. Elle est dessinée
    dans le SVG et s'arrête au sommet réel du volume, donc elle touche. */
 .axo__cote {
@@ -14988,3 +14962,273 @@ html.eco-theme .crumb__node { background: rgba(125, 223, 168, 0.55); }
   .plr__dessin { grid-row: 1 / 5; width: 100%; margin-bottom: 0; }
   .plr__d, .plr__ex { max-width: none; }
 }
+
+/* ════════════════════════════════════════════════════════════
+   L'EXPLORATEUR — l'offre ouverte en volume
+
+   Le panneau prend toute la fenêtre parce que c'est un changement de lieu,
+   pas une infobulle : on quitte la page pour entrer dans l'objet. La scène
+   occupe la plus grande part, le texte tient sur le côté et ne bouge plus
+   pendant qu'on tourne autour.
+   ════════════════════════════════════════════════════════════ */
+
+.expl3d {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  display: grid;
+  place-items: center;
+  padding: clamp(0.8rem, 3vw, 2.4rem);
+}
+.expl3d__fond {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  background: color-mix(in srgb, var(--ink) 62%, transparent);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  animation: expl3dFond 0.4s ease both;
+}
+@keyframes expl3dFond { from { opacity: 0; } to { opacity: 1; } }
+
+.expl3d__cadre {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+  width: min(100%, 1240px);
+  height: min(100%, 780px);
+  background: var(--cream);
+  border-radius: clamp(1rem, 2.4vw, 1.8rem);
+  overflow: hidden;
+  box-shadow: 0 60px 140px -60px rgba(14, 11, 31, 0.75);
+  animation: expl3dEntree 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes expl3dEntree {
+  from { opacity: 0; transform: translateY(24px) scale(0.97); }
+  to { opacity: 1; transform: none; }
+}
+
+.expl3d__scene {
+  position: relative;
+  background:
+    radial-gradient(120% 100% at 30% 0%, color-mix(in srgb, var(--indigo) 7%, transparent) 0%, transparent 62%),
+    var(--cream-light);
+  touch-action: none;
+}
+.expl3d__canvas { cursor: grab; }
+.expl3d__canvas:active { cursor: grabbing; }
+.expl3d__attente {
+  position: absolute;
+  inset: 0;
+  background: var(--cream-light);
+}
+.expl3d__aide {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(0.9rem, 2.4vw, 1.6rem);
+  transform: translateX(-50%);
+  margin: 0;
+  font-size: 0.86rem;
+  color: var(--muted);
+  pointer-events: none;
+}
+/* Le repère posé sur la pièce choisie : il tourne avec elle. */
+.expl3d__pin {
+  display: block;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--indigo);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--indigo) 22%, transparent);
+  animation: expl3dPin 2.4s ease-in-out infinite;
+}
+@keyframes expl3dPin {
+  0%, 100% { box-shadow: 0 0 0 4px color-mix(in srgb, var(--indigo) 22%, transparent); }
+  50% { box-shadow: 0 0 0 9px color-mix(in srgb, var(--indigo) 8%, transparent); }
+}
+
+.expl3d__texte {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  padding: clamp(1.4rem, 3vw, 2.6rem);
+  overflow-y: auto;
+}
+.expl3d__fermer {
+  align-self: flex-end;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  border: 0;
+  background: none;
+  padding: 0.3rem 0;
+  font: inherit;
+  font-size: 0.9rem;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 0.25s ease;
+}
+.expl3d__fermer i {
+  position: relative;
+  width: 14px;
+  height: 14px;
+}
+.expl3d__fermer i::before,
+.expl3d__fermer i::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 1.5px;
+  background: currentColor;
+}
+.expl3d__fermer i::before { transform: rotate(45deg); }
+.expl3d__fermer i::after { transform: rotate(-45deg); }
+.expl3d__fermer:hover { color: var(--indigo); }
+
+.expl3d__titre {
+  margin: 0;
+  font-size: clamp(1.5rem, 2.6vw, 2.2rem);
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.032em;
+  color: var(--ink);
+}
+.expl3d__intro {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--muted);
+}
+.expl3d__pieces {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.4rem;
+}
+.expl3d__piece {
+  border: 0;
+  background: color-mix(in srgb, var(--indigo) 7%, transparent);
+  padding: 0.42rem 0.85rem;
+  border-radius: 999px;
+  font: inherit;
+  font-size: 0.9rem;
+  color: var(--indigo);
+  cursor: pointer;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+.expl3d__piece:hover { background: color-mix(in srgb, var(--indigo) 14%, transparent); }
+.expl3d__piece.is-on { background: var(--indigo); color: var(--cream); }
+.expl3d__dit {
+  margin: 0.3rem 0 0;
+  font-size: 1.04rem;
+  line-height: 1.6;
+  color: var(--ink);
+  animation: expl3dDit 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes expl3dDit { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+.expl3d__fin {
+  margin: auto 0 0;
+  padding-top: 1rem;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+/* Ouvert depuis la page des offres : ce que contient le chantier, ce qui
+   fait bouger son prix, et par où on commence. */
+.expl3d__texte:has(.expl3d__plus) .expl3d__fin { margin-top: 0.4rem; }
+.expl3d__plus {
+  margin-top: auto;
+  padding-top: clamp(1rem, 2.4vh, 1.5rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.expl3d__detail {
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.6;
+  color: var(--ink);
+}
+.expl3d__tarif {
+  margin: 0.4rem 0 0;
+  font-size: 0.92rem;
+  color: var(--indigo);
+}
+.expl3d__facteurs {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.expl3d__facteurs li {
+  position: relative;
+  padding-left: 1rem;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: var(--muted-fort);
+}
+.expl3d__facteurs li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.58em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--indigo);
+}
+.expl3d__cta { align-self: flex-start; margin-top: 0.6rem; }
+
+@media (max-width: 900px) {
+  .expl3d { padding: 0; }
+  .expl3d__cadre {
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(0, 1fr) auto;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+  }
+  .expl3d__texte { max-height: 56vh; }
+  .expl3d__fin { margin-top: 0.6rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .expl3d__cadre, .expl3d__fond, .expl3d__dit { animation: none; }
+  .expl3d__pin { animation: none; }
+}
+
+.fait__ouvrir {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: 0.7rem;
+  border: 0;
+  background: none;
+  padding: 0;
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--indigo);
+  cursor: pointer;
+  border-bottom: 1px solid color-mix(in srgb, var(--indigo) 28%, transparent);
+  padding-bottom: 2px;
+  transition: border-color 0.25s ease;
+}
+.fait__ouvrir i {
+  position: relative;
+  width: 12px;
+  height: 12px;
+  border: 1.4px solid currentColor;
+  border-radius: 2px;
+  transform: rotate(-12deg) skewX(-6deg);
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.fait__ouvrir:hover { border-bottom-color: var(--indigo); }
+.fait__ouvrir:hover i { transform: rotate(8deg) skewX(6deg) scale(1.15); }

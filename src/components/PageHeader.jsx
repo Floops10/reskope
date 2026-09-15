@@ -56,6 +56,9 @@ export default function PageHeader({ eyebrow, title, lead, tone = 'default', act
 
           <h1 className="pagehead__title">
             <span className="pagehead__title-word">
+                {/* Le mot posé en transparent réserve la place que le dessin du
+                  réseau occupera. C'est une mesure, pas un texte : il porte le
+                  mot pour la largeur, et le lecteur d'écran lit celui-ci. */}
               <span className="pagehead__title-ghost">{word}</span>
               <NetWord className="pagehead__netword">{word}</NetWord>
             </span>

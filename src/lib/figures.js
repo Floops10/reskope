@@ -173,6 +173,17 @@ const REPERES = {
 };
 const LONG = 2.4;
 
+/* Les pavés bruts d'une figure, en coordonnées de monde. C'est ce qui
+   permet de construire la MÊME scène en vrai trois dimensions : la planche
+   imprimée et l'univers qu'on ouvre au clic décrivent le même objet, ils
+   ne sont pas deux dessins qui se ressemblent. */
+export function paves(nom) {
+  return (FIGURES[nom] || FIGURES.inventaire)();
+}
+
+/* L'emprise au sol, utile pour cadrer la caméra 3D. */
+export const SOL_TAILLE = { W: SOL.W, D: SOL.D, pas: SOL.pas };
+
 /* Projette une figure entière à un angle donné. Tout se recalcule : le
    sol, les volumes, l'ordre de tracé, la cote et les repères. */
 export function projeter(nom, theta = 0) {

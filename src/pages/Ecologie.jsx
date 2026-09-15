@@ -4,7 +4,8 @@ import Page from '../components/Page';
 import PageHeader from '../components/PageHeader';
 import MorphTitle from '../components/MorphTitle';
 import { Reveal, RevealItem } from '../components/Reveal';
-import { gsap, ScrollTrigger, SplitText, useGSAP } from '../lib/gsap';
+import CubeGlyph from '../components/CubeGlyph';
+import { gsap, SplitText, useGSAP } from '../lib/gsap';
 import { useLang } from '../i18n';
 import { CONTACT } from '../data/site';
 
@@ -199,23 +200,17 @@ export default function Ecologie() {
       onComplete: () => gsap.set(facts, { clearProps: 'clipPath,filter' }),
     });
 
-    /* La chaîne des économies : le rail se remplit, chaque maillon s'allume */
-    const chain = root.querySelector('.eco-chain');
-    if (chain) {
-      gsap.fromTo(chain.querySelector('.eco-chain__rail i'), { scaleY: 0 }, {
-        scaleY: 1, ease: 'none',
-        scrollTrigger: { trigger: chain, start: 'top 72%', end: 'bottom 55%', scrub: 0.6 },
+    /* Les quatre économies : chacune monte en place quand elle arrive, et sa
+       marche se déplie. Rien ne clignote, rien ne se numérote. */
+    root.querySelectorAll('.eco-gain').forEach((gain) => {
+      gsap.fromTo(gain, { opacity: 0.18, x: 36 }, {
+        opacity: 1, x: 0, ease: 'power2.out',
+        scrollTrigger: {
+          trigger: gain, start: 'top 86%', end: 'top 52%', scrub: 0.6,
+          onUpdate: (self) => gain.classList.toggle('is-on', self.progress > 0.6),
+        },
       });
-      chain.querySelectorAll('.eco-chain__item').forEach((item) => {
-        gsap.fromTo(item, { opacity: 0.18, x: 46 }, {
-          opacity: 1, x: 0, ease: 'power2.out',
-          scrollTrigger: {
-            trigger: item, start: 'top 86%', end: 'top 52%', scrub: 0.6,
-            onUpdate: (self) => item.classList.toggle('is-on', self.progress > 0.65),
-          },
-        });
-      });
-    }
+    });
 
     return () => split?.revert();
   }, { scope: pageRef, dependencies: [lang] });
@@ -313,18 +308,15 @@ export default function Ecologie() {
               <RevealItem as="h2" className="h2 eco__h2" id="eco-savings-title">{c.savingsTitle}</RevealItem>
             </Reveal>
 
-            {/* LA CHAÎNE : une ligne se remplit au scroll et allume chaque
-                économie l'une après l'autre */}
-            <div className="eco-chain">
-              <span className="eco-chain__rail" aria-hidden="true"><i /></span>
+            {/* L'ESCALIER : chaque économie découle de la précédente, donc
+                elle se décale d'un cran. L'ordre se lit dans la position ;
+                un numéro ne dirait rien de plus. */}
+            <div className="eco-gains">
               {c.savings.map((s, i) => (
-                <div className="eco-chain__item" key={s.title}>
-                  <span className="eco-chain__node" aria-hidden="true" />
-                  <span className="eco-chain__num" aria-hidden="true">{`0${i + 1}`}</span>
-                  <div className="eco-chain__body">
-                    <h3 className="eco-chain__title">{s.title}</h3>
-                    <p className="eco-chain__text">{s.text}</p>
-                  </div>
+                <div className="eco-gain" key={s.title} style={{ '--k': i }}>
+                  <CubeGlyph className="eco-gain__pave" />
+                  <h3 className="eco-gain__titre">{s.title}</h3>
+                  <p className="eco-gain__texte">{s.text}</p>
                 </div>
               ))}
             </div>
