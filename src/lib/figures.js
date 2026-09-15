@@ -1,4 +1,4 @@
-import { volume, fil, plan, ordonner } from './axo';
+import { volume, fil, plan, ordonner, PR } from './axo';
 
 const C30F = Math.cos(Math.PI / 6);
 
@@ -25,6 +25,27 @@ export const CADRE = { x: -11.6, y: -9, w: 26.6, h: 24 };
 export const VIEWBOX = `${CADRE.x} ${CADRE.y} ${CADRE.w} ${CADRE.h}`;
 
 const bloc = (x, y, w, d, h, z0 = 0) => volume(x, y, w, d, z0, z0 + h);
+
+/* ── LES REPÈRES ────────────────────────────────────────────────────
+   Au survol, le dessin s'explique. Chaque repère est un point du monde
+   (x, y, z), une amorce qui en part, et un mot au bout. C'est le procédé
+   des planches du livret : on ne met pas une légende à côté du dessin, on
+   nomme la pièce là où elle est.
+   `cote` dit de quel côté part l'amorce : 'd' vers la droite, 'g' vers la
+   gauche. Le texte se cale en conséquence. */
+const LONG = 2.4;
+function repere(x, y, z, t, cote = 'd') {
+  const [px, py] = PR(x, y, z);
+  const dx = cote === 'd' ? LONG : -LONG;
+  return {
+    x1: px, y1: py,
+    x2: px + dx, y2: py - LONG * 0.55,
+    tx: px + dx + (cote === 'd' ? 0.7 : -0.7),
+    ty: py - LONG * 0.55 + 0.42,
+    ancre: cote === 'd' ? 'start' : 'end',
+    t,
+  };
+}
 
 /* Un parc d'outils : beaucoup de blocs, aucun à la même hauteur, et deux
    qui ne sont que du fil de fer — payés, jamais ouverts. */
@@ -111,6 +132,17 @@ function vitrine() {
   ];
 }
 
+const REPERES = {
+  inventaire: () => [repere(12.4, 10, 4.8, 'un outil', 'd'), repere(7.4, 2, 4.3, 'jamais ouvert', 'g')],
+  liaison: () => [repere(2.4, 5.6, 5.4, 'un outil', 'g'), repere(7.6, 5.6, 4.2, 'la liaison', 'd')],
+  chantier: () => [repere(6.9, 5.6, 6.6, 'ce qui existe', 'g'), repere(7.1, 5.8, 9.6, 'ce qu’on ajoute', 'd')],
+  estrade: () => [repere(7.6, 5.7, 1.2, 'l’outil', 'g'), repere(11.6, 7.4, 5.8, 'vos équipes', 'd')],
+  creneaux: () => [repere(2, 6.5, 1.1, 'créneaux', 'g'), repere(8.1, 6.5, 6.7, 'un rendez-vous', 'd')],
+  cadre: () => [repere(7.6, 5.6, 5, 'votre marque', 'g'), repere(14.4, 10.6, 8.4, 'les règles', 'd')],
+  rampe: () => [repere(2.3, 6.1, 1.9, 'le modèle', 'g'), repere(11.4, 6.1, 7.6, 'l’ouverture', 'd')],
+  vitrine: () => [repere(7.3, 1.85, 8.6, 'votre site', 'd'), repere(5.9, 7.8, 3.4, 'la boutique', 'g')],
+};
+
 const FIGURES = { inventaire, liaison, chantier, estrade, creneaux, cadre, rampe, vitrine };
 
 /* ── Un pourcentage, en volume ──────────────────────────────────────
@@ -178,5 +210,6 @@ export function figure(nom) {
     sol: plan(SOL.W, SOL.D, SOL.pas),
     volumes,
     cote: { x: s.x, y1: CADRE.y, y2: s.y - 0.7 },
+    reperes: (REPERES[nom] || (() => []))(),
   };
 }

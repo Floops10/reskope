@@ -29,7 +29,7 @@ import { FAIT } from '../data/profils';
    ============================================================ */
 
 function Figure({ nom }) {
-  const { sol, volumes, cote } = figure(nom);
+  const { sol, volumes, cote, reperes } = figure(nom);
   return (
     <svg className="axo" viewBox={VIEWBOX} aria-hidden="true">
       {/* La cote descend du haut du cadre jusqu'au sommet du volume : elle
@@ -50,6 +50,20 @@ function Figure({ nom }) {
           ))}
         </g>
       ))}
+
+      {/* Les repères : au survol, le dessin se nomme. Une amorce part de la
+          pièce concernée et le mot se pose au bout. C'est ce que font les
+          planches du livret, et ça évite d'écrire à côté du dessin ce que
+          le dessin peut dire lui-même. */}
+      <g className="axo__reperes">
+        {reperes.map((r, i) => (
+          <g key={i}>
+            <circle className="axo__rep-pt" cx={r.x1} cy={r.y1} r="0.45" />
+            <line className="axo__rep-tige" x1={r.x1} y1={r.y1} x2={r.x2} y2={r.y2} />
+            <text className="axo__rep-mot" x={r.tx} y={r.ty} textAnchor={r.ancre}>{r.t}</text>
+          </g>
+        ))}
+      </g>
     </svg>
   );
 }

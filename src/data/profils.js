@@ -253,16 +253,16 @@ export const OFFERS_TPE = {
 
 export const PRICES_TPE = {
   fr: {
-    site: { amount: 'dès 1 900 €', note: 'Vitrine dès 1 900 € · boutique dès 3 200 € · liaisons avec vos outils à 450 €/jour', type: 'Forfait' },
-    reservation: { amount: 'dès 1 400 €', note: 'Créneaux, confirmation et rappels · lien avec votre agenda existant compris', type: 'Forfait' },
-    marque: { amount: 'dès 1 600 €', note: '3 à 5 jours étalés sur deux à trois semaines · document de règles compris', type: 'Forfait' },
-    lancement: { amount: 'dès 1 200 €', note: '2 à 4 jours selon l’état du dossier · recherche de fournisseurs chiffrée à part', type: 'Forfait' },
+    site: { amount: 'Sur devis', type: 'Forfait', note: 'Une vitrine, une boutique et des liaisons avec vos outils ne demandent pas le même travail. On chiffre après vous avoir écouté, et le prix est écrit avant qu’on commence.' },
+    reservation: { amount: 'Sur devis', type: 'Forfait', note: 'Créneaux, confirmation et rappels. Le lien avec l’agenda que vous utilisez déjà est compris dans le chantier.' },
+    marque: { amount: 'Sur devis', type: 'Forfait', note: 'Trois à cinq jours étalés sur deux ou trois semaines, document de règles compris. Le nombre de jours dépend de ce que vous avez déjà.' },
+    lancement: { amount: 'Sur devis', type: 'Forfait', note: 'Deux à quatre jours selon l’état de votre dossier. La recherche de fournisseurs et de prestataires est chiffrée à part.' },
   },
   en: {
-    site: { amount: 'from €1,900', note: 'Storefront from €1,900 · shop from €3,200 · integrations at €450/day', type: 'Fixed price' },
-    reservation: { amount: 'from €1,400', note: 'Slots, confirmation and reminders · link to your existing calendar included', type: 'Fixed price' },
-    marque: { amount: 'from €1,600', note: '3 to 5 days over two or three weeks · rulebook included', type: 'Fixed price' },
-    lancement: { amount: 'from €1,200', note: '2 to 4 days depending on the file · supplier sourcing priced separately', type: 'Fixed price' },
+    site: { amount: 'On quote', type: 'Fixed price', note: 'A storefront, a shop and integrations with your tools are not the same job. We price after listening to you, and the figure is written down before we start.' },
+    reservation: { amount: 'On quote', type: 'Fixed price', note: 'Slots, confirmation and reminders. The link to the calendar you already use is part of the job.' },
+    marque: { amount: 'On quote', type: 'Fixed price', note: 'Three to five days over two or three weeks, rulebook included. The number of days depends on what you already have.' },
+    lancement: { amount: 'On quote', type: 'Fixed price', note: 'Two to four days depending on the state of your file. Sourcing suppliers and contractors is priced separately.' },
   },
 };
 
@@ -270,28 +270,28 @@ export const OFFRES_TPE = {
   fr: {
     metaTitle: 'Offres & tarifs TPE · site, réservation, marque, lancement',
     metaDesc:
-      'Quatre chantiers courts, prix affichés : site et boutique dès 1 900 €, prise de rendez-vous dès 1 400 €, identité de marque dès 1 600 €, aide au lancement dès 1 200 €. Ce qui est fixe, ce qui varie.',
+      'Quatre chantiers courts : site et boutique, prise de rendez-vous, identité de marque, aide au lancement. Le prix dépend de votre projet, il est écrit avant qu’on commence, et il ne bouge plus.',
     title: 'Quatre chantiers, quatre façons de gagner du temps.',
     directP: 'Si votre besoin est clair et que vous voulez passer directement à la réalisation, écrivez-nous. On gagne du temps tous les deux.',
     lead: 'Chaque chantier est différent, mais les tarifs sont clairs dès le départ. On définit ensemble le périmètre, vous savez ce que vous payez et pourquoi, et vous pouvez vous arrêter à la fin de chaque étape.',
     billing: {
       kicker: 'Transparence',
       title: 'Comment on facture.',
-      text: 'Un jour d’intervention = 450 €. Les chantiers courts sont au forfait, annoncé avant de démarrer ; le reste est au temps passé, estimé et validé avec vous. On avance par petites étapes que vous validez une par une, et vous pouvez vous arrêter à la fin de chacune. Aucune surprise sur la facture.',
+      text: 'On n’affiche pas de tarif, et ce n’est pas pour cacher quelque chose : deux commerces de la même taille n’ont jamais le même chantier. On regarde ce que vous voulez faire, on chiffre en jours, et on vous donne le prix par écrit avant de commencer. Ensuite il ne bouge plus. On avance par petites étapes que vous validez une par une, et vous pouvez vous arrêter à la fin de chacune.',
       note: 'Devis gratuit, valable 30 jours. Tarifs nets, TVA non applicable, article 293 B du CGI. Le code, les fichiers sources et les accès vous sont remis à la fin, quelle que soit la suite.',
     },
   },
   en: {
     metaTitle: 'Offers & pricing for small businesses · site, booking, brand, launch',
     metaDesc:
-      'Four short projects, prices shown: website and shop from €1,900, booking from €1,400, brand identity from €1,600, launch support from €1,200. What is fixed, what varies.',
+      'Four short projects: website and shop, booking, brand identity, launch support. The price depends on your project, it is written down before we start, and it does not move.',
     title: 'Four projects, four ways to win time back.',
     directP: 'If your need is clear and you want to go straight to delivery, write to us. It saves everyone time.',
     lead: 'Every project is different, but pricing is clear from the start. We define the scope together, you know what you pay and why, and you can stop at the end of any stage.',
     billing: {
       kicker: 'Transparency',
       title: 'How we bill.',
-      text: 'One day on the job = €450. Short projects are fixed-price, announced before we start; the rest is time spent, estimated and approved with you. We move in small steps you approve one by one, and you can stop at the end of any of them. No surprises on the invoice.',
+      text: 'We do not display rates, and it is not to hide anything: two shops of the same size never have the same job. We look at what you want to do, we price it in days, and we give you the figure in writing before we start. After that it does not move. We move in small steps you approve one by one, and you can stop at the end of any of them.',
       note: 'Free quote, valid 30 days. Net prices, VAT not applicable, article 293 B of the French tax code. Code, source files and access are handed over at the end, whatever happens next.',
     },
   },
@@ -557,7 +557,7 @@ export const FAIT = {
           quoi: 'Un outil que personne n’ouvre ne sert à rien. On reste jusqu’à ce qu’il tourne sans nous.' },
       ],
       pied: 'Chaque chantier se prend séparément. Si celui où vous en êtes vous suffit, on ne vous vendra pas le suivant.',
-      act: 'Le détail, et ce que ça coûte',
+      act: 'Le détail de chaque chantier',
     },
     en: {
       sur: 'What we do',
@@ -573,7 +573,7 @@ export const FAIT = {
           quoi: 'A tool nobody opens is worth nothing. We stay until it runs without us.' },
       ],
       pied: 'Each project stands on its own. If the stage you are at is enough, we will not sell you the next one.',
-      act: 'The detail, and what it costs',
+      act: 'What each project involves',
     },
   },
   tpe: {
@@ -591,7 +591,7 @@ export const FAIT = {
           quoi: 'Le modèle, le coût de revient, les fournisseurs. Avant d’ouvrir, et avant d’emprunter.' },
       ],
       pied: 'Chaque chantier se prend séparément. Et on vous dit franchement quand vous n’avez besoin de rien.',
-      act: 'Le détail, et ce que ça coûte',
+      act: 'Le détail de chaque chantier',
     },
     en: {
       sur: 'What we do',
@@ -607,7 +607,7 @@ export const FAIT = {
           quoi: 'The model, the true cost, the suppliers. Before you open, and before you borrow.' },
       ],
       pied: 'Each project stands on its own. And we tell you plainly when you need nothing at all.',
-      act: 'The detail, and what it costs',
+      act: 'What each project involves',
     },
   },
 };

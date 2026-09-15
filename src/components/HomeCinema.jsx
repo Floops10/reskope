@@ -276,12 +276,12 @@ export default function HomeCinema({ c }) {
           </div>
         </div>
 
-        {/* HUD : compteur + progression */}
+        {/* La progression, sans le décompte. « 03 / 08 » n'apprend rien à
+            personne : on sait qu'on défile, et un chiffre qui s'incrémente
+            dans la marge n'aide pas à comprendre ce qu'on regarde. Le trait
+            qui se remplit suffit à dire où on en est. */}
         {!flat && (
           <div className="cine__hud" aria-hidden="true">
-            <span className="cine__count">
-              {String(Math.min(Math.max(activeIdx, 0) + 1, SCENES)).padStart(2, '0')} / {String(SCENES).padStart(2, '0')}
-            </span>
             <span className="cine__track"><i ref={progressRef} /></span>
           </div>
         )}

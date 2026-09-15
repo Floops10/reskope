@@ -295,8 +295,8 @@ const SALES = {
         "Chaque mission fait l'objet d'un devis personnalisé, gratuit et sans engagement. Les prix affichés sur le site sont indicatifs (« à partir de ») et ne constituent pas une offre ferme. Le contrat est formé à l'acceptation écrite du devis par le client (signature ou accord par e-mail).",
       ] },
       { h: 'Prix et TVA', p: [
-        "Les prix sont exprimés en euros et s'entendent nets. Le tarif de référence est de 450 € par jour d'intervention, sauf forfait précisé au devis (par exemple l'audit ou l'abonnement de suivi).",
-        "L'audit est facturé au forfait selon l'effectif de la structure auditée. Un tarif de lancement, réservé aux trois premières entreprises accompagnées, est applicable jusqu'au 31 décembre 2026 ; au-delà de cette date ou de ce nombre, le tarif standard s'applique. Le montant de l'audit est intégralement déduit du devis de mise en œuvre lorsque celle-ci est confiée à Reskope.",
+        "Les prix sont exprimés en euros et s'entendent nets. Aucun barème n'est publié : le montant de chaque prestation, au forfait ou au temps passé, est fixé au devis et accepté avant tout commencement d'exécution.",
+        "Aucun tarif n'est publié : le prix est établi mission par mission et figure au devis, accepté avant tout commencement d'exécution. Le montant de l'audit est intégralement déduit du devis de mise en œuvre lorsque celle-ci est confiée à Reskope.",
         'TVA : non applicable, article 293 B du CGI (franchise en base).',
       ] },
       { h: 'Garantie bilan', p: [
@@ -365,8 +365,8 @@ const SALES = {
         'Each engagement is covered by a personalised, free and non-binding quote. Prices shown on the site are indicative ("from") and do not constitute a firm offer. The contract is formed upon the client’s written acceptance of the quote (signature or agreement by email).',
       ] },
       { h: 'Price and VAT', p: [
-        'Prices are in euros and are net. The reference rate is €450 per day of work, unless a fixed package is stated in the quote (e.g. the audit or the retainer).',
-        'The audit is charged as a fixed package based on the headcount of the audited organisation. A launch rate, reserved for the first three companies supported, applies until 31 December 2026; beyond that date or that number, the standard rate applies. The audit amount is fully deducted from the delivery quote when the delivery is entrusted to Reskope.',
+        'Prices are in euros and are net. No rate card is published: the amount of each engagement, fixed price or time-based, is set in the quote and accepted before any work begins.',
+        'No rate is published: the price is set engagement by engagement and appears on the quote, accepted before any work begins. The audit amount is fully deducted from the delivery quote when the delivery is entrusted to Reskope.',
         'VAT: not applicable, article 293 B of the French Tax Code (small-business exemption).',
       ] },
       { h: 'Report guarantee', p: [

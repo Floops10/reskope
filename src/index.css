@@ -7021,9 +7021,11 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 }
 @media (max-width: 880px) {
   /* La MÊME histoire au scroll que sur PC : stage sticky, R qui se forme
-     puis tourne, titre qui se désassemble (piloté par le scrub JS). */
+     puis tourne, titre qui se désassemble (piloté par le scrub JS).
+     Resserré de 240 à 175 vh : sur téléphone, chaque dixième d'écran en
+     plus se paie en pouce qui remonte. */
   .heroform {
-    height: 240vh;
+    height: 175vh;
   }
   .heroform__stage {
     padding-block: clamp(4.5rem, 12vh, 7rem);
@@ -7040,7 +7042,7 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
     align-self: center;
   }
   .heroform__r {
-    width: min(62vw, 320px);
+    width: min(58vw, 300px);
   }
   .heroform__title {
     font-size: clamp(2.5rem, 10.5vw, 4rem);
@@ -14917,6 +14919,34 @@ html.eco-theme .crumb__node { background: rgba(125, 223, 168, 0.55); }
   stroke-width: 0.28;
   opacity: 0.42;
 }
+/* LES REPÈRES — le dessin se nomme quand on le survole.
+   Rien n'apparaît par défaut : la planche reste calme. Au survol, une
+   amorce part de la pièce et le mot se pose au bout. Réservé aux écrans
+   qui ont un pointeur : sur téléphone, le dessin fait un centimètre et le
+   mot serait illisible. */
+.axo__reperes { opacity: 0; pointer-events: none; }
+.axo__rep-pt { fill: var(--indigo); }
+.axo__rep-tige {
+  stroke: var(--indigo);
+  stroke-width: 0.17;
+}
+.axo__rep-mot {
+  font-family: var(--font);
+  font-size: 1.25px;
+  font-weight: 500;
+  letter-spacing: 0.01px;
+  fill: var(--indigo);
+}
+/* Sous 620 px le dessin fait un centimètre : les mots y seraient plus
+   petits qu'un pixel. Les repères ne s'y affichent pas. */
+@media (hover: hover) and (pointer: fine) and (min-width: 621px) {
+  .axo__reperes { transition: opacity 0.32s ease; }
+  .fait__item:hover .axo__reperes,
+  .fait__item:focus-within .axo__reperes { opacity: 1; }
+  /* Le volume s'efface un peu pour laisser lire les mots posés dessus. */
+  .fait__item:hover .axo__v { transition: opacity 0.32s ease; opacity: 0.55; }
+}
+
 /* La légende : c'est elle qu'on lit, elle est donc plus grosse que le nom. */
 .fait__quoi {
   font-size: 0.96rem;
@@ -14950,9 +14980,27 @@ html.eco-theme .crumb__node { background: rgba(125, 223, 168, 0.55); }
   .fait__regle { display: none; }
   .fait__quoi { max-width: 38ch; }
 }
-@media (max-width: 520px) {
-  .fait__rangee { grid-template-columns: 1fr; }
-  .fait__dessin { width: min(78%, 270px); }
+/* Sur téléphone, empiler dessin / nom / phrase quatre fois de suite fait
+   quatre écrans à faire défiler pour quatre phrases. L'élément passe en
+   ligne : le volume à gauche, petit, le texte à droite. Deux fois moins
+   haut, et la cote n'a plus lieu d'être puisque le nom est à côté. */
+@media (max-width: 620px) {
+  .fait__rangee { grid-template-columns: 1fr; row-gap: clamp(1.6rem, 5vw, 2.2rem); }
+  .fait__item {
+    display: grid;
+    grid-template-columns: 5.6rem 1fr;
+    column-gap: 1.1rem;
+    align-items: start;
+    padding-top: 0.75rem;
+  }
+  .fait__dessin {
+    grid-row: 1 / 3;
+    width: 100%;
+    margin-top: 0.1rem;
+  }
+  .fait__nom { max-width: none; align-self: end; }
+  .fait__quoi { margin-top: 0.35rem; max-width: none; font-size: 0.92rem; }
+  .axo__cote { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   .axo__v { opacity: 1 !important; }

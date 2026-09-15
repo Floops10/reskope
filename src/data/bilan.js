@@ -107,7 +107,7 @@ export const BILAN = {
         heading: 'Investissement',
         lines: [
           { label: 'Audit (forfait, 5 jours sur site)', value: '2 450 €' },
-          { label: 'Mise en œuvre (18 jours × 450 €)', value: '8 100 €' },
+          { label: 'Mise en œuvre (18 jours)', value: '8 100 €' },
         ],
         total: { label: 'Total mission', value: '10 550 €' },
       },
@@ -117,7 +117,7 @@ export const BILAN = {
           { label: 'Licences résiliées ou renégociées (640 €/mois)', value: '7 680 €/an', kind: 'cash' },
           { label: 'Temps rendu, valorisé (6 090 h × 30 €)', value: '≈ 183 000 €/an', kind: 'time' },
         ],
-        note: 'Valorisation : 5,4 h × 24 personnes × 47 semaines, au coût chargé moyen de 30 €/h. Sans compter les devis signés plus vite (+9 % sur le trimestre).',
+        note: 'Valorisation : 5,4 h × 24 personnes × 47 semaines, au coût chargé moyen de 30 €/h. Sans compter les devis signés plus vite. Ces montants sont ceux du cas d’école : le prix d’une vraie mission dépend de votre situation et figure au devis.',
       },
       roi: {
         label: 'Retour sur investissement',
@@ -331,7 +331,7 @@ export const BILAN = {
         heading: 'Investment',
         lines: [
           { label: 'Audit (fixed, 5 days on site)', value: '€2,450' },
-          { label: 'Delivery (18 days × €450)', value: '€8,100' },
+          { label: 'Delivery (18 days)', value: '€8,100' },
         ],
         total: { label: 'Total engagement', value: '€10,550' },
       },
@@ -341,7 +341,7 @@ export const BILAN = {
           { label: 'Licences cancelled or renegotiated (€640/month)', value: '€7,680/yr', kind: 'cash' },
           { label: 'Time given back, valued (6,090 h × €30)', value: '≈ €183,000/yr', kind: 'time' },
         ],
-        note: 'Valuation: 5.4 h × 24 people × 47 weeks at an average loaded cost of €30/h. Not counting quotes signed faster (+9% over the quarter).',
+        note: 'Valuation: 5.4 h × 24 people × 47 weeks at an average loaded cost of €30/h. Not counting quotes signed faster. These figures belong to the worked example: the price of a real engagement depends on your situation and appears on the quote.',
       },
       roi: {
         label: 'Return on investment',

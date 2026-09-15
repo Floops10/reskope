@@ -68,6 +68,7 @@ export default function HeroFormation({ c }) {
     let fxDesktop = false;
     let fxMobile = false;
     let centerShift = 0;
+    let montee = 0;
 
     /* Rendu à la progression p :
        R : 0→0.55 formation · 0.6→1 tour 360° · 0.55→0.85 voyage au centre
@@ -148,9 +149,12 @@ export default function HeroFormation({ c }) {
       }
 
       if (fxMobile) {
-        /* R : grossit légèrement pendant le tour (déjà centré en colonne) */
-        const tv = easeInOut(clamp01((p - 0.55) / 0.3));
-        gsap.set(visualRef.current, { scale: 1 + 0.18 * tv });
+        /* R : il grandit et descend au milieu de l'écran pendant que le
+           titre se défait. Sur téléphone il n'y a pas de place pour un
+           voyage latéral ; c'est donc la taille qui fait l'arrivée, et le
+           réseau finit par occuper la page, seul. */
+        const tv = easeInOut(clamp01((p - 0.5) / 0.34));
+        gsap.set(visualRef.current, { scale: 1 + 2.4 * tv, y: montee * tv });
       }
     };
 
@@ -261,7 +265,17 @@ export default function HeroFormation({ c }) {
        forme, boucle son tour, le titre se désassemble. */
     mm.add('(max-width: 880px)', () => {
       fxMobile = true;
-      gsap.set(visualRef.current, { scale: 1 });
+      /* Distance entre le centre du R et le centre de la scène : c'est ce
+         qu'il lui reste à parcourir pour finir au milieu. Mesuré, pas
+         deviné, parce que la hauteur du titre change avec la langue. */
+      const mesurer = () => {
+        gsap.set(visualRef.current, { y: 0, scale: 1 });
+        const scene = rootRef.current.querySelector('.heroform__stage');
+        const rv = visualRef.current.getBoundingClientRect();
+        const rs = scene.getBoundingClientRect();
+        montee = (rs.top + rs.height / 2) - (rv.top + rv.height / 2);
+      };
+      mesurer();
       render(0);
       const st = ScrollTrigger.create({
         trigger: rootRef.current,
@@ -269,6 +283,7 @@ export default function HeroFormation({ c }) {
         end: 'bottom bottom',
         scrub: 0.8,
         invalidateOnRefresh: true,
+        onRefresh: mesurer,
         onUpdate: (self) => render(self.progress),
       });
       return () => { st.kill(); fxMobile = false; };

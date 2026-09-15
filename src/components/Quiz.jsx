@@ -88,9 +88,9 @@ const T = {
       cout: 'maîtriser vos coûts logiciels',
     },
     offers: {
-      audit: { name: 'L’Audit', price: 'dès 1 490 €' },
-      delivery: { name: 'Audit + Mise en œuvre', price: '450 €/jour' },
-      custom: { name: 'Sur-mesure, après un audit de cadrage', price: 'sur devis' },
+      audit: { name: 'Audit et cartographie', price: 'sur devis' },
+      delivery: { name: 'Audit et mise en ordre', price: 'sur devis' },
+      custom: { name: 'Sur mesure, après un audit de cadrage', price: 'sur devis' },
     },
     defaultSize: 'votre équipe',
     message: ({ needs, offer, size }) => {
@@ -203,8 +203,8 @@ const T = {
       cout: 'keep your software costs under control',
     },
     offers: {
-      audit: { name: 'The Audit', price: 'from €1,490' },
-      delivery: { name: 'Audit + Delivery', price: '€450/day' },
+      audit: { name: 'Audit and mapping', price: 'on quote' },
+      delivery: { name: 'Audit and tidy-up', price: 'on quote' },
       custom: { name: 'Custom, after a scoping audit', price: 'on quote' },
     },
     defaultSize: 'your team',

@@ -15,10 +15,10 @@ import NetWord from './NetWord';
    + le PRIX s'affichent, nets, par-dessus :
 
    0 INTRO           une sphère-réseau              « Quatre façons… »
-   1 AUDIT           une loupe (comprendre)          dès 1 490 €
-   2 AUDIT + MISE     des modules reliés (on relie)  450 €/jour
+   1 AUDIT           une loupe (comprendre)
+   2 AUDIT + MISE     des modules reliés (on relie)
    3 DÉVELOPPEMENT    une structure (on construit)   sur devis
-   4 SUIVI            une boucle (on reste)           dès 190 €/mois
+   4 SUIVI            une boucle (on reste)
    5 FACTURATION      un axe de jours (transparence)  comment je facture
 
    reduced-motion => liste lisible. Détail au clic. Fond indigo profond.
