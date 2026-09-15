@@ -12,7 +12,7 @@ const OffersShowcase = lazy(() => import('../components/OffersShowcase'));
 
 const CONTENT = {
   fr: {
-    metaTitle: 'Offres & tarifs · audit, mise en œuvre, suivi',
+    metaTitle: 'Offres & tarifs · cartographie, mise en ordre, outils, suivi',
     metaDesc:
       "Quatre façons de travailler ensemble, prix affichés : Audit dès 990 € (tarif de lancement), réalisation à 450 €/jour, développement dès 1 200 €, suivi dès 290 €/mois. Ce qui est fixe, ce qui varie.",
     eyebrow: 'Offres',
@@ -48,7 +48,7 @@ const CONTENT = {
     faqLead: "Une question qui n'est pas là ? Écrivez-nous, on répond vite et franchement.",
   },
   en: {
-    metaTitle: 'Offers & pricing · audit, delivery, retainer',
+    metaTitle: 'Offers & pricing · mapping, tidy-up, tools, support',
     metaDesc:
       'Four ways to work together, prices shown: Audit from €990 (launch rate), delivery at €450/day, development from €1,200, retainer from €290/month. What is fixed, what varies.',
     eyebrow: 'Offers',

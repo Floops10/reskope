@@ -21,7 +21,7 @@ const CONTENT = {
       links: [
         { to: '/offres', label: 'Les offres et les tarifs' },
         { to: '/exemple', label: 'Un exemple de bilan complet' },
-        { to: '/methode', label: 'La méthode, jalon par jalon' },
+        { to: '/methode', label: 'La méthode, étape par étape' },
         { to: '/contact', label: 'Nous contacter directement' },
       ],
       cta: 'Retour à l’accueil',

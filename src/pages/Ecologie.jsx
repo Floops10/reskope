@@ -16,7 +16,7 @@ const CONTENT = {
   fr: {
     metaTitle: "Numérique responsable · simplifier, c'est consommer moins",
     metaDesc:
-      "L'angle écologique de Reskope : alléger votre stack d'outils réduit serveurs, stockage et données dupliquées. Une sobriété numérique sans effort supplémentaire.",
+      "L'angle écologique de Reskope : moins d'outils, c'est moins de serveurs, moins de stockage et moins de données recopiées. Une sobriété qui ne demande aucun effort de plus.",
     eyebrow: 'Numérique responsable',
     title: 'Simplifier réduit aussi votre empreinte.',
     lead: "Notre métier réduit le désordre numérique. Or, moins d'outils superflus, c'est mécaniquement moins de serveurs, moins de stockage et moins d'énergie. L'efficacité et la sobriété avancent dans le même sens.",
@@ -48,7 +48,7 @@ const CONTENT = {
     posTitle: "La sobriété n'est pas un argument, c'est une conséquence.",
     posLead:
       "Un audit qui retire trois outils redondants a un effet réel : des serveurs qui ne tournent plus, du matériel qu'on garde plus longtemps, des données qu'on ne recopie plus. On ne le facture pas en plus, et on n'en fait pas une promesse de plaquette.",
-    posBtn: 'Parler de votre stack',
+    posBtn: 'Parler de vos outils',
     ctaTitle: 'Et si on allégeait vos outils ?',
     ctaLead:
       'Un premier échange pour mesurer ce que vous pourriez simplifier, pour vos équipes comme pour votre empreinte.',
@@ -58,7 +58,7 @@ const CONTENT = {
   en: {
     metaTitle: 'Responsible digital · simplifying means consuming less',
     metaDesc:
-      "Reskope's ecological angle: trimming your tool stack cuts servers, storage and duplicated data. Digital sobriety with no extra effort.",
+      "Reskope's ecological angle: fewer tools means fewer servers, less storage and less duplicated data. Sobriety that asks no extra effort.",
     eyebrow: 'Responsible digital',
     title: 'Simplifying also cuts your footprint.',
     lead: 'Our work reduces digital clutter. And fewer superfluous tools mechanically means fewer servers, less storage and less energy. Efficiency and sobriety move in the same direction.',
@@ -90,7 +90,7 @@ const CONTENT = {
     posTitle: 'Sobriety is not an argument, it is a consequence.',
     posLead:
       'An audit that removes three redundant tools has a real effect: servers that stop running, hardware kept longer, data no longer copied twice. We do not bill it as an extra, and we do not turn it into a brochure promise.',
-    posBtn: 'Talk about your stack',
+    posBtn: 'Talk about your tools',
     ctaTitle: 'What if we lightened your tools?',
     ctaLead:
       'A first conversation to measure what you could simplify, for your teams as much as for your footprint.',

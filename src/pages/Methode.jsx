@@ -16,15 +16,15 @@ const MethodeFlight = lazy(() => import('../components/MethodeFlight'));
 
 const CONTENT = {
   fr: {
-    metaTitle: 'La méthode · votre système, assemblé jalon par jalon',
+    metaTitle: 'La méthode · du premier rendez-vous jusqu’aux clés',
     metaDesc:
       "Reskope ne propose jamais de solution avant le diagnostic. Cadrage, audit, bilan, mise en œuvre, autonomie : le parcours qui assemble vos outils en un système clair, en toute transparence.",
-    labels: { milestone: 'Jalon', here: 'vous démarrez ici', youGet: 'Ce que vous obtenez', hint: 'Survolez un point du réseau pour les détails' },
+    labels: { milestone: 'Étape', here: 'vous démarrez ici', youGet: 'Ce que vous obtenez', hint: 'Survolez un point du réseau pour les détails' },
     film: {
       introKicker: 'La méthode',
-      introTitle: 'On assemble votre système.',
-      introText: 'Des outils épars aujourd’hui. Un parcours clair pour en faire un système qui tient tout seul.',
-      synthCap: 'Cinq jalons. Un système qui tient tout seul.',
+      introTitle: 'On avance étape par étape.',
+      introText: 'Des outils éparpillés aujourd’hui. Un parcours court pour en faire un ensemble qui tient tout seul.',
+      synthCap: 'Cinq étapes. Et rien qui se décide sans vous.',
     },
     calloutTitle: 'Le livrable : un bilan que vous gardez.',
     calloutText:
@@ -32,15 +32,15 @@ const CONTENT = {
     calloutBtn: 'Voir un exemple de bilan',
   },
   en: {
-    metaTitle: 'The method · your system, assembled milestone by milestone',
+    metaTitle: 'The method · from the first meeting to the keys',
     metaDesc:
       'Reskope never proposes a solution before the diagnosis. Framing, audit, report, delivery, autonomy: the journey that assembles your tools into a clear system, in full transparency.',
-    labels: { milestone: 'Milestone', here: 'you start here', youGet: 'What you get', hint: 'Hover a network point for details' },
+    labels: { milestone: 'Step', here: 'you start here', youGet: 'What you get', hint: 'Hover a network point for details' },
     film: {
       introKicker: 'The method',
-      introTitle: 'We assemble your system.',
-      introText: 'Scattered tools today. A clear journey to turn them into a system that stands on its own.',
-      synthCap: 'Five milestones. A system that stands on its own.',
+      introTitle: 'We move one step at a time.',
+      introText: 'Scattered tools today. A short journey to turn them into something that stands on its own.',
+      synthCap: 'Five steps. And nothing decided without you.',
     },
     calloutTitle: 'The deliverable: a report you keep.',
     calloutText:

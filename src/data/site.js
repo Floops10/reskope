@@ -163,7 +163,7 @@ export const JALONS = {
       deliver: 'Un rapport clair, que vous gardez.', here: false,
     },
     {
-      n: '04', label: 'Mise en œuvre', title: 'On exécute, jalon par jalon.',
+      n: '04', label: 'Mise en œuvre', title: 'On exécute, étape par étape.',
       text: `Les quick wins d'abord, puis les chantiers de fond. Vous cochez chaque étape avec nous, à votre rythme.`,
       deliver: 'Des outils qui travaillent enfin pour vous.', here: false,
     },

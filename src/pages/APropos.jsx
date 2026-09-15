@@ -63,7 +63,7 @@ const CONTENT = {
     ],
     sizeEyebrow: 'Selon nous',
     sizeTitle: 'Ce qui est efficace dépend de votre taille.',
-    sizeLead: "Il n'y a pas de stack universelle. Ce qui marche à 15 personnes ne marche pas à 80. Voici notre lecture, par palier.",
+    sizeLead: "Il n'y a pas d'outillage universel. Ce qui marche à quinze personnes ne marche pas à quatre-vingts. Voici notre lecture, par palier.",
     tiers: [
       { range: '5 à 20 pers.', label: 'Petite équipe', principle: '1 à 2 outils centraux, bien maîtrisés.', detail: "À ce stade, la complexité tue la productivité. L'objectif : un seul endroit pour chaque type d'information, et l'automatisation des tâches qui reviennent tous les jours.", wins: ['CRM simplifié', 'Outil de planning partagé', 'Automatisation des relances'] },
       { range: '20 à 80 pers.', label: 'Équipe moyenne', principle: "Connecter l'existant avant d'acheter du neuf.", detail: "Les équipes ont leurs habitudes. Plutôt que d'imposer un nouvel outil, on cartographie ce qui existe et on construit les passerelles qui manquent, sans migration forcée.", wins: ['Plateforme centrale', 'Intégrations entre outils', 'Reporting automatisé'] },
@@ -113,7 +113,7 @@ const CONTENT = {
     ],
     sizeEyebrow: 'In our view',
     sizeTitle: 'What works depends on your size.',
-    sizeLead: "There is no universal stack. What works at 15 people doesn't work at 80. Here is our reading, by tier.",
+    sizeLead: "There is no universal tool set. What works at fifteen people does not work at eighty. Here is our reading, by tier.",
     tiers: [
       { range: '5 to 20 people', label: 'Small team', principle: '1 to 2 core tools, well mastered.', detail: 'At this stage, complexity kills productivity. The goal: a single place for each type of information, and automating the tasks that come back every day.', wins: ['Simplified CRM', 'Shared planning tool', 'Automated follow-ups'] },
       { range: '20 to 80 people', label: 'Mid-size team', principle: 'Connect what exists before buying new.', detail: 'Teams have their habits. Rather than imposing a new tool, we map what exists and build the missing bridges, with no forced migration.', wins: ['Central platform', 'Tool integrations', 'Automated reporting'] },
