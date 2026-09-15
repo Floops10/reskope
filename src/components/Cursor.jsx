@@ -94,6 +94,12 @@ export default function Cursor() {
       const isHover = !!e.target.closest('a, button, .btn, [data-cursor-hover]');
       dot.classList.toggle('cursor-dot--hover', isHover);
 
+      /* Au-dessus d'une scène qu'on attrape, le point devient une prise :
+         un anneau assez grand pour qu'on le voie sur le plateau, et qui se
+         referme quand on serre. Un point de six pixels ne suffisait pas là
+         où il faut justement comprendre qu'on peut tourner l'objet. */
+      dot.classList.toggle('cursor-dot--prise', !!e.target.closest('[data-cursor-prise]'));
+
       const txt = getLabel(e.target);
       if (txt) {
         label.textContent = txt;
@@ -109,14 +115,21 @@ export default function Cursor() {
     };
     const show = () => { if (visible) gsap.to(dot, { autoAlpha: 1, duration: 0.28 }); };
 
+    const serrer = () => dot.classList.add('cursor-dot--serre');
+    const relacher = () => dot.classList.remove('cursor-dot--serre');
+
     document.addEventListener('mousemove', onMove, { passive: true });
     document.addEventListener('mouseover', onOver, { passive: true });
+    document.addEventListener('pointerdown', serrer, { passive: true });
+    document.addEventListener('pointerup', relacher, { passive: true });
     document.documentElement.addEventListener('mouseleave', hide);
     document.documentElement.addEventListener('mouseenter', show);
 
     return () => {
       document.removeEventListener('mousemove', onMove);
       document.removeEventListener('mouseover', onOver);
+      document.removeEventListener('pointerdown', serrer);
+      document.removeEventListener('pointerup', relacher);
       document.documentElement.removeEventListener('mouseleave', hide);
       document.documentElement.removeEventListener('mouseenter', show);
     };

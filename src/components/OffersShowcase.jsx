@@ -6,7 +6,7 @@ import { ScrollTrigger, useGSAP } from '../lib/gsap';
 import NetWord from './NetWord';
 import Explorateur from './Explorateur';
 import CubeGlyph from './CubeGlyph';
-import { FIGURE_OFFRE, EXPL_MOTS } from '../data/explorateur';
+import { FIGURE_OFFRE, EXPL_MOTS } from '../lib/scenes';
 
 /* ============================================================
    OFFRES — LE SHOWCASE (WebGL, nuit + réseau lumineux).

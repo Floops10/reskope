@@ -7,7 +7,7 @@ import { useLang } from '../i18n';
 import { useProfil } from '../profil';
 import { FAIT } from '../data/profils';
 import Explorateur from './Explorateur';
-import { EXPL_MOTS } from '../data/explorateur';
+import { EXPL_MOTS } from '../lib/scenes';
 
 /* ============================================================
    CE QU'ON FAIT — la planche.

@@ -2,7 +2,7 @@ import { Suspense, lazy, useEffect, useRef, useState, useCallback } from 'react'
 import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
 import { useLang } from '../i18n';
-import { EXPLORATEUR, EXPL_MOTS } from '../data/explorateur';
+import { SCENES, EXPL_MOTS } from '../lib/scenes';
 import { lockScroll, getLenis } from '../lib/smoothScroll';
 
 const SceneOffre = lazy(() => import('./SceneOffre'));
@@ -10,10 +10,11 @@ const SceneOffre = lazy(() => import('./SceneOffre'));
 /* ============================================================
    L'EXPLORATEUR — on clique sur une offre, elle s'ouvre en volume.
 
-   Sur la planche, chaque offre est un dessin qu'on survole. Ici elle
-   devient un objet : on tourne autour, on s'approche, et chaque pièce
-   porte une explication qu'on ouvre en cliquant dessus. C'est la même
-   géométrie que la planche et que les livrets, montée en trois dimensions.
+   Ce panneau n'est pas une fiche avec un décor animé : c'est un schéma
+   qu'on parcourt. Chaque étape transforme la scène — un trou se remplit,
+   des équipes se mettent au même niveau, une ressaisie à la main devient une
+   passerelle — et le texte à côté ne fait que dire ce qu'on voit changer. On
+   peut aussi cliquer un bloc dans la scène : l'étape qui en parle s'ouvre.
 
    Le panneau est un portail sur le corps du document : posé dans la page,
    il aurait hérité des transformations et des recadrages des sections
@@ -25,9 +26,9 @@ const SceneOffre = lazy(() => import('./SceneOffre'));
 
 export default function Explorateur({ figure, onFermer, plus }) {
   const { lang } = useLang();
-  const fiche = EXPLORATEUR[figure];
+  const scene = SCENES[figure];
   const m = EXPL_MOTS[lang] || EXPL_MOTS.fr;
-  const c = fiche ? (fiche[lang] || fiche.fr) : null;
+  const c = scene ? (scene[lang] || scene.fr) : null;
 
   const [active, setActive] = useState(0);
   const panneau = useRef(null);
@@ -71,23 +72,33 @@ export default function Explorateur({ figure, onFermer, plus }) {
     };
   }, [onFermer]);
 
-  const surPave = useCallback((i) => {
-    if (!c) return;
-    const k = c.pieces.findIndex((p) => p.idx.includes(i));
+  /* Cliquer un volume dans la scène ouvre l'étape qui en parle. */
+  const surBloc = useCallback((id) => {
+    if (!scene) return;
+    const k = scene.etapes.findIndex((e) => (e.ids || []).includes(id));
     if (k >= 0) setActive(k);
-  }, [c]);
+  }, [scene]);
 
   if (!c) return null;
-  const piece = c.pieces[active];
+  const etape = scene.etapes[active];
+  const dit = etape[lang] || etape.fr;
+  const dernier = active === scene.etapes.length - 1;
 
   return createPortal(
     <div className="expl3d" role="dialog" aria-modal="true" aria-label={c.titre} ref={panneau}>
       <button type="button" className="expl3d__fond" aria-label={m.fermer} onClick={onFermer} />
 
       <div className="expl3d__cadre">
-        <div className="expl3d__scene">
+        {/* La scène occupe la plus grande part : c'est elle qui explique. */}
+        <div className="expl3d__scene" data-cursor-prise>
           <Suspense fallback={<div className="expl3d__attente" aria-hidden="true" />}>
-            <SceneOffre nom={figure} pieceActive={piece} onPiece={surPave} reduit={reduit} />
+            <SceneOffre
+              nom={figure}
+              etape={etape}
+              onBloc={surBloc}
+              reduit={reduit}
+              lang={lang}
+            />
           </Suspense>
           <p className="expl3d__aide" aria-hidden="true">{m.tourner}</p>
         </div>
@@ -101,24 +112,36 @@ export default function Explorateur({ figure, onFermer, plus }) {
           <h2 className="expl3d__titre">{c.titre}</h2>
           <p className="expl3d__intro">{c.intro}</p>
 
-          {/* Les pièces : on en choisit une, les autres s'effacent dans la
-              scène et l'explication apparaît ici. Cliquer un volume dans la
-              scène fait la même chose, dans l'autre sens. */}
+          {/* Les étapes : on en choisit une, la scène se transforme et
+              l'explication suit. Cliquer un volume fait la même chose, dans
+              l'autre sens. */}
           <div className="expl3d__pieces">
-            {c.pieces.map((p, i) => (
+            {scene.etapes.map((e, i) => (
               <button
                 type="button"
-                key={p.nom}
+                key={i}
                 className={`expl3d__piece${i === active ? ' is-on' : ''}`}
                 onClick={() => setActive(i)}
                 aria-pressed={i === active}
               >
-                {p.nom}
+                {(e[lang] || e.fr).nom}
               </button>
             ))}
           </div>
 
-          <p className="expl3d__dit" key={piece.nom}>{piece.dit}</p>
+          <p className="expl3d__dit" key={active}>{dit.dit}</p>
+
+          {!dernier && (
+            <button
+              type="button"
+              className="expl3d__suite"
+              onClick={() => setActive((k) => Math.min(k + 1, scene.etapes.length - 1))}
+            >
+              {m.etape}
+              <span aria-hidden="true">→</span>
+            </button>
+          )}
+
           <p className="expl3d__fin">{c.fin}</p>
 
           {/* Ouvert depuis la page des offres, le volume porte aussi ce que

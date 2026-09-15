@@ -5579,7 +5579,11 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
     border-radius: 50%;
     background: var(--indigo);
     pointer-events: none;
-    z-index: 9998;
+    /* Au-dessus de TOUT, y compris les panneaux plein écran : la page cache
+       le curseur système, donc le nôtre doit pouvoir se dessiner partout.
+       À 9998 il passait sous l'explorateur, et on se retrouvait sans aucun
+       pointeur à l'endroit précis où il faut attraper l'objet. */
+    z-index: 100000;
     will-change: transform;
     transform: translate(-50%, -50%);
     transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
@@ -5597,13 +5601,42 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
     background: rgba(240, 238, 232, 0.85);
   }
 
+  /* LA PRISE — sur un plateau qu'on fait tourner, le point s'ouvre en
+     anneau : on voit où on est, et on voit qu'on peut attraper. Il se
+     referme d'un cran quand le bouton est enfoncé. */
+  .cursor-dot--prise {
+    width: 34px;
+    height: 34px;
+    background: none;
+    border: 1.5px solid var(--indigo);
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                width 0.25s ease, height 0.25s ease, border-color 0.25s ease;
+  }
+  .cursor-dot--prise::before,
+  .cursor-dot--prise::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 7px;
+    height: 1.5px;
+    background: var(--indigo);
+    border-radius: 2px;
+  }
+  .cursor-dot--prise::before { left: -11px; }
+  .cursor-dot--prise::after { right: -11px; }
+  .cursor-dot--prise.cursor-dot--dark { border-color: var(--cream); }
+  .cursor-dot--prise.cursor-dot--dark::before,
+  .cursor-dot--prise.cursor-dot--dark::after { background: var(--cream); }
+  .cursor-dot--prise.cursor-dot--hover { transform: translate(-50%, -50%) scale(1); }
+  .cursor-dot--prise.cursor-dot--serre { transform: translate(-50%, -50%) scale(0.62); }
+
   /* Label pill — apparaît au-dessus du curseur sur les éléments interactifs */
   .cursor-label {
     position: fixed;
     top: 0;
     left: 0;
     pointer-events: none;
-    z-index: 9999;
+    z-index: 100001;
     background: var(--indigo);
     color: var(--cream);
     border-radius: 999px;
@@ -14997,9 +15030,9 @@ html.eco-theme .crumb__node { background: rgba(125, 223, 168, 0.55); }
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
-  width: min(100%, 1240px);
-  height: min(100%, 780px);
+  grid-template-columns: minmax(0, 1.72fr) minmax(0, 1fr);
+  width: min(100%, 1340px);
+  height: min(100%, 820px);
   background: var(--cream);
   border-radius: clamp(1rem, 2.4vw, 1.8rem);
   overflow: hidden;
@@ -15035,19 +15068,27 @@ html.eco-theme .crumb__node { background: rgba(125, 223, 168, 0.55); }
   color: var(--muted);
   pointer-events: none;
 }
-/* Le repère posé sur la pièce choisie : il tourne avec elle. */
-.expl3d__pin {
-  display: block;
-  width: 11px;
-  height: 11px;
-  border-radius: 50%;
+/* L'ÉTIQUETTE — le nom d'un bloc, posé au bout de sa tige.
+
+   C'est la cote des planches imprimées, montée en volume : on ne lit pas un
+   schéma abstrait qu'un texte explique à côté, on lit un schéma dont chaque
+   pièce dit son nom. Elle ne s'affiche que pour les blocs dont parle l'étape
+   en cours : quinze étiquettes à l'écran ne se lisent pas, trois se lisent. */
+.expl3d__mot {
+  display: inline-block;
+  white-space: nowrap;
+  padding: 0.26rem 0.68rem;
+  border-radius: 999px;
   background: var(--indigo);
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--indigo) 22%, transparent);
-  animation: expl3dPin 2.4s ease-in-out infinite;
+  color: var(--cream);
+  font-size: 0.82rem;
+  line-height: 1.2;
+  box-shadow: 0 8px 22px -12px rgba(14, 11, 31, 0.8);
+  animation: expl3dMot 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
-@keyframes expl3dPin {
-  0%, 100% { box-shadow: 0 0 0 4px color-mix(in srgb, var(--indigo) 22%, transparent); }
-  50% { box-shadow: 0 0 0 9px color-mix(in srgb, var(--indigo) 8%, transparent); }
+@keyframes expl3dMot {
+  from { opacity: 0; transform: translateY(6px) scale(0.94); }
+  to { opacity: 1; transform: none; }
 }
 
 .expl3d__texte {
@@ -15123,6 +15164,22 @@ html.eco-theme .crumb__node { background: rgba(125, 223, 168, 0.55); }
 }
 .expl3d__piece:hover { background: color-mix(in srgb, var(--indigo) 14%, transparent); }
 .expl3d__piece.is-on { background: var(--indigo); color: var(--cream); }
+.expl3d__suite {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 0;
+  background: none;
+  padding: 0.2rem 0;
+  font: inherit;
+  font-size: 0.94rem;
+  color: var(--indigo);
+  cursor: pointer;
+  transition: gap 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.expl3d__suite:hover { gap: 0.85rem; }
+
 .expl3d__dit {
   margin: 0.3rem 0 0;
   font-size: 1.04rem;
@@ -15200,8 +15257,7 @@ html.eco-theme .crumb__node { background: rgba(125, 223, 168, 0.55); }
   .expl3d__fin { margin-top: 0.6rem; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .expl3d__cadre, .expl3d__fond, .expl3d__dit { animation: none; }
-  .expl3d__pin { animation: none; }
+  .expl3d__cadre, .expl3d__fond, .expl3d__dit, .expl3d__mot { animation: none; }
 }
 
 .fait__ouvrir {
