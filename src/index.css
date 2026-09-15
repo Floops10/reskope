@@ -6877,11 +6877,11 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
    ============================================================ */
 .heroform {
   position: relative;
-  /* Resserré une deuxième fois (255vh -> 200vh). Ce qui compte, sur cette
-     page, c'est d'arriver vite à « ce qu'on fait » : la formation du R est
-     belle, mais elle ne doit pas retenir le visiteur deux écrans et demi
-     avant qu'il sache de quoi on parle. */
-  height: 200vh;
+  /* Resserré deux fois (255vh, puis 200vh, puis 170vh). Ce qui compte sur
+     cette page, c'est d'arriver vite à « ce qu'on fait » : la formation du
+     R est belle, mais elle ne doit pas retenir le visiteur deux écrans et
+     demi avant qu'il sache de quoi on parle. */
+  height: 170vh;
 }
 .heroform__stage {
   position: sticky;
@@ -7776,8 +7776,10 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 
 /* ── 2. Long Phrase (texte seul) ─────────────────────────── */
 .long-phrase {
-  /* resserré (220svh -> 155svh) : la phrase se révèle plus vite */
-  height: 155svh;
+  /* Resserré une deuxième fois (155svh -> 128svh). Tout ce qui précède la
+     traversée est compté en écrans : un écran de plus ici, c'est un écran
+     de plus avant la première grande animation. */
+  height: 128svh;
   position: relative;
 }
 
@@ -14291,13 +14293,24 @@ html.eco-theme .crumb__node { background: rgba(125, 223, 168, 0.55); }
 }
 .ahero__pf { margin: 0; min-width: 0; }
 .ahero__pf .ahero__photo-mask { width: 100%; }
-.ahero__pf-cap { display: block; margin-top: 0.9rem; }
+/* La légende du portrait : un filet, le nom, le domaine, et une phrase.
+   Le nom seul au-dessus de trois mots séparés par des points ne disait pas
+   ce que la personne fait. */
+.ahero__pf-cap { display: block; margin-top: 1rem; }
+.ahero__pf-filet {
+  display: block;
+  height: 1px;
+  margin-bottom: 0.85rem;
+  background: color-mix(in srgb, var(--indigo) 30%, transparent);
+  transform-origin: left center;
+}
 .ahero__pf-nom {
   display: block;
   font-size: clamp(1rem, 1.6vw, 1.25rem);
   font-weight: 600;
   letter-spacing: -0.025em;
 }
+.ahero__pf-cap { overflow: hidden; }
 .ahero__pf-role {
   display: block;
   margin-top: 0.25rem;
@@ -14306,6 +14319,14 @@ html.eco-theme .crumb__node { background: rgba(125, 223, 168, 0.55); }
   text-transform: uppercase;
   color: var(--indigo);
   opacity: 0.85;
+}
+.ahero__pf-dit {
+  display: block;
+  margin-top: 0.6rem;
+  max-width: 30ch;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: var(--muted);
 }
 
 /* ════════════════════════════════════════════════════════════

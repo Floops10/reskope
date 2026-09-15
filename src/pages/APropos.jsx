@@ -44,8 +44,12 @@ const CONTENT = {
     title: "Terrain d'abord, technique ensuite.",
     lead: "Reskope, c'est une conviction : la productivité ne se décrète pas d'en haut. Elle se gagne en comprenant ceux qui font le travail. On est deux à la porter.",
     duo: [
-      { id: 'thomy', nom: 'Thomy', role: 'Stratégie · Modèle · Financement', alt: 'Thomy, cofondatrice de Reskope' },
-      { id: 'florian', nom: 'Florian', role: 'Sites · Outils métier · Cartographie', alt: 'Florian Bouchart, cofondateur de Reskope' },
+      { id: 'thomy', nom: 'Thomy', role: 'Stratégie · Modèle · Financement',
+        dit: 'Elle met votre vision au clair et la rend tenable dans la durée.',
+        alt: 'Thomy, cofondatrice de Reskope' },
+      { id: 'florian', nom: 'Florian', role: 'Sites · Outils métier · Cartographie',
+        dit: 'Il construit vos sites, reprend vos outils et relie ce qui ne se parle pas.',
+        alt: 'Florian Bouchart, cofondateur de Reskope' },
     ],
     hello: "Bonjour, nous c'est Thomy et Florian.",
     bio: [
@@ -94,8 +98,12 @@ const CONTENT = {
     title: 'Field first, tech second.',
     lead: 'Reskope is a conviction: productivity is not decreed from the top. It is won by understanding those who do the work. There are two of us behind it.',
     duo: [
-      { id: 'thomy', nom: 'Thomy', role: 'Strategy · Model · Funding', alt: 'Thomy, co-founder of Reskope' },
-      { id: 'florian', nom: 'Florian', role: 'Websites · Business tools · Mapping', alt: 'Florian Bouchart, co-founder of Reskope' },
+      { id: 'thomy', nom: 'Thomy', role: 'Strategy · Model · Funding',
+        dit: 'She gets your vision clear, and makes it hold over time.',
+        alt: 'Thomy, co-founder of Reskope' },
+      { id: 'florian', nom: 'Florian', role: 'Websites · Business tools · Mapping',
+        dit: 'He builds your sites, reworks your tools and connects what does not talk.',
+        alt: 'Florian Bouchart, co-founder of Reskope' },
     ],
     hello: "Hi, we're Thomy and Florian.",
     bio: [
@@ -162,6 +170,18 @@ export default function APropos() {
       gsap.fromTo(masks,
         { clipPath: 'inset(100% 0% 0% 0% round 18px)' },
         { clipPath: 'inset(0% 0% 0% 0% round 18px)', duration: 1.3, ease: 'power4.inOut', delay: 0.35, stagger: 0.14 });
+
+      /* La légende suit son portrait : le filet se trace, le nom monte
+         derrière son masque, le domaine et la phrase arrivent après. */
+      gsap.from(root.querySelectorAll('.ahero__pf-filet'), {
+        scaleX: 0, duration: 0.8, ease: 'power3.inOut', delay: 0.95, stagger: 0.14,
+      });
+      gsap.from(root.querySelectorAll('.ahero__pf-nom'), {
+        yPercent: 110, duration: 0.7, ease: 'power4.out', delay: 1.05, stagger: 0.14,
+      });
+      gsap.from(root.querySelectorAll('.ahero__pf-role, .ahero__pf-dit'), {
+        y: 12, autoAlpha: 0, duration: 0.6, ease: 'power3.out', delay: 1.2, stagger: 0.07,
+      });
       /* parallaxe UNIQUEMENT vers le bas : le visage reste toujours cadré */
       gsap.fromTo(img, { yPercent: 0, scale: 1.06 }, {
         yPercent: 8, scale: 1, ease: 'none',
@@ -261,9 +281,14 @@ export default function APropos() {
                     <div className="ahero__photo-mask">
                       <img className="ahero__img" src={PHOTOS[p.id]} alt={p.alt} loading="eager" />
                     </div>
+                    {/* Le nom et une liste de trois mots, ça ne dit pas ce
+                        que la personne fait. Une phrase, si. Le filet se
+                        trace au-dessus quand le portrait se dévoile. */}
                     <figcaption className="ahero__pf-cap">
+                      <span className="ahero__pf-filet" aria-hidden="true" />
                       <span className="ahero__pf-nom">{p.nom}</span>
                       <span className="ahero__pf-role">{p.role}</span>
+                      {p.dit && <span className="ahero__pf-dit">{p.dit}</span>}
                     </figcaption>
                   </figure>
                 ))}
