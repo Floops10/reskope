@@ -14628,7 +14628,7 @@ html.eco-theme .crumb__node { background: rgba(125, 223, 168, 0.55); }
 .prv .pv3 { position: relative; }
 .pv3__champ {
   display: block;
-  width: min(100%, 420px);
+  width: min(100%, 520px);
   height: auto;
   overflow: visible;
   margin-bottom: clamp(0.6rem, 1.6vw, 1.1rem);
