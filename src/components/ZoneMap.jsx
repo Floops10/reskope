@@ -34,7 +34,7 @@ const CONTENT = {
     bases: 'Valenciennes et Lille',
     /* Chez une TPE il n'y a pas d'audit poste par poste : ce qui justifie
        le déplacement, c'est de voir le local, le métier et les clients. */
-    leadTpe: 'Basés à Valenciennes et à Lille, on intervient sur place dans tout le Hainaut et les Hauts-de-France. On vient voir le local, le métier, la clientèle : un site qui ressemble vraiment à l’entreprise ne se fabrique pas en visioconférence.',
+    leadTpe: 'Basés à Valenciennes et à Lille, on intervient sur place dans tout le Hainaut et les Hauts-de-France. On vient voir le local, le métier, la clientèle : un site qui ressemble vraiment à l’entreprise ne se fabrique pas en visioconférence.',
   },
   en: {
     eyebrow: 'Service area',

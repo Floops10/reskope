@@ -66,11 +66,11 @@ export const BILAN = {
   fr: {
     metaTitle: 'Exemple de bilan · le document remis, en entier',
     metaDesc:
-      "Le bilan interactif, volet par volet : cartographie de 24 outils avant/après, 35 actions, gains chiffrés, feuille de route. Cas d'école construit pour montrer la forme exacte du livrable.",
+      "Le bilan interactif, volet par volet : cartographie de 24 outils avant/après, 35 actions, gains chiffrés, feuille de route. Cas d'école construit pour montrer la forme exacte du livrable.",
     hero: {
       eyebrow: 'Exemple de bilan',
       title: 'Le bilan, en entier.',
-      lead: "Le document remis en fin de mission, volet par volet. Le dossier est construit pour l'exemple, pas tiré d'une mission : les chiffres sont des ordres de grandeur, la forme est celle que vous recevrez.",
+      lead: "Le document remis en fin de mission, volet par volet. Le dossier est construit pour l'exemple, pas tiré d'une mission : les chiffres sont des ordres de grandeur, la forme est celle que vous recevrez.",
       chips: ['Cas d’école', 'Menuiserie & agencement', '24 personnes', 'Audit 5 j · mise en œuvre 18 j', 'Sur 4 mois', '21 entretiens'],
     },
     tabs: [

@@ -32,24 +32,24 @@ const CONTENT = {
        juste en dessous : personne ne devrait avoir à faire défiler pour
        savoir de quoi il s'agit. */
     heroDit: 'On fait le tour de vos outils, on relie ce qui doit l’être, on construit ce qui manque, et on forme vos équipes.',
-    line1: "Des outils qui ne se parlent pas, des données éparpillées, des usages que personne n'a cartographiés. Un coût invisible, mais bien réel.",
-    line2: "Reskope cartographie votre écosystème, puis relie, simplifie et construit ce qui manque : du site à l'outil métier, jusqu'aux automatisations. Au grand jour, jalon après jalon.",
-    mark1: 'cartographiés',
+    line1: "Des outils qui ne se parlent pas, la même information saisie trois fois, et des abonnements que plus personne n'ouvre. Ça n'apparaît sur aucune facture, et ça vous coûte quand même.",
+    line2: "On fait le tour, on range, on relie, et on construit ce qui manque. Vous voyez chaque étape, vous la validez, et vous pouvez vous arrêter à la fin de chacune.",
+    mark1: 'saisie trois fois',
     mark2: 'construit',
-    closing: 'Cartographiez vos SI. Reprenez le contrôle.',
+    closing: 'On remet de l’ordre. Vous gardez les clés.',
     offerings: [
-      { title: 'Audit numérique', sub: 'On cartographie vos outils et vos usages, salarié par salarié.' },
-      { title: 'Refonte d’outils', sub: 'On relie, on simplifie et on remet de l’ordre dans l’écosystème.' },
-      { title: 'Automatisation', sub: 'On supprime les tâches répétitives : intégrations, workflows, IA.' },
-      { title: 'Alternatives économiques', sub: 'Des outils sobres et justes, à la place des usines à gaz.' },
+      { title: 'Audit et cartographie', sub: 'Deux à cinq jours sur place. Vous repartez avec le document, quelle que soit la suite.' },
+      { title: 'Liaisons entre outils', sub: 'On branche ce que vous avez déjà. Rien à racheter.' },
+      { title: 'Outils sur mesure', sub: 'Par petites étapes, que vous validez une par une.' },
+      { title: 'Formation et suivi', sub: 'Une demi-journée de prise en main, puis on reste joignable.' },
     ],
     primary: 'Démarrer un audit',
     ghost: 'Le constat',
-    sting: 'Un seul interlocuteur. Tout au grand jour.',
+    sting: 'Deux personnes sur votre dossier. Et rien qui se décide sans vous.',
 
     /* — 2. Manifesto : la marque en une phrase — */
     longPhrase:
-      'Reskope, c’est un partenaire technique qui cartographie vos outils, les relie, les simplifie, et construit ce qui manque. Moins de friction, plus de temps pour votre vrai métier.',
+      'Reskope, c’est Thomy et Florian. On est à côté de vous quand vous décidez, et derrière l’écran quand il faut construire.',
 
     /* — 3. Services — */
     svEyebrow: 'Services',
@@ -135,23 +135,23 @@ const CONTENT = {
 
     heroTitle: 'Your teams lose hours inside their tools.',
     heroDit: 'We go through every tool, connect what needs connecting, build what is missing, and train your teams.',
-    line1: "Tools that don't talk to each other, scattered data, usage no one has mapped. A hidden cost, but a very real one.",
-    line2: 'Reskope maps your ecosystem, then connects, simplifies and builds what is missing: from websites to business tools and automations. In the open, milestone by milestone.',
-    mark1: 'mapped',
+    line1: "Tools that don't talk to each other, the same information typed in three times, and subscriptions nobody opens any more. It shows on no invoice, and it costs you anyway.",
+    line2: 'We go through everything, tidy up, connect, and build what is missing. You see each step, you approve it, and you can stop at the end of any of them.',
+    mark1: 'three times',
     mark2: 'builds',
-    closing: 'Map your systems. Take back control.',
+    closing: 'We put things in order. You keep the keys.',
     offerings: [
-      { title: 'Digital audit', sub: "We map your tools and how they're really used, person by person." },
-      { title: 'Tool redesign', sub: 'We connect, simplify and put your ecosystem back in order.' },
-      { title: 'Automation', sub: 'We remove repetitive work: integrations, workflows, AI.' },
-      { title: 'Affordable alternatives', sub: 'Lean, honest tools instead of bloated all-in-ones.' },
+      { title: 'Audit and mapping', sub: 'Two to five days on site. You leave with the document, whatever you decide next.' },
+      { title: 'Links between tools', sub: 'We plug in what you already have. Nothing to buy again.' },
+      { title: 'Tools built for you', sub: 'In small steps, approved one by one.' },
+      { title: 'Training and support', sub: 'Half a day of handover, then we stay reachable.' },
     ],
     primary: 'Start an audit',
     ghost: 'The findings',
-    sting: 'One partner. Everything in the open.',
+    sting: 'Two people on your file. And nothing decided without you.',
 
     longPhrase:
-      'Reskope is a technical partner who maps your tools, connects them, simplifies them, and builds what is missing. Less friction, more time for your real work.',
+      'Reskope is Thomy and Florian. We are beside you when you decide, and behind the screen when it has to be built.',
 
     svEyebrow: 'Services',
     svTitle: 'What we actually do.',

@@ -46,13 +46,13 @@ const MENTIONS = {
     eyebrow: 'Informations',
     title: 'Mentions légales.',
     lead: "Les informations légales relatives à l'éditeur et à l'hébergement de ce site.",
-    updated: 'Dernière mise à jour : 14 septembre 2026.',
+    updated: 'Dernière mise à jour : 14 septembre 2026.',
     sections: [
       { h: 'Éditeur du site', p: [
         `Le site Reskope est édité par Florian Bouchart, [À COMPLÉTER : forme juridique, ex. entrepreneur individuel / micro-entreprise].`,
         'Siège : [À COMPLÉTER : adresse du siège].',
-        'SIRET : 939 285 003 00017 · Code APE : [À COMPLÉTER : code APE].',
-        'TVA : non applicable, article 293 B du CGI (franchise en base).',
+        'SIRET : 939 285 003 00017 · Code APE : [À COMPLÉTER : code APE].',
+        'TVA : non applicable, article 293 B du CGI (franchise en base).',
         `Contact : ${CONTACT.email}`,
       ] },
       { h: 'Directeur de la publication', p: [
@@ -124,7 +124,7 @@ const PRIVACY = {
     eyebrow: 'Vos données',
     title: 'Politique de confidentialité.',
     lead: 'Ce que ce site collecte (très peu), pourquoi, où vont vos données, et vos droits.',
-    updated: 'Dernière mise à jour : 14 septembre 2026.',
+    updated: 'Dernière mise à jour : 14 septembre 2026.',
     sections: [
       { h: 'Responsable du traitement', p: [
         `Le responsable du traitement est Florian Bouchart (Reskope), [À COMPLÉTER : adresse]. Pour toute question relative à vos données : ${CONTACT.email}`,
@@ -210,7 +210,7 @@ const TERMS = {
     eyebrow: 'Cadre',
     title: "Conditions générales d'utilisation.",
     lead: "Les règles simples qui encadrent l'utilisation de ce site.",
-    updated: 'Dernière mise à jour : 14 septembre 2026.',
+    updated: 'Dernière mise à jour : 14 septembre 2026.',
     sections: [
       { h: 'Objet', p: [
         "Les présentes conditions encadrent l'accès et l'utilisation du site Reskope, site vitrine présentant les services d'audit, de conseil et d'ingénierie numérique proposés par Reskope. En utilisant le site, vous acceptez ces conditions.",
@@ -280,7 +280,7 @@ const SALES = {
     eyebrow: 'Prestations',
     title: 'Conditions générales de vente.',
     lead: "Le cadre des prestations d'audit, de mise en œuvre, de développement et de suivi.",
-    updated: 'Dernière mise à jour : 14 septembre 2026.',
+    updated: 'Dernière mise à jour : 14 septembre 2026.',
     sections: [
       { h: 'Objet et champ d’application', p: [
         "Les présentes conditions générales de vente (CGV) régissent les prestations de conseil, d'audit numérique, de développement, d'automatisation et de suivi fournies par Reskope à ses clients professionnels. Toute commande implique l'acceptation sans réserve des présentes CGV, qui prévalent sur tout autre document du client.",
@@ -297,7 +297,7 @@ const SALES = {
       { h: 'Prix et TVA', p: [
         "Les prix sont exprimés en euros et s'entendent nets. Le tarif de référence est de 450 € par jour d'intervention, sauf forfait précisé au devis (par exemple l'audit ou l'abonnement de suivi).",
         "L'audit est facturé au forfait selon l'effectif de la structure auditée. Un tarif de lancement, réservé aux trois premières entreprises accompagnées, est applicable jusqu'au 31 décembre 2026 ; au-delà de cette date ou de ce nombre, le tarif standard s'applique. Le montant de l'audit est intégralement déduit du devis de mise en œuvre lorsque celle-ci est confiée à Reskope.",
-        'TVA : non applicable, article 293 B du CGI (franchise en base).',
+        'TVA : non applicable, article 293 B du CGI (franchise en base).',
       ] },
       { h: 'Garantie bilan', p: [
         "Si, à la remise du bilan d'audit, le client estime que celui-ci ne lui apporte aucun élément exploitable, il dispose de sept (7) jours calendaires pour le signaler par écrit, en motivant sa position. Reskope propose alors, au choix du client, soit une reprise du bilan sans supplément, soit l'annulation de la facture correspondante.",

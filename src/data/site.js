@@ -191,7 +191,7 @@ export const JALONS = {
     },
     {
       n: '04', label: 'Delivery', title: 'We execute, milestone by milestone.',
-      text: 'Quick wins first, then the deeper work. You tick off each step with me, at your own pace.',
+      text: 'Quick wins first, then the deeper work. You tick off each step with us, at your own pace.',
       deliver: 'Tools that finally work for you.', here: false,
     },
     {
@@ -206,8 +206,8 @@ export const OFFERS = {
   fr: [
     {
       id: 'audit',
-      name: 'Audit numérique',
-      tagline: `Comprendre avant d'agir.`,
+      name: 'Audit et cartographie',
+      tagline: `On fait le tour avant de toucher à quoi que ce soit.`,
       features: [
         'Entretiens individuels avec vos équipes',
         'Cartographie complète de vos outils et usages',
@@ -227,8 +227,8 @@ export const OFFERS = {
     },
     {
       id: 'audit-plus',
-      name: 'Audit + Mise en œuvre',
-      tagline: 'On identifie, on règle.',
+      name: 'Audit et mise en ordre',
+      tagline: 'On fait le tour, puis on range.',
       features: [
         `Tout l'audit numérique, inclus`,
         'Réalisation : intégrations, automatisations, site web',
@@ -248,7 +248,7 @@ export const OFFERS = {
     },
     {
       id: 'developpement',
-      name: 'Développement & automatisation',
+      name: 'Outils sur mesure',
       tagline: 'Votre besoin est cadré, on construit.',
       features: [
         'Site web ou application métier sur-mesure',
@@ -269,8 +269,8 @@ export const OFFERS = {
     },
     {
       id: 'suivi',
-      name: 'Suivi mensuel',
-      tagline: 'On reste dans la boucle.',
+      name: 'Formation et suivi',
+      tagline: 'On forme vos équipes, puis on reste joignable.',
       features: [
         'Contrôles réguliers de vos outils et automatisations',
         'Petites modifications à la demande',
@@ -292,8 +292,8 @@ export const OFFERS = {
   en: [
     {
       id: 'audit',
-      name: 'Digital audit',
-      tagline: 'Understand before you act.',
+      name: 'Audit and mapping',
+      tagline: 'We go through everything before touching anything.',
       features: [
         'One-on-one interviews with your teams',
         'Full map of your tools and how they are used',
@@ -304,7 +304,7 @@ export const OFFERS = {
       cta: 'Request an audit',
       featured: false,
       detailTitle: 'What it actually delivers',
-      detail: `I spend 2 to 5 days on the ground with your teams, in person. I analyse every tool in use, every real workflow, every friction point. At the end, you receive a report prioritized by actual impact, not technical complexity, yours to keep regardless of what you do next.`,
+      detail: `We spend 2 to 5 days on the ground with your teams, in person. We analyse every tool in use, every real workflow, every friction point. At the end, you receive a report prioritized by actual impact, not technical complexity, yours to keep regardless of what you do next.`,
       pricingFactors: [
         `Number of teams or sites to cover`,
         `Complexity of the existing tool ecosystem`,
@@ -313,8 +313,8 @@ export const OFFERS = {
     },
     {
       id: 'audit-plus',
-      name: 'Audit + Delivery',
-      tagline: 'We identify, I fix.',
+      name: 'Audit and tidy-up',
+      tagline: 'We go through everything, then we tidy up.',
       features: [
         'Full digital audit, included',
         'Delivery: integrations, automations, website',
@@ -334,7 +334,7 @@ export const OFFERS = {
     },
     {
       id: 'developpement',
-      name: 'Development & automation',
+      name: 'Tools built for you',
       tagline: 'Your need is clear, we build it.',
       features: [
         'Custom website or business application',
@@ -355,8 +355,8 @@ export const OFFERS = {
     },
     {
       id: 'suivi',
-      name: 'Monthly retainer',
-      tagline: 'I stay in the loop.',
+      name: 'Training and support',
+      tagline: 'We train your teams, then we stay reachable.',
       features: [
         'Regular checks on your tools and automations',
         'Small changes on request',
@@ -367,7 +367,7 @@ export const OFFERS = {
       cta: 'Talk about ongoing support',
       featured: false,
       detailTitle: 'What it actually delivers',
-      detail: `I stay available after the engagement. Regular checks, small fixes, fast responses. One point of contact who already knows your setup, no need to explain everything from scratch each time. Cancel any time, no penalty.`,
+      detail: `We stay available after the engagement. Regular checks, small fixes, fast responses. One point of contact who already knows your setup, no need to explain everything from scratch each time. Cancel any time, no penalty.`,
       pricingFactors: [
         `Estimated monthly intervention volume`,
         `Number of tools and automations to monitor`,
@@ -389,7 +389,7 @@ export const FAQ = {
     },
     {
       q: `Le bilan m'engage-t-il à prendre la mise en œuvre ?`,
-      a: `Non. Le bilan est un livrable autonome : vous pouvez l'appliquer vous-même, avec votre équipe, ou me confier la réalisation.`,
+      a: `Non. Le bilan est un livrable autonome : vous pouvez l'appliquer vous-même, avec votre équipe, ou nous confier la réalisation.`,
     },
     {
       q: 'Travaillez-vous avec les petites structures ?',

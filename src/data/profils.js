@@ -33,10 +33,10 @@ export const HOME_TPE = {
     primary: 'Démarrer un projet',
     ghost: 'Ce qu’on construit',
     ghostTo: '/offres',
-    sting: 'Un seul interlocuteur. Les clés à la fin.',
+    sting: 'Deux personnes sur votre projet. Et les clés à la fin.',
 
     longPhrase:
-      'Reskope, c’est un partenaire technique qui construit ce qui vous manque, le met en ligne, vous montre comment il marche, et vous laisse le code. Vous n’avez besoin de personne pour continuer.',
+      'Reskope, c’est Thomy et Florian. On est à côté de vous quand vous décidez, et derrière l’écran quand il faut construire.',
 
     svTitle: 'Ce qu’on construit, concrètement.',
     services: [
@@ -94,10 +94,10 @@ export const HOME_TPE = {
     primary: 'Start a project',
     ghost: 'What we build',
     ghostTo: '/offres',
-    sting: 'One contact. The keys at the end.',
+    sting: 'Two people on your project. And the keys at the end.',
 
     longPhrase:
-      'Reskope is a technical partner who builds what you are missing, puts it live, shows you how it works, and leaves you the code. You need nobody to carry on.',
+      'Reskope is Thomy and Florian. We are beside you when you decide, and behind the screen when it has to be built.',
 
     svTitle: 'What we build, concretely.',
     services: [

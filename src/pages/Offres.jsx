@@ -44,7 +44,7 @@ const CONTENT = {
     qcmLead:
       "Quelques questions, et on vous propose l'accompagnement le plus juste. Pas le plus cher : le plus utile.",
     faqEyebrow: 'Questions fréquentes',
-    faqTitle: "Ce qu'on me demande souvent.",
+    faqTitle: "Ce qu'on nous demande souvent.",
     faqLead: "Une question qui n'est pas là ? Écrivez-nous, on répond vite et franchement.",
   },
   en: {
@@ -69,7 +69,7 @@ const CONTENT = {
     billing: {
       kicker: 'Transparency',
       title: 'How we bill.',
-      text: 'One day of work = €450. The audit and the retainer are fixed price; the audit is fully deducted if you entrust me with the delivery. Delivery depends on time and complexity, estimated and agreed with you before we start. No surprises on the invoice.',
+      text: 'One day of work = €450. The audit and the retainer are fixed price; the audit is fully deducted if you entrust us with the delivery. Delivery depends on time and complexity, estimated and agreed with you before we start. No surprises on the invoice.',
       note: 'Free quote, valid 30 days. Net prices, VAT not applicable, article 293 B of the French Tax Code. Audit launch rate reserved for the first 3 companies, valid until 31 December 2026.',
     },
     directH: 'Already know what you need?',
@@ -78,7 +78,7 @@ const CONTENT = {
     qcmEyebrow: 'Not sure what you need?',
     qcmTitle: 'Two minutes to pinpoint what you need.',
     qcmLead:
-      'A few questions, and I suggest the most fitting support. Not the most expensive: the most useful.',
+      'A few questions, and we suggest the most fitting support. Not the most expensive: the most useful.',
     faqEyebrow: 'Frequent questions',
     faqTitle: "What I'm often asked.",
     faqLead: "A question that's not here? Write to us, we answer fast and frankly.",
