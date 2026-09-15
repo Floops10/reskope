@@ -3,7 +3,7 @@ import HeroFormation from '../components/HeroFormation';
 import HomeCinema from '../components/HomeCinema';
 import LongPhrase from '../components/LongPhrase';
 import PreuvesTpe from '../components/PreuvesTpe';
-import ResumeOffre from '../components/ResumeOffre';
+import CeQuOnFait from '../components/CeQuOnFait';
 import { useLang } from '../i18n';
 import { useProfil } from '../profil';
 import { HOME_TPE } from '../data/profils';
@@ -27,6 +27,11 @@ const CONTENT = {
 
     /* — 1. Hero — */
     heroTitle: 'Vos équipes perdent des heures dans leurs outils.',
+    /* Le premier écran annonçait un problème sans jamais dire ce qu'on
+       vend. Cette ligne le dit, avec les quatre verbes qu'on retrouve
+       juste en dessous : personne ne devrait avoir à faire défiler pour
+       savoir de quoi il s'agit. */
+    heroDit: 'On fait le tour de vos outils, on relie ce qui doit l’être, on construit ce qui manque, et on forme vos équipes.',
     line1: "Des outils qui ne se parlent pas, des données éparpillées, des usages que personne n'a cartographiés. Un coût invisible, mais bien réel.",
     line2: "Reskope cartographie votre écosystème, puis relie, simplifie et construit ce qui manque : du site à l'outil métier, jusqu'aux automatisations. Au grand jour, jalon après jalon.",
     mark1: 'cartographiés',
@@ -129,6 +134,7 @@ const CONTENT = {
       'Reskope maps and audits your tools on the ground, employee by employee, then connects, simplifies and builds what is missing. Open process, quantified gains.',
 
     heroTitle: 'Your teams lose hours inside their tools.',
+    heroDit: 'We go through every tool, connect what needs connecting, build what is missing, and train your teams.',
     line1: "Tools that don't talk to each other, scattered data, usage no one has mapped. A hidden cost, but a very real one.",
     line2: 'Reskope maps your ecosystem, then connects, simplifies and builds what is missing: from websites to business tools and automations. In the open, milestone by milestone.',
     mark1: 'mapped',
@@ -234,7 +240,14 @@ export default function Home() {
              PME à TPE, les deux accroches restaient l'une sur l'autre). */}
       <HeroFormation key={lang + profil} c={c} />
 
-      {/* 2 — La marque en une phrase (mots révélés au scrub) */}
+      {/* 2 — CE QU'ON FAIT, tout de suite. Avant, il fallait traverser huit
+             écrans avant de savoir ce qu'on vend ; celui qui arrive doit
+             l'avoir compris en dix secondes. Quatre verbes, quatre volumes
+             dessinés dans la langue des livrets, et pas un prix : on ne
+             chiffre rien avant que le visiteur sache ce qu'il achète. */}
+      <CeQuOnFait key={`fait-${profil}`} />
+
+      {/* 3 — La marque en une phrase (mots révélés au scrub) */}
       <LongPhrase text={c.longPhrase} />
 
       {/* 3 — En version TPE seulement : les deux chiffres qui posent le
@@ -245,10 +258,6 @@ export default function Home() {
       {/* 3 — Traversée caméra 3D : constat → réponse → bascule → offres →
              signature. FIN de la home : le footer (scène de clôture) suit. */}
       <HomeCinema key={`cine-${profil}`} c={c} lang={lang} />
-
-      {/* 4 — Le résumé : ce qu'on vend, avec la durée et le prix de
-             départ. Après la traversée, c'est la question qui reste. */}
-      <ResumeOffre key={`rsm-${profil}`} />
 
     </Page>
   );

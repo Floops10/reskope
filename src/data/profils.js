@@ -18,6 +18,7 @@ export const HOME_TPE = {
       'On construit ce qui vous manque : site vitrine, boutique en ligne, prise de rendez-vous, identité de marque. Facturé à la journée, code et accès à votre nom.',
 
     heroTitle: 'On construit ce qui vous manque.',
+    heroDit: 'Votre site, votre boutique, votre prise de rendez-vous et l’identité qui va avec. Et vous repartez avec les clés.',
     line1: 'Pas de site, ou un site qui date. Des rendez-vous pris au téléphone. Une image qui ne vous ressemble plus. Rien de tout ça n’est un problème d’outils : c’est ce qui n’existe pas encore.',
     line2: 'Reskope conçoit et développe votre site, votre boutique, votre prise de rendez-vous, et pose l’identité qui va avec. Facturé à la journée, par petites étapes, et vous repartez avec les clés.',
     mark1: 'n’existe pas encore',
@@ -78,6 +79,7 @@ export const HOME_TPE = {
       'We build what you are missing: website, online shop, booking, brand identity. Billed by the day, code and access in your name.',
 
     heroTitle: 'We build what you are missing.',
+    heroDit: 'Your site, your shop, your booking, and the identity that goes with it. And you leave with the keys.',
     line1: 'No website, or one that has aged. Appointments taken by phone. An image that no longer looks like you. None of that is a tooling problem: it is what does not exist yet.',
     line2: 'Reskope designs and builds your website, your shop, your booking system, and sets the identity that goes with it. Billed by the day, in small steps, and you leave with the keys.',
     mark1: 'does not exist yet',
@@ -308,69 +310,6 @@ export const OFFRES_TPE = {
    valeur pour les moteurs, et quiconque y arrive par un lien externe la
    lit normalement — avec un bandeau qui dit franchement à qui elle
    s'adresse et propose la bascule. Rediriger de force serait hostile. */
-/* ============================================================
-   LE RÉSUMÉ DE FIN.
-
-   Il remplace le panneau qui se remplissait sur le côté pendant la
-   traversée : celui-là passait par-dessus les titres, et un sommaire qui
-   s'accumule en marge est devenu un tic qu'on reconnaît au premier coup
-   d'œil.
-
-   Ici, une fois la traversée finie, on pose la liste complète : ce qu'on
-   vend, en une ligne, avec la durée et le prix de départ. C'est la seule
-   endroit de l'accueil où un prix apparaît, et c'est voulu — quelqu'un
-   qui a regardé toute la traversée se demande combien ça coûte.
-   ============================================================ */
-export const RESUME = {
-  tpe: {
-    fr: {
-      label: 'Ce qu’on construit',
-      lignes: [
-        { nom: 'Site et boutique', quoi: 'Vitrine ou boutique, formulaire, paiement, et les liaisons avec les outils que vous avez déjà.', duree: '5 à 8 jours', prix: 'dès 1 900 €' },
-        { nom: 'Prise de rendez-vous', quoi: 'Créneaux en ligne, confirmation, rappel la veille, relance des clients endormis.', duree: '3 à 5 jours', prix: 'dès 1 400 €' },
-        { nom: 'Identité de marque', quoi: 'Le positionnement, le ton, les couleurs, et la liste de ce qu’il faut produire.', duree: '3 à 5 jours', prix: 'dès 1 600 €' },
-        { nom: 'Aide au lancement', quoi: 'Le modèle, le coût de revient, le seuil de rentabilité, et de quoi nourrir votre dossier.', duree: '2 à 4 jours', prix: 'dès 1 200 €' },
-      ],
-      pied: 'Prix de départ, annoncés avant de commencer. Vous pouvez vous arrêter à la fin de chaque étape.',
-      cta: 'Voir le détail et les tarifs',
-    },
-    en: {
-      label: 'What we build',
-      lignes: [
-        { nom: 'Website and shop', quoi: 'Storefront or shop, forms, payment, and links to the tools you already have.', duree: '5 to 8 days', prix: 'from €1,900' },
-        { nom: 'Online booking', quoi: 'Online slots, confirmation, reminder the day before, win-back for dormant clients.', duree: '3 to 5 days', prix: 'from €1,400' },
-        { nom: 'Brand identity', quoi: 'Positioning, tone, colours, and the list of what to produce.', duree: '3 to 5 days', prix: 'from €1,600' },
-        { nom: 'Launch support', quoi: 'The model, the unit cost, the break-even point, and what feeds your file.', duree: '2 to 4 days', prix: 'from €1,200' },
-      ],
-      pied: 'Starting prices, stated before we begin. You can stop at the end of any stage.',
-      cta: 'See the detail and pricing',
-    },
-  },
-  pme: {
-    fr: {
-      label: 'Ce qu’on fait',
-      lignes: [
-        { nom: 'Audit numérique', quoi: 'Chaque personne rencontrée, chaque abonnement ouvert, chaque donnée suivie d’un bout à l’autre.', duree: '2 à 5 jours', prix: 'dès 990 €' },
-        { nom: 'Audit et mise en œuvre', quoi: 'L’audit, puis les chantiers que vous retenez. L’audit est intégralement déduit.', duree: 'à la journée', prix: '450 €/jour' },
-        { nom: 'Développement et automatisation', quoi: 'Le besoin est déjà cadré : intégrations, automatisations, site ou outil métier.', duree: '5 à 15 jours', prix: 'dès 1 200 €' },
-        { nom: 'Suivi mensuel', quoi: 'Contrôles réguliers, corrections, évolutions. Résiliable à tout moment.', duree: 'mensuel', prix: 'dès 290 €/mois' },
-      ],
-      pied: 'Tarifs de lancement réservés aux trois premières entreprises accompagnées, valables jusqu’au 31 décembre 2026.',
-      cta: 'Voir le détail et les tarifs',
-    },
-    en: {
-      label: 'What we do',
-      lignes: [
-        { nom: 'Digital audit', quoi: 'Every person interviewed, every subscription opened, one piece of data followed end to end.', duree: '2 to 5 days', prix: 'from €990' },
-        { nom: 'Audit and delivery', quoi: 'The audit, then the work you select. The audit is fully deducted.', duree: 'by the day', prix: '€450/day' },
-        { nom: 'Development and automation', quoi: 'The need is already scoped: integrations, automation, website or business tool.', duree: '5 to 15 days', prix: 'from €1,200' },
-        { nom: 'Monthly retainer', quoi: 'Regular checks, fixes, improvements. Cancel at any time.', duree: 'monthly', prix: 'from €290/mo' },
-      ],
-      pied: 'Launch rates reserved for the first three companies, valid until 31 December 2026.',
-      cta: 'See the detail and pricing',
-    },
-  },
-};
 
 export const PAGES_PROFIL = { '/exemple': 'pme', '/pourquoi': 'pme' };
 
@@ -590,5 +529,85 @@ export const PASSERELLE = {
   en: {
     tpe: { txt: 'Do you actually run an SME of ten people or more?', act: 'See the SME version' },
     pme: { txt: 'Are you rather a small business under ten people?', act: 'See the small-business version' },
+  },
+};
+
+/* ════════════════════════════════════════════════════════════
+   CE QU'ON FAIT — la réponse en quatre verbes, posée juste sous
+   l'accroche de l'accueil.
+
+   Écrit dans la langue du livret : des phrases courtes, « on », du
+   concret, et rien qui essaie de vendre. Aucun prix : le visiteur doit
+   comprendre ce qu'il achète avant de voir combien ça coûte, et la page
+   des offres est là pour ça.
+   ════════════════════════════════════════════════════════════ */
+export const FAIT = {
+  pme: {
+    fr: {
+      sur: 'Ce qu’on fait',
+      titre: 'On remet vos outils en ordre, et on vous laisse les clés.',
+      items: [
+        { figure: 'inventaire', nom: 'On fait le tour de vos outils',
+          quoi: 'Chaque personne, chaque abonnement, chaque donnée. Vous repartez avec le tableau complet, coût par coût.' },
+        { figure: 'liaison', nom: 'On relie ce qui ne se parle pas',
+          quoi: 'Le devis qui devient facture, l’export qui part au comptable. Fin des saisies en double.' },
+        { figure: 'chantier', nom: 'On construit ce qui manque',
+          quoi: 'Un outil interne, une automatisation, un site. Le code et les accès sont à vous.' },
+        { figure: 'estrade', nom: 'On forme vos équipes',
+          quoi: 'Un outil que personne n’ouvre ne sert à rien. On reste jusqu’à ce qu’il tourne sans nous.' },
+      ],
+      pied: 'Chaque chantier se prend séparément. Si celui où vous en êtes vous suffit, on ne vous vendra pas le suivant.',
+      act: 'Le détail, et ce que ça coûte',
+    },
+    en: {
+      sur: 'What we do',
+      titre: 'We put your tools back in order, and hand you the keys.',
+      items: [
+        { figure: 'inventaire', nom: 'We go through every tool',
+          quoi: 'Every person, every subscription, every piece of data. You leave with the full table, cost by cost.' },
+        { figure: 'liaison', nom: 'We connect what does not talk',
+          quoi: 'The quote that becomes an invoice, the export that reaches the accountant. No more double entry.' },
+        { figure: 'chantier', nom: 'We build what is missing',
+          quoi: 'An internal tool, an automation, a website. The code and the access are yours.' },
+        { figure: 'estrade', nom: 'We train your teams',
+          quoi: 'A tool nobody opens is worth nothing. We stay until it runs without us.' },
+      ],
+      pied: 'Each project stands on its own. If the stage you are at is enough, we will not sell you the next one.',
+      act: 'The detail, and what it costs',
+    },
+  },
+  tpe: {
+    fr: {
+      sur: 'Ce qu’on fait',
+      titre: 'On construit ce qui vous manque, et on vous laisse les clés.',
+      items: [
+        { figure: 'vitrine', nom: 'On met votre entreprise en ligne',
+          quoi: 'Un site, une boutique, un formulaire qui arrive vraiment. Vous repartez avec les clés.' },
+        { figure: 'creneaux', nom: 'On prend vos rendez-vous à votre place',
+          quoi: 'Créneaux en ligne, confirmation, rappel la veille. Vous ne rappelez plus personne.' },
+        { figure: 'cadre', nom: 'On pose votre identité',
+          quoi: 'Le nom, le ton, les couleurs, et les règles pour vous en servir sans nous.' },
+        { figure: 'rampe', nom: 'On prépare votre lancement',
+          quoi: 'Le modèle, le coût de revient, les fournisseurs. Avant d’ouvrir, et avant d’emprunter.' },
+      ],
+      pied: 'Chaque chantier se prend séparément. Et on vous dit franchement quand vous n’avez besoin de rien.',
+      act: 'Le détail, et ce que ça coûte',
+    },
+    en: {
+      sur: 'What we do',
+      titre: 'We build what you are missing, and hand you the keys.',
+      items: [
+        { figure: 'vitrine', nom: 'We put your business online',
+          quoi: 'A site, a shop, a form that actually reaches you. You leave with the keys.' },
+        { figure: 'creneaux', nom: 'We take your bookings for you',
+          quoi: 'Slots online, confirmation, reminder the day before. You stop calling people back.' },
+        { figure: 'cadre', nom: 'We set your identity',
+          quoi: 'The name, the tone, the colours, and the rules to use them without us.' },
+        { figure: 'rampe', nom: 'We get your launch ready',
+          quoi: 'The model, the true cost, the suppliers. Before you open, and before you borrow.' },
+      ],
+      pied: 'Each project stands on its own. And we tell you plainly when you need nothing at all.',
+      act: 'The detail, and what it costs',
+    },
   },
 };

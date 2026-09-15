@@ -66,6 +66,8 @@ html.lenis body {
   --cream-shade: #e6e2d7;
   --ink: #0e0b1f;
   --silver: #b7b3a9;
+  /* Hauteur du recouvrement entre deux fonds de couleurs différentes. */
+  --couture-r: clamp(1.4rem, 3vw, 2.6rem);
   --muted: #6e6a61;
   /* Le gris de lecture passe tout juste la barre de contraste sur le crème.
      Sur un fond légèrement teinté il tombe en dessous : les blocs posés sur
@@ -6875,8 +6877,11 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
    ============================================================ */
 .heroform {
   position: relative;
-  /* resserré (300vh -> 255vh) : moins de vide entre le R et la suite */
-  height: 255vh;
+  /* Resserré une deuxième fois (255vh -> 200vh). Ce qui compte, sur cette
+     page, c'est d'arriver vite à « ce qu'on fait » : la formation du R est
+     belle, mais elle ne doit pas retenir le visiteur deux écrans et demi
+     avant qu'il sache de quoi on parle. */
+  height: 200vh;
 }
 .heroform__stage {
   position: sticky;
@@ -6946,6 +6951,17 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   top: 50%;
   opacity: 0;
   will-change: transform, opacity;
+}
+/* La ligne qui dit l'offre, entre le titre et les deux boutons. */
+.heroform__dit {
+  max-width: 46ch;
+  margin: 0 0 clamp(1.5rem, 3vh, 2.2rem);
+  font-size: clamp(1.02rem, 1.35vw, 1.22rem);
+  line-height: 1.5;
+  color: var(--muted);
+}
+@media (max-width: 720px) {
+  .heroform__dit { font-size: 1rem; max-width: 34ch; }
 }
 .heroform__actions {
   display: flex;
@@ -12000,10 +12016,10 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   z-index: 1;
   height: 660vh;
   background: #0e0b1f;
-  border-start-start-radius: clamp(1.4rem, 3vw, 2.6rem);
-  border-start-end-radius: clamp(1.4rem, 3vw, 2.6rem);
-  margin-top: calc(-1 * clamp(1.4rem, 3vw, 2.6rem));
-  padding-top: clamp(1.4rem, 3vw, 2.6rem);
+  border-start-start-radius: var(--couture-r);
+  border-start-end-radius: var(--couture-r);
+  margin-top: calc(-1 * var(--couture-r));
+  padding-top: var(--couture-r);
 }
 .cflw__holder { position: sticky; top: 0; width: 100%; height: 100svh; overflow: hidden; background: #0e0b1f; color: var(--cream); }
 .cflw__canvas { position: absolute !important; inset: 0; }
@@ -12754,10 +12770,10 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   z-index: 1;
   height: 340vh;
   background: #053a1e;
-  border-start-start-radius: clamp(1.4rem, 3vw, 2.6rem);
-  border-start-end-radius: clamp(1.4rem, 3vw, 2.6rem);
-  margin-top: calc(-1 * clamp(1.4rem, 3vw, 2.6rem));
-  padding-top: clamp(1.4rem, 3vw, 2.6rem);
+  border-start-start-radius: var(--couture-r);
+  border-start-end-radius: var(--couture-r);
+  margin-top: calc(-1 * var(--couture-r));
+  padding-top: var(--couture-r);
 }
 .epg__stage {
   position: sticky;
@@ -13860,14 +13876,12 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 /* ============================================================
    FIL D'ARIANE
    ============================================================ */
-/* Le fil d'Ariane est le dernier bloc clair avant le pied sombre. Il doit
-   donc passer SOUS lui : au même plan, c'est l'ordre du DOM qui décide, et
-   le pied arrive en dernier. Le rembourrage du bas compense ce que le
-   recouvrement lui mange, sinon le texte se retrouve collé au bord. */
+/* Le fil d'Ariane est le dernier bloc clair avant le pied sombre : il doit
+   passer SOUS lui, et au même plan c'est l'ordre du DOM qui décide. */
 .crumb {
   position: relative;
   z-index: 1;
-  padding-block: 1.1rem calc(1.1rem + clamp(1.4rem, 3vw, 2.6rem));
+  padding-block: 1.1rem;
   background: var(--cream);
   border-top: 1px solid color-mix(in srgb, var(--ink) 8%, transparent);
 }
@@ -14686,133 +14700,6 @@ html.eco-theme .crumb__node { background: rgba(125, 223, 168, 0.55); }
 }
 
 /* ════════════════════════════════════════════════════════════
-   LE RÉSUMÉ DE FIN
-
-   Pas de cartes, pas de grille : quatre lignes pleine largeur, du gros
-   caractère, le prix aligné à droite. La mise en page d'un sommaire
-   d'édition, pas d'un tableau comparatif.
-
-   L'état de survol n'est pas une bordure qui s'allume : la ligne entière
-   bascule en indigo. On sait où on pointe même du coin de l'œil.
-   ════════════════════════════════════════════════════════════ */
-
-.rsm { padding: clamp(4.5rem, 10vw, 8rem) 0 clamp(3.5rem, 8vw, 6rem); background: var(--cream); }
-.rsm__label {
-  margin: 0 0 clamp(2rem, 4vw, 3rem);
-  font-size: clamp(2rem, 5vw, 3.6rem);
-  font-weight: 600;
-  letter-spacing: -0.042em;
-  line-height: 1.02;
-}
-
-.rsm__liste { border-top: 1px solid var(--hairline); }
-.rsm__l {
-  display: block;
-  border-bottom: 1px solid var(--hairline);
-  color: inherit;
-  text-decoration: none;
-  /* Le masque : l'intérieur de la ligne monte derrière lui à l'entrée. */
-  overflow: hidden;
-  transition: background-color 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.rsm__in { display: block; will-change: transform; }
-.rsm__row {
-  display: grid;
-  grid-template-columns: auto 1fr auto auto;
-  align-items: center;
-  gap: clamp(1rem, 3vw, 2.6rem);
-  padding-block: clamp(1.5rem, 3vw, 2.4rem);
-}
-@media (max-width: 860px) {
-  .rsm__row { grid-template-columns: auto 1fr auto; }
-  .rsm__fleche { display: none; }
-}
-
-.rsm__n {
-  font-size: 0.7rem;
-  letter-spacing: 0.12em;
-  color: var(--indigo);
-  font-variant-numeric: tabular-nums;
-  align-self: start;
-  padding-top: 0.55rem;
-  transition: color 0.4s ease;
-}
-.rsm__txt { min-width: 0; }
-.rsm__nom {
-  display: block;
-  font-size: clamp(1.3rem, 2.6vw, 2.05rem);
-  font-weight: 600;
-  letter-spacing: -0.032em;
-  line-height: 1.12;
-  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
-  transform-origin: left center;
-}
-.rsm__quoi {
-  display: block;
-  margin-top: 0.5rem;
-  max-width: 52ch;
-  font-size: 0.94rem;
-  line-height: 1.55;
-  color: var(--muted);
-  transition: color 0.4s ease;
-}
-.rsm__meta { text-align: right; white-space: nowrap; }
-.rsm__duree {
-  display: block;
-  font-size: 0.68rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--muted);
-  transition: color 0.4s ease;
-}
-.rsm__prix {
-  display: block;
-  margin-top: 0.35rem;
-  font-size: clamp(1.02rem, 1.5vw, 1.3rem);
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  color: var(--indigo);
-  transition: color 0.4s ease;
-}
-.rsm__fleche { color: var(--indigo); transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), color 0.4s ease; }
-
-@media (hover: hover) {
-  .rsm__l:hover { background: var(--indigo); }
-  .rsm__l:hover .rsm__nom { transform: translateX(0.7rem); }
-  .rsm__l:hover .rsm__n,
-  .rsm__l:hover .rsm__prix,
-  .rsm__l:hover .rsm__fleche { color: var(--cream); }
-  .rsm__l:hover .rsm__quoi,
-  .rsm__l:hover .rsm__duree { color: rgba(240, 238, 232, 0.76); }
-  .rsm__l:hover .rsm__nom,
-  .rsm__l:hover { color: var(--cream); }
-  .rsm__l:hover .rsm__fleche { transform: translateX(0.5rem); }
-}
-.rsm__l:focus-visible { background: var(--indigo); color: var(--cream); outline: none; }
-
-.rsm__pied {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 1rem 2rem;
-  margin-top: clamp(1.6rem, 3vw, 2.4rem);
-}
-.rsm__pied p { margin: 0; max-width: 56ch; font-size: 0.86rem; line-height: 1.55; color: var(--muted); }
-.rsm__cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: var(--indigo);
-  text-decoration: none;
-  white-space: nowrap;
-}
-.rsm__cta span { transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1); }
-.rsm__cta:hover span { transform: translateX(6px); }
-
-/* ════════════════════════════════════════════════════════════
    LES COUTURES — passer d'un fond clair à un fond sombre
 
    On ne passe pas du crème au noir d'un bloc à l'autre : ça se voit
@@ -14832,10 +14719,36 @@ html.eco-theme .crumb__node { background: rgba(125, 223, 168, 0.55); }
 .bk {
   position: relative;
   z-index: 1;
-  border-start-start-radius: clamp(1.4rem, 3vw, 2.6rem);
-  border-start-end-radius: clamp(1.4rem, 3vw, 2.6rem);
-  margin-top: calc(-1 * clamp(1.4rem, 3vw, 2.6rem));
+  border-start-start-radius: var(--couture-r);
+  border-start-end-radius: var(--couture-r);
+  margin-top: calc(-1 * var(--couture-r));
   overflow: hidden;
+}
+
+/* ── LE DÉFAUT QUE CETTE RÈGLE RÉPARE ──────────────────────────────
+   Le panneau qui arrive remonte de la hauteur du rayon. Il mord donc sur
+   la fin de la section du dessus, et si le texte y descend bas, il passe
+   dessous. On rend cette hauteur à celui qui la perd : une bordure
+   transparente allonge sa boîte sans toucher aux marges ni aux paddings
+   déjà écrits, et son fond continue dessous puisque le fond se peint
+   jusqu'au bord de bordure. Le recouvrement se fait alors sur du vide. */
+:has(+ .couture-claire),
+:has(+ .footer2--universe),
+:has(+ .constat-bridge),
+:has(+ .section--eco-band),
+:has(+ .eco-cta),
+:has(+ .bk),
+:has(+ .cflw),
+:has(+ .epg) {
+  border-bottom: var(--couture-r) solid transparent;
+}
+/* Sauf quand la suivante ne remonte pas : deux bandes sombres qui se
+   suivent restent bord à bord, il n'y a rien à compenser. */
+.section--eco-band:has(+ .eco-cta),
+.eco-cta:has(+ .footer2--universe),
+.constat-bridge:has(+ .footer2--universe),
+.bk:has(+ .footer2--universe) {
+  border-bottom: 0;
 }
 /* Et la couture dans l'autre sens : une section claire qui succède à une
    section sombre remonte par-dessus elle, avec le même arrondi. Sinon on
@@ -14845,9 +14758,9 @@ html.eco-theme .crumb__node { background: rgba(125, 223, 168, 0.55); }
   position: relative;
   z-index: 1;
   background: var(--couture-fond, var(--cream));
-  border-start-start-radius: clamp(1.4rem, 3vw, 2.6rem);
-  border-start-end-radius: clamp(1.4rem, 3vw, 2.6rem);
-  margin-top: calc(-1 * clamp(1.4rem, 3vw, 2.6rem));
+  border-start-start-radius: var(--couture-r);
+  border-start-end-radius: var(--couture-r);
+  margin-top: calc(-1 * var(--couture-r));
 }
 
 /* Deux bandes sombres qui se suivent ne se recouvrent pas : la seconde
@@ -14859,4 +14772,125 @@ html.eco-theme .crumb__node { background: rgba(125, 223, 168, 0.55); }
   margin-top: 0;
   border-start-start-radius: 0;
   border-start-end-radius: 0;
+}
+
+/* ════════════════════════════════════════════════════════════
+   CE QU'ON FAIT — la planche axonométrique de l'accueil
+
+   Pas de cartes : aucun cadre, aucun fond, aucun numéro, aucune flèche,
+   aucun changement au survol. Ce qui tient la rangée ensemble, c'est que
+   les quatre sols sont dessinés à la même échelle et dans le même cadre :
+   leurs quadrillages s'alignent d'une colonne à l'autre et la rangée se
+   lit comme une seule planche. C'est le procédé du livret.
+
+   Le nom et la phrase sont presque de la même taille. Un grand titre avec
+   une légende minuscule en dessous, c'est la mise en page qu'on voit
+   partout ; ici les deux lignes se lisent d'un seul mouvement.
+   ════════════════════════════════════════════════════════════ */
+
+.fait {
+  padding-block: clamp(4rem, 9vh, 7rem);
+}
+.fait__sur {
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 0.9rem;
+}
+.fait__titre {
+  font-size: clamp(1.9rem, 4.2vw, 3.4rem);
+  font-weight: 600;
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+  color: var(--ink);
+  max-width: 24ch;
+  margin: 0 0 clamp(2.6rem, 6vw, 4.4rem);
+}
+.fait__rangee {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(1.6rem, 3.4vw, 3rem);
+  align-items: start;
+}
+.fait__dessin {
+  display: block;
+  /* Plafonnée : au-delà, le dessin écrase la phrase qu'il illustre. La
+     largeur est la même pour les quatre, donc les sols restent à la même
+     échelle et leurs quadrillages s'alignent d'une colonne à l'autre. */
+  width: min(100%, 250px);
+  margin-bottom: clamp(0.9rem, 2vw, 1.4rem);
+}
+.axo {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+/* Les trois faces reprennent les trois indigos de la charte, dans le même
+   ordre que sur le papier : le dessus le plus clair, la gauche le plus
+   sombre. Un volume se lit tout de suite comme un volume. */
+.axo-t { fill: var(--indigo-bright); }
+.axo-r { fill: var(--indigo); }
+.axo-l { fill: var(--indigo-deep); }
+.axo-f {
+  fill: none;
+  stroke: var(--indigo);
+  stroke-width: 0.3;
+  opacity: 0.5;
+}
+.axo__sol line {
+  stroke: var(--indigo);
+  stroke-width: 0.16;
+  opacity: 0.26;
+}
+.axo__cadre {
+  fill: none;
+  stroke: var(--indigo);
+  stroke-width: 0.28;
+  opacity: 0.42;
+}
+.fait__nom {
+  font-size: clamp(1rem, 1.35vw, 1.12rem);
+  font-weight: 600;
+  line-height: 1.24;
+  letter-spacing: -0.018em;
+  color: var(--ink);
+  margin: 0 0 0.5rem;
+  max-width: 22ch;
+}
+.fait__quoi {
+  font-size: 0.94rem;
+  line-height: 1.55;
+  color: var(--muted);
+  margin: 0;
+  max-width: 34ch;
+}
+.fait__pied {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem 2.5rem;
+  margin-top: clamp(2.4rem, 5vw, 3.8rem);
+  padding-top: clamp(1.1rem, 2.4vw, 1.6rem);
+  border-top: 1px solid var(--hairline);
+}
+.fait__pied p {
+  margin: 0;
+  max-width: 62ch;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--muted);
+}
+@media (max-width: 1080px) {
+  .fait__rangee { grid-template-columns: repeat(2, 1fr); gap: clamp(2rem, 5vw, 3rem); }
+  .fait__quoi { max-width: 40ch; }
+}
+@media (max-width: 520px) {
+  .fait__rangee { grid-template-columns: 1fr; }
+  .fait__dessin { width: min(74%, 260px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .axo__v { opacity: 1 !important; }
 }

@@ -46,6 +46,7 @@ export default function HeroFormation({ c }) {
   const netTitleRef = useRef(null);
   const visualRef = useRef(null);
   const actionsRef = useRef(null);
+  const ditRef = useRef(null);
   const glyphRefs = useRef([]);
 
   const shape = useMemo(() => buildR3D(16, 0.66), []);
@@ -110,7 +111,9 @@ export default function HeroFormation({ c }) {
 
       if (fxDesktop || fxMobile) {
         /* Texte : désassemblage lettre à lettre (le réseau se défait) */
-        gsap.set(actionsRef.current, { autoAlpha: 1 - clamp01((p - 0.46) / 0.16) });
+        const fondu = 1 - clamp01((p - 0.46) / 0.16);
+        gsap.set(actionsRef.current, { autoAlpha: fondu });
+        if (ditRef.current) gsap.set(ditRef.current, { autoAlpha: fondu });
         const { els, vecs } = charData;
         for (let i = 0; i < els.length; i++) {
           const d = easeInOut(clamp01((p - 0.56 - i * 0.0045) / 0.3));
@@ -185,6 +188,7 @@ export default function HeroFormation({ c }) {
     if (split) {
       intro.from(split.chars, { yPercent: 112, autoAlpha: 0, duration: 0.9, stagger: 0.013 }, 0.12);
     }
+    if (ditRef.current) intro.from(ditRef.current, { y: 20, autoAlpha: 0, duration: 0.7 }, 0.5);
     intro.from(actionsRef.current, { y: 24, autoAlpha: 0, duration: 0.7 }, 0.6);
 
     /* Morph survol : VAGUE de bascule lettre à lettre — la lettre sans
@@ -307,6 +311,10 @@ export default function HeroFormation({ c }) {
               {c.heroTitle}
             </div>
           </div>
+          {/* Ce qu'on vend, dit tout de suite. Le titre pose le sujet, cette
+              ligne dit ce qu'on fait : elle tient dans le premier écran,
+              avant tout défilement. */}
+          {c.heroDit && <p className="heroform__dit" ref={ditRef}>{c.heroDit}</p>}
           <div className="heroform__actions" ref={actionsRef}>
             <Link to="/contact" className="btn btn--primary" data-cursor-label="Y aller">
               <SwapLabel>{c.primary}</SwapLabel>
