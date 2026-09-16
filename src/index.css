@@ -15511,3 +15511,20 @@ html.eco-theme .crumb__node { background: rgba(125, 223, 168, 0.55); }
 }
 .atl__usage:hover { color: var(--ink); }
 .atl__usage.is-on { background: var(--indigo); border-color: var(--indigo); color: var(--cream); }
+
+/* La porte : le titre porte le discours, la question passe en sous-ordre. */
+.porte__pitch {
+  max-width: 54ch;
+  margin: 0.9rem 0 1.6rem;
+  font-size: clamp(1rem, 1.35vw, 1.18rem);
+  line-height: 1.6;
+  color: rgba(240, 238, 232, 0.82);
+}
+.porte__q {
+  margin: 0 0 0.4rem;
+  font-size: clamp(1.4rem, 3.2vw, 2.4rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: var(--cream);
+}
+.porte__opt { text-decoration: none; }

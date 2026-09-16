@@ -5,7 +5,8 @@ import NetWord from '../components/NetWord';
 import Net3D from '../components/Net3D';
 import { GLYPH_SHAPES } from '../lib/net3d';
 import { useLang, LangToggle } from '../i18n';
-import { useProfil } from '../profil';
+import { useProfil, BASE } from '../profil';
+import { PORTE, SITE } from '../data/seo';
 import { instant } from '../lib/scrub';
 
 /* ============================================================
@@ -25,7 +26,9 @@ import { instant } from '../lib/scrub';
 
 const T = {
   fr: {
-    kicker: 'Conseil et ingénierie numérique',
+    kicker: 'Conseil et ingénierie numérique · Valenciennes et Lille',
+    titre: 'On remet vos outils numériques en ordre.',
+    pitch: 'On rencontre vos équipes sur le terrain, on cartographie les outils que vous payez, on supprime les doublons, on relie ce qui ne communique pas et on construit ce qui manque.',
     q1: 'Vous',
     q2: 'êtes…',
     lead: 'Le site existe en deux versions, parce qu’on ne propose pas la même chose à une entreprise de trois personnes et à une PME de quatre-vingts. Choisissez la vôtre : vous pourrez changer à tout moment, en haut de page.',
@@ -46,7 +49,9 @@ const T = {
     pied: 'Valenciennes et Lille · sur place dans les Hauts-de-France, à distance partout ailleurs',
   },
   en: {
-    kicker: 'Digital consulting and engineering',
+    kicker: 'Digital consulting and engineering · Valenciennes and Lille',
+    titre: 'We put your digital tools back in order.',
+    pitch: 'We meet your teams on the ground, map the tools you pay for, remove the duplicates, connect what does not communicate and build what is missing.',
     q1: 'You',
     q2: 'are…',
     lead: 'The site comes in two versions, because we do not offer the same thing to a three-person business and to an eighty-person SME. Pick yours: you can switch at any time, at the top of the page.',
@@ -74,9 +79,12 @@ export default function Porte() {
   const t = T[lang] || T.fr;
   const racine = useRef(null);
 
+  /* Le titre vient de la même table que le pré-rendu : ce qu'un moteur a lu
+     dans le fichier servi et ce que le visiteur a dans son onglet doivent
+     être la même phrase. */
   useEffect(() => {
     document.title = lang === 'fr'
-      ? 'Reskope · conseil et ingénierie numérique pour TPE et PME'
+      ? `${PORTE.titre} · ${SITE.marque}`
       : 'Reskope · digital consulting and engineering for small businesses and SMEs';
   }, [lang]);
 
@@ -101,20 +109,31 @@ export default function Porte() {
 
       <div className="container porte__inner">
         <p className="eyebrow porte__kicker porte__monte">{t.kicker}</p>
-        <h1 className="porte__t porte__monte">
+        {/* Le titre dit ce qu'on fait, pas ce qu'on demande. La racine est
+            l'adresse la plus forte du site : elle ne peut pas se contenter
+            d'une question, sinon c'est tout ce qu'un moteur y trouve. */}
+        <h1 className="porte__t porte__monte">{t.titre}</h1>
+        <p className="porte__pitch porte__monte">{t.pitch}</p>
+
+        <p className="porte__q porte__monte" id="porte-q">
           <span className="porte__mot">
             <span className="porte__ghost">{t.q1}</span>
             <NetWord className="porte__net" heightEm={1.12}>{t.q1}</NetWord>
           </span>{' '}
           <span>{t.q2}</span>
-        </h1>
+        </p>
         <p className="porte__lead porte__monte">{t.lead}</p>
 
         <div className="porte__choix porte__monte">
           {['tpe', 'pme'].map((id, i) => {
             const c = t.choix[id];
             return (
-              <button type="button" key={id} className="porte__opt" onClick={() => setProfil(id)}>
+              <a
+                key={id}
+                className="porte__opt"
+                href={`${BASE}/${id}`}
+                onClick={(e) => { e.preventDefault(); setProfil(id); }}
+              >
                 <span className="porte__solide" aria-hidden="true">
                   <Net3D shape={GLYPH_SHAPES[i === 0 ? 1 : 0]} size={104} nodeR={3.2} speed={0.7 + i * 0.2} />
                 </span>
@@ -122,7 +141,7 @@ export default function Porte() {
                 <span className="porte__taille">{c.taille}</span>
                 <span className="porte__quoi">{c.quoi}</span>
                 <span className="porte__entrer">{c.entrer} <span aria-hidden="true">→</span></span>
-              </button>
+              </a>
             );
           })}
         </div>
