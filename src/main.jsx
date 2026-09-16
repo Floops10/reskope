@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import './index.css';
 import App from './App.jsx';
 import Porte from './pages/Porte.jsx';
+import Cursor from './components/Cursor.jsx';
 import { LangProvider } from './i18n.jsx';
 import {
   ProfilProvider, useProfil, profilMemorise, porteDejaVue, cheminInterne, BASE,
@@ -46,7 +47,11 @@ function Racine() {
     adopter(aRattacher);
   }, [aRattacher, interne, adopter]);
 
-  if (!profil) return aRattacher ? null : <Porte />;
+  /* Le curseur maison vit dans <App/>, or la porte s'affiche À LA PLACE de
+     l'application : la page masquait donc le curseur système sans en dessiner
+     un autre, et on se retrouvait sans aucun pointeur sur le premier écran
+     du site. */
+  if (!profil) return aRattacher ? null : <><Cursor /><Porte /></>;
 
   return (
     <BrowserRouter key={profil} basename={`${BASE}/${profil}`}>
