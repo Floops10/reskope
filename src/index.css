@@ -15530,144 +15530,85 @@ html.eco-theme .crumb__node { background: rgba(125, 223, 168, 0.55); }
 .porte__opt { text-decoration: none; }
 
 /* ════════════════════════════════════════════════════════════
-   LA FRISE — une planche unique, jouée au défilement
+   CE QU'ON FAIT — la chaîne jouée en volume
 
-   Une seule variable, --p, portée par la section et pilotée par le
-   défilement. Chaque étape en déduit son propre avancement avec un décalage :
-   la première monte pendant que le sol se pose, la dernière quand le réseau
-   l'a rejointe. Rien ne recalcule de géométrie en route.
+   La scène occupe une large bande, sans cadre ni fond : elle flotte dans la
+   page comme le reste du site. Le texte se réduit à un nom et un bouton.
    ════════════════════════════════════════════════════════════ */
-.frz { --p: 1; }
-.frz__titre { max-width: 24ch; margin: 0.4rem 0 0.8rem; }
-.frz__lead { max-width: 58ch; margin: 0 0 clamp(1.6rem, 4vh, 2.6rem); }
+.seq { overflow: hidden; }
+.seq__titre { max-width: 22ch; margin: 0.4rem 0 clamp(1.4rem, 3.5vh, 2.2rem); }
 
-.frz__planche {
+.seq__scene {
   position: relative;
-  margin: 0 calc(-1 * var(--gutter)) clamp(1.4rem, 3.5vh, 2.4rem);
-  padding: 0 var(--gutter);
+  height: clamp(340px, 52vh, 560px);
+  margin-bottom: clamp(1rem, 2.5vh, 1.6rem);
 }
-.frz__svg { display: block; width: 100%; height: auto; overflow: visible; }
+.seq__canvas { position: absolute !important; inset: 0; }
+.seq__attente { position: absolute; inset: 0; }
 
-/* Le sol se pose case par case, de la gauche vers la droite. */
-.frz__sol {
-  --a: clamp(0, (var(--p) * 5 - var(--i) * 0.55), 1);
-  opacity: calc(var(--a) * 0.45);
+/* Le nom de l'étape, posé dans la scène au bout de sa tige. */
+.seq__mot {
+  display: inline-block;
+  white-space: nowrap;
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  background: var(--indigo);
+  color: var(--cream);
+  font-size: 0.92rem;
+  line-height: 1.2;
+  box-shadow: 0 10px 26px -14px rgba(14, 11, 31, 0.85);
+  animation: seqMot 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
-.frz__sol line { stroke: var(--indigo); stroke-width: 0.06; }
-.frz__cadre { fill: none; stroke: var(--indigo); stroke-width: 0.1; opacity: 0.5; }
-
-/* Chaque étape monte à son tour. translate en unités du viewBox : le dessin
-   garde son échelle quel que soit l'écran. */
-.frz__etape {
-  --a: clamp(0, (var(--p) * 4.2 - var(--i) * 0.8), 1);
-  opacity: var(--a);
-  transform: translateY(calc((1 - var(--a)) * 3px));
-  transition: filter 0.3s ease;
-}
-.frz__etape .axo-t { fill: #5B4BE6; }
-.frz__etape .axo-r { fill: #1C0CB3; }
-.frz__etape .axo-l { fill: #130982; }
-.frz__etape polygon { stroke: #130982; stroke-width: 0.08; stroke-linejoin: round; }
-.frz__etape .axo-f { stroke: var(--indigo); stroke-width: 0.11; fill: none; opacity: 0.75; }
-.frz__etape.is-vue { filter: drop-shadow(0 6px 18px rgba(28, 12, 179, 0.28)); }
-
-.frz__tige { stroke: var(--indigo); stroke-width: 0.07; opacity: 0.4; }
-.frz__noeud {
-  fill: var(--cream);
-  stroke: var(--indigo);
-  stroke-width: 0.22;
-  transition: r 0.25s ease;
-}
-.frz__etape.is-vue .frz__noeud { fill: var(--indigo); }
-
-/* Le réseau se tend d'une étape à l'autre, derrière les volumes. */
-.frz__lien {
-  fill: none;
-  stroke: var(--indigo);
-  stroke-width: 0.13;
-  stroke-dasharray: 1;
-  stroke-dashoffset: calc(1 - clamp(0, var(--p) * 1.25, 1));
-  opacity: 0.55;
+@keyframes seqMot {
+  from { opacity: 0; transform: translateY(10px) scale(0.92); }
+  to { opacity: 1; transform: none; }
 }
 
-/* Le texte, aligné sous les quatre cases. */
-.frz__etapes {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: clamp(1.2rem, 3vw, 2.4rem);
-}
-.frz__case {
-  --a: clamp(0, (var(--p) * 4.2 - var(--i) * 0.8), 1);
-  opacity: var(--a);
-  transform: translateY(calc((1 - var(--a)) * 14px));
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.3rem;
-}
-.frz__quand {
-  margin: 0;
-  font-size: 0.88rem;
-  color: var(--indigo);
-}
-.frz__nom {
-  margin: 0;
-  font-size: clamp(1.02rem, 1.35vw, 1.22rem);
+.seq__pied { display: flex; flex-direction: column; align-items: flex-start; }
+.seq__nom {
+  margin: 0 0 0.7rem;
+  font-size: clamp(1.4rem, 2.8vw, 2.1rem);
   font-weight: 600;
-  line-height: 1.24;
-  letter-spacing: -0.02em;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
   color: var(--ink);
+  max-width: 20ch;
+  animation: seqNom 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
-.frz__dit {
-  margin: 0.1rem 0 0.4rem;
-  font-size: 0.95rem;
-  line-height: 1.55;
-  color: var(--muted-fort);
+@keyframes seqNom {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
 }
-.frz__ouvrir {
-  margin-top: auto;
+.seq__ouvrir {
   display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
-  border: 0;
+  gap: 0.5rem;
+  border: 1px solid var(--indigo);
   background: none;
-  padding: 0.2rem 0;
+  padding: 0.55rem 1.05rem;
+  border-radius: 999px;
   font: inherit;
-  font-size: 0.9rem;
+  font-size: 0.94rem;
   color: var(--indigo);
   cursor: pointer;
-  transition: gap 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: background-color 0.25s ease, color 0.25s ease, gap 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.frz__ouvrir:hover { gap: 0.8rem; }
+.seq__ouvrir:hover { background: var(--indigo); color: var(--cream); gap: 0.85rem; }
 
-.frz__posture {
-  max-width: 62ch;
-  margin: clamp(1.8rem, 4.5vh, 3rem) 0 0;
+.seq__posture {
+  margin: clamp(1.8rem, 4.5vh, 2.8rem) 0 0;
+  max-width: 56ch;
   font-size: clamp(1rem, 1.3vw, 1.12rem);
   line-height: 1.62;
-  color: var(--ink);
+  color: var(--muted-fort);
 }
-.frz__act { margin-top: clamp(1.2rem, 3vh, 1.8rem); }
+.seq__act { margin-top: clamp(1rem, 2.5vh, 1.6rem); }
 
-/* Écran étroit : la planche d'ensemble ne se lirait plus. Chaque étape
-   reprend son propre dessin, posé contre son texte. */
-.frz__mini { display: block; width: clamp(96px, 26vw, 148px); height: auto; margin-bottom: 0.4rem; }
-.frz__mini .frz__sol { opacity: 0.4; }
-.frz__mini .axo-t { fill: #5B4BE6; }
-.frz__mini .axo-r { fill: #1C0CB3; }
-.frz__mini .axo-l { fill: #130982; }
-.frz__mini polygon { stroke: #130982; stroke-width: 0.1; stroke-linejoin: round; }
-.frz__mini .axo-f { stroke: var(--indigo); stroke-width: 0.13; fill: none; opacity: 0.7; }
-
-@media (max-width: 899px) {
-  .frz__etapes { grid-template-columns: minmax(0, 1fr); gap: clamp(1.8rem, 5vh, 2.6rem); }
-  .frz__case { --a: 1; opacity: 1; transform: none; }
+@media (max-width: 720px) {
+  .seq__scene { height: clamp(300px, 46vh, 400px); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .frz { --p: 1 !important; }
+  .seq__mot, .seq__nom { animation: none; }
 }
 
 /* La trame de fond : posée une fois, derrière le contenu de toutes les pages.
