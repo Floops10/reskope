@@ -30,19 +30,28 @@ export default function Frise() {
 
   const racine = useRef(null);
   const [proche, setProche] = useState(false);
+  const [enVue, setEnVue] = useState(false);
   const [actif, setActif] = useState(0);
   const [ouverte, setOuverte] = useState(null);
   const reduit = mouvementRefuse();
 
+  /* Deux seuils : on MONTE le moteur un peu avant qu'il serve, on ne le fait
+     TOURNER que lorsqu'il est réellement à l'écran. Rien ne doit coûter à qui
+     ne regarde pas. */
   useEffect(() => {
     const el = racine.current;
-    if (!el || typeof IntersectionObserver === 'undefined') { setProche(true); return undefined; }
-    const io = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) { setProche(true); io.disconnect(); } },
-      { rootMargin: '400px 0px' }
+    if (!el || typeof IntersectionObserver === 'undefined') { setProche(true); setEnVue(true); return undefined; }
+    const approche = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) { setProche(true); approche.disconnect(); } },
+      { rootMargin: '500px 0px' }
     );
-    io.observe(el);
-    return () => io.disconnect();
+    const vue = new IntersectionObserver(
+      ([e]) => setEnVue(e.isIntersecting),
+      { threshold: 0.08 }
+    );
+    approche.observe(el);
+    vue.observe(el);
+    return () => { approche.disconnect(); vue.disconnect(); };
   }, []);
 
   const surEtape = useCallback((i) => setActif(i), []);
@@ -60,9 +69,10 @@ export default function Frise() {
           <Suspense fallback={<div className="seq__attente" aria-hidden="true" />}>
             <Sequence
               figures={c.etapes.map((e) => e.figure)}
-              mots={c.etapes.map((e) => e.quand)}
               onEtape={surEtape}
               reduit={reduit}
+              lang={lang}
+              enVue={enVue}
             />
           </Suspense>
         )}

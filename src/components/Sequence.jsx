@@ -2,50 +2,71 @@ import { useMemo, useRef, useState, useEffect } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { OrthographicCamera, Edges, Html } from '@react-three/drei';
 import * as THREE from 'three';
-import { paves, SOL_TAILLE, CENTRE } from '../lib/figures';
+import { SCENES } from '../lib/scenes';
 import { cubeColore, ARETE, graine, doux, clamp01 } from '../lib/troisd';
 
 /* ============================================================
-   LA SÉQUENCE — l'offre se joue toute seule, en volume.
+   LA SÉQUENCE — l'offre se joue, en volume, et elle s'annote.
 
-   Une vidéo, mais calculée. Les blocs ne se posent pas : ils arrivent du
-   lointain, chacun de sa direction, et se rangent à leur place. Puis la
-   caméra glisse vers l'étape suivante, le réseau se tend derrière elle, et
-   ainsi de suite jusqu'au bout, en boucle. Rien à faire pour que ça démarre,
-   rien à lire pour comprendre : on voit la chaîne se construire.
+   Ce sont les MÊMES scènes que celles de l'explorateur : quinze outils nommés
+   pour l'audit, la ressaisie à la main et la passerelle pour la mise en ordre,
+   les couches et le trou pour le sur-mesure. L'accueil montrait jusqu'ici des
+   emblèmes de trois blocs pendant que le détail dormait ailleurs — d'où
+   l'impression que l'offre n'était pas claire. Il n'y a plus qu'un objet par
+   chantier, et on le retrouve identique quand on entre dedans.
 
-   Tout flotte en permanence — un léger balancement propre à chaque bloc.
-   C'est ce qui sépare une scène en volume d'un dessin à plat qu'on aurait
-   simplement incliné.
+   Les blocs n'apparaissent pas : ils arrivent du lointain, chacun de sa
+   direction, en tournant sur eux-mêmes, et se rangent. Puis des annotations
+   se posent sur les pièces qui comptent — une amorce, un mot, « ça, c'est
+   ça » — et la caméra glisse vers le chantier suivant pendant qu'un fil se
+   tend derrière elle.
 
-   La scène n'est montée que lorsqu'elle approche de l'écran, et elle se met
-   en pause dès qu'elle le quitte ou que l'onglet passe derrière : personne ne
-   doit payer un moteur 3D pour une section qu'il ne regardera pas.
+   Rien ne tourne tant que la section n'est pas à l'écran : le moteur se monte
+   à l'approche et sa boucle s'arrête dès qu'on la quitte. Un moteur 3D ne
+   doit rien coûter à qui ne le regarde pas.
    ============================================================ */
 
-/* Les temps d'une étape, en secondes. */
 const ARRIVEE = 1.7;
-const TENUE = 2.3;
+const TENUE = 3.2;
 const TRANSIT = 1.3;
 const CYCLE = ARRIVEE + TENUE + TRANSIT;
-/* L'écart entre deux étapes dans le monde. */
-const PAS = SOL_TAILLE.W + 7;
+const PAS = 30;
+/* Deux annotations par chantier : trois se marchent dessus, une n'explique
+   pas la chaîne. */
+const ANNOTES = 2;
 
-function enTrois(p, i) {
+function centreDe(scene) {
+  return { x: scene.sol.W / 2, y: scene.sol.D / 2 };
+}
+
+function enTrois(p, c, i) {
   return {
     i,
-    pos: [p.x + p.w / 2 - CENTRE.x, (p.z0 + p.z1) / 2, p.y + p.d / 2 - CENTRE.y],
-    taille: [p.w, Math.max(p.z1 - p.z0, 0.01), p.d],
-    creux: p.creux,
+    id: p.id,
+    pos: [p.x + p.w / 2 - c.x, p.z0 + p.h / 2, p.y + p.d / 2 - c.y],
+    haut: p.z0 + p.h,
+    taille: [p.w, Math.max(p.h, 0.01), p.d],
+    etat: p.etat,
   };
 }
 
-/* L'avancement d'une étape, déduit de la seule horloge partagée. Chaque
-   élément fait son calcul dans sa propre boucle : il n'y a rien à écrire dans
-   un tableau commun, donc rien qui puisse se désynchroniser. */
+/* Les annotations d'un chantier : le nom de l'étape, posé sur la pièce dont
+   elle parle. C'est la scène qui explique, pas un paragraphe à côté. */
+function annotationsDe(scene, lang) {
+  const parId = Object.fromEntries(scene.blocs.map((b) => [b.id, b]));
+  const out = [];
+  for (const e of scene.etapes) {
+    const id = (e.mots && e.mots[0]) || (e.ids && e.ids[0]);
+    const bl = id && parId[id];
+    if (!bl) continue;
+    out.push({ id, texte: (e[lang] || e.fr).nom });
+    if (out.length === ANNOTES) break;
+  }
+  return out;
+}
+
 function avanceDe(horloge, etape, n) {
-  const total = n * CYCLE;
-  const t = horloge.current % total;
+  const t = horloge.current % (n * CYCLE);
   const i = Math.floor(t / CYCLE);
   if (etape < i) return 1;
   if (etape > i) return 0;
@@ -53,23 +74,33 @@ function avanceDe(horloge, etape, n) {
 }
 
 function avanceFil(horloge, fil, n) {
-  const total = n * CYCLE;
-  const t = horloge.current % total;
+  const t = horloge.current % (n * CYCLE);
   const i = Math.floor(t / CYCLE);
   if (fil < i - 1) return 1;
   if (fil > i - 1) return 0;
   return clamp01((t - i * CYCLE + TRANSIT) / TRANSIT);
 }
 
-/* Un bloc : il vient de loin, il se range, il flotte. */
-function Bloc({ bl, decalage, geo, horloge, etape, n }) {
+/* L'apparition d'une annotation : après que les blocs se sont rangés, et
+   l'une après l'autre. */
+function avanceNote(horloge, etape, rang, n) {
+  const t = horloge.current % (n * CYCLE);
+  const i = Math.floor(t / CYCLE);
+  if (i !== etape) return 0;
+  const local = t - i * CYCLE;
+  const debut = ARRIVEE + 0.25 + rang * 0.85;
+  if (local > ARRIVEE + TENUE) return clamp01((ARRIVEE + TENUE + 0.5 - local) / 0.5);
+  return clamp01((local - debut) / 0.5);
+}
+
+function Bloc({ bl, decalage, geos, horloge, etape, n }) {
   const maille = useRef(null);
   const depart = useMemo(() => {
     const a = graine(bl.i + decalage * 31, 3) * Math.PI * 2;
-    const d = 26 + graine(bl.i, 5) * 22;
+    const d = 24 + graine(bl.i, 5) * 26;
     return [
       bl.pos[0] + Math.cos(a) * d,
-      bl.pos[1] + 14 + graine(bl.i, 7) * 20,
+      bl.pos[1] + 12 + graine(bl.i, 7) * 22,
       bl.pos[2] + Math.sin(a) * d,
     ];
   }, [bl, decalage]);
@@ -77,25 +108,27 @@ function Bloc({ bl, decalage, geo, horloge, etape, n }) {
   useFrame((etat) => {
     const m = maille.current;
     if (!m) return;
-    /* Chaque bloc part un peu après le précédent : la scène se remplit,
-       elle n'apparaît pas d'un bloc. */
-    const t = clamp01((avanceDe(horloge, etape, n) - graine(bl.i, 11) * 0.38) / 0.62);
+    const t = clamp01((avanceDe(horloge, etape, n) - graine(bl.i, 11) * 0.42) / 0.58);
     const e = doux(t);
-    const flot = Math.sin(etat.clock.elapsedTime * 0.7 + graine(bl.i, 13) * 9) * 0.08 * e;
+    const flot = Math.sin(etat.clock.elapsedTime * 0.7 + graine(bl.i, 13) * 9) * 0.07 * e;
 
     m.position.set(
       depart[0] + (bl.pos[0] - depart[0]) * e,
       depart[1] + (bl.pos[1] - depart[1]) * e + flot,
       depart[2] + (bl.pos[2] - depart[2]) * e
     );
-    const r = (1 - e) * 1.6;
-    m.rotation.set(r * (graine(bl.i, 17) - 0.5), r * (graine(bl.i, 19) - 0.5), r * (graine(bl.i, 23) - 0.5));
-    const s = 0.2 + 0.8 * e;
+    const r = (1 - e) * 1.7;
+    m.rotation.set(
+      r * (graine(bl.i, 17) - 0.5),
+      r * (graine(bl.i, 19) - 0.5),
+      r * (graine(bl.i, 23) - 0.5)
+    );
+    const s = 0.18 + 0.82 * e;
     m.scale.set(bl.taille[0] * s, bl.taille[1] * s, bl.taille[2] * s);
     m.visible = t > 0.001;
   });
 
-  if (bl.creux) {
+  if (bl.etat === 'creux') {
     return (
       <mesh ref={maille}>
         <boxGeometry args={[1, 1, 1]} />
@@ -104,29 +137,31 @@ function Bloc({ bl, decalage, geo, horloge, etape, n }) {
       </mesh>
     );
   }
+  const teinte = bl.etat === 'neuf' ? 'neuf' : bl.etat === 'socle' ? 'socle' : 'plein';
   return (
-    <mesh ref={maille} geometry={geo}>
+    <mesh ref={maille} geometry={geos[teinte]}>
       <meshBasicMaterial vertexColors toneMapped={false} />
-      <Edges threshold={15} color={ARETE.plein} />
+      <Edges threshold={15} color={ARETE[teinte] || ARETE.plein} />
     </mesh>
   );
 }
 
-/* Le sol d'une étape : il se dessine avant que les blocs n'arrivent. */
-function Sol({ horloge, etape, n }) {
+function Sol({ scene, horloge, etape, n }) {
   const ligne = useRef(null);
   const geo = useMemo(() => {
     const pts = [];
-    const { W, D, pas } = SOL_TAILLE;
-    const dx = -CENTRE.x, dz = -CENTRE.y;
-    for (let i = 0; i <= W; i += pas) pts.push(i + dx, 0, dz, i + dx, 0, D + dz);
-    for (let j = 0; j <= D; j += pas) pts.push(dx, 0, j + dz, W + dx, 0, j + dz);
+    const { W, D, pas } = scene.sol;
+    const c = centreDe(scene);
+    for (let i = 0; i <= W + 0.001; i += pas) pts.push(i - c.x, 0, -c.y, i - c.x, 0, D - c.y);
+    for (let j = 0; j <= D + 0.001; j += pas) pts.push(-c.x, 0, j - c.y, W - c.x, 0, j - c.y);
     const g = new THREE.BufferGeometry();
     g.setAttribute('position', new THREE.Float32BufferAttribute(pts, 3));
     return g;
-  }, []);
+  }, [scene]);
   useFrame(() => {
-    if (ligne.current) ligne.current.material.opacity = 0.3 * clamp01(avanceDe(horloge, etape, n) * 2.4);
+    if (ligne.current) {
+      ligne.current.material.opacity = 0.3 * clamp01(avanceDe(horloge, etape, n) * 2.4);
+    }
   });
   return (
     <lineSegments ref={ligne} geometry={geo}>
@@ -135,7 +170,48 @@ function Sol({ horloge, etape, n }) {
   );
 }
 
-/* Le fil qui relie une étape à la suivante : il se tend quand la caméra part. */
+/* Une annotation : une amorce qui part du sommet de la pièce, et le mot au
+   bout. Elle se plie et disparaît quand le chantier s'éloigne. */
+function Note({ bl, texte, horloge, etape, rang, n }) {
+  const groupe = useRef(null);
+  const tige = useRef(null);
+  const [vu, setVu] = useState(false);
+  const geo = useMemo(() => {
+    const g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.Float32BufferAttribute([0, 0, 0, 0, 1, 0], 3));
+    return g;
+  }, []);
+
+  const hauteur = 2.2 + rang * 1.7;
+
+  useFrame((etat) => {
+    const a = avanceNote(horloge, etape, rang, n);
+    const g = groupe.current;
+    if (!g) return;
+    const flot = Math.sin(etat.clock.elapsedTime * 0.6 + rang * 2.1) * 0.09 * a;
+    g.position.set(bl.pos[0], bl.haut + flot, bl.pos[2]);
+    g.visible = a > 0.01;
+    if (tige.current) {
+      tige.current.scale.set(1, hauteur * doux(a), 1);
+      tige.current.material.opacity = 0.55 * a;
+    }
+    setVu((v) => (v === a > 0.45 ? v : a > 0.45));
+  });
+
+  return (
+    <group ref={groupe}>
+      <lineSegments ref={tige} geometry={geo}>
+        <lineBasicMaterial color="#1C0CB3" transparent opacity={0} />
+      </lineSegments>
+      {vu && (
+        <Html position={[0, hauteur + 0.5, 0]} center zIndexRange={[6, 0]} style={{ pointerEvents: 'none' }}>
+          <span className="seq__note">{texte}</span>
+        </Html>
+      )}
+    </group>
+  );
+}
+
 function Fil({ depart, arrivee, horloge, fil, n }) {
   const maille = useRef(null);
   const L = arrivee - depart;
@@ -144,38 +220,41 @@ function Fil({ depart, arrivee, horloge, fil, n }) {
     if (!m) return;
     const t = avanceFil(horloge, fil, n);
     m.scale.set(Math.max(L * t, 0.001), 1, 1);
-    m.position.set(depart + (L * t) / 2, 9.5, 0);
+    m.position.set(depart + (L * t) / 2, 8.5, 0);
     m.visible = t > 0.01;
   });
   return (
     <mesh ref={maille}>
-      <boxGeometry args={[1, 0.22, 0.22]} />
+      <boxGeometry args={[1, 0.24, 0.24]} />
       <meshBasicMaterial color="#6B5BEA" toneMapped={false} />
     </mesh>
   );
 }
 
-function Etape({ nom, index, geo, horloge, n, mot, actif }) {
-  const blocs = useMemo(() => paves(nom).map(enTrois), [nom]);
-  const x = index * PAS;
+function Chantier({ nom, index, geos, horloge, n, lang, actif }) {
+  const scene = SCENES[nom];
+  const c = useMemo(() => centreDe(scene), [scene]);
+  const blocs = useMemo(() => scene.blocs.map((p, i) => enTrois(p, c, i)), [scene, c]);
+  const notes = useMemo(() => {
+    const parId = Object.fromEntries(blocs.map((b) => [b.id, b]));
+    return annotationsDe(scene, lang)
+      .map((a) => ({ ...a, bl: parId[a.id] }))
+      .filter((a) => a.bl);
+  }, [scene, blocs, lang]);
+
   return (
-    <group position={[x, 0, 0]}>
-      <Sol horloge={horloge} etape={index} n={n} />
-      {blocs.map((bl, k) => (
-        <Bloc key={k} bl={{ ...bl, i: k }} decalage={index} geo={geo} horloge={horloge} etape={index} n={n} />
+    <group position={[index * PAS, 0, 0]}>
+      <Sol scene={scene} horloge={horloge} etape={index} n={n} />
+      {blocs.map((bl) => (
+        <Bloc key={bl.i} bl={bl} decalage={index} geos={geos} horloge={horloge} etape={index} n={n} />
       ))}
-      {/* Le nom vit DANS la scène, au bout d'une tige, comme sur les
-          planches. Pas un paragraphe posé dessous. */}
-      {actif && (
-        <Html position={[0, 12.4, 0]} center zIndexRange={[6, 0]} style={{ pointerEvents: 'none' }}>
-          <span className="seq__mot">{mot}</span>
-        </Html>
-      )}
+      {actif && notes.map((a, r) => (
+        <Note key={a.id} bl={a.bl} texte={a.texte} horloge={horloge} etape={index} rang={r} n={n} />
+      ))}
     </group>
   );
 }
 
-/* La caméra glisse d'une étape à l'autre, et respire en permanence. */
 function Camera({ camRef, cible }) {
   const size = useThree((s) => s.size);
   const pos = useRef(0);
@@ -183,32 +262,40 @@ function Camera({ camRef, cible }) {
   useEffect(() => {
     const cam = camRef.current;
     if (!cam) return;
-    const rayon = Math.hypot(SOL_TAILLE.W, SOL_TAILLE.D) / 2 + 5;
-    cam.zoom = Math.min(size.width / (rayon * 2.3), size.height / (rayon * 1.5));
+    /* Cadré sur la plus large des scènes, pour qu'aucune ne déborde. */
+    const rayon = 19;
+    cam.zoom = Math.min(size.width / (rayon * 2.2), size.height / (rayon * 1.45));
     cam.updateProjectionMatrix();
   }, [camRef, size]);
 
   useFrame((etat, dt) => {
     const cam = camRef.current;
     if (!cam) return;
-    pos.current += (cible.current - pos.current) * Math.min(dt * 2.2, 1);
+    pos.current += (cible.current - pos.current) * Math.min(dt * 2.1, 1);
     const t = etat.clock.elapsedTime;
-    cam.position.set(pos.current + 20, 15 + Math.sin(t * 0.32) * 0.7, 20 + Math.cos(t * 0.27) * 0.7);
-    cam.lookAt(pos.current, 3.4, 0);
+    cam.position.set(pos.current + 20, 15 + Math.sin(t * 0.3) * 0.8, 20 + Math.cos(t * 0.25) * 0.8);
+    cam.lookAt(pos.current, 3.6, 0);
   });
   return null;
 }
 
-function Scene({ figures, mots, onEtape, reduit }) {
+function Scene({ figures, onEtape, reduit, lang, enVue }) {
   const cam = useRef(null);
   const cible = useRef(0);
-  const geo = useMemo(() => cubeColore('plein'), []);
+  const geos = useMemo(() => ({
+    plein: cubeColore('plein'),
+    neuf: cubeColore('neuf'),
+    socle: cubeColore('socle'),
+  }), []);
+  const horloge = useRef(reduit ? ARRIVEE + 1 : 0);
   const [actif, setActif] = useState(0);
-  /* Une seule horloge pour toute la séquence. Tout le reste s'en déduit. */
-  const horloge = useRef(reduit ? CYCLE * 10 : 0);
 
   useFrame((_, dt) => {
-    if (reduit) return;
+    /* Double garde : la boucle de rendu est coupée par la propriété du
+       canevas, et l'horloge ne tourne pas non plus. Une section qu'on ne
+       regarde pas ne doit rien consommer, et elle ne doit pas non plus
+       avoir « avancé toute seule » quand on y revient. */
+    if (reduit || !enVue) return;
     horloge.current += dt;
     const t = horloge.current % (figures.length * CYCLE);
     const i = Math.min(Math.floor(t / CYCLE), figures.length - 1);
@@ -220,36 +307,37 @@ function Scene({ figures, mots, onEtape, reduit }) {
 
   return (
     <>
-      <OrthographicCamera ref={cam} makeDefault position={[20, 15, 20]} near={-300} far={600} />
+      <OrthographicCamera ref={cam} makeDefault position={[20, 15, 20]} near={-400} far={800} />
       <Camera camRef={cam} cible={cible} />
       {figures.map((nom, i) => (
-        <Etape
+        <Chantier
           key={nom}
           nom={nom}
           index={i}
-          geo={geo}
+          geos={geos}
           horloge={horloge}
           n={figures.length}
-          mot={mots[i]}
+          lang={lang}
           actif={actif === i}
         />
       ))}
-      {figures.slice(1).map((_, i) => (
-        <Fil key={i} depart={i * PAS + 9} arrivee={(i + 1) * PAS - 9} horloge={horloge} fil={i} n={figures.length} />
+      {figures.slice(1).map((nom, i) => (
+        <Fil key={nom} depart={i * PAS + 12} arrivee={(i + 1) * PAS - 12} horloge={horloge} fil={i} n={figures.length} />
       ))}
     </>
   );
 }
 
-export default function Sequence({ figures, mots, onEtape, reduit }) {
+export default function Sequence({ figures, onEtape, reduit, lang, enVue }) {
   return (
     <Canvas
       className="seq__canvas"
       dpr={[1, 1.75]}
       gl={{ antialias: true, alpha: true }}
-      frameloop="always"
+      /* La boucle s'arrête dès que la section quitte l'écran. */
+      frameloop={enVue && !reduit ? 'always' : 'never'}
     >
-      <Scene figures={figures} mots={mots} onEtape={onEtape} reduit={reduit} />
+      <Scene figures={figures} onEtape={onEtape} reduit={reduit} lang={lang} enVue={enVue} />
     </Canvas>
   );
 }

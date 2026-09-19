@@ -15564,6 +15564,25 @@ html.eco-theme .crumb__node { background: rgba(125, 223, 168, 0.55); }
   to { opacity: 1; transform: none; }
 }
 
+/* L'annotation posée sur une pièce : « ça, c'est ça ». */
+.seq__note {
+  display: inline-block;
+  white-space: nowrap;
+  padding: 0.24rem 0.68rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--cream) 94%, var(--indigo));
+  border: 1px solid color-mix(in srgb, var(--indigo) 30%, transparent);
+  color: var(--ink);
+  font-size: 0.82rem;
+  line-height: 1.2;
+  box-shadow: 0 8px 20px -14px rgba(14, 11, 31, 0.7);
+  animation: seqNote 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes seqNote {
+  from { opacity: 0; transform: translateY(8px) scale(0.94); }
+  to { opacity: 1; transform: none; }
+}
+
 .seq__pied { display: flex; flex-direction: column; align-items: flex-start; }
 .seq__nom {
   margin: 0 0 0.7rem;
@@ -15605,10 +15624,10 @@ html.eco-theme .crumb__node { background: rgba(125, 223, 168, 0.55); }
 .seq__act { margin-top: clamp(1rem, 2.5vh, 1.6rem); }
 
 @media (max-width: 720px) {
-  .seq__scene { height: clamp(300px, 46vh, 400px); }
+  .seq__scene { height: clamp(320px, 50vh, 430px); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .seq__mot, .seq__nom { animation: none; }
+  .seq__mot, .seq__nom, .seq__note { animation: none; }
 }
 
 /* La trame de fond : posée une fois, derrière le contenu de toutes les pages.
