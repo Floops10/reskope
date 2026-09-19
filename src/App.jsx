@@ -6,7 +6,7 @@ import { initSmoothScroll, destroySmoothScroll } from './lib/smoothScroll';
 import { initContentGuard } from './lib/contentGuard';
 import ScrollToTop from './components/ScrollToTop';
 import Cursor from './components/Cursor';
-import Fond from './components/Fond';
+import HeroNetwork from './components/HeroNetwork';
 import PageTransition from './components/PageTransition';
 import Interactions from './components/Interactions';
 import Nav from './components/Nav';
@@ -43,8 +43,10 @@ export default function App() {
   return (
     <MotionConfig reducedMotion="user">
       <ScrollToTop />
-      {/* La trame de la marque, posée une fois derrière toutes les pages. */}
-      <Fond />
+      {/* La trame de la marque, celle du haut de l'accueil, posée une fois
+          derrière toutes les pages. C'est le même composant : il n'y a
+          qu'un seul réseau sur ce site, pas deux qui se ressemblent. */}
+      <div className="fond" aria-hidden="true"><HeroNetwork count={40} /></div>
       <Cursor />
       <PageTransition />
       <Interactions />

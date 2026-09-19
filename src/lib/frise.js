@@ -83,19 +83,8 @@ export function construireFrise(figures) {
     .map(({ noeud: [x, y] }, i) => `${i ? 'L' : 'M'}${x.toFixed(2)},${y.toFixed(2)}`)
     .join(' ');
 
-  /* La fenêtre : on ne montre pas la frise entière, on la traverse. Elle est
-     cadrée sur une étape à la fois, avec ce qu'il faut de voisinage pour voir
-     d'où l'on vient et où l'on va. Le déplacement se fait ensuite en
-     translatant la scène, pas en recalculant la géométrie. */
-  const LARGE = 46;
-  const x0f = etapes[0].noeud[0] - LARGE / 2;
-  const fenetre = `${x0f.toFixed(2)} ${cadre.y.toFixed(2)} ${LARGE} ${cadre.h.toFixed(2)}`;
-  const arrets = etapes.map((e) => e.noeud[0] - etapes[0].noeud[0]);
-
   return {
     viewBox: `${cadre.x.toFixed(2)} ${cadre.y.toFixed(2)} ${cadre.w.toFixed(2)} ${cadre.h.toFixed(2)}`,
-    fenetre,
-    arrets,
     etapes,
     cheminLien,
   };
