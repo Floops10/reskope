@@ -15530,142 +15530,192 @@ html.eco-theme .crumb__node { background: rgba(125, 223, 168, 0.55); }
 .porte__opt { text-decoration: none; }
 
 /* ════════════════════════════════════════════════════════════
-   LA FRISE — une planche unique, jouée au défilement
+   LA FRISE — une séquence qu'on traverse
 
-   Une seule variable, --p, portée par la section et pilotée par le
-   défilement. Chaque étape en déduit son propre avancement avec un décalage :
-   la première monte pendant que le sol se pose, la dernière quand le réseau
-   l'a rejointe. Rien ne recalcule de géométrie en route.
+   La section fait plusieurs hauteurs d'écran, la scène reste collée en haut :
+   on avance DANS l'animation au défilement, au doigt comme à la molette. Une
+   seule variable, --p, pilote l'avancement, et --cam le déplacement de la
+   caméra d'une étape à l'autre. Rien ne recalcule de géométrie en route.
    ════════════════════════════════════════════════════════════ */
-.frz { --p: 1; }
-.frz__titre { max-width: 24ch; margin: 0.4rem 0 0.8rem; }
-.frz__lead { max-width: 58ch; margin: 0 0 clamp(1.6rem, 4vh, 2.6rem); }
-
-.frz__planche {
-  position: relative;
-  margin: 0 calc(-1 * var(--gutter)) clamp(1.4rem, 3.5vh, 2.4rem);
-  padding: 0 var(--gutter);
+.frz { --p: 0; --cam: 0; position: relative; height: 420vh; }
+.frz__holder {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
 }
-.frz__svg { display: block; width: 100%; height: auto; overflow: visible; }
 
-/* Le sol se pose case par case, de la gauche vers la droite. */
+/* La scène occupe la part droite de l'écran, le texte la gauche. Les séparer
+   par la mise en page plutôt que par un décalage dans le dessin : aucune
+   longueur de phrase ne peut alors venir mordre sur les volumes. */
+.frz__svg {
+  position: absolute;
+  left: 40%;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: auto;
+  height: 100%;
+}
+/* La caméra : une translation, en unités du dessin. */
+.frz__cam { transform: translate(calc(var(--cam) * 1px)); }
+
 .frz__sol {
-  --a: clamp(0, (var(--p) * 5 - var(--i) * 0.55), 1);
-  opacity: calc(var(--a) * 0.45);
+  --a: clamp(0, (var(--p) * 7 - var(--i) * 1.15), 1);
+  opacity: calc(var(--a) * 0.4);
 }
 .frz__sol line { stroke: var(--indigo); stroke-width: 0.06; }
 .frz__cadre { fill: none; stroke: var(--indigo); stroke-width: 0.1; opacity: 0.5; }
 
-/* Chaque étape monte à son tour. translate en unités du viewBox : le dessin
-   garde son échelle quel que soit l'écran. */
 .frz__etape {
-  --a: clamp(0, (var(--p) * 4.2 - var(--i) * 0.8), 1);
+  --a: clamp(0, (var(--p) * 6 - var(--i) * 1.15 - 0.45), 1);
   opacity: var(--a);
-  transform: translateY(calc((1 - var(--a)) * 3px));
-  transition: filter 0.3s ease;
+  transform: translateY(calc((1 - var(--a)) * 4px));
+  transition: filter 0.4s ease;
 }
 .frz__etape .axo-t { fill: #5B4BE6; }
 .frz__etape .axo-r { fill: #1C0CB3; }
 .frz__etape .axo-l { fill: #130982; }
 .frz__etape polygon { stroke: #130982; stroke-width: 0.08; stroke-linejoin: round; }
 .frz__etape .axo-f { stroke: var(--indigo); stroke-width: 0.11; fill: none; opacity: 0.75; }
-.frz__etape.is-vue { filter: drop-shadow(0 6px 18px rgba(28, 12, 179, 0.28)); }
+.frz__etape.is-ici { filter: drop-shadow(0 8px 24px rgba(28, 12, 179, 0.3)); }
 
 .frz__tige { stroke: var(--indigo); stroke-width: 0.07; opacity: 0.4; }
-.frz__noeud {
-  fill: var(--cream);
-  stroke: var(--indigo);
-  stroke-width: 0.22;
-  transition: r 0.25s ease;
-}
-.frz__etape.is-vue .frz__noeud { fill: var(--indigo); }
+.frz__noeud { fill: var(--cream); stroke: var(--indigo); stroke-width: 0.22; }
+.frz__etape.is-ici .frz__noeud { fill: var(--indigo); }
 
-/* Le réseau se tend d'une étape à l'autre, derrière les volumes. */
 .frz__lien {
   fill: none;
   stroke: var(--indigo);
   stroke-width: 0.13;
   stroke-dasharray: 1;
-  stroke-dashoffset: calc(1 - clamp(0, var(--p) * 1.25, 1));
+  stroke-dashoffset: calc(1 - clamp(0, var(--p) * 1.35 - 0.1, 1));
   opacity: 0.55;
 }
 
-/* Le texte, aligné sous les quatre cases. */
-.frz__etapes {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+/* Le dire : les temps se superposent au même endroit et se relaient. Il tient
+   la colonne de gauche, la scène glisse dans celle de droite — du texte posé
+   par-dessus des volumes indigo ne se lirait pas. */
+.frz__dire {
+  position: absolute;
+  left: var(--gutter);
+  right: 62%;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  width: auto;
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: clamp(1.2rem, 3vw, 2.4rem);
 }
-.frz__case {
-  --a: clamp(0, (var(--p) * 4.2 - var(--i) * 0.8), 1);
-  opacity: var(--a);
-  transform: translateY(calc((1 - var(--a)) * 14px));
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.3rem;
+.frz__temps {
+  grid-area: 1 / 1;
+  align-self: center;
+  opacity: 0;
+  transform: translateY(14px);
+  visibility: hidden;
+  transition: opacity 0.45s ease, transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), visibility 0s linear 0.45s;
 }
-.frz__quand {
-  margin: 0;
-  font-size: 0.88rem;
-  color: var(--indigo);
+.frz__temps.is-ici {
+  opacity: 1;
+  transform: none;
+  visibility: visible;
+  transition: opacity 0.5s ease 0.1s, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.1s, visibility 0s;
 }
-.frz__nom {
-  margin: 0;
-  font-size: clamp(1.02rem, 1.35vw, 1.22rem);
+.frz__titre {
+  margin: 0.4rem 0 0.8rem;
+  font-size: clamp(1.9rem, 4vw, 3.2rem);
   font-weight: 600;
-  line-height: 1.24;
-  letter-spacing: -0.02em;
+  line-height: 1.06;
+  letter-spacing: -0.035em;
   color: var(--ink);
+  max-width: 18ch;
 }
-.frz__dit {
-  margin: 0.1rem 0 0.4rem;
-  font-size: 0.95rem;
-  line-height: 1.55;
-  color: var(--muted-fort);
+.frz__lead { margin: 0; font-size: clamp(1rem, 1.3vw, 1.15rem); line-height: 1.6; color: var(--muted-fort); max-width: 46ch; }
+.frz__quand { margin: 0 0 0.4rem; font-size: 0.95rem; color: var(--indigo); }
+.frz__nom {
+  margin: 0 0 0.6rem;
+  font-size: clamp(1.7rem, 3.4vw, 2.7rem);
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.032em;
+  color: var(--ink);
+  max-width: 16ch;
 }
-.frz__ouvrir {
-  margin-top: auto;
+.frz__dit { margin: 0; font-size: clamp(0.98rem, 1.2vw, 1.08rem); line-height: 1.6; color: var(--muted-fort); max-width: 44ch; }
+.frz__posture { margin: 0 0 1.4rem; font-size: clamp(1.05rem, 1.5vw, 1.3rem); line-height: 1.55; color: var(--ink); max-width: 40ch; }
+
+.frz__plus {
+  position: absolute;
+  left: var(--gutter);
+  bottom: clamp(3.4rem, 9vh, 5.4rem);
+  z-index: 3;
   display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
-  border: 0;
-  background: none;
-  padding: 0.2rem 0;
+  gap: 0.5rem;
+  border: 1px solid var(--indigo);
+  background: var(--cream);
+  padding: 0.6rem 1.1rem;
+  border-radius: 999px;
   font: inherit;
-  font-size: 0.9rem;
+  font-size: 0.94rem;
   color: var(--indigo);
   cursor: pointer;
-  transition: gap 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: background-color 0.25s ease, color 0.25s ease, gap 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  animation: frzPlus 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
-.frz__ouvrir:hover { gap: 0.8rem; }
+.frz__plus:hover { background: var(--indigo); color: var(--cream); gap: 0.85rem; }
+@keyframes frzPlus { from { opacity: 0; transform: translateY(10px); } }
 
-.frz__posture {
-  max-width: 62ch;
-  margin: clamp(1.8rem, 4.5vh, 3rem) 0 0;
-  font-size: clamp(1rem, 1.3vw, 1.12rem);
-  line-height: 1.62;
-  color: var(--ink);
+.frz__jauge {
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: clamp(1.4rem, 3.5vh, 2.2rem);
+  height: 2px;
+  background: color-mix(in srgb, var(--indigo) 14%, transparent);
+  border-radius: 2px;
+  overflow: hidden;
 }
-.frz__act { margin-top: clamp(1.2rem, 3vh, 1.8rem); }
-
-/* Écran étroit : la planche d'ensemble ne se lirait plus. Chaque étape
-   reprend son propre dessin, posé contre son texte. */
-.frz__mini { display: block; width: clamp(96px, 26vw, 148px); height: auto; margin-bottom: 0.4rem; }
-.frz__mini .frz__sol { opacity: 0.4; }
-.frz__mini .axo-t { fill: #5B4BE6; }
-.frz__mini .axo-r { fill: #1C0CB3; }
-.frz__mini .axo-l { fill: #130982; }
-.frz__mini polygon { stroke: #130982; stroke-width: 0.1; stroke-linejoin: round; }
-.frz__mini .axo-f { stroke: var(--indigo); stroke-width: 0.13; fill: none; opacity: 0.7; }
+.frz__jauge i {
+  display: block;
+  height: 100%;
+  width: 100%;
+  background: var(--indigo);
+  transform: scaleX(var(--p));
+  transform-origin: left;
+}
 
 @media (max-width: 899px) {
-  .frz__etapes { grid-template-columns: minmax(0, 1fr); gap: clamp(1.8rem, 5vh, 2.6rem); }
-  .frz__case { --a: 1; opacity: 1; transform: none; }
+  .frz { height: 460vh; }
+  .frz__dire {
+    left: var(--gutter);
+    right: var(--gutter);
+    width: auto;
+    top: auto;
+    bottom: clamp(7rem, 20vh, 10rem);
+    transform: none;
+  }
+  .frz__svg { left: 0; right: 0; top: 5vh; bottom: auto; height: 54%; }
+  .frz__plus { bottom: clamp(3.2rem, 8vh, 4.4rem); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .frz { --p: 1 !important; }
+  .frz { height: auto; --p: 1; }
+  .frz__holder { position: static; height: auto; padding: clamp(3rem, 8vh, 5rem) 0; }
+  .frz__svg { position: static; height: auto; }
+  .frz__temps { position: static; opacity: 1; transform: none; visibility: visible; grid-area: auto; margin-bottom: 1.6rem; }
+  .frz__plus { position: static; margin-top: 1rem; }
+  .frz__jauge { display: none; }
 }
+
+/* La trame de fond : posée une fois, derrière le contenu de toutes les pages.
+   Les sections qui ont leur propre fond la recouvrent, c'est voulu — une
+   scène sombre reste une scène sombre. */
+.fond {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.85;
+}
+main, .nav, .footer2, .breadcrumb, .crumb { position: relative; z-index: 1; }

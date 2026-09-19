@@ -6,6 +6,7 @@ import { initSmoothScroll, destroySmoothScroll } from './lib/smoothScroll';
 import { initContentGuard } from './lib/contentGuard';
 import ScrollToTop from './components/ScrollToTop';
 import Cursor from './components/Cursor';
+import Fond from './components/Fond';
 import PageTransition from './components/PageTransition';
 import Interactions from './components/Interactions';
 import Nav from './components/Nav';
@@ -42,6 +43,8 @@ export default function App() {
   return (
     <MotionConfig reducedMotion="user">
       <ScrollToTop />
+      {/* La trame de la marque, posée une fois derrière toutes les pages. */}
+      <Fond />
       <Cursor />
       <PageTransition />
       <Interactions />
