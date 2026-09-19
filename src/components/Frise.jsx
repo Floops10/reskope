@@ -30,19 +30,35 @@ export default function Frise() {
   const racine = useRef(null);
   const avance = useRef(0);
   const [proche, setProche] = useState(false);
+  const [pose, setPose] = useState(false);
   const [actif, setActif] = useState(0);
   const [ouverte, setOuverte] = useState(null);
   const reduit = mouvementRefuse();
 
-  /* Le moteur se monte un peu avant d'entrer à l'écran, jamais au chargement
-     de la page : personne ne doit payer un moteur 3D pour un écran qu'il n'a
-     pas encore atteint. */
+  /* Le module du moteur est CHARGÉ pendant un temps mort, une fois la page
+     posée : il est donc déjà en cache quand on arrive sur la section, et
+     l'attente disparaît. Le chargement ne dispute rien à l'affichage
+     initial, puisqu'il n'a lieu qu'une fois le fil d'exécution libre. */
+  useEffect(() => {
+    let id;
+    const tirer = () => { import('./Sequence'); };
+    if (typeof requestIdleCallback === 'function') {
+      id = requestIdleCallback(tirer, { timeout: 2500 });
+      return () => cancelIdleCallback(id);
+    }
+    id = setTimeout(tirer, 1800);
+    return () => clearTimeout(id);
+  }, []);
+
+  /* Le moteur se MONTE un écran avant d'entrer en vue — pas plus tôt, sinon
+     il se monterait dès l'arrivée sur la page et pèserait sur le premier
+     affichage. Comme son module est déjà en cache, ce montage est immédiat. */
   useEffect(() => {
     const el = racine.current;
     if (!el || typeof IntersectionObserver === 'undefined') { setProche(true); return undefined; }
     const io = new IntersectionObserver(
       ([e]) => { if (e.isIntersecting) { setProche(true); io.disconnect(); } },
-      { rootMargin: '600px 0px' }
+      { rootMargin: '700px 0px' }
     );
     io.observe(el);
     return () => io.disconnect();
@@ -88,13 +104,35 @@ export default function Frise() {
       <div className="seq__rail">
         <div className="seq__holder">
           <div className="seq__scene">
+            {/* Le sol du premier quartier, posé en attendant le moteur. C'est
+                exactement ce que la scène dessine en premier : le raccord ne
+                se voit pas, et l'espace n'est jamais vide. */}
+            <svg
+              className={`seq__poster${pose ? ' is-parti' : ''}`}
+              viewBox="-30 -18 60 36"
+              aria-hidden="true"
+            >
+              <g>
+                {Array.from({ length: 9 }, (_, i) => {
+                  const u = (i - 4) * 3.2;
+                  return (
+                    <g key={i}>
+                      <line x1={u * 0.866 - 13.9} y1={u * 0.5 + 8} x2={u * 0.866 + 13.9} y2={u * 0.5 - 8} />
+                      <line x1={-u * 0.866 - 13.9} y1={-u * 0.5 - 8} x2={-u * 0.866 + 13.9} y2={-u * 0.5 + 8} />
+                    </g>
+                  );
+                })}
+              </g>
+            </svg>
+
             {proche && (
-              <Suspense fallback={<div className="seq__attente" aria-hidden="true" />}>
+              <Suspense fallback={null}>
                 <Sequence
                   figures={figures}
                   lang={lang}
                   avance={avance}
                   onQuartier={surQuartier}
+                  onPose={() => setPose(true)}
                 />
               </Suspense>
             )}

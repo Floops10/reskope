@@ -1,4 +1,4 @@
-import { useMemo, useRef, useEffect } from 'react';
+import { useMemo, useRef, useState, useEffect } from 'react';
 import { Canvas, useFrame, useThree, invalidate } from '@react-three/fiber';
 import { OrthographicCamera, Edges, Html } from '@react-three/drei';
 import * as THREE from 'three';
@@ -334,15 +334,25 @@ function Scene({ figures, lang, avance, onQuartier }) {
   );
 }
 
-export default function Sequence({ figures, lang, avance, onQuartier }) {
+export default function Sequence({ figures, lang, avance, onQuartier, onPose }) {
+  /* Les premières images tournent en continu, le temps que la mise en page,
+     les polices et la première passe de rendu se posent. Passé ce délai, on
+     repasse « à la demande » : une image par mouvement de défilement, zéro à
+     l'arrêt. Sans ce sursis, la scène pouvait rester sur une image vide
+     jusqu'au premier mouvement. */
+  const [pose, setPose] = useState(false);
+  useEffect(() => {
+    const t = setTimeout(() => setPose(true), 900);
+    return () => clearTimeout(t);
+  }, []);
+
   return (
     <Canvas
       className="seq__canvas"
       dpr={[1, 1.75]}
       gl={{ antialias: true, alpha: true }}
-      /* À la demande : une image dessinée par mouvement de défilement, zéro
-         à l'arrêt. Un moteur 3D ne doit pas tourner pour rien. */
-      frameloop="demand"
+      frameloop={pose ? 'demand' : 'always'}
+      onCreated={() => { invalidate(); if (onPose) onPose(); }}
     >
       <Scene figures={figures} lang={lang} avance={avance} onQuartier={onQuartier} />
     </Canvas>

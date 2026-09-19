@@ -15674,3 +15674,16 @@ html.eco-theme .crumb__node { background: rgba(125, 223, 168, 0.55); }
 }
 .fond .hero2__net { position: absolute; inset: 0; }
 main, .nav, .footer2, .breadcrumb, .crumb { position: relative; z-index: 1; }
+
+/* Le sol posé en attendant le moteur : exactement ce que la scène dessine en
+   premier, pour que le raccord ne se voie pas. */
+.seq__poster {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.32;
+  transition: opacity 0.6s ease;
+}
+.seq__poster line { stroke: var(--indigo); stroke-width: 0.09; }
+.seq__poster.is-parti { opacity: 0; }
