@@ -4,7 +4,6 @@ import Page from '../components/Page';
 import MorphTitle from '../components/MorphTitle';
 import Paliers from '../components/Paliers';
 import Net3D from '../components/Net3D';
-import HeroNetwork from '../components/HeroNetwork';
 import { GLYPH_SHAPES } from '../lib/net3d';
 import Stagger from '../components/Stagger';
 import { Reveal, RevealItem } from '../components/Reveal';
@@ -256,7 +255,6 @@ export default function APropos() {
         {/* 1 — HERO intégré : titre morphing + PHOTO révélée + fond vivant */}
         <header className="ahero" key={lang}>
           <div className="ahero__bg" aria-hidden="true">
-            <HeroNetwork />
             <div className="hero2__grain" />
           </div>
           <div className="container ahero__grid">

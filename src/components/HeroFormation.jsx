@@ -7,7 +7,6 @@ import { gsap, SplitText, ScrollTrigger, useGSAP } from '../lib/gsap';
 const prefersReduced = () =>
   typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 import { buildR3D, GLYPH_SHAPES, project, lerp3, easeInOut } from '../lib/net3d';
-import HeroNetwork from './HeroNetwork';
 import Net3D from './Net3D';
 import SwapLabel from './SwapLabel';
 
@@ -296,7 +295,6 @@ export default function HeroFormation({ c }) {
     <header className="heroform" ref={rootRef} id="top">
       <div className="heroform__stage">
         <div className="heroform__bg" aria-hidden="true">
-          <HeroNetwork />
           <div className="hero2__grain" />
         </div>
 

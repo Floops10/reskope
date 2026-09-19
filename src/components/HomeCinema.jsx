@@ -11,7 +11,6 @@ import Net3D from './Net3D';
 import NetPhrase, { phraseAspect } from './NetPhrase';
 import SwapLabel from './SwapLabel';
 import Marked from './Marked';
-import HeroNetwork from './HeroNetwork';
 
 /* ============================================================
    CAMERA RIDE — la traversée 3D (après le hero-formation).
@@ -188,7 +187,6 @@ export default function HomeCinema({ c }) {
     <section className={`cine${flat ? ' cine--stack' : ''}`} ref={rootRef}>
       <div className="cine__stage" ref={stageRef}>
         <div className="cine__bg" aria-hidden="true">
-          <HeroNetwork />
           <div className="hero2__grain" />
         </div>
 

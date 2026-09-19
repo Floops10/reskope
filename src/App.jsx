@@ -43,10 +43,12 @@ export default function App() {
   return (
     <MotionConfig reducedMotion="user">
       <ScrollToTop />
-      {/* La trame de la marque, celle du haut de l'accueil, posée une fois
-          derrière toutes les pages. C'est le même composant : il n'y a
-          qu'un seul réseau sur ce site, pas deux qui se ressemblent. */}
-      <div className="fond" aria-hidden="true"><HeroNetwork count={40} /></div>
+      {/* La trame de la marque, posée UNE SEULE FOIS derrière tout le site.
+          Chaque hero avait la sienne : sur l'accueil, deux réseaux se
+          superposaient — celui du hero et celui du fond — et la densité
+          changeait d'une page à l'autre. Il n'y en a plus qu'un, avec la
+          densité d'origine du hero, et il est le même partout. */}
+      <div className="fond" aria-hidden="true"><HeroNetwork /></div>
       <Cursor />
       <PageTransition />
       <Interactions />

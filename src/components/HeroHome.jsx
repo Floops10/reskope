@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { gsap, SplitText, useGSAP } from '../lib/gsap';
 import { instant } from '../lib/scrub';
 import { R_NODES, R_LINKS, R_SCATTER } from './Logo';
-import HeroNetwork from './HeroNetwork';
 import FloatingNet3D from './FloatingNet3D';
 import NetPhrase, { phraseAspect } from './NetPhrase';
 import SwapLabel from './SwapLabel';
@@ -86,7 +85,6 @@ export default function HeroHome({ c }) {
       <section className="hero2p" ref={sceneRef}>
         {/* Fond fixe : réseau vivant (réagit au curseur) + objets réseau 3D flottants + grain */}
         <div className="hero2p__bg" aria-hidden="true">
-          <HeroNetwork />
           <FloatingNet3D className="fnet--a" points={15} size={190} speed={0.9} tiltX={0.35} />
           <FloatingNet3D className="fnet--b" points={11} size={124} speed={1.35} tiltX={0.6} />
           <FloatingNet3D className="fnet--c" points={19} size={150} speed={0.65} tiltX={0.2} />

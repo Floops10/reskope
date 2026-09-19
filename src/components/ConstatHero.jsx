@@ -1,7 +1,6 @@
 import { useRef } from 'react';
 import { gsap, useGSAP } from '../lib/gsap';
 import { instant } from '../lib/scrub';
-import HeroNetwork from './HeroNetwork';
 import MorphTitle from './MorphTitle';
 
 /* ============================================================
@@ -41,7 +40,6 @@ export default function ConstatHero({ eyebrow, title, teaser, lead, sourcesLabel
   return (
     <header className="chero" ref={rootRef} id="top">
       <div className="chero__bg" aria-hidden="true">
-        <HeroNetwork />
         <div className="hero2__grain" />
       </div>
 

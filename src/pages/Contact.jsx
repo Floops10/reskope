@@ -2,7 +2,6 @@ import { useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Page from '../components/Page';
 import MorphTitle from '../components/MorphTitle';
-import HeroNetwork from '../components/HeroNetwork';
 import Quiz from '../components/Quiz';
 import Booking from '../components/Booking';
 import ZoneMap from '../components/ZoneMap';
@@ -204,7 +203,6 @@ export default function Contact() {
         {/* 1 — HERO-FORMULAIRE : on arrive, on écrit */}
         <header className="ctc" key={lang}>
           <div className="ctc__bg" aria-hidden="true">
-            <HeroNetwork />
             <div className="hero2__grain" />
           </div>
 
