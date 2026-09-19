@@ -1,6 +1,5 @@
 import { useState, useCallback, useRef, useEffect, useMemo, lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import { invalidate } from '@react-three/fiber';
 import { ScrollTrigger, useGSAP } from '../lib/gsap';
 import { mouvementRefuse } from '../lib/scrub';
 import { useLang } from '../i18n';
@@ -29,25 +28,52 @@ export default function Frise() {
 
   const racine = useRef(null);
   const avance = useRef(0);
+  /* La fonction qui redemande une image. Elle vient de la scène une fois
+     montée : l'importer ici tirerait tout le moteur 3D dans le paquet
+     principal, sur TOUTES les pages du site, avant même qu'on en ait besoin.
+     C'est ce qui se passait, et ça coûtait trois cents kilo-octets à chaque
+     première visite. */
+  const redessiner = useRef(null);
   const [proche, setProche] = useState(false);
   const [pose, setPose] = useState(false);
   const [actif, setActif] = useState(0);
   const [ouverte, setOuverte] = useState(null);
   const reduit = mouvementRefuse();
 
-  /* Le module du moteur est CHARGÉ pendant un temps mort, une fois la page
-     posée : il est donc déjà en cache quand on arrive sur la section, et
-     l'attente disparaît. Le chargement ne dispute rien à l'affichage
-     initial, puisqu'il n'a lieu qu'une fois le fil d'exécution libre. */
+  /* Le module du moteur n'est chargé qu'au PREMIER GESTE du visiteur, et
+     seulement pendant un temps mort qui suit. Qui arrive sur la page et
+     repart sans bouger ne télécharge rien ; qui descend, lui, a nécessairement
+     fait un geste bien avant d'atteindre la section, et trouve le module déjà
+     en cache. L'attente disparaît sans que personne paie pour rien. */
   useEffect(() => {
-    let id;
-    const tirer = () => { import('./Sequence'); };
-    if (typeof requestIdleCallback === 'function') {
-      id = requestIdleCallback(tirer, { timeout: 2500 });
-      return () => cancelIdleCallback(id);
-    }
-    id = setTimeout(tirer, 1800);
-    return () => clearTimeout(id);
+    let inactif;
+    let fait = false;
+    /* Pas d'écoute du défilement lui-même : l'application en déclenche un à
+       chaque changement de page, et le navigateur en restaure un au retour.
+       Seuls comptent les gestes qu'un programme ne produit pas. */
+    const gestes = ['wheel', 'touchstart', 'keydown', 'pointerdown'];
+
+    const tirer = () => {
+      if (fait) return;
+      fait = true;
+      import('./Sequence');
+    };
+    const amorcer = () => {
+      gestes.forEach((g) => window.removeEventListener(g, amorcer));
+      if (typeof requestIdleCallback === 'function') {
+        inactif = requestIdleCallback(tirer, { timeout: 1200 });
+      } else {
+        inactif = setTimeout(tirer, 300);
+      }
+    };
+
+    gestes.forEach((g) => window.addEventListener(g, amorcer, { passive: true, once: true }));
+    return () => {
+      gestes.forEach((g) => window.removeEventListener(g, amorcer));
+      if (inactif === undefined) return;
+      if (typeof cancelIdleCallback === 'function') cancelIdleCallback(inactif);
+      clearTimeout(inactif);
+    };
   }, []);
 
   /* Le moteur se MONTE un écran avant d'entrer en vue — pas plus tôt, sinon
@@ -75,7 +101,7 @@ export default function Frise() {
       onUpdate: (self) => {
         avance.current = self.progress;
         /* Une image par mouvement : c'est le défilement qui dessine. */
-        invalidate();
+        if (redessiner.current) redessiner.current();
       },
     });
     return () => st.kill();
@@ -133,6 +159,7 @@ export default function Frise() {
                   avance={avance}
                   onQuartier={surQuartier}
                   onPose={() => setPose(true)}
+                  onPret={(fn) => { redessiner.current = fn; }}
                 />
               </Suspense>
             )}

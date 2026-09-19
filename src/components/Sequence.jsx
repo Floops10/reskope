@@ -1,5 +1,5 @@
 import { useMemo, useRef, useState, useEffect } from 'react';
-import { Canvas, useFrame, useThree, invalidate } from '@react-three/fiber';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { OrthographicCamera, Edges, Html } from '@react-three/drei';
 import * as THREE from 'three';
 import { SCENES } from '../lib/scenes';
@@ -279,7 +279,7 @@ function Camera({ camRef, avance }) {
   return null;
 }
 
-function Scene({ figures, lang, avance, onQuartier }) {
+function Scene({ figures, lang, avance, onQuartier, onPret }) {
   const cam = useRef(null);
   const geos = useMemo(() => ({
     plein: cubeColore('plein'),
@@ -295,10 +295,15 @@ function Scene({ figures, lang, avance, onQuartier }) {
     routes: figures.slice(1).map(() => ({ current: 0 })),
   }), [figures]);
 
+  /* La fonction de rafraîchissement remonte à la page : c'est le défilement
+     qui la déclenche, et elle ne doit pas être importée hors du moteur. */
+  const redessiner = useThree((s) => s.invalidate);
+  useEffect(() => { onPret(redessiner); }, [redessiner, onPret]);
+
   /* Un rendu React ne redessine rien en mode « à la demande » : après un
      changement de quartier, on redemande une image pour que la scène reparte
      des valeurs qu'on vient d'écrire. */
-  useEffect(() => { invalidate(); }, [porteurs]);
+  useEffect(() => { redessiner(); }, [porteurs, redessiner]);
 
   useFrame(() => {
     const p = avance.current;
@@ -334,7 +339,7 @@ function Scene({ figures, lang, avance, onQuartier }) {
   );
 }
 
-export default function Sequence({ figures, lang, avance, onQuartier, onPose }) {
+export default function Sequence({ figures, lang, avance, onQuartier, onPose, onPret }) {
   /* Les premières images tournent en continu, le temps que la mise en page,
      les polices et la première passe de rendu se posent. Passé ce délai, on
      repasse « à la demande » : une image par mouvement de défilement, zéro à
@@ -352,9 +357,9 @@ export default function Sequence({ figures, lang, avance, onQuartier, onPose }) 
       dpr={[1, 1.75]}
       gl={{ antialias: true, alpha: true }}
       frameloop={pose ? 'demand' : 'always'}
-      onCreated={() => { invalidate(); if (onPose) onPose(); }}
+      onCreated={({ invalidate }) => { invalidate(); if (onPose) onPose(); }}
     >
-      <Scene figures={figures} lang={lang} avance={avance} onQuartier={onQuartier} />
+      <Scene figures={figures} lang={lang} avance={avance} onQuartier={onQuartier} onPret={onPret} />
     </Canvas>
   );
 }
