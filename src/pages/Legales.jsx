@@ -131,7 +131,8 @@ const PRIVACY = {
       ] },
       { h: 'Données collectées', p: [
         "Ce site ne demande la création d'aucun compte et n'utilise aucun outil de suivi publicitaire ni de mesure d'audience. Les seules données personnelles collectées sont celles que vous transmettez volontairement via les formulaires de contact et le questionnaire : nom, adresse e-mail et contenu de votre message.",
-        'Une préférence technique (la langue choisie) est enregistrée localement dans votre navigateur (localStorage) et ne quitte jamais votre appareil.',
+        'Quelques éléments sont enregistrés localement dans votre navigateur et ne quittent jamais votre appareil : la langue choisie, la version du site retenue (TPE ou PME), et le schéma que vous composez dans l’atelier — noms des outils, niveaux d’utilisation et liaisons. Ce schéma n’est transmis nulle part : il reste sur votre appareil tant que vous ne décidez pas de nous l’envoyer, et vous l’effacez à tout moment avec le bouton « Tout effacer » de l’atelier ou en vidant les données de site de votre navigateur.',
+        'Ces enregistrements ne servent qu’au fonctionnement du site, jamais à vous suivre ni à vous identifier.',
       ] },
       { h: 'Finalités et bases légales', p: [
         "Vos données servent uniquement à traiter et répondre à votre demande (mesures précontractuelles et intérêt légitime à échanger avec vous), et à assurer le suivi de nos éventuels échanges commerciaux.",
