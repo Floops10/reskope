@@ -1,39 +1,33 @@
-import { useMemo, useRef, useState, useEffect } from 'react';
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import { useMemo, useRef, useEffect } from 'react';
+import { Canvas, useFrame, useThree, invalidate } from '@react-three/fiber';
 import { OrthographicCamera, Edges, Html } from '@react-three/drei';
 import * as THREE from 'three';
 import { SCENES } from '../lib/scenes';
-import { cubeColore, ARETE, graine, doux, clamp01 } from '../lib/troisd';
+import { cubeColore, ARETE, graine } from '../lib/troisd';
+import {
+  QUARTIERS, phase, avanceQuartier, avanceNote, avanceRoute, voyageur, regard,
+  clamp01, doux,
+} from '../lib/ville';
 
 /* ============================================================
-   LA SÉQUENCE — l'offre se joue, en volume, et elle s'annote.
+   LA VILLE — les quatre chantiers, traversés au défilement.
 
-   Ce sont les MÊMES scènes que celles de l'explorateur : quinze outils nommés
-   pour l'audit, la ressaisie à la main et la passerelle pour la mise en ordre,
-   les couches et le trou pour le sur-mesure. L'accueil montrait jusqu'ici des
-   emblèmes de trois blocs pendant que le détail dormait ailleurs — d'où
-   l'impression que l'offre n'était pas claire. Il n'y a plus qu'un objet par
-   chantier, et on le retrouve identique quand on entre dedans.
+   Ce ne sont plus quatre vignettes : c'est une ville. Chaque chantier est un
+   quartier posé à sa place, relié au suivant par une route, et un voyageur
+   ouvre le chemin. Il dit où l'on se trouve mieux qu'une légende ne le
+   ferait. La caméra ne fait que le suivre : elle se resserre quand il
+   s'arrête dans un quartier, elle s'ouvre quand il reprend la route.
 
-   Les blocs n'apparaissent pas : ils arrivent du lointain, chacun de sa
-   direction, en tournant sur eux-mêmes, et se rangent. Puis des annotations
-   se posent sur les pièces qui comptent — une amorce, un mot, « ça, c'est
-   ça » — et la caméra glisse vers le chantier suivant pendant qu'un fil se
-   tend derrière elle.
+   Les quartiers sont les MÊMES scènes que celles de l'explorateur — quinze
+   outils nommés pour l'audit, la ressaisie à la main pour la mise en ordre.
+   Ils se construisent à l'approche, bloc par bloc, venus du lointain, puis
+   s'annotent : une amorce monte d'une pièce et le mot se pose au bout.
 
-   Rien ne tourne tant que la section n'est pas à l'écran : le moteur se monte
-   à l'approche et sa boucle s'arrête dès qu'on la quitte. Un moteur 3D ne
-   doit rien coûter à qui ne le regarde pas.
+   Tout est une fonction de l'avancement au défilement, rien n'est animé par
+   une horloge. Le moteur est en mode « à la demande » : il ne dessine que
+   lorsqu'on bouge, et il ne coûte rien à l'arrêt. C'est ce qui permet une
+   scène de cette densité sans peser sur la page.
    ============================================================ */
-
-const ARRIVEE = 1.7;
-const TENUE = 3.2;
-const TRANSIT = 1.3;
-const CYCLE = ARRIVEE + TENUE + TRANSIT;
-const PAS = 30;
-/* Deux annotations par chantier : trois se marchent dessus, une n'explique
-   pas la chaîne. */
-const ANNOTES = 2;
 
 function centreDe(scene) {
   return { x: scene.sol.W / 2, y: scene.sol.D / 2 };
@@ -50,71 +44,38 @@ function enTrois(p, c, i) {
   };
 }
 
-/* Les annotations d'un chantier : le nom de l'étape, posé sur la pièce dont
-   elle parle. C'est la scène qui explique, pas un paragraphe à côté. */
-function annotationsDe(scene, lang) {
+function annotationsDe(scene, lang, max = 2) {
   const parId = Object.fromEntries(scene.blocs.map((b) => [b.id, b]));
   const out = [];
   for (const e of scene.etapes) {
     const id = (e.mots && e.mots[0]) || (e.ids && e.ids[0]);
-    const bl = id && parId[id];
-    if (!bl) continue;
-    out.push({ id, texte: (e[lang] || e.fr).nom });
-    if (out.length === ANNOTES) break;
+    if (id && parId[id]) out.push({ id, texte: (e[lang] || e.fr).nom });
+    if (out.length === max) break;
   }
   return out;
 }
 
-function avanceDe(horloge, etape, n) {
-  const t = horloge.current % (n * CYCLE);
-  const i = Math.floor(t / CYCLE);
-  if (etape < i) return 1;
-  if (etape > i) return 0;
-  return clamp01((t - i * CYCLE) / ARRIVEE);
-}
-
-function avanceFil(horloge, fil, n) {
-  const t = horloge.current % (n * CYCLE);
-  const i = Math.floor(t / CYCLE);
-  if (fil < i - 1) return 1;
-  if (fil > i - 1) return 0;
-  return clamp01((t - i * CYCLE + TRANSIT) / TRANSIT);
-}
-
-/* L'apparition d'une annotation : après que les blocs se sont rangés, et
-   l'une après l'autre. */
-function avanceNote(horloge, etape, rang, n) {
-  const t = horloge.current % (n * CYCLE);
-  const i = Math.floor(t / CYCLE);
-  if (i !== etape) return 0;
-  const local = t - i * CYCLE;
-  const debut = ARRIVEE + 0.25 + rang * 0.85;
-  if (local > ARRIVEE + TENUE) return clamp01((ARRIVEE + TENUE + 0.5 - local) / 0.5);
-  return clamp01((local - debut) / 0.5);
-}
-
-function Bloc({ bl, decalage, geos, horloge, etape, n }) {
+/* Un bloc : il vient du lointain pendant qu'on approche du quartier. */
+function Bloc({ bl, quartier, geos, avance }) {
   const maille = useRef(null);
   const depart = useMemo(() => {
-    const a = graine(bl.i + decalage * 31, 3) * Math.PI * 2;
-    const d = 24 + graine(bl.i, 5) * 26;
+    const a = graine(bl.i + quartier * 31, 3) * Math.PI * 2;
+    const d = 22 + graine(bl.i, 5) * 26;
     return [
       bl.pos[0] + Math.cos(a) * d,
-      bl.pos[1] + 12 + graine(bl.i, 7) * 22,
+      bl.pos[1] + 12 + graine(bl.i, 7) * 20,
       bl.pos[2] + Math.sin(a) * d,
     ];
-  }, [bl, decalage]);
+  }, [bl, quartier]);
 
-  useFrame((etat) => {
+  useFrame(() => {
     const m = maille.current;
     if (!m) return;
-    const t = clamp01((avanceDe(horloge, etape, n) - graine(bl.i, 11) * 0.42) / 0.58);
+    const t = clamp01((avance.current - graine(bl.i, 11) * 0.45) / 0.55);
     const e = doux(t);
-    const flot = Math.sin(etat.clock.elapsedTime * 0.7 + graine(bl.i, 13) * 9) * 0.07 * e;
-
     m.position.set(
       depart[0] + (bl.pos[0] - depart[0]) * e,
-      depart[1] + (bl.pos[1] - depart[1]) * e + flot,
+      depart[1] + (bl.pos[1] - depart[1]) * e,
       depart[2] + (bl.pos[2] - depart[2]) * e
     );
     const r = (1 - e) * 1.7;
@@ -146,7 +107,7 @@ function Bloc({ bl, decalage, geos, horloge, etape, n }) {
   );
 }
 
-function Sol({ scene, horloge, etape, n }) {
+function Sol({ scene, avance }) {
   const ligne = useRef(null);
   const geo = useMemo(() => {
     const pts = [];
@@ -159,9 +120,7 @@ function Sol({ scene, horloge, etape, n }) {
     return g;
   }, [scene]);
   useFrame(() => {
-    if (ligne.current) {
-      ligne.current.material.opacity = 0.3 * clamp01(avanceDe(horloge, etape, n) * 2.4);
-    }
+    if (ligne.current) ligne.current.material.opacity = 0.32 * clamp01(avance.current * 2.2);
   });
   return (
     <lineSegments ref={ligne} geometry={geo}>
@@ -170,32 +129,40 @@ function Sol({ scene, horloge, etape, n }) {
   );
 }
 
-/* Une annotation : une amorce qui part du sommet de la pièce, et le mot au
-   bout. Elle se plie et disparaît quand le chantier s'éloigne. */
-function Note({ bl, texte, horloge, etape, rang, n }) {
+function Note({ bl, texte, avance, rang }) {
   const groupe = useRef(null);
   const tige = useRef(null);
-  const [vu, setVu] = useState(false);
+  const mot = useRef(null);
   const geo = useMemo(() => {
     const g = new THREE.BufferGeometry();
     g.setAttribute('position', new THREE.Float32BufferAttribute([0, 0, 0, 0, 1, 0], 3));
     return g;
   }, []);
+  const hauteur = 2.4 + rang * 2.4;
+  /* Un décalage latéral d'un rang à l'autre : à la même abscisse, deux
+     pastilles se mordaient quand les pièces annotées étaient voisines. */
+  const cote = rang % 2 === 0 ? -1 : 1;
 
-  const hauteur = 2.2 + rang * 1.7;
-
-  useFrame((etat) => {
-    const a = avanceNote(horloge, etape, rang, n);
+  /* L'étiquette est toujours montée, et c'est sa feuille de style qu'on écrit
+     image par image. Piloter son apparition par un état React la faisait
+     disparaître au hasard : en mode « à la demande », un rendu React ne
+     s'accompagne d'aucune image, et l'état pouvait se poser sans que rien ne
+     vienne le confirmer. */
+  useFrame(() => {
+    const a = avance.current;
     const g = groupe.current;
     if (!g) return;
-    const flot = Math.sin(etat.clock.elapsedTime * 0.6 + rang * 2.1) * 0.09 * a;
-    g.position.set(bl.pos[0], bl.haut + flot, bl.pos[2]);
+    g.position.set(bl.pos[0], bl.haut, bl.pos[2]);
     g.visible = a > 0.01;
     if (tige.current) {
       tige.current.scale.set(1, hauteur * doux(a), 1);
-      tige.current.material.opacity = 0.55 * a;
+      tige.current.material.opacity = 0.6 * a;
     }
-    setVu((v) => (v === a > 0.45 ? v : a > 0.45));
+    if (mot.current) {
+      const e = doux(clamp01((a - 0.35) / 0.65));
+      mot.current.style.opacity = e.toFixed(3);
+      mot.current.style.transform = `translateY(${((1 - e) * 10).toFixed(2)}px) scale(${(0.9 + e * 0.1).toFixed(3)})`;
+    }
   });
 
   return (
@@ -203,39 +170,77 @@ function Note({ bl, texte, horloge, etape, rang, n }) {
       <lineSegments ref={tige} geometry={geo}>
         <lineBasicMaterial color="#1C0CB3" transparent opacity={0} />
       </lineSegments>
-      {vu && (
-        <Html position={[0, hauteur + 0.5, 0]} center zIndexRange={[6, 0]} style={{ pointerEvents: 'none' }}>
-          <span className="seq__note">{texte}</span>
-        </Html>
-      )}
+      <Html position={[cote * 1.6, hauteur + 0.55, 0]} center zIndexRange={[6, 0]} style={{ pointerEvents: 'none' }}>
+        <span className="seq__note" ref={mot}>{texte}</span>
+      </Html>
     </group>
   );
 }
 
-function Fil({ depart, arrivee, horloge, fil, n }) {
+/* La route : une bande posée au sol qui se trace à mesure qu'on la parcourt. */
+function Route({ de, vers, avance }) {
   const maille = useRef(null);
-  const L = arrivee - depart;
+  const { milieu, longueur, angle } = useMemo(() => {
+    const dx = vers[0] - de[0];
+    const dz = vers[1] - de[1];
+    return {
+      milieu: [(de[0] + vers[0]) / 2, 0.06, (de[1] + vers[1]) / 2],
+      longueur: Math.hypot(dx, dz),
+      angle: Math.atan2(dz, dx),
+    };
+  }, [de, vers]);
+
   useFrame(() => {
     const m = maille.current;
     if (!m) return;
-    const t = avanceFil(horloge, fil, n);
-    m.scale.set(Math.max(L * t, 0.001), 1, 1);
-    m.position.set(depart + (L * t) / 2, 8.5, 0);
-    m.visible = t > 0.01;
+    const t = clamp01(avance.current);
+    m.scale.set(Math.max(longueur * t, 0.001), 1, 1);
+    m.position.set(de[0] + ((vers[0] - de[0]) * t) / 2, 0.06, de[1] + ((vers[1] - de[1]) * t) / 2);
+    m.visible = t > 0.005;
   });
+
   return (
-    <mesh ref={maille}>
-      <boxGeometry args={[1, 0.24, 0.24]} />
-      <meshBasicMaterial color="#6B5BEA" toneMapped={false} />
+    <mesh ref={maille} rotation={[0, -angle, 0]} position={milieu}>
+      <boxGeometry args={[1, 0.12, 1.5]} />
+      <meshBasicMaterial color="#6B5BEA" transparent opacity={0.55} toneMapped={false} />
     </mesh>
   );
 }
 
-function Chantier({ nom, index, geos, horloge, n, lang, actif }) {
+/* Le voyageur : c'est lui qui dit où l'on se trouve. */
+function Voyageur({ avance }) {
+  const cube = useRef(null);
+  const ombre = useRef(null);
+  useFrame(() => {
+    const p = voyageur(avance.current);
+    if (cube.current) {
+      cube.current.position.set(p[0], p[1], p[2]);
+      cube.current.rotation.y = avance.current * 24;
+      cube.current.rotation.x = avance.current * 15;
+    }
+    if (ombre.current) ombre.current.position.set(p[0], 0.08, p[2]);
+  });
+  return (
+    <group>
+      <mesh ref={cube}>
+        <boxGeometry args={[1.5, 1.5, 1.5]} />
+        <meshBasicMaterial color="#F0EEE8" toneMapped={false} />
+        <Edges threshold={15} color="#1C0CB3" />
+      </mesh>
+      {/* Le repère au sol : on sait toujours à l'aplomb de quoi il passe. */}
+      <mesh ref={ombre} rotation={[-Math.PI / 2, 0, 0]}>
+        <ringGeometry args={[1.5, 1.9, 24]} />
+        <meshBasicMaterial color="#1C0CB3" transparent opacity={0.45} />
+      </mesh>
+    </group>
+  );
+}
+
+function Quartier({ nom, index, geos, lang, avance, notes }) {
   const scene = SCENES[nom];
   const c = useMemo(() => centreDe(scene), [scene]);
   const blocs = useMemo(() => scene.blocs.map((p, i) => enTrois(p, c, i)), [scene, c]);
-  const notes = useMemo(() => {
+  const notesPosees = useMemo(() => {
     const parId = Object.fromEntries(blocs.map((b) => [b.id, b]));
     return annotationsDe(scene, lang)
       .map((a) => ({ ...a, bl: parId[a.id] }))
@@ -243,101 +248,103 @@ function Chantier({ nom, index, geos, horloge, n, lang, actif }) {
   }, [scene, blocs, lang]);
 
   return (
-    <group position={[index * PAS, 0, 0]}>
-      <Sol scene={scene} horloge={horloge} etape={index} n={n} />
+    <group position={[QUARTIERS[index].pos[0], 0, QUARTIERS[index].pos[1]]}>
+      <Sol scene={scene} avance={avance} />
       {blocs.map((bl) => (
-        <Bloc key={bl.i} bl={bl} decalage={index} geos={geos} horloge={horloge} etape={index} n={n} />
+        <Bloc key={bl.i} bl={bl} quartier={index} geos={geos} avance={avance} />
       ))}
-      {actif && notes.map((a, r) => (
-        <Note key={a.id} bl={a.bl} texte={a.texte} horloge={horloge} etape={index} rang={r} n={n} />
+      {notesPosees.map((a, r) => (
+        <Note key={a.id} bl={a.bl} texte={a.texte} avance={notes[r]} rang={r} />
       ))}
     </group>
   );
 }
 
-function Camera({ camRef, cible }) {
+function Camera({ camRef, avance }) {
   const size = useThree((s) => s.size);
-  const pos = useRef(0);
-
-  useEffect(() => {
+  useFrame(() => {
     const cam = camRef.current;
     if (!cam) return;
-    /* Cadré sur la plus large des scènes, pour qu'aucune ne déborde. */
-    const rayon = 19;
-    cam.zoom = Math.min(size.width / (rayon * 2.2), size.height / (rayon * 1.45));
+    /* La caméra se pose EXACTEMENT là où le défilement la demande, sans
+       lissage : le moteur ne dessine qu'une image par mouvement, un retard
+       calculé image par image ne rattraperait jamais sa cible. Le moelleux
+       vient du scrub du défilement, en amont. */
+    const r = regard(avance.current);
+    const rayon = 27 - r.serre * 11;
+    cam.position.set(r.x + 22, 17, r.z + 22);
+    cam.lookAt(r.x, 3.2, r.z);
+    cam.zoom = Math.min(size.width / (rayon * 2.2), size.height / (rayon * 1.5));
     cam.updateProjectionMatrix();
-  }, [camRef, size]);
-
-  useFrame((etat, dt) => {
-    const cam = camRef.current;
-    if (!cam) return;
-    pos.current += (cible.current - pos.current) * Math.min(dt * 2.1, 1);
-    const t = etat.clock.elapsedTime;
-    cam.position.set(pos.current + 20, 15 + Math.sin(t * 0.3) * 0.8, 20 + Math.cos(t * 0.25) * 0.8);
-    cam.lookAt(pos.current, 3.6, 0);
   });
   return null;
 }
 
-function Scene({ figures, onEtape, reduit, lang, enVue }) {
+function Scene({ figures, lang, avance, onQuartier }) {
   const cam = useRef(null);
-  const cible = useRef(0);
   const geos = useMemo(() => ({
     plein: cubeColore('plein'),
     neuf: cubeColore('neuf'),
     socle: cubeColore('socle'),
   }), []);
-  const horloge = useRef(reduit ? ARRIVEE + 1 : 0);
-  const [actif, setActif] = useState(0);
 
-  useFrame((_, dt) => {
-    /* Double garde : la boucle de rendu est coupée par la propriété du
-       canevas, et l'horloge ne tourne pas non plus. Une section qu'on ne
-       regarde pas ne doit rien consommer, et elle ne doit pas non plus
-       avoir « avancé toute seule » quand on y revient. */
-    if (reduit || !enVue) return;
-    horloge.current += dt;
-    const t = horloge.current % (figures.length * CYCLE);
-    const i = Math.min(Math.floor(t / CYCLE), figures.length - 1);
-    cible.current = i * PAS;
-    setActif((v) => (v === i ? v : i));
+  /* Un porteur par valeur animée. Ils sont créés une fois et seulement
+     écrits dans la boucle : aucun rendu React pendant le défilement. */
+  const porteurs = useMemo(() => ({
+    quartiers: figures.map(() => ({ current: 0 })),
+    notes: figures.map(() => [{ current: 0 }, { current: 0 }]),
+    routes: figures.slice(1).map(() => ({ current: 0 })),
+  }), [figures]);
+
+  /* Un rendu React ne redessine rien en mode « à la demande » : après un
+     changement de quartier, on redemande une image pour que la scène reparte
+     des valeurs qu'on vient d'écrire. */
+  useEffect(() => { invalidate(); }, [porteurs]);
+
+  useFrame(() => {
+    const p = avance.current;
+    figures.forEach((_, i) => {
+      porteurs.quartiers[i].current = avanceQuartier(p, i);
+      porteurs.notes[i][0].current = avanceNote(p, i, 0);
+      porteurs.notes[i][1].current = avanceNote(p, i, 1);
+      if (i < figures.length - 1) porteurs.routes[i].current = avanceRoute(p, i);
+    });
+    onQuartier(phase(p).i);
   });
-
-  useEffect(() => { onEtape(actif); }, [actif, onEtape]);
 
   return (
     <>
-      <OrthographicCamera ref={cam} makeDefault position={[20, 15, 20]} near={-400} far={800} />
-      <Camera camRef={cam} cible={cible} />
+      <OrthographicCamera ref={cam} makeDefault position={[22, 17, 22]} near={-500} far={900} />
+      <Camera camRef={cam} avance={avance} />
       {figures.map((nom, i) => (
-        <Chantier
+        <Quartier
           key={nom}
           nom={nom}
           index={i}
           geos={geos}
-          horloge={horloge}
-          n={figures.length}
           lang={lang}
-          actif={actif === i}
+          avance={porteurs.quartiers[i]}
+          notes={porteurs.notes[i]}
         />
       ))}
       {figures.slice(1).map((nom, i) => (
-        <Fil key={nom} depart={i * PAS + 12} arrivee={(i + 1) * PAS - 12} horloge={horloge} fil={i} n={figures.length} />
+        <Route key={nom} de={QUARTIERS[i].pos} vers={QUARTIERS[i + 1].pos} avance={porteurs.routes[i]} />
       ))}
+      <Voyageur avance={avance} />
     </>
   );
 }
 
-export default function Sequence({ figures, onEtape, reduit, lang, enVue }) {
+export default function Sequence({ figures, lang, avance, onQuartier }) {
   return (
     <Canvas
       className="seq__canvas"
       dpr={[1, 1.75]}
       gl={{ antialias: true, alpha: true }}
-      /* La boucle s'arrête dès que la section quitte l'écran. */
-      frameloop={enVue && !reduit ? 'always' : 'never'}
+      /* À la demande : une image dessinée par mouvement de défilement, zéro
+         à l'arrêt. Un moteur 3D ne doit pas tourner pour rien. */
+      frameloop="demand"
     >
-      <Scene figures={figures} onEtape={onEtape} reduit={reduit} lang={lang} enVue={enVue} />
+      <Scene figures={figures} lang={lang} avance={avance} onQuartier={onQuartier} />
     </Canvas>
   );
 }
