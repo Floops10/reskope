@@ -3,7 +3,7 @@ import HeroFormation from '../components/HeroFormation';
 import HomeCinema from '../components/HomeCinema';
 import LongPhrase from '../components/LongPhrase';
 import PreuvesTpe from '../components/PreuvesTpe';
-import CeQuOnFait from '../components/CeQuOnFait';
+import Frise from '../components/Frise';
 import { useLang } from '../i18n';
 import { useProfil } from '../profil';
 import { HOME_TPE } from '../data/profils';
@@ -244,7 +244,7 @@ export default function Home() {
              l'avoir compris en dix secondes. Quatre verbes, quatre volumes
              dessinés dans la langue des livrets, et pas un prix : on ne
              chiffre rien avant que le visiteur sache ce qu'il achète. */}
-      <CeQuOnFait key={`fait-${profil}`} />
+      <Frise key={`frise-${profil}`} />
 
       {/* 3 — La marque en une phrase (mots révélés au scrub) */}
       <LongPhrase text={c.longPhrase} />
