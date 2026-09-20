@@ -53,7 +53,8 @@ const CONTENT = {
     hello: "Bonjour, nous c'est Thomy et Florian.",
     bio: [
       "On ne fait pas du conseil à la chaîne. Sur chaque dossier, on s'investit comme s'il s'agissait de notre propre entreprise à faire grandir.",
-      "Thomy tient le sens, la stratégie et l'identité : ce que vous voulez faire, le modèle qui tient, et jusqu'à la recherche de financement. Florian tient la technique : les sites, les outils métier, et les logiciels qu'on relie entre eux. Les deux métiers se nourrissent l'un l'autre, et c'est ce qui fait qu'un dossier avance d'un seul tenant.",
+      "Thomy tient le sens, la stratégie et l'identité : ce que vous voulez faire, le modèle qui tient, et jusqu'à la recherche de financement.",
+      "Florian tient la technique : les sites, les outils métier, et les logiciels qu'on relie entre eux. Les deux métiers se nourrissent l'un l'autre, et c'est ce qui fait qu'un dossier avance d'un seul tenant.",
       "C'est une passion avant d'être un métier. On passe le temps qu'il faut sur chaque mission, parce qu'on veut un résultat concret et durable, pas une présentation qui fait joli. La qualité passe avant le reste : on ne bâcle jamais un projet pour aller plus vite ou facturer davantage.",
     ],
     principesEyebrow: 'Nos engagements',
@@ -107,7 +108,8 @@ const CONTENT = {
     hello: "Hi, we're Thomy and Florian.",
     bio: [
       "We don't do assembly-line consulting. On every engagement, we get involved as if it were our own company to grow.",
-      'Thomy holds meaning, strategy and identity: what you want to do, the model that holds, and all the way to raising funds. Florian holds the technical side: the websites, the business tools, and the software we connect to each other. The two trades feed each other, and that is what makes an engagement move as one piece.',
+      'Thomy holds meaning, strategy and identity: what you want to do, the model that holds, and all the way to raising funds.',
+      'Florian holds the technical side: the websites, the business tools, and the software we connect to each other. The two trades feed each other, and that is what makes an engagement move as one piece.',
       "It's a passion before it's a job. We spend the time each mission needs, because we want a concrete, lasting result, not a presentation that just looks nice. Quality comes before everything: we never rush a project to go faster or bill more.",
     ],
     principesEyebrow: 'Our commitments',

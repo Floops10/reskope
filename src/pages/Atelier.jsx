@@ -65,7 +65,8 @@ const CONTENT = {
       'Posez vos outils sur un plan, reliez ceux qui se parlent, et voyez en deux minutes ce que personne n’a jamais dessiné chez vous. Gratuit, sans compte, et le dessin s’emporte.',
     eyebrow: 'L’atelier',
     titre: 'Dessinez votre système d’information.',
-    lead: 'Un bloc par outil que vous payez. Sa hauteur, c’est la place qu’il prend chez vous : ce qu’il coûte, ou ce qu’il vous fait perdre. Reliez ceux qui se parlent vraiment. En deux minutes vous avez le plan que personne n’a jamais dessiné chez vous.',
+    lead: 'Un bloc par outil que vous payez, et sa hauteur dit la place qu’il prend chez vous.',
+    leadSuite: 'Ce qu’il coûte, ou ce qu’il vous fait perdre. Reliez ceux qui se parlent vraiment, et en deux minutes vous avez le plan que personne n’a jamais dessiné chez vous.',
     aide: [
       'Cliquez une case vide pour poser un outil.',
       'Glissez un bloc pour le déplacer, cliquez-le pour le renommer.',
@@ -112,7 +113,8 @@ const CONTENT = {
       'Place your tools on a plan, connect the ones that talk to each other, and see in two minutes what nobody has ever drawn at your company. Free, no account, and the drawing is yours to keep.',
     eyebrow: 'The workshop',
     titre: 'Map your information system.',
-    lead: 'One block per tool you pay for. Its height is the room it takes up: what it costs, or what it makes you lose. Connect the ones that really talk to each other. In two minutes you have the plan nobody has ever drawn at your company.',
+    lead: 'One block per tool you pay for, and its height says how much room it takes up.',
+    leadSuite: 'What it costs, or what it makes you lose. Connect the ones that really talk to each other, and in two minutes you have the plan nobody has ever drawn at your company.',
     aide: [
       'Click an empty cell to place a tool.',
       'Drag a block to move it, click it to rename it.',
@@ -333,6 +335,7 @@ export default function Atelier() {
           <p className="eyebrow eyebrow--index">{c.eyebrow}</p>
           <h1 className="h1 atl__titre">{c.titre}</h1>
           <p className="lead atl__lead">{c.lead}</p>
+          {c.leadSuite && <p className="atl__lead-suite">{c.leadSuite}</p>}
 
           <div className="atl__plan">
             <div className="atl__scene" data-cursor-prise>

@@ -44,7 +44,9 @@ const CONTENT = {
     },
     calloutTitle: 'The deliverable: a report you keep.',
     calloutText:
-      'At the end of the audit, you leave with a clear document: findings, mapping, prioritized recommendations and estimated gains. You apply it yourself, or you entrust the delivery to us.',
+      'Findings, mapping, prioritized recommendations and estimated gains.',
+    calloutSuite:
+      'You apply it yourself, or you entrust the delivery to us. Either way, the document is yours.',
     calloutBtn: 'See an example report',
   },
 };
@@ -75,6 +77,7 @@ export default function Methode() {
           <Reveal className="callout">
             <RevealItem as="h2" className="h2">{c.calloutTitle}</RevealItem>
             <RevealItem as="p" className="lead">{c.calloutText}</RevealItem>
+            {c.calloutSuite && <RevealItem as="p" className="callout__suite">{c.calloutSuite}</RevealItem>}
             <RevealItem>
               <Link className="btn btn--ghost" to={c.calloutTo || '/exemple'}>
                 {c.calloutBtn}

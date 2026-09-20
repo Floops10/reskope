@@ -17,7 +17,7 @@ export const HOME_TPE = {
     metaDesc:
       'On construit ce qui vous manque : site vitrine, boutique en ligne, prise de rendez-vous, identité de marque. Facturé à la journée, code et accès à votre nom.',
     heroTitle: 'On construit ce qui vous manque.',
-    heroDit: 'Votre site, votre boutique, votre prise de rendez-vous et l’identité qui va avec. Et vous repartez avec les clés.',
+    heroDit: 'Ce qui vous manque existe en quelques semaines, et vous repartez avec les clés.',
     condQ: 'On est fait pour vous si vous vivez l’une de ces situations.',
     condEt: 'et / ou',
     conditions: [
@@ -81,7 +81,7 @@ export const HOME_TPE = {
     metaDesc:
       'We build what you are missing: website, online shop, booking, brand identity. Billed by the day, code and access in your name.',
     heroTitle: 'We build what you are missing.',
-    heroDit: 'Your site, your shop, your booking, and the identity that goes with it. And you leave with the keys.',
+    heroDit: 'What you are missing exists within weeks, and you leave with the keys.',
     condQ: 'We are made for you if you live one of these situations.',
     condEt: 'and / or',
     conditions: [

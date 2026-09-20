@@ -31,7 +31,11 @@ const CONTENT = {
        vend. Cette ligne le dit, avec les quatre verbes qu'on retrouve
        juste en dessous : personne ne devrait avoir à faire défiler pour
        savoir de quoi il s'agit. */
-    heroDit: 'On fait le tour de vos outils, on relie ce qui doit l’être, on construit ce qui manque, et on forme vos équipes.',
+    /* Cette ligne disait déjà les quatre verbes du titre qui suit deux
+       écrans plus bas, mot pour mot. Deux fois la même phrase à deux
+       écrans d'écart, c'est la signature d'un texte écrit à la machine.
+       Elle dit maintenant le résultat ; les verbes restent à la frise. */
+    heroDit: 'On remet vos outils en ordre, et vos équipes récupèrent les heures qu’ils leur prennent.',
 
     /* Les situations qui nous amènent. Elles ne défilent plus devant une
        caméra : on les pose, une par une, et le visiteur se reconnaît dans
@@ -141,7 +145,7 @@ const CONTENT = {
     metaDesc:
       'Reskope maps and audits your tools on the ground, employee by employee, then connects, simplifies and builds what is missing. Open process, quantified gains.',
     heroTitle: 'Your teams lose hours inside their tools.',
-    heroDit: 'We go through every tool, connect what needs connecting, build what is missing, and train your teams.',
+    heroDit: 'We put your tools back in order, and your teams get back the hours they were losing.',
 
     condQ: 'We are made for you if you live one of these situations.',
     condEt: 'and / or',
