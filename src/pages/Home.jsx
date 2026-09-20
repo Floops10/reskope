@@ -1,7 +1,7 @@
 import Page from '../components/Page';
 import HeroFormation from '../components/HeroFormation';
+import Conditions from '../components/Conditions';
 import HomeCinema from '../components/HomeCinema';
-import LongPhrase from '../components/LongPhrase';
 import PreuvesTpe from '../components/PreuvesTpe';
 import Frise from '../components/Frise';
 import { useLang } from '../i18n';
@@ -32,11 +32,19 @@ const CONTENT = {
        juste en dessous : personne ne devrait avoir à faire défiler pour
        savoir de quoi il s'agit. */
     heroDit: 'On fait le tour de vos outils, on relie ce qui doit l’être, on construit ce qui manque, et on forme vos équipes.',
-    line1: "Des outils qui ne se parlent pas, la même information saisie trois fois, et des abonnements que plus personne n'ouvre. Ça n'apparaît sur aucune facture, et ça vous coûte quand même.",
-    line2: "On fait le tour, on range, on relie, et on construit ce qui manque. Vous voyez chaque étape, vous la validez, et vous pouvez vous arrêter à la fin de chacune.",
-    mark1: 'saisie trois fois',
-    mark2: 'construit',
-    closing: 'On remet de l’ordre. Vous gardez les clés.',
+
+    /* Les situations qui nous amènent. Elles ne défilent plus devant une
+       caméra : on les pose, une par une, et le visiteur se reconnaît dans
+       l'une d'elles ou s'en va. C'est plus honnête, et c'est plus clair. */
+    condQ: 'On est fait pour vous si vous vivez l’une de ces situations.',
+    condEt: 'et / ou',
+    conditions: [
+      'Vos outils ne se parlent pas.',
+      'La même information est saisie trois fois.',
+      'Des abonnements tournent que plus personne n’ouvre.',
+      'Personne ne sait dire qui utilise quoi.',
+    ],
+    condFin: 'Une seule suffit. On vient voir sur place, on range, on relie, et on construit ce qui manque. Vous validez chaque étape, et vous pouvez vous arrêter à la fin de chacune.',
     offerings: [
       { title: 'Audit et cartographie', sub: 'Deux à cinq jours sur place. Vous repartez avec le document, quelle que soit la suite.' },
       { title: 'Liaisons entre outils', sub: 'On branche ce que vous avez déjà. Rien à racheter.' },
@@ -134,11 +142,16 @@ const CONTENT = {
       'Reskope maps and audits your tools on the ground, employee by employee, then connects, simplifies and builds what is missing. Open process, quantified gains.',
     heroTitle: 'Your teams lose hours inside their tools.',
     heroDit: 'We go through every tool, connect what needs connecting, build what is missing, and train your teams.',
-    line1: "Tools that don't talk to each other, the same information typed in three times, and subscriptions nobody opens any more. It shows on no invoice, and it costs you anyway.",
-    line2: 'We go through everything, tidy up, connect, and build what is missing. You see each step, you approve it, and you can stop at the end of any of them.',
-    mark1: 'three times',
-    mark2: 'builds',
-    closing: 'We put things in order. You keep the keys.',
+
+    condQ: 'We are made for you if you live one of these situations.',
+    condEt: 'and / or',
+    conditions: [
+      'Your tools do not talk to each other.',
+      'The same information is typed in three times.',
+      'Subscriptions keep renewing that nobody opens.',
+      'Nobody can say who uses what.',
+    ],
+    condFin: 'One is enough. We come and look on site, we tidy up, we connect, and we build what is missing. You approve each step, and you can stop at the end of any of them.',
     offerings: [
       { title: 'Audit and mapping', sub: 'Two to five days on site. You leave with the document, whatever you decide next.' },
       { title: 'Links between tools', sub: 'We plug in what you already have. Nothing to buy again.' },
@@ -246,15 +259,18 @@ export default function Home() {
              chiffre rien avant que le visiteur sache ce qu'il achète. */}
       <Frise key={`frise-${profil}`} />
 
-      {/* 3 — La marque en une phrase (mots révélés au scrub) */}
-      <LongPhrase text={c.longPhrase} />
-
       {/* 3 — En version TPE seulement : les deux chiffres qui posent le
              sujet. La version PME a une page entière pour ça (« Le
              constat »), qui ne vaut rien chez quelqu'un sans outils. */}
       {profil === 'tpe' && <PreuvesTpe />}
 
-      {/* 3 — Traversée caméra 3D : constat → réponse → bascule → offres →
+      {/* 3 — « On est fait pour vous si… ». Les situations montent une par
+             une au défilement, sans caméra ni scène épinglée : c'est le
+             moment où quelqu'un se reconnaît, il ne doit pas avoir à
+             courir après une phrase qui passe. */}
+      <Conditions c={c} />
+
+      {/* 4 — Traversée caméra 3D : constat → réponse → bascule → offres →
              signature. FIN de la home : le footer (scène de clôture) suit. */}
       <HomeCinema key={`cine-${profil}`} c={c} lang={lang} />
 

@@ -1,5 +1,4 @@
 import { useRef, useMemo, useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { gsap, useGSAP } from '../lib/gsap';
 import { GLYPH_SHAPES, buildR3D } from '../lib/net3d';
 
@@ -9,8 +8,6 @@ const prefersReduced = () =>
   typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 import Net3D from './Net3D';
 import NetPhrase, { phraseAspect } from './NetPhrase';
-import SwapLabel from './SwapLabel';
-import Marked from './Marked';
 
 /* ============================================================
    CAMERA RIDE — la traversée 3D (après le hero-formation).
@@ -26,15 +23,12 @@ import Marked from './Marked';
    Mobile / reduced-motion / onglet caché : pile statique lisible.
    ============================================================ */
 
-const SCENES = 8;
+const SCENES = 5;
 
 /* Chorégraphies : in = d'où la scène arrive · out = comment elle s'échappe */
 const CHOREO = [
-  { in: { z: -1300, yPercent: 10, rotationX: 8, blur: 10 },  out: { xPercent: -72, rotationY: 30, z: 240, blur: 8 } },
-  { in: { xPercent: 64, rotationY: -28, z: -420, blur: 8 },  out: { yPercent: -78, rotationX: 32, z: 200, blur: 8 } },
-  { in: { z: -1500, blur: 12 },                              out: { z: 980, blur: 4 } },
-  { in: { yPercent: 70, rotationX: -26, z: -380, blur: 8 },  out: { xPercent: 58, rotationY: -24, rotationZ: -10, z: 220, blur: 8 } },
-  { in: { xPercent: -64, rotationY: 26, z: -420, blur: 8 },  out: { z: 900, rotationZ: 6, blur: 6 } },
+  { in: { z: -1300, yPercent: 12, rotationX: 8, blur: 10 },  out: { xPercent: -70, rotationY: 28, z: 240, blur: 8 } },
+  { in: { xPercent: 64, rotationY: -26, z: -420, blur: 8 },  out: { z: 900, rotationZ: 6, blur: 6 } },
   { in: { z: -1200, rotationZ: 8, blur: 10 },                out: { yPercent: 74, rotationX: -30, z: 200, blur: 8 } },
   { in: { yPercent: -70, rotationX: 26, z: -380, blur: 8 },  out: { xPercent: 70, rotationY: -30, z: 240, blur: 8 } },
   { in: { z: -1400, blur: 10 },                              out: null },
@@ -223,51 +217,24 @@ export default function HomeCinema({ c }) {
               ))}
             </div>
 
-            {/* ── Scène 0 : le constat ── */}
-            <div className="cine__scene" ref={setScene(0)}>
-              <div className="container cine__center">
-                <p className="cine__line"><Marked text={c.line1} word={c.mark1} /></p>
-              </div>
-            </div>
-
-            {/* ── Scène 1 : la réponse ── */}
-            <div className="cine__scene" ref={setScene(1)}>
-              <div className="container cine__center">
-                <p className="cine__line"><Marked text={c.line2} word={c.mark2} /></p>
-              </div>
-            </div>
-
-            {/* ── Scène 2 : la bascule ── */}
-            <div className="cine__scene" ref={setScene(2)}>
-              <div className="container cine__center">
-                <p className="cine__closing">{c.closing}</p>
-                <div className="cine__actions cine__actions--center">
-                  <Link to="/contact" className="btn btn--primary" data-cursor-label="Y aller">
-                    <SwapLabel>{c.primary}</SwapLabel>
-                    <span className="btn__arrow" aria-hidden="true">→</span>
-                  </Link>
-                </div>
-              </div>
-            </div>
-
-            {/* ── Scènes 3-6 : les offres (titres-réseau) ── */}
+            {/* ── Scènes 0-3 : les offres (titres-réseau) ── */}
             {c.offerings.map((o, i) => (
-              <div className="cine__scene" key={o.title} ref={setScene(3 + i)}>
+              <div className="cine__scene" key={o.title} ref={setScene(i)}>
                 <div className="container cine__center">
                   <NetPhrase
                     text={o.title}
                     index={i}
                     maxAspect={maxAspect}
-                    active={flat ? true : activeIdx === 3 + i}
-                    arme={flat ? false : activeIdx <= 3 + i}
+                    active={flat ? true : activeIdx === i}
+                    arme={flat ? false : activeIdx <= i}
                   />
                   <p className="netphrase__sub">{o.sub}</p>
                 </div>
               </div>
             ))}
 
-            {/* ── Scène 7 : signature — R 3D qui tourne, reste au point ── */}
-            <div className="cine__scene" ref={setScene(7)}>
+            {/* ── Scène 4 : signature — R 3D qui tourne, reste au point ── */}
+            <div className="cine__scene" ref={setScene(4)}>
               <div className="container cine__center">
                 <Net3D shape={rShape} size={210} speed={0.55} tiltX={0.35} nodeR={4.6} className="cine__sting-net" />
                 <p className="cine__sting">{c.sting}</p>

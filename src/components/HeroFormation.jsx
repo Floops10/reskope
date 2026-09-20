@@ -46,6 +46,7 @@ export default function HeroFormation({ c }) {
   const visualRef = useRef(null);
   const actionsRef = useRef(null);
   const ditRef = useRef(null);
+  const presRef = useRef(null);
   const glyphRefs = useRef([]);
 
   const shape = useMemo(() => buildR3D(16, 0.66), []);
@@ -64,6 +65,10 @@ export default function HeroFormation({ c }) {
     const linkEls = [...svg.querySelectorAll('.hf-link')];
 
     const charData = { els: [], vecs: [] };
+    /* Les mots de la présentation : ils arrivent de la profondeur quand le
+       R a fini de se former, exactement comme la phrase de marque plus bas
+       dans la page. Même grammaire de mouvement partout. */
+    const presData = { els: [], vecs: [], pas: 0.01 };
     let fxDesktop = false;
     let fxMobile = false;
     let centerShift = 0;
@@ -122,6 +127,24 @@ export default function HeroFormation({ c }) {
           els[i].style.transform = `translate(${(v[0] * d).toFixed(1)}px, ${(v[1] * d).toFixed(1)}px) rotate(${(v[2] * d).toFixed(1)}deg) scale(${(1 - 0.4 * d).toFixed(3)})`;
           els[i].style.opacity = (1 - d).toFixed(3);
         }
+
+        /* PRÉSENTATION : le R vient de se former, le titre s'en va, et
+           « Reskope, c'est Thomy et Florian » se pose sous le réseau. Les
+           mots remontent de la profondeur un par un ; c'est la poignée de
+           main du site, elle ne pouvait pas arriver par une fondu plat. */
+        const pe = presData.els;
+        for (let i = 0; i < pe.length; i++) {
+          /* Le décalage est réparti sur la phrase, pas fixé par mot : en
+             anglais elle est plus courte, et un pas constant laissait les
+             derniers mots en vol quand le hero se terminait. */
+          const d = easeInOut(clamp01((p - 0.42 - i * presData.pas) / 0.24));
+          const v = presData.vecs[i];
+          const r = 1 - d;
+          pe[i].style.transform =
+            `translate3d(${(v[0] * r).toFixed(1)}px, ${(v[1] * r).toFixed(1)}px, ${(v[2] * r).toFixed(0)}px)`
+            + ` rotateX(${(v[3] * r).toFixed(1)}deg) rotateZ(${(v[4] * r).toFixed(1)}deg)`;
+          pe[i].style.opacity = d.toFixed(3);
+        }
       }
 
       if (fxDesktop) {
@@ -172,10 +195,26 @@ export default function HeroFormation({ c }) {
     /* Splits : base (sans) + calque réseau (même taille, même place) */
     let split = null;
     let netSplit = null;
+    let presSplit = null;
     try {
       split = new SplitText(titleRef.current, { type: 'words,chars' });
       netSplit = new SplitText(netTitleRef.current, { type: 'words,chars' });
     } catch { split = null; netSplit = null; }
+    if (presRef.current) {
+      try { presSplit = new SplitText(presRef.current, { type: 'words' }); } catch { presSplit = null; }
+      if (presSplit) {
+        presData.els = presSplit.words;
+        presData.vecs = presSplit.words.map((_, i) => [
+          (rnd(i, 11) - 0.5) * 110,
+          40 + rnd(i, 12) * 90,
+          -620 - rnd(i, 13) * 520,
+          -38 - rnd(i, 14) * 46,
+          (rnd(i, 15) - 0.5) * 22,
+        ]);
+        presData.pas = 0.2 / Math.max(presSplit.words.length - 1, 1);
+        presSplit.words.forEach((w) => { w.style.opacity = '0'; });
+      }
+    }
 
     if (split) {
       charData.els = split.chars;
@@ -288,7 +327,7 @@ export default function HeroFormation({ c }) {
       return () => { st.kill(); fxMobile = false; };
     });
 
-    return () => { mm.revert(); split?.revert(); netSplit?.revert(); };
+    return () => { mm.revert(); split?.revert(); netSplit?.revert(); presSplit?.revert(); };
   }, { scope: rootRef });
 
   return (
@@ -346,6 +385,15 @@ export default function HeroFormation({ c }) {
             </Link>
           </div>
         </div>
+
+        {/* Les présentations, une fois le R formé. Le titre dit le problème,
+            le R prend le centre, et là seulement on dit qui parle. C'est
+            l'ordre d'une vraie rencontre : le sujet, puis les noms. */}
+        {c.longPhrase && (
+          <div className="heroform__presente">
+            <p className="heroform__presente-t" ref={presRef}>{c.longPhrase}</p>
+          </div>
+        )}
 
       </div>
     </header>

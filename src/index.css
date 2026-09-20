@@ -6845,11 +6845,12 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
    ============================================================ */
 .heroform {
   position: relative;
-  /* Resserré deux fois (255vh, puis 200vh, puis 170vh). Ce qui compte sur
-     cette page, c'est d'arriver vite à « ce qu'on fait » : la formation du
-     R est belle, mais elle ne doit pas retenir le visiteur deux écrans et
-     demi avant qu'il sache de quoi on parle. */
-  height: 170vh;
+  /* Resserré trois fois (255vh, 200vh, 170vh), puis rendu à 195vh le jour
+     où la présentation est venue se poser sous le R : les derniers mots
+     arrivaient encore quand la scène se décollait. Ce qui compte ici,
+     c'est d'arriver vite à « ce qu'on fait » — la page a perdu trois
+     écrans ailleurs, elle peut en rendre un quart à sa poignée de main. */
+  height: 195vh;
 }
 .heroform__stage {
   position: sticky;
@@ -6948,6 +6949,39 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   width: min(46vw, 620px);
   height: auto;
   overflow: visible;
+}
+
+/* La présentation, sous le R une fois qu'il est formé. Le titre pose le
+   problème, le réseau prend le centre, et là seulement les noms arrivent :
+   mot à mot, remontés de la profondeur, comme la phrase de marque. */
+.heroform__presente {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(4.5vh, 8vh, 10vh);
+  z-index: 3;
+  width: min(52ch, 88vw);
+  transform: translateX(-50%);
+  perspective: 1100px;
+  perspective-origin: 50% 40%;
+  pointer-events: none;
+}
+.heroform__presente-t {
+  margin: 0;
+  text-align: center;
+  font-size: clamp(1.12rem, 1.72vw, 1.56rem);
+  line-height: 1.45;
+  letter-spacing: -0.014em;
+  text-wrap: balance;
+  color: var(--ink);
+  transform-style: preserve-3d;
+}
+.heroform__presente-t div {
+  will-change: transform, opacity;
+  transform-style: preserve-3d;
+}
+@media (max-width: 880px) {
+  .heroform__presente { bottom: 6vh; width: min(28ch, 86vw); }
+  .heroform__presente-t { font-size: 1.08rem; line-height: 1.5; }
 }
 .hf-link {
   stroke: var(--indigo);
@@ -15729,3 +15763,100 @@ main, .nav, .footer2, .breadcrumb, .crumb { position: relative; z-index: 1; }
 }
 .seq__poster line { stroke: var(--indigo); stroke-width: 0.09; }
 .seq__poster.is-parti { opacity: 0; }
+
+/* ── « On est fait pour vous si… » ───────────────────────────
+   Les situations qui nous amènent. Elles occupaient trois scènes d'une
+   traversée caméra : superbe, et impossible à lire, parce qu'on ne se
+   reconnaît pas dans une phrase qui passe. Ici elles montent une par une
+   au défilement, de la profondeur, et le visiteur a le temps de se dire
+   « ça, c'est nous ». Pas d'encadré, pas de filet, pas de numéro : une
+   question, des situations, une réponse. */
+.cond {
+  position: relative;
+  padding-block: clamp(5rem, 14vh, 9rem);
+}
+.cond__in {
+  perspective: 1200px;
+  perspective-origin: 50% 40%;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(2.4rem, 6vh, 3.6rem);
+}
+@media (min-width: 881px) {
+  .cond__in {
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+    gap: clamp(3rem, 7vw, 7rem);
+    align-items: start;
+  }
+  /* La question ne s'en va pas avant d'avoir sa réponse. */
+  .cond__ask {
+    position: sticky;
+    top: 24vh;
+  }
+}
+.cond__q {
+  margin: 0;
+  max-width: 19ch;
+  font-size: clamp(2rem, 4.6vw, 3.9rem);
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+  text-wrap: balance;
+  transform-style: preserve-3d;
+}
+.cond__list {
+  margin: 0 0 clamp(2.8rem, 7vh, 4.6rem);
+  padding: 0;
+  display: grid;
+  gap: clamp(1.4rem, 3.6vh, 2.4rem);
+  list-style: none;
+  transform-style: preserve-3d;
+}
+.cond__item {
+  display: block;
+  transform-style: preserve-3d;
+}
+/* Le « et / ou » : c'est lui qui dit qu'une seule suffit. Il est petit,
+   il est en indigo, il n'est pas un filet de séparation. */
+.cond__et {
+  display: block;
+  margin: clamp(0.5rem, 1.4vh, 0.9rem) 0 clamp(0.4rem, 1.2vh, 0.8rem);
+  padding-left: 0.14em;
+  font-size: clamp(0.9rem, 1.15vw, 1.05rem);
+  font-weight: 500;
+  color: var(--indigo);
+  will-change: transform, opacity;
+}
+.cond__t {
+  display: block;
+  max-width: 21ch;
+  font-size: clamp(1.5rem, 3.5vw, 2.9rem);
+  font-weight: 500;
+  line-height: 1.12;
+  letter-spacing: -0.032em;
+  color: var(--ink);
+  text-wrap: balance;
+  will-change: transform, opacity;
+  transform-style: preserve-3d;
+}
+.cond__fin {
+  max-width: 52ch;
+  margin: 0 0 clamp(1.8rem, 4vh, 2.6rem);
+  font-size: clamp(1.05rem, 1.45vw, 1.28rem);
+  line-height: 1.55;
+  color: var(--muted);
+  will-change: transform, opacity;
+}
+.cond__cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  will-change: transform, opacity;
+}
+@media (max-width: 720px) {
+  .cond { padding-block: clamp(3.4rem, 9vh, 5rem); }
+  .cond__q { font-size: clamp(1.85rem, 8.4vw, 2.5rem); max-width: 15ch; }
+  .cond__t { font-size: clamp(1.4rem, 6.6vw, 2rem); max-width: 17ch; }
+  .cond__fin { font-size: 1rem; max-width: 38ch; }
+}
