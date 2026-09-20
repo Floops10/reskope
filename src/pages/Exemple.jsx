@@ -366,6 +366,9 @@ export default function Exemple() {
       {/* l'explorateur */}
       <section className="section section--tight">
         <div className="container bilan">
+          {/* L'enveloppe porte le dégradé de bord : sur un téléphone, elle dit
+              qu'il y a d'autres sections à droite. */}
+          <div className="bilan__tabs-wrap">
           <nav className="bilan__tabs" aria-label={b.hero.eyebrow}>
             {b.tabs.map((t) => (
               <button
@@ -379,6 +382,7 @@ export default function Exemple() {
               </button>
             ))}
           </nav>
+          </div>
 
           <div className="bilan__panelwrap">
             <AnimatePresence mode="wait">

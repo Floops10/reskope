@@ -8428,8 +8428,24 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
     font-size: clamp(3.2rem, 16vw, 6rem);
   }
 }
+/* Sur un téléphone, le pied de page doit tenir sur un écran : sinon on
+   scrolle dans du pied de page, ce qui n'a aucun intérêt. Deux colonnes pour
+   les deux groupes de liens, le contact sur la largeur, et tout se resserre. */
 @media (max-width: 520px) {
-  .footer2__grid { grid-template-columns: minmax(0, 1fr); }
+  .footer2__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 1rem;
+    row-gap: 1.2rem;
+    padding-bottom: 1.4rem;
+  }
+  .footer2__heading { margin-bottom: 0.4rem; font-size: 0.84rem; }
+  .footer2__col a, .footer2__zone { padding-block: 0.2rem; font-size: 0.84rem; }
+  .footer2__top { padding-block: 1.6rem 1.2rem; }
+  .footer2__statement { font-size: clamp(1.5rem, 7vw, 2rem); }
+  .footer2__word-wrap { padding-top: 1.4rem; }
+  .footer2__word { font-size: clamp(2.6rem, 13vw, 4rem); }
+  .footer2__legal { padding-block: 0.9rem; gap: 0.4rem 1rem; font-size: 0.74rem; }
+  .footer2__legal-links { gap: 0.3rem 0.9rem; }
 }
 
 /* ============================================================
@@ -12623,7 +12639,20 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
     scrollbar-width: none;
   }
   .bilan__tabs::-webkit-scrollbar { display: none; }
-  .bilan__tab { flex: none; border-left: 0; border: 1px solid var(--hairline); border-radius: 999px; padding: 0.5rem 0.95rem; font-size: 0.85rem; white-space: nowrap; background: var(--cream-light); }
+  /* Le bord droit s'estompe : on voit qu'il y a une suite. */
+  .bilan__tabs-wrap { position: relative; }
+  .bilan__tabs-wrap::after {
+    content: '';
+    position: absolute;
+    right: 0; top: 0; bottom: 0;
+    width: 3rem;
+    pointer-events: none;
+    background: linear-gradient(to right, transparent, var(--cream));
+  }
+  /* `width: 100%` vient du bureau, où les onglets sont empilés. Sans le
+     remettre à `auto`, chaque onglet prenait toute la largeur du téléphone :
+     on n'en voyait qu'un, et rien ne disait qu'il y en avait cinq autres. */
+  .bilan__tab { flex: none; width: auto; border-left: 0; border: 1px solid var(--hairline); border-radius: 999px; padding: 0.5rem 0.95rem; font-size: 0.85rem; white-space: nowrap; background: var(--cream-light); }
   .bilan__tab.is-on { background: var(--indigo); color: var(--cream); border-color: var(--indigo); padding-left: 0.95rem; }
   .bilan__panelwrap { min-height: 420px; }
   .bilan-stats { grid-template-columns: 1fr 1fr; }
@@ -13333,19 +13362,23 @@ html.eco-theme .menu2__panel .langtoggle__opt:not(.is-on):hover { color: var(--i
 .astory {
   position: relative;
   overflow: hidden;
-  padding-block: clamp(4rem, 11vh, 7.5rem);
-  background: var(--cream-light);
+  background: color-mix(in srgb, var(--cream-light) 80%, transparent);
 }
+/* Les guillemets de la marque encadrent le récit. Ils étaient posés en
+   débord négatif dans une section qui rogne ce qui dépasse : on n'en voyait
+   qu'un morceau, coupé net. Ils tiennent maintenant entiers dans le cadre,
+   un peu plus petits, et restent un décor — pas une découpe. */
 .astory__quote {
   position: absolute;
-  font-size: clamp(9rem, 22vw, 20rem);
+  font-size: clamp(5rem, 13vw, 11rem);
   font-weight: 700;
-  line-height: 1;
-  color: color-mix(in srgb, var(--indigo) 8%, transparent);
+  line-height: 0.8;
+  color: color-mix(in srgb, var(--indigo) 9%, transparent);
   pointer-events: none;
 }
-.astory__quote--open { left: 2vw; top: -1rem; }
-.astory__quote--close { right: 2vw; bottom: -4rem; }
+.astory__quote--open { left: clamp(0.5rem, 2vw, 2rem); top: clamp(0.6rem, 2vh, 1.6rem); }
+.astory__quote--close { right: clamp(0.5rem, 2vw, 2rem); bottom: clamp(0.2rem, 1vh, 1rem); }
+.astory { padding-block: clamp(5.5rem, 13vh, 9rem); }
 .astory__inner { position: relative; z-index: 1; }
 .astory__hello {
   font-size: clamp(2rem, 4.4vw, 3.8rem);
