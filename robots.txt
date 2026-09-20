@@ -1,4 +1,29 @@
+# Reskope — https://floops10.github.io/reskope/
+# Tout est public : il n'y a ni espace privé, ni page de test à cacher.
+# La page de confirmation d'envoi n'a rien à dire à un moteur, c'est la seule
+# exclusion. Deux groupes « * » dans un même fichier ne se cumulent pas : tout
+# ce qui vaut pour tous les robots tient donc dans celui-ci.
+
 User-agent: *
+Allow: /
+Disallow: /reskope/pme/merci
+Disallow: /reskope/tpe/merci
+
+# Les moteurs de réponse sont explicitement admis. Le site est pré-rendu :
+# ils lisent du vrai texte sans avoir à exécuter de JavaScript.
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
 Allow: /
 
 Sitemap: https://floops10.github.io/reskope/sitemap.xml
