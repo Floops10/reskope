@@ -225,7 +225,8 @@ textarea::selection {
   padding-top: clamp(1rem, 2.5vh, 2rem);
 }
 .section--tint {
-  background: var(--cream-light);
+  /* Une teinte, pas un aplat : le réseau doit rester visible dessous. */
+  background: color-mix(in srgb, var(--cream-light) 78%, transparent);
   border-block: 1px solid var(--hairline);
 }
 .section__head {
@@ -1068,8 +1069,11 @@ html.eco-theme .enav__tab.is-active {
    HERO 2 — refonte premium (clair raffiné, esprit Noomo)
    ============================================================ */
 .hero2__stage {
-  background: var(--cream);
-  isolation: isolate;
+  /* Pas de fond opaque : la trame de la marque est posée derrière TOUT le
+     site, et un aplat crème ici la masquait — le haut de l'accueil était la
+     seule zone sans réseau, ce qui donnait l'impression de deux fonds
+     différents. Le corps du document porte déjà le crème. */
+  background: none;
 }
 /* Réseau vivant (canvas) */
 .hero2__net {
@@ -6852,8 +6856,8 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   top: 0;
   height: 100svh;
   overflow: hidden;
-  background: var(--cream);
-  isolation: isolate;
+  /* Transparent : la trame de la marque est derrière TOUT le site, un aplat
+     crème ici en faisait la seule zone sans réseau. */
   display: flex;
   align-items: center;
 }
@@ -7754,6 +7758,10 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   justify-content: center;
   overflow: hidden;
   padding-inline: var(--gutter);
+  /* La profondeur d'où viennent les mots. Sans perspective, un
+     déplacement sur z ne se voit pas : le texte resterait plat. */
+  perspective: 1100px;
+  perspective-origin: 50% 45%;
 }
 
 .long-phrase__text {
@@ -7764,6 +7772,7 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   text-align: center;
   max-width: 28ch;
   color: var(--ink);
+  transform-style: preserve-3d;
 }
 
 /* ── 3. Tool Marquee ─────────────────────────────────────── */
@@ -13240,8 +13249,8 @@ html.eco-theme .menu2__panel .langtoggle__opt:not(.is-on):hover { color: var(--i
   display: flex;
   align-items: center;
   overflow: hidden;
-  background: var(--cream);
-  isolation: isolate;
+  /* Transparent : la trame de la marque est derrière TOUT le site, un aplat
+     crème ici en faisait la seule zone sans réseau. */
   padding-block: clamp(6rem, 12vh, 8rem) clamp(3rem, 8vh, 5rem);
 }
 .ahero__bg { position: absolute; inset: 0; z-index: 0; }

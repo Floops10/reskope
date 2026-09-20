@@ -19,9 +19,9 @@
 export const FRISE = {
   pme: {
     fr: {
-      sur: 'Ce qu’on fait',
-      titre: 'À chaque moment de votre entreprise, ce qui coince, et ce qu’on pose.',
-      lead: 'Quatre chantiers, dans l’ordre où ils arrivent. Vous entrez là où vous en êtes, et vous vous arrêtez quand ça vous suffit.',
+      sur: 'Nos quatre chantiers',
+      titre: 'On audite vos outils. On les relie. On construit ce qui manque. On forme vos équipes.',
+      lead: 'Dans cet ordre, parce que c’est l’ordre où les problèmes arrivent. Vous entrez là où vous en êtes.',
       etapes: [
         {
           figure: 'inventaire',
@@ -53,9 +53,9 @@ export const FRISE = {
       ouvrir: 'Voir cette étape en 3D',
     },
     en: {
-      sur: 'What we do',
-      titre: 'At each stage of your company, what jams, and what we put in place.',
-      lead: 'Four projects, in the order they come up. You start where you are, and stop when it is enough.',
+      sur: 'Our four projects',
+      titre: 'We audit your tools. We connect them. We build what is missing. We train your teams.',
+      lead: 'In that order, because that is the order the problems arrive in. You start where you are.',
       etapes: [
         { figure: 'inventaire', quand: 'It piled up', nom: 'We go through every tool', dit: 'Twenty subscriptions bought one at a time, three nobody opens and two doing the same job.' },
         { figure: 'liaison', quand: 'Nothing talks', nom: 'We connect what does not talk', dit: 'The quote that becomes an invoice on its own, the export that reaches the accountant. No more double entry.' },
@@ -70,9 +70,9 @@ export const FRISE = {
 
   tpe: {
     fr: {
-      sur: 'Ce qu’on fait',
-      titre: 'De l’idée à la boutique qui tourne, ce qu’on pose à chaque étape.',
-      lead: 'Quatre chantiers courts, dans l’ordre où ils arrivent. Vous entrez là où vous en êtes, et vous vous arrêtez quand ça vous suffit.',
+      sur: 'Nos quatre chantiers',
+      titre: 'On crée votre site. On prend vos rendez-vous. On pose votre identité. On prépare votre lancement.',
+      lead: 'Dans cet ordre, parce que c’est l’ordre où ça arrive. Vous entrez là où vous en êtes.',
       etapes: [
         {
           figure: 'rampe',
@@ -104,9 +104,9 @@ export const FRISE = {
       ouvrir: 'Voir cette étape en 3D',
     },
     en: {
-      sur: 'What we do',
-      titre: 'From the idea to the shop that runs, what we put in place at each step.',
-      lead: 'Four short projects, in the order they come up. You start where you are, and stop when it is enough.',
+      sur: 'Our four projects',
+      titre: 'We build your site. We take your bookings. We set your identity. We get your launch ready.',
+      lead: 'In that order, because that is the order it happens in. You start where you are.',
       etapes: [
         { figure: 'rampe', quand: 'Before opening', nom: 'We get your launch ready', dit: 'The model, the numbers, the file you will defend at the bank. We do not write it for you, we feed it.' },
         { figure: 'vitrine', quand: 'People must find you', nom: 'We put your business online', dit: 'A page saying in one sentence what you do and who for, four pages behind it, a shop if you sell.' },
