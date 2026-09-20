@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { gsap, ScrollTrigger, useGSAP } from '../lib/gsap';
+import { gsap, useGSAP } from '../lib/gsap';
 import SwapLabel from './SwapLabel';
 import { instant } from '../lib/scrub';
 
@@ -58,8 +58,6 @@ export default function Conditions({ c }) {
       duration: 0.95, ease: 'power3.out', stagger: 0.12,
       scrollTrigger: { trigger: q('.cond__fin')[0], start: 'top 88%' },
     });
-
-    return () => ScrollTrigger.getAll().forEach((s) => { if (racine.current?.contains(s.trigger)) s.kill(); });
   }, { scope: racine });
 
   return (
