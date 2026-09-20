@@ -260,7 +260,10 @@ export default function OffersShowcase({ offers, prices, billing, badge, labels,
               </div>
             );
           })}
-          <p className="ofs-flat__billing"><strong>{billing.title}</strong> {billing.text}</p>
+          <p className="ofs-flat__billing"><strong>{billing.title}</strong> {billing.lead}</p>
+          <ul className="ofs-flat__faits">
+            {(billing.faits || []).map((f) => <li key={f}>{f}</li>)}
+          </ul>
         </div>
         {ouverte !== null && (
           <Explorateur

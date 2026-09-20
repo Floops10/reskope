@@ -9276,7 +9276,8 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 .ofs-flat__price { font-weight: 600; color: var(--indigo-nuit); white-space: nowrap; }
 .ofs-flat__tag { color: rgba(240, 238, 232, 0.6); margin: 0.3rem 0 0.6rem; }
 .ofs-flat__card ul { margin: 0 0 0.8rem; padding-left: 1.1rem; color: rgba(240, 238, 232, 0.8); }
-.ofs-flat__billing { margin-top: 1.6rem; color: rgba(240, 238, 232, 0.7); }
+.ofs-flat__billing { margin-top: 1.6rem; color: rgba(240, 238, 232, 0.82); }
+.ofs-flat__faits { margin: 0.7rem 0 0; padding-left: 1.1rem; color: rgba(240, 238, 232, 0.82); line-height: 1.6; }
 
 /* Offres — scène d'intro (titre + NetWord lumineux sur nuit) */
 .ofs__panel--intro { width: min(52vw, 640px); }
