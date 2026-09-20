@@ -17,20 +17,27 @@ const CONTENT = {
       "Quatre façons de travailler ensemble : audit et cartographie, mise en ordre, outils sur mesure, formation et suivi. Le prix dépend de votre situation, il est écrit avant qu’on commence, et il ne bouge plus.",
     eyebrow: 'Offres',
     title: 'Quatre façons de travailler ensemble.',
-    lead: "Chaque mission est différente, donc chaque prix l'est aussi. On regarde votre situation, on définit ensemble le périmètre, et on vous donne le montant par écrit avant de commencer. Ensuite il ne bouge plus, et vous pouvez vous arrêter à la fin de chaque étape.",
+    lead: "Chaque mission est différente, donc chaque prix l'est aussi. On chiffre après avoir regardé, et le montant est écrit avant qu'on commence.",
     action: 'Pas sûr ? Trouvez votre offre',
     badge: 'Le plus choisi',
     pricingLabel: 'Ce qui influence le tarif',
+    comprendLabel: 'Ce que ça comprend',
     prices: {
-      audit: { amount: 'Sur devis', type: 'Forfait, annoncé avant de démarrer', note: 'Le prix dépend du nombre de personnes à rencontrer et du nombre d’outils à ouvrir. On le chiffre en jours après un premier échange, et il est écrit noir sur blanc avant qu’on commence.' },
-      'audit-plus': { amount: 'Sur devis', type: 'Audit déduit', note: 'L’audit est intégralement déduit si vous nous confiez la suite. La mise en œuvre est estimée en jours, validée avec vous, et vous pouvez vous arrêter à la fin de chaque étape.' },
-      developpement: { amount: 'Sur devis', type: 'Selon ce qu’il y a à construire', note: 'Une automatisation, un site ou un outil interne ne demandent pas le même travail, et ce que vous avez déjà change tout. On chiffre après le cadrage, jamais avant.' },
-      suivi: { amount: 'Sur devis', type: 'Abonnement mensuel', note: 'Une demi-journée, une journée ou deux par mois, selon ce que vous avez à faire tourner. Sans engagement de durée, résiliable à tout moment.' },
+      audit: { amount: 'Sur devis', type: 'Forfait, annoncé avant de démarrer', note: 'Chiffré en jours après un premier échange, et écrit avant qu’on commence.' },
+      'audit-plus': { amount: 'Sur devis', type: 'Audit déduit', note: 'L’audit est intégralement déduit si vous nous confiez la suite.' },
+      developpement: { amount: 'Sur devis', type: 'Selon ce qu’il y a à construire', note: 'Chiffré après le cadrage, jamais avant.' },
+      suivi: { amount: 'Sur devis', type: 'Abonnement mensuel', note: 'Sans engagement de durée, résiliable à tout moment.' },
     },
     billing: {
       kicker: 'Transparence',
       title: 'Comment on facture.',
-      text: 'On n’affiche pas de tarif sur cette page, et ce n’est pas pour cacher quelque chose : deux entreprises de la même taille n’ont jamais le même chantier. On regarde votre situation, on chiffre en jours, et on vous donne le prix par écrit avant de commencer. Ensuite il ne bouge plus. L’audit est intégralement déduit si vous nous confiez la suite, et vous pouvez vous arrêter à la fin de chaque étape.',
+      lead: 'On n’affiche pas de tarif, et ce n’est pas pour cacher quelque chose.',
+      faits: [
+        'Deux entreprises de la même taille n’ont jamais le même chantier.',
+        'On regarde votre situation, et on chiffre en jours.',
+        'Le montant est écrit avant de commencer. Ensuite il ne bouge plus.',
+        'L’audit est intégralement déduit si vous nous confiez la suite.',
+      ],
       note: 'Devis gratuit, valable 30 jours. Tarifs nets, TVA non applicable, article 293 B du CGI. L’audit est intégralement déduit du devis de mise en œuvre si vous nous la confiez.',
     },
     directH: "Vous savez déjà ce qu'il vous faut ?",
@@ -50,20 +57,27 @@ const CONTENT = {
       'Four ways to work together: audit and mapping, tidy-up, tools built for you, training and support. The price depends on your situation, it is written down before we start, and it does not move.',
     eyebrow: 'Offers',
     title: 'Four ways to work together.',
-    lead: 'Every engagement is different, so every price is too. We look at your situation, we define the scope together, and we give you the figure in writing before we start. After that it does not move, and you can stop at the end of any step.',
+    lead: 'Every engagement is different, so every price is too. We price after looking, and the figure is written down before we start.',
     action: 'Not sure? Find your offer',
     badge: 'Most chosen',
     pricingLabel: 'What influences the price',
+    comprendLabel: 'What it includes',
     prices: {
-      audit: { amount: 'On quote', type: 'Fixed price, agreed before we start', note: 'It depends on how many people we meet and how many tools we open. We price it in days after a first conversation, and it is written down before we begin.' },
-      'audit-plus': { amount: 'On quote', type: 'Audit deducted', note: 'The audit is fully deducted if you entrust us with the delivery. The work is estimated in days, agreed with you, and you can stop at the end of any step.' },
-      developpement: { amount: 'On quote', type: 'By what has to be built', note: 'An automation, a website or an internal tool are not the same job, and what you already have changes everything. We price after the framing, never before.' },
-      suivi: { amount: 'On quote', type: 'Monthly', note: 'Half a day, one day or two a month, depending on what you need kept running. No fixed term, cancel any time.' },
+      audit: { amount: 'On quote', type: 'Fixed price, agreed before we start', note: 'Priced in days after a first conversation, and written down before we begin.' },
+      'audit-plus': { amount: 'On quote', type: 'Audit deducted', note: 'The audit is fully deducted if you entrust us with the delivery.' },
+      developpement: { amount: 'On quote', type: 'By what has to be built', note: 'Priced after the framing, never before.' },
+      suivi: { amount: 'On quote', type: 'Monthly', note: 'No fixed term, cancel any time.' },
     },
     billing: {
       kicker: 'Transparency',
       title: 'How we bill.',
-      text: 'We do not display rates on this page, and it is not to hide anything: two companies of the same size never have the same job. We look at your situation, we price it in days, and we give you the figure in writing before we start. After that it does not move. The audit is fully deducted if you entrust us with the delivery, and you can stop at the end of any step.',
+      lead: 'We do not display rates, and it is not to hide anything.',
+      faits: [
+        'Two companies of the same size never have the same job.',
+        'We look at your situation, and we price it in days.',
+        'The figure is written down before we start. After that it does not move.',
+        'The audit is fully deducted if you entrust us with the delivery.',
+      ],
       note: 'Free quote, valid 30 days. Net prices, VAT not applicable, article 293 B of the French Tax Code. The audit is fully deducted from the delivery quote if you entrust it to us.',
     },
     directH: 'Already know what you need?',
@@ -133,7 +147,7 @@ export default function Offres() {
           billing={c.billing}
           badge={c.badge}
           intro={{ eyebrow: c.eyebrow, title: c.title, lead: c.lead, action: c.action }}
-          labels={{ pricing: c.pricingLabel }}
+          labels={{ pricing: c.pricingLabel, comprend: c.comprendLabel }}
           locale={lang}
         />
       </Suspense>

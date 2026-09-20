@@ -1,4 +1,4 @@
-import { useRef, useMemo, useState, useLayoutEffect, useEffect } from 'react';
+import { useRef, useMemo, useState, useLayoutEffect } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { ScrollTrigger, useGSAP } from '../lib/gsap';
@@ -190,9 +190,11 @@ export default function MethodeFlight({ jalons, film, labels }) {
   const stations = useMemo(() => ([
     { kicker: kickers[0], title: film.introTitle, body: film.introText, deliver: '', here: false, pos: [pathX(0.03), pathY(0.03) + 1.7, zAt(0.03)] },
     ...jalons.map((j, i) => ({
-      /* « Étape 01 » se lisait comme un gabarit ; le rang se dit en clair,
-         sans zéro devant, et c'est le nom de l'étape qui porte le sens. */
-      kicker: `${labels.milestone} ${Number(j.n)} · ${kickers[i + 1]}`,
+      /* Plus de rang du tout : la frise du bas montre les cinq étapes et
+         allume celle où on est. Répéter « Étape 2 » au-dessus du titre,
+         c'était le gabarit qu'on voit partout, pour une information déjà
+         donnée deux centimètres plus bas. */
+      kicker: kickers[i + 1],
       title: j.title, body: j.text, deliver: j.deliver, here: j.here,
       pos: [pathX(CT[i]), pathY(CT[i]) + 1.9, zAt(CT[i])],
     })),
@@ -234,7 +236,6 @@ export default function MethodeFlight({ jalons, film, labels }) {
           <div className="jalons-list">
             {jalons.map((j) => (
               <div className={`jalon-card${j.here ? ' is-here' : ''}`} key={j.n}>
-                <span className="jalon-card__num">{j.n}</span>
                 <span className="jalon-card__body">
                   <span className="jalon-card__label">{j.label}{j.here && <span className="jalon-card__here">{labels.here}</span>}</span>
                   <h3>{j.title}</h3>
@@ -289,7 +290,7 @@ export default function MethodeFlight({ jalons, film, labels }) {
           <span className="mfl__hud-dots">
             {jalons.map((j, i) => (
               <span className={`mfl__hud-dot${active - 1 === i ? ' is-active' : ''}${active - 1 >= i ? ' is-on' : ''}`} key={j.n}>
-                <b>{j.n}</b><em>{j.label}</em>
+                <em>{j.label}</em>
               </span>
             ))}
           </span>

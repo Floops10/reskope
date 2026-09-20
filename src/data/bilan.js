@@ -84,8 +84,11 @@ export const BILAN = {
     ],
     resume: {
       title: 'L’essentiel en quatre chiffres.',
+      /* La phrase d'entrée dit le verdict en six mots. Le détail suit, et
+         il se lit parce qu'on sait déjà où il va. */
+      verdictTitre: 'Une PME équipée, mais pas outillée.',
       verdict:
-        "Une PME équipée mais pas outillée : un ERP métier payé depuis 2016 et utilisé à 30 %, un module planning jamais déployé, six fichiers clients concurrents, deux systèmes de stockage en doublon d'un SharePoint vide, et 9 licences qui dormaient. Le problème n'était pas le manque d'outils : c'était l'empilement sans architecture. En quatre mois, l'écosystème a été rationalisé autour de l'ERP, relié par un hub d'automatisations, et rendu pilotable.",
+        "Un ERP métier payé depuis 2016 et utilisé à 30 %, un module planning jamais déployé, six fichiers clients concurrents, deux systèmes de stockage en doublon d'un SharePoint vide, et 9 licences qui dormaient. Le problème n'était pas le manque d'outils : c'était l'empilement sans architecture. En quatre mois, l'écosystème a été rationalisé autour de l'ERP, relié par un hub d'automatisations, et rendu pilotable.",
       stats: [
         { value: 43, to: 26, label: 'instances d’outils : de 43 à 26', mode: 'fromto' },
         { value: 5.4, decimals: 1, suffix: ' h', label: 'rendues par personne et par semaine' },
@@ -308,8 +311,9 @@ export const BILAN = {
     ],
     resume: {
       title: 'The essentials, in four numbers.',
+      verdictTitre: 'A well-equipped company, poorly tooled.',
       verdict:
-        'A well-equipped but poorly tooled SME: a trade ERP paid for since 2016 and used at 30%, a scheduling module never rolled out, six competing client files, two storage systems duplicating an empty SharePoint, and 9 dormant licences. The problem was not a lack of tools: it was accumulation without architecture. In four months the ecosystem was rationalised around the ERP, wired together by an automation hub, and made steerable.',
+        'A trade ERP paid for since 2016 and used at 30%, a scheduling module never rolled out, six competing client files, two storage systems duplicating an empty SharePoint, and 9 dormant licences. The problem was not a lack of tools: it was accumulation without architecture. In four months the ecosystem was rationalised around the ERP, wired together by an automation hub, and made steerable.',
       stats: [
         { value: 43, to: 26, label: 'tool instances: from 43 to 26', mode: 'fromto' },
         { value: 5.4, decimals: 1, suffix: ' h', label: 'given back per person per week' },

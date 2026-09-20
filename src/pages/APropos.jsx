@@ -59,10 +59,10 @@ const CONTENT = {
     principesEyebrow: 'Nos engagements',
     principesTitle: 'Ce sur quoi on ne transige pas.',
     principes: [
-      { num: '01', title: "On s'investit comme si c'était la nôtre", text: "Votre entreprise, on la traite comme la nôtre. On s'implique sur la durée, on cherche à la faire grandir, pas à boucler une mission au plus vite." },
-      { num: '02', title: 'La qualité passe avant tout', text: "On préfère un chantier vraiment bien fait à trois bâclés. On ne sacrifie jamais le résultat pour aller plus vite ou facturer davantage. Le travail doit tenir dans le temps." },
-      { num: '03', title: 'Tout au grand jour', text: "Démarche posée à l'avance, bilan montré avant que vous achetiez. Vous savez toujours où va votre budget, et pourquoi." },
-      { num: '04', title: 'Votre autonomie, pas votre dépendance', text: "Le but n'est pas de vous lier à nous. À la fin, vos équipes maîtrisent leurs outils et continuent sans nous. Un système qui tient debout tout seul." },
+      { title: "On s'investit comme si c'était la nôtre", text: "Votre entreprise, on la traite comme la nôtre. On s'implique sur la durée, on cherche à la faire grandir, pas à boucler une mission au plus vite." },
+      { title: 'La qualité passe avant tout', text: "On préfère un chantier vraiment bien fait à trois bâclés. On ne sacrifie jamais le résultat pour aller plus vite ou facturer davantage. Le travail doit tenir dans le temps." },
+      { title: 'Tout au grand jour', text: "Démarche posée à l'avance, bilan montré avant que vous achetiez. Vous savez toujours où va votre budget, et pourquoi." },
+      { title: 'Votre autonomie, pas votre dépendance', text: "Le but n'est pas de vous lier à nous. À la fin, vos équipes maîtrisent leurs outils et continuent sans nous. Un système qui tient debout tout seul." },
     ],
     sizeEyebrow: 'Selon nous',
     sizeTitle: 'Ce qui est efficace dépend de votre taille.',
@@ -113,10 +113,10 @@ const CONTENT = {
     principesEyebrow: 'Our commitments',
     principesTitle: 'What we never compromise on.',
     principes: [
-      { num: '01', title: 'We commit as if it were ours', text: 'Your company, we treat as our own. We get involved for the long run, we try to grow it, not just close a mission as fast as possible.' },
-      { num: '02', title: 'Quality comes first', text: "We'd rather do one job really well than three badly. We never sacrifice the result to go faster or bill more. The work has to last." },
-      { num: '03', title: 'Everything out in the open', text: 'Process set in advance, report shown before you buy. You always know where your budget goes, and why.' },
-      { num: '04', title: 'Your autonomy, not your dependence', text: "The goal isn't to tie you to us. In the end, your teams master their tools and carry on without us. A system that stands on its own." },
+      { title: 'We commit as if it were ours', text: 'Your company, we treat as our own. We get involved for the long run, we try to grow it, not just close a mission as fast as possible.' },
+      { title: 'Quality comes first', text: "We'd rather do one job really well than three badly. We never sacrifice the result to go faster or bill more. The work has to last." },
+      { title: 'Everything out in the open', text: 'Process set in advance, report shown before you buy. You always know where your budget goes, and why.' },
+      { title: 'Your autonomy, not your dependence', text: "The goal isn't to tie you to us. In the end, your teams master their tools and carry on without us. A system that stands on its own." },
     ],
     sizeEyebrow: 'In our view',
     sizeTitle: 'What works depends on your size.',
@@ -188,8 +188,17 @@ export default function APropos() {
       });
     }
 
-    /* LE RÉCIT : bio révélée LIGNE À LIGNE + guillemets en dérive */
+    /* LE RÉCIT : la phrase d'entrée arrive de la profondeur, puis le reste
+       se révèle ligne à ligne. Une seule chose à lire à la fois. */
     let splits = [];
+    const lead = root.querySelector('.astory__lead');
+    if (lead) {
+      gsap.from(lead, {
+        z: -700, y: 48, rotateX: -30, autoAlpha: 0,
+        duration: 1.05, ease: 'power3.out',
+        scrollTrigger: { trigger: lead, start: 'top 86%' },
+      });
+    }
     root.querySelectorAll('.astory__p').forEach((p) => {
       try {
         const sp = new SplitText(p, { type: 'lines', mask: 'lines' });
@@ -200,12 +209,6 @@ export default function APropos() {
         });
       } catch { /* fallback : reveal simple */ }
     });
-    const q1 = root.querySelector('.astory__quote--open');
-    const q2 = root.querySelector('.astory__quote--close');
-    if (q1 && q2) {
-      gsap.to(q1, { y: -70, ease: 'none', scrollTrigger: { trigger: root.querySelector('.astory'), start: 'top bottom', end: 'bottom top', scrub: true } });
-      gsap.to(q2, { y: 60, ease: 'none', scrollTrigger: { trigger: root.querySelector('.astory'), start: 'top bottom', end: 'bottom top', scrub: true } });
-    }
 
     /* LES ENGAGEMENTS : l'engagement monte derrière son masque, et la
        justification s'éclaire mot à mot pendant qu'on descend. On lit donc
@@ -296,17 +299,32 @@ export default function APropos() {
 
         {/* 2 — LE RÉCIT : la bio, ligne à ligne, entre les « » de la marque */}
         <section className="astory" aria-label={c.hello}>
-          <span className="astory__quote astory__quote--open" aria-hidden="true">«</span>
-          <span className="astory__quote astory__quote--close" aria-hidden="true">»</span>
           <div className="container astory__inner">
-            <Reveal>
-              <RevealItem>
-                <MorphTitle as="h2" text={c.hello} textClass="astory__hello" />
-              </RevealItem>
-            </Reveal>
-            <div className="astory__cols">
-              {c.bio.map((p, i) => (
-                <p key={i} className="astory__p">{p}</p>
+            {/* Avant : un encadré teinté, deux colonnes de gris minuscule et
+                deux guillemets décoratifs posés dans les angles, rognés par
+                le cadre. On ne savait pas par où entrer, donc on n'entrait
+                pas. Maintenant l'entrée est une phrase, en grand, ouverte
+                par un vrai guillemet — parce que c'est bien nous qui
+                parlons — et le reste se lit à côté, au rythme du
+                défilement. Pas de cadre : le réseau de la marque passe
+                dessous comme partout ailleurs. */}
+            <div className="astory__ask">
+              <Reveal>
+                <RevealItem>
+                  <MorphTitle as="h2" text={c.hello} textClass="astory__hello" />
+                </RevealItem>
+              </Reveal>
+              <p className="astory__lead">
+                <span className="astory__mark" aria-hidden="true">«&#8239;</span>
+                {c.bio[0]}
+              </p>
+            </div>
+            <div className="astory__body">
+              {c.bio.slice(1).map((p, i, arr) => (
+                <p key={i} className="astory__p">
+                  {p}
+                  {i === arr.length - 1 && <span className="astory__mark astory__mark--fin" aria-hidden="true">&#8239;»</span>}
+                </p>
               ))}
             </div>
           </div>

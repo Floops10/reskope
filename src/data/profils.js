@@ -259,16 +259,16 @@ export const OFFERS_TPE = {
 
 export const PRICES_TPE = {
   fr: {
-    site: { amount: 'Sur devis', type: 'Forfait', note: 'Une vitrine, une boutique et des liaisons avec vos outils ne demandent pas le même travail. On chiffre après vous avoir écouté, et le prix est écrit avant qu’on commence.' },
-    reservation: { amount: 'Sur devis', type: 'Forfait', note: 'Créneaux, confirmation et rappels. Le lien avec l’agenda que vous utilisez déjà est compris dans le chantier.' },
-    marque: { amount: 'Sur devis', type: 'Forfait', note: 'Trois à cinq jours étalés sur deux ou trois semaines, document de règles compris. Le nombre de jours dépend de ce que vous avez déjà.' },
-    lancement: { amount: 'Sur devis', type: 'Forfait', note: 'Deux à quatre jours selon l’état de votre dossier. La recherche de fournisseurs et de prestataires est chiffrée à part.' },
+    site: { amount: 'Sur devis', type: 'Forfait', note: 'Chiffré après vous avoir écouté, et écrit avant qu’on commence.' },
+    reservation: { amount: 'Sur devis', type: 'Forfait', note: 'Le lien avec l’agenda que vous utilisez déjà est compris.' },
+    marque: { amount: 'Sur devis', type: 'Forfait', note: 'Trois à cinq jours, document de règles compris.' },
+    lancement: { amount: 'Sur devis', type: 'Forfait', note: 'Deux à quatre jours, selon l’état de votre dossier.' },
   },
   en: {
-    site: { amount: 'On quote', type: 'Fixed price', note: 'A storefront, a shop and integrations with your tools are not the same job. We price after listening to you, and the figure is written down before we start.' },
-    reservation: { amount: 'On quote', type: 'Fixed price', note: 'Slots, confirmation and reminders. The link to the calendar you already use is part of the job.' },
-    marque: { amount: 'On quote', type: 'Fixed price', note: 'Three to five days over two or three weeks, rulebook included. The number of days depends on what you already have.' },
-    lancement: { amount: 'On quote', type: 'Fixed price', note: 'Two to four days depending on the state of your file. Sourcing suppliers and contractors is priced separately.' },
+    site: { amount: 'On quote', type: 'Fixed price', note: 'Priced after listening to you, and written down before we start.' },
+    reservation: { amount: 'On quote', type: 'Fixed price', note: 'The link to the calendar you already use is included.' },
+    marque: { amount: 'On quote', type: 'Fixed price', note: 'Three to five days, rulebook included.' },
+    lancement: { amount: 'On quote', type: 'Fixed price', note: 'Two to four days, depending on the state of your file.' },
   },
 };
 
@@ -279,11 +279,17 @@ export const OFFRES_TPE = {
       'Quatre chantiers courts : site et boutique, prise de rendez-vous, identité de marque, aide au lancement. Le prix dépend de votre projet, il est écrit avant qu’on commence, et il ne bouge plus.',
     title: 'Quatre chantiers, quatre façons de gagner du temps.',
     directP: 'Si votre besoin est clair et que vous voulez passer directement à la réalisation, écrivez-nous. On gagne du temps tous les deux.',
-    lead: 'Chaque chantier est différent, mais les tarifs sont clairs dès le départ. On définit ensemble le périmètre, vous savez ce que vous payez et pourquoi, et vous pouvez vous arrêter à la fin de chaque étape.',
+    lead: 'Chaque chantier est différent, donc chaque prix l’est aussi. On chiffre après vous avoir écouté, et le montant est écrit avant qu’on commence.',
     billing: {
       kicker: 'Transparence',
       title: 'Comment on facture.',
-      text: 'On n’affiche pas de tarif, et ce n’est pas pour cacher quelque chose : deux commerces de la même taille n’ont jamais le même chantier. On regarde ce que vous voulez faire, on chiffre en jours, et on vous donne le prix par écrit avant de commencer. Ensuite il ne bouge plus. On avance par petites étapes que vous validez une par une, et vous pouvez vous arrêter à la fin de chacune.',
+      lead: 'On n’affiche pas de tarif, et ce n’est pas pour cacher quelque chose.',
+      faits: [
+        'Deux commerces de la même taille n’ont jamais le même chantier.',
+        'On regarde ce que vous voulez faire, et on chiffre en jours.',
+        'Le montant est écrit avant de commencer. Ensuite il ne bouge plus.',
+        'On avance par petites étapes que vous validez une par une.',
+      ],
       note: 'Devis gratuit, valable 30 jours. Tarifs nets, TVA non applicable, article 293 B du CGI. Le code, les fichiers sources et les accès vous sont remis à la fin, quelle que soit la suite.',
     },
   },
@@ -293,11 +299,17 @@ export const OFFRES_TPE = {
       'Four short projects: website and shop, booking, brand identity, launch support. The price depends on your project, it is written down before we start, and it does not move.',
     title: 'Four projects, four ways to win time back.',
     directP: 'If your need is clear and you want to go straight to delivery, write to us. It saves everyone time.',
-    lead: 'Every project is different, but pricing is clear from the start. We define the scope together, you know what you pay and why, and you can stop at the end of any stage.',
+    lead: 'Every project is different, so every price is too. We price after listening to you, and the figure is written down before we start.',
     billing: {
       kicker: 'Transparency',
       title: 'How we bill.',
-      text: 'We do not display rates, and it is not to hide anything: two shops of the same size never have the same job. We look at what you want to do, we price it in days, and we give you the figure in writing before we start. After that it does not move. We move in small steps you approve one by one, and you can stop at the end of any of them.',
+      lead: 'We do not display rates, and it is not to hide anything.',
+      faits: [
+        'Two shops of the same size never have the same job.',
+        'We look at what you want to do, and we price it in days.',
+        'The figure is written down before we start. After that it does not move.',
+        'We move in small steps that you approve one by one.',
+      ],
       note: 'Free quote, valid 30 days. Net prices, VAT not applicable, article 293 B of the French tax code. Code, source files and access are handed over at the end, whatever happens next.',
     },
   },

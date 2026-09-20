@@ -346,7 +346,15 @@ export default function OffersShowcase({ offers, prices, billing, badge, labels,
                 <article className={`ofs__panel ofs__panel--billing${shown ? ' is-active' : ''}`} key="billing">
                   <p className="ofs__kicker">{billing.kicker}</p>
                   <h2 className="ofs__name">{splitWords(billing.title)}</h2>
-                  <p className="ofs__billing-text">{billing.text}</p>
+                  {/* Quatre cents signes d'un bloc : personne ne les lisait
+                      sur fond nuit. La même chose en quatre faits courts se
+                      lit debout, et chacun arrive à son tour. */}
+                  <p className="ofs__billing-lead">{billing.lead}</p>
+                  <ul className="ofs__faits">
+                    {(billing.faits || []).map((f) => (
+                      <li key={f}><span className="ofs__dot" aria-hidden="true" />{f}</li>
+                    ))}
+                  </ul>
                   <p className="ofs__billing-note">{billing.note}</p>
                 </article>
               );
@@ -367,6 +375,10 @@ export default function OffersShowcase({ offers, prices, billing, badge, labels,
                   <span className="ofs__price-note">{price.note}</span>
                 </div>
 
+                {/* La liste n'avait pas de titre : on tombait sur cinq puces
+                    sans savoir si c'était le programme, les conditions ou
+                    les options. Trois mots suffisent à le dire. */}
+                <p className="ofs__comprend">{labels.comprend}</p>
                 <ul className="ofs__features">
                   {o.features.map((f, k) => (
                     <li key={k}><span className="ofs__dot" aria-hidden="true" />{f}</li>

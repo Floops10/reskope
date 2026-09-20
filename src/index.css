@@ -11939,7 +11939,10 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 /* ============================================================
    LA MÉTHODE v6 — LE VOL WebGL (Three.js / R3F), fond crème
    ============================================================ */
-.mfl { position: relative; height: 720vh; }
+/* Six stations, une par écran de défilement, et le calage magnétique
+   fait le reste : au-delà, on ne fait plus avancer l'histoire, on fait
+   travailler le pouce. */
+.mfl { position: relative; height: 540vh; }
 .mfl__holder { position: sticky; top: 0; width: 100%; height: 100svh; overflow: hidden; background: var(--cream); }
 .mfl__canvas { position: absolute !important; inset: 0; }
 .mfl__hint {
@@ -11997,10 +12000,10 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 .mfl__hud-line { position: relative; height: 2px; background: color-mix(in srgb, var(--ink) 12%, transparent); border-radius: 2px; overflow: hidden; }
 .mfl__hud-line i { position: absolute; inset: 0; background: var(--indigo); transform: scaleX(0); transform-origin: left; }
 .mfl__hud-dots { display: flex; justify-content: space-between; }
-.mfl__hud-dot { display: flex; align-items: baseline; gap: 0.4rem; opacity: 0.4; transition: opacity 0.3s ease; }
+.mfl__hud-dot { display: flex; align-items: baseline; gap: 0.4rem; opacity: 0.52; transition: opacity 0.3s ease; }
 .mfl__hud-dot b { font-size: 0.62rem; font-weight: 600; color: var(--muted); font-variant-numeric: tabular-nums; }
-.mfl__hud-dot em { font-style: normal; font-size: 0.72rem; color: var(--ink); }
-.mfl__hud-dot.is-on { opacity: 0.7; }
+.mfl__hud-dot em { font-style: normal; font-size: 0.84rem; color: var(--ink); }
+.mfl__hud-dot.is-on { opacity: 0.8; }
 .mfl__hud-dot.is-active { opacity: 1; }
 .mfl__hud-dot.is-active em { color: var(--indigo); font-weight: 600; }
 /* Éclosion finale */
@@ -12015,6 +12018,7 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   .mfl__title { font-size: clamp(2rem, 8.5vw, 3.2rem); }
   .mfl__body { max-width: none; }
   .mfl__hud-dot em { display: none; }
+  .mfl__hud-dot.is-active em { display: inline; }
   .mfl__scrim {
     background: linear-gradient(to top, var(--cream) 0%, color-mix(in srgb, var(--cream) 82%, transparent) 32%, transparent 62%);
     -webkit-mask-image: linear-gradient(to top, #000 0%, #000 40%, transparent 68%);
@@ -12246,18 +12250,23 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 }
 .ofs__badge { letter-spacing: 0.02em; font-size: 0.86rem; padding: 0.22rem 0.6rem; border-radius: 999px; background: var(--cream); color: var(--indigo-deep); font-weight: 600; }
 .ofs__name { font-size: clamp(2rem, 3.6vw, 3.4rem); font-weight: 600; line-height: 1.04; letter-spacing: -0.035em; color: var(--cream); margin: 0 0 0.5rem; }
-.ofs__tagline { font-size: 1.08rem; color: rgba(240, 238, 232, 0.85); margin: 0 0 1.1rem; }
+/* La phrase qui explique l'offre était plus petite que les puces qui la
+   détaillent : on lisait le détail avant de savoir de quoi il s'agit. */
+.ofs__tagline { font-size: clamp(1.18rem, 1.62vw, 1.5rem); line-height: 1.38; letter-spacing: -0.012em; color: var(--cream); max-width: 26ch; margin: 0 0 1.5rem; }
 .ofs__price {
   display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.5rem 0.9rem;
   padding: 0.4rem 0 0; margin: 0 0 1.4rem;
 }
-.ofs__price-amount { font-size: clamp(2.6rem, 4.6vw, 4.1rem); font-weight: 600; letter-spacing: -0.035em; line-height: 1; color: var(--cream); }
+/* « Sur devis » n'est pas un chiffre : c'est une méthode. Il se dit, il
+   ne se hurle pas. Ce qui compte à côté, c'est ce qui fait bouger le prix. */
+.ofs__price-amount { font-size: clamp(1.5rem, 2vw, 1.85rem); font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; color: var(--cream); }
 /* Encore de l'indigo clair sur la nuit : on l'éclaircit vers le crème
    pour ce libellé, comme pour les autres petits textes sur fond sombre. */
 .ofs__price-type { font-size: 0.86rem; color: color-mix(in srgb, var(--indigo-bright) 45%, var(--cream)); border: 1px solid color-mix(in srgb, var(--cream) 30%, transparent); padding: 0.22rem 0.55rem; border-radius: 999px; }
-.ofs__price-note { flex-basis: 100%; font-size: 0.88rem; color: rgba(240, 238, 232, 0.75); }
+.ofs__price-note { flex-basis: 100%; font-size: 0.94rem; line-height: 1.45; color: rgba(240, 238, 232, 0.8); max-width: 42ch; }
+.ofs__comprend { font-size: 0.92rem; font-weight: 500; color: color-mix(in srgb, var(--indigo-bright) 45%, var(--cream)); margin: 0 0 0.7rem; }
 .ofs__features { list-style: none; margin: 0 0 1.2rem; padding: 0; display: flex; flex-direction: column; gap: 0.6rem; }
-.ofs__features li { display: flex; gap: 0.6rem; font-size: 0.98rem; line-height: 1.45; color: rgba(240, 238, 232, 0.92); }
+.ofs__features li { display: flex; gap: 0.7rem; font-size: 1.02rem; line-height: 1.5; color: rgba(240, 238, 232, 0.94); }
 .ofs__dot { position: relative; flex: none; width: 7px; height: 7px; margin-top: 0.36rem; border-radius: 50%; background: var(--indigo-bright); }
 .ofs__dot::before { content: ''; position: absolute; inset: -3px; border-radius: 50%; border: 1px solid color-mix(in srgb, var(--indigo-bright) 40%, transparent); }
 .ofs__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.8rem 1.2rem; }
@@ -12323,7 +12332,9 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 .ofs__pricing { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.4rem; }
 .ofs__pricing li { position: relative; padding-left: 0.95rem; font-size: 0.82rem; color: rgba(240, 238, 232, 0.62); }
 .ofs__pricing li::before { content: '·'; position: absolute; left: 0.15rem; color: var(--indigo-bright); }
-.ofs__billing-text { font-size: clamp(1rem, 1.3vw, 1.18rem); line-height: 1.6; color: rgba(240, 238, 232, 0.82); margin: 0 0 1rem; max-width: 40ch; }
+.ofs__billing-lead { font-size: clamp(1.18rem, 1.62vw, 1.5rem); line-height: 1.38; letter-spacing: -0.012em; color: var(--cream); margin: 0 0 1.4rem; max-width: 28ch; }
+.ofs__faits { list-style: none; margin: 0 0 1.3rem; padding: 0; display: flex; flex-direction: column; gap: 0.65rem; max-width: 44ch; }
+.ofs__faits li { display: flex; gap: 0.7rem; font-size: 1.02rem; line-height: 1.5; color: rgba(240, 238, 232, 0.94); }
 .ofs__billing-note { font-size: 0.85rem; color: rgba(240, 238, 232, 0.55); margin: 0; }
 .ofs__w { display: inline-block; margin-right: 0.26em; opacity: 0; transform: translateY(14px); transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1); transition-delay: 0s; }
 .ofs__panel.is-active .ofs__w { opacity: 1; transform: none; transition-delay: calc(0.3s + var(--i) * 0.03s); }
@@ -12332,19 +12343,22 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 .ofs__rail-line { position: relative; height: 2px; background: rgba(240, 238, 232, 0.14); border-radius: 2px; overflow: hidden; }
 .ofs__rail-line i { position: absolute; inset: 0; background: var(--indigo-bright); transform: scaleX(0); transform-origin: left; }
 .ofs__rail-dots { display: flex; justify-content: space-between; gap: 0.5rem; }
-.ofs__rail-dot { display: flex; align-items: baseline; gap: 0.4rem; opacity: 0.4; transition: opacity 0.3s ease; min-width: 0; }
+.ofs__rail-dot { display: flex; align-items: baseline; gap: 0.4rem; opacity: 0.52; transition: opacity 0.3s ease; min-width: 0; }
 .ofs__rail-dot b { font-size: 0.62rem; font-weight: 600; color: rgba(240, 238, 232, 0.55); font-variant-numeric: tabular-nums; }
-.ofs__rail-dot em { font-style: normal; font-size: 0.72rem; color: var(--cream); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.ofs__rail-dot.is-on { opacity: 0.7; }
+.ofs__rail-dot em { font-style: normal; font-size: 0.84rem; color: var(--cream); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ofs__rail-dot.is-on { opacity: 0.8; }
 .ofs__rail-dot.is-active { opacity: 1; }
 .ofs__rail-dot.is-active em { color: var(--indigo-nuit); font-weight: 600; }
 /* mobile : texte en bas, voile en bas */
 @media (max-width: 860px) {
   .ofs__panel { left: var(--gutter); right: var(--gutter); width: auto; max-height: none; top: auto; bottom: 13vh; transform: none; }
   .ofs__name { font-size: clamp(1.7rem, 7vw, 2.4rem); }
-  .ofs__price-amount { font-size: clamp(2.2rem, 10vw, 3.1rem); }
-  .ofs__billing-text { max-width: none; }
+  .ofs__price-amount { font-size: 1.32rem; }
+  .ofs__billing-lead { max-width: none; font-size: 1.14rem; }
+  .ofs__faits { max-width: none; }
+  .ofs__tagline { max-width: none; font-size: 1.14rem; }
   .ofs__rail-dot em { display: none; }
+  .ofs__rail-dot.is-active em { display: inline; }
   .ofs__scrim {
     background: linear-gradient(to top, rgba(11, 9, 32, 0.94) 0%, rgba(11, 9, 32, 0.55) 34%, transparent 64%);
     -webkit-mask-image: linear-gradient(to top, #000 0%, #000 44%, transparent 72%);
@@ -12423,7 +12437,7 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   }
   .ofs__canvas { opacity: 0.9; }
   .ofs__scrim { display: none; }        /* la carte de verre le remplace */
-  .ofs__tagline { font-size: 1.02rem; }
+  .ofs__tagline { font-size: 1.1rem; }
   .ofs__features { gap: 0.5rem; }
   .ofs__features li { font-size: 0.95rem; }
   .ofs__price { padding: 0.7rem 0 0.8rem; margin-bottom: 0.9rem; }
@@ -13395,51 +13409,64 @@ html.eco-theme .menu2__panel .langtoggle__opt:not(.is-on):hover { color: var(--i
 /* Le récit */
 .astory {
   position: relative;
-  overflow: hidden;
-  background: color-mix(in srgb, var(--cream-light) 80%, transparent);
+  /* Plus de fond teinté : c'était un encadré, et le réseau de la marque
+     s'arrêtait net à ses bords. */
+  padding-block: clamp(5rem, 13vh, 8.5rem);
 }
-/* Les guillemets de la marque encadrent le récit. Ils étaient posés en
-   débord négatif dans une section qui rogne ce qui dépasse : on n'en voyait
-   qu'un morceau, coupé net. Ils tiennent maintenant entiers dans le cadre,
-   un peu plus petits, et restent un décor — pas une découpe. */
-.astory__quote {
-  position: absolute;
-  font-size: clamp(5rem, 13vw, 11rem);
-  font-weight: 700;
-  line-height: 0.8;
-  color: color-mix(in srgb, var(--indigo) 9%, transparent);
-  pointer-events: none;
+.astory__inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(2.2rem, 5vh, 3.2rem);
+  perspective: 1200px;
+  perspective-origin: 50% 40%;
 }
-.astory__quote--open { left: clamp(0.5rem, 2vw, 2rem); top: clamp(0.6rem, 2vh, 1.6rem); }
-.astory__quote--close { right: clamp(0.5rem, 2vw, 2rem); bottom: clamp(0.2rem, 1vh, 1rem); }
-.astory { padding-block: clamp(5.5rem, 13vh, 9rem); }
-.astory__inner { position: relative; z-index: 1; }
+@media (min-width: 881px) {
+  .astory__inner {
+    grid-template-columns: minmax(0, 1.04fr) minmax(0, 0.96fr);
+    gap: clamp(3rem, 7vw, 6.5rem);
+    align-items: start;
+  }
+  .astory__ask { position: sticky; top: 22vh; }
+}
 .astory__hello {
-  font-size: clamp(2rem, 4.4vw, 3.8rem);
+  font-size: clamp(2rem, 4.2vw, 3.6rem);
   font-weight: 600;
   letter-spacing: -0.035em;
-  line-height: 1.05;
-  margin: 0 0 clamp(1.6rem, 4vh, 2.6rem);
+  line-height: 1.04;
+  margin: 0 0 clamp(1.4rem, 3.4vh, 2.2rem);
+  max-width: 15ch;
   color: var(--ink);
 }
-.astory__cols {
-  columns: 2;
-  column-gap: clamp(2rem, 5vw, 4rem);
-  max-width: 62rem;
+/* La phrase d'entrée : c'est elle qui donne envie de lire la suite, donc
+   c'est elle qu'on voit en premier. Le guillemet l'ouvre pour de vrai. */
+.astory__lead {
+  margin: 0;
+  max-width: 30ch;
+  font-size: clamp(1.28rem, 1.95vw, 1.8rem);
+  line-height: 1.36;
+  letter-spacing: -0.018em;
+  color: var(--ink);
+  text-wrap: balance;
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+}
+.astory__mark {
+  color: var(--indigo);
+  font-weight: 600;
+}
+.astory__mark--fin { margin-left: 0.06em; }
+.astory__body {
+  display: grid;
+  gap: clamp(1.1rem, 2.6vh, 1.6rem);
 }
 .astory__p {
-  break-inside: avoid;
-  margin: 0 0 1.2rem;
-  line-height: 1.7;
+  margin: 0;
+  max-width: 44ch;
+  line-height: 1.68;
   color: var(--muted);
-  font-size: clamp(1rem, 1.25vw, 1.15rem);
-}
-.astory__p:first-child {
-  font-size: clamp(1.1rem, 1.5vw, 1.3rem);
-  color: var(--ink);
-}
-@media (max-width: 880px) {
-  .astory__cols { columns: 1; }
+  font-size: clamp(1.02rem, 1.22vw, 1.14rem);
 }
 
 /* ============================================================
