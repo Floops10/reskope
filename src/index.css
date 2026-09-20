@@ -5883,7 +5883,6 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   transform: translateX(-50%);
   perspective: 1100px;
   perspective-origin: 50% 40%;
-  pointer-events: none;
 }
 .heroform__presente-t {
   margin: 0;
@@ -8912,7 +8911,12 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 .mfl__hint {
   position: absolute; z-index: 5; left: 50%; bottom: clamp(4rem, 9vh, 6rem); transform: translateX(-50%);
   font-size: 0.86rem; color: var(--muted);
-  opacity: 0.7; white-space: nowrap; pointer-events: none;
+  opacity: 0.9; white-space: nowrap; pointer-events: none;
+}
+/* « Survolez un point » sur un écran tactile, c'est une consigne qu'on ne
+   peut pas suivre. */
+@media (hover: none), (pointer: coarse) {
+  .mfl__hint { display: none; }
 }
 .mfl-loading { height: 100svh; background: var(--cream); }
 /* Texte : overlay fixe, hors 3D, toujours lisible + fond flouté */
@@ -8964,10 +8968,10 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 .mfl__hud-line { position: relative; height: 2px; background: color-mix(in srgb, var(--ink) 12%, transparent); border-radius: 2px; overflow: hidden; }
 .mfl__hud-line i { position: absolute; inset: 0; background: var(--indigo); transform: scaleX(0); transform-origin: left; }
 .mfl__hud-dots { display: flex; justify-content: space-between; }
-.mfl__hud-dot { display: flex; align-items: baseline; gap: 0.4rem; opacity: 0.52; transition: opacity 0.3s ease; }
+.mfl__hud-dot { display: flex; align-items: baseline; gap: 0.4rem; opacity: 0.64; transition: opacity 0.3s ease; }
 .mfl__hud-dot b { font-size: 0.62rem; font-weight: 600; color: var(--muted); font-variant-numeric: tabular-nums; }
 .mfl__hud-dot em { font-style: normal; font-size: 0.84rem; color: var(--ink); }
-.mfl__hud-dot.is-on { opacity: 0.8; }
+.mfl__hud-dot.is-on { opacity: 0.84; }
 .mfl__hud-dot.is-active { opacity: 1; }
 .mfl__hud-dot.is-active em { color: var(--indigo); font-weight: 600; }
 /* Éclosion finale */

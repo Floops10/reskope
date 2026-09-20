@@ -183,22 +183,20 @@ export default function MethodeFlight({ jalons, film, labels }) {
   const reduced = prefersReduced();
 
   const net = useMemo(buildNet, []);
-  const kickers = labels.milestone === 'Jalon'
-    ? ['Avant', 'Cadrage', 'Audit', 'Bilan', 'Mise en œuvre', 'Autonomie']
-    : ['Before', 'Framing', 'Audit', 'Report', 'Delivery', 'Autonomy'];
-
+  /* Les noms d'étapes venaient d'un tableau bilingue choisi sur le libellé
+     « Jalon ». Le jour où il est devenu « Étape », le français est passé
+     aux titres anglais sans que rien ne casse. Ils viennent maintenant des
+     jalons eux-mêmes : une seule source, donc jamais deux langues.
+     Et plus de rang du tout : la frise du bas montre les cinq étapes et
+     allume celle où on est. */
   const stations = useMemo(() => ([
-    { kicker: kickers[0], title: film.introTitle, body: film.introText, deliver: '', here: false, pos: [pathX(0.03), pathY(0.03) + 1.7, zAt(0.03)] },
+    { kicker: film.introKicker, title: film.introTitle, body: film.introText, deliver: '', here: false, pos: [pathX(0.03), pathY(0.03) + 1.7, zAt(0.03)] },
     ...jalons.map((j, i) => ({
-      /* Plus de rang du tout : la frise du bas montre les cinq étapes et
-         allume celle où on est. Répéter « Étape 2 » au-dessus du titre,
-         c'était le gabarit qu'on voit partout, pour une information déjà
-         donnée deux centimètres plus bas. */
-      kicker: kickers[i + 1],
+      kicker: j.label,
       title: j.title, body: j.text, deliver: j.deliver, here: j.here,
       pos: [pathX(CT[i]), pathY(CT[i]) + 1.9, zAt(CT[i])],
     })),
-  ]), [jalons, film, labels]);
+  ]), [jalons, film]);
 
   useGSAP(() => {
     if (reduced) return;
