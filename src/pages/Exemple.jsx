@@ -397,6 +397,10 @@ export default function Exemple() {
                 {tab === 'resume' && (
                   <>
                     <MorphTitle as="h2" text={b.resume.title} textClass="bilan__h2" />
+                    {/* Quatre cent cinquante signes d'affilée, personne ne
+                        les commençait. Le verdict passe devant, en grand ;
+                        le détail le suit et se lit d'autant mieux. */}
+                    {b.resume.verdictTitre && <p className="bilan__verdict">{b.resume.verdictTitre}</p>}
                     <p className="bilan__intro">{b.resume.verdict}</p>
                     <div className="bilan-stats">
                       {b.resume.stats.map((s) => <CountStat s={s} key={s.label} locale={lang} />)}

@@ -95,11 +95,11 @@ export default function HomeCinema({ c }) {
       scrollTrigger: {
         trigger: rootRef.current,
         start: 'top top',
-        /* Combien de défilement pour une scène. Sur téléphone, huit scènes
-           à 0,85 écran chacune font près de sept écrans à pousser du pouce,
-           et la page entière en fait treize. On accélère le rythme à 0,55 :
-           la même histoire, racontée plus serré, là où le geste coûte. */
-        end: () => '+=' + SCENES * window.innerHeight * (window.innerWidth <= 880 ? 0.55 : 0.85),
+        /* Combien de défilement pour une scène. Il n'en reste que cinq, et
+           ce sont des titres : 0,85 écran chacun, c'était le temps de lire
+           trois fois la même ligne. On resserre, et la home rend un écran
+           et quart de plus. */
+        end: () => '+=' + SCENES * window.innerHeight * (window.innerWidth <= 880 ? 0.45 : 0.62),
         pin: stageRef.current,
         scrub: 1,
         invalidateOnRefresh: true,
