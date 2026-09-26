@@ -1,33 +1,25 @@
 # Reskope
 
-> Conseil et ingénierie numérique pour les TPE et PME des Hauts-de-France.
-> On audite les outils que vous payez, on relie ce qui ne se parle pas, et on
-> construit ce qui manque. Basés à Valenciennes et à Lille.
+> On vous aide à décider, et on construit la suite. Reskope accompagne les
+> dirigeants de TPE et de PME des Hauts-de-France au moment où ils
+> s'apprêtent à engager de l'argent : on interroge leurs clients, on relit
+> leur business plan avec les yeux d'un financeur, et on construit seulement
+> ce qui a été validé. Thomy et Florian, à Valenciennes et à Lille.
+
+## Pour commencer
+- [Tester votre idée avant d’investir](https://floops10.github.io/reskope/tester-une-idee/) : Étude terrain pour créateurs et dirigeants : dix à douze entretiens avec votre cible, un test réel, et une synthèse prête pour votre business plan.
+- [Comprendre pourquoi vos clients achètent](https://floops10.github.io/reskope/comprendre-vos-clients/) : Vous signez moins de devis ? On interroge vos clients gagnés, perdus et partis pour trouver ce qui décide d’une vente, puis on teste la correction.
+- [Relecture de business plan avant la banque](https://floops10.github.io/reskope/relire-votre-dossier/) : On relit votre business plan avec les yeux du financeur : retours classés par priorité, questions à préparer, preuves à trouver. En une à deux semaines.
 
 ## Le site
-- [Audit des outils numériques de votre PME](https://floops10.github.io/reskope/pme/) : Audit et cartographie des outils numériques de votre PME, poste par poste, à Valenciennes et Lille. On relie ce qui ne se parle pas.
-- [Le coût invisible du désordre numérique](https://floops10.github.io/reskope/pme/pourquoi/) : Près de la moitié de la semaine de travail part dans les e-mails et la recherche d’information. Les chiffres sourcés du désordre numérique en entreprise.
-- [Notre méthode, du cadrage à l’autonomie](https://floops10.github.io/reskope/pme/methode/) : Cadrage, audit sur le terrain, bilan chiffré, mise en œuvre, autonomie. Le déroulé complet d’un chantier Reskope, étape par étape et sans engagement caché.
-- [Nos offres : audit, mise en ordre, outils](https://floops10.github.io/reskope/pme/offres/) : Quatre façons de travailler ensemble : audit et cartographie, mise en ordre, outils sur mesure, formation et suivi. Le prix est écrit avant qu’on commence.
-- [Cartographier votre système d’information](https://floops10.github.io/reskope/pme/atelier/) : Posez vos outils sur un plan en 3D, reliez ceux qui se parlent, voyez ce que vous payez sans l’utiliser. Gratuit, sans compte, et le schéma se télécharge.
-- [Exemple de bilan d’audit numérique](https://floops10.github.io/reskope/pme/exemple/) : À quoi ressemble un bilan Reskope : outils recensés, doublons, coûts cachés, recommandations chiffrées. Un cas d’école complet, librement consultable.
-- [Numérique responsable : simplifier, c’est réduire](https://floops10.github.io/reskope/pme/numerique-responsable/) : Moins d’outils superflus, c’est moins de serveurs, moins de stockage et moins de matériel à remplacer. Notre position sur la sobriété numérique en entreprise.
-- [Qui sommes-nous : Thomy et Florian](https://floops10.github.io/reskope/pme/a-propos/) : Thomy tient la stratégie et l’identité, Florian la technique. Deux métiers qui se nourrissent l’un l’autre, pour que le dossier avance d’un seul tenant.
-- [Nous contacter](https://floops10.github.io/reskope/pme/contact/) : Parlons de vos outils. Un premier échange sans engagement pour comprendre votre situation, à Valenciennes, à Lille ou partout dans les Hauts-de-France.
-- [Mentions légales](https://floops10.github.io/reskope/pme/mentions-legales/) : Mentions légales du site Reskope : éditeur du site, directeur de publication, hébergement, propriété intellectuelle et limites de responsabilité.
-- [Politique de confidentialité](https://floops10.github.io/reskope/pme/confidentialite/) : Quelles données le site Reskope collecte, pourquoi, combien de temps elles sont conservées et comment exercer vos droits.
-- [Conditions générales d’utilisation](https://floops10.github.io/reskope/pme/cgu/) : Conditions générales d’utilisation du site Reskope : accès, usage autorisé, propriété du contenu et droit applicable.
-- [Conditions générales de vente](https://floops10.github.io/reskope/pme/cgv/) : Conditions générales de vente Reskope : devis, facturation, délais, propriété des livrables et médiation de la consommation.
-
-## Version TPE, artisans et commerçants
-- [Site internet et outils pour TPE et artisans](https://floops10.github.io/reskope/tpe/) : Site vitrine, boutique en ligne, prise de rendez-vous et identité de marque pour les TPE, artisans et commerçants de Valenciennes et de Lille.
-- [Ce que le désordre numérique vous coûte](https://floops10.github.io/reskope/tpe/pourquoi/) : Rappeler les clients, retrouver un devis, ressaisir la même information : le temps que ça prend chez une petite entreprise, et ce qu’il représente.
-- [Comment on travaille, étape par étape](https://floops10.github.io/reskope/tpe/methode/) : Cadrage, devis écrit, construction par petites étapes, mise en ligne, remise des clés. Rien n’est engagé avant d’être chiffré, et vous gardez tout.
-- [Site, boutique, rendez-vous en ligne, marque](https://floops10.github.io/reskope/tpe/offres/) : Quatre chantiers courts pour TPE : site et boutique, prise de rendez-vous en ligne, identité de marque, aide au lancement. Prix écrit avant de commencer.
-- [Dessinez les outils de votre entreprise](https://floops10.github.io/reskope/tpe/atelier/) : Posez vos outils sur un plan en 3D, reliez ceux qui se parlent, voyez ce que vous payez sans l’utiliser. Gratuit, sans compte, et le schéma se télécharge.
-- [Numérique responsable : simplifier, c’est réduire](https://floops10.github.io/reskope/tpe/numerique-responsable/) : Moins d’outils superflus, c’est moins de serveurs, moins de stockage et moins de matériel à remplacer. Notre position sur la sobriété numérique.
-- [Qui sommes-nous : Thomy et Florian](https://floops10.github.io/reskope/tpe/a-propos/) : Thomy tient la stratégie et l’identité, Florian la technique. Deux métiers qui se nourrissent l’un l’autre, pour que votre projet avance d’un seul tenant.
-- [Nous contacter](https://floops10.github.io/reskope/tpe/contact/) : Parlons de votre projet. Un premier échange sans engagement, à Valenciennes, à Lille ou partout dans les Hauts-de-France, sans frais de déplacement.
+- [Tester votre projet auprès de vos clients](https://floops10.github.io/reskope/) : Avant d’engager de l’argent, on interroge vos clients, on relit votre business plan et on construit ce qui a été validé. À Valenciennes et à Lille.
+- [Nos offres, de la preuve à la réalisation](https://floops10.github.io/reskope/nos-offres/) : Trois missions pour commencer, puis le business plan, la marque, les outils et le passage de relais. Un prix fixe, écrit avant de commencer.
+- [Comment se déroule une mission](https://floops10.github.io/reskope/comment-ca-se-passe/) : Du premier échange gratuit à la décision : les étapes d’une mission, le temps qu’on vous demande chaque semaine et ce qu’on fait des données de vos clients.
+- [Exemple de mission : une entreprise de rénovation](https://floops10.github.io/reskope/exemple/) : Un cas d’école complet : les hypothèses de départ, onze entretiens, ce qui revient, comment lire les chiffres, le test mené et la synthèse remise.
+- [Exemple de bilan des outils d’une PME](https://floops10.github.io/reskope/exemple-bilan/) : À quoi ressemble un bilan des outils d’une équipe : recensement, doublons, coûts cachés, recommandations chiffrées. Un cas d’école complet.
+- [Cartographier les outils de votre entreprise](https://floops10.github.io/reskope/atelier/) : Posez vos outils sur un plan en 3D, reliez ceux qui se parlent, voyez ce que vous payez sans l’utiliser. Gratuit, sans compte, et le schéma se télécharge.
+- [Qui on est : Thomy et Florian](https://floops10.github.io/reskope/qui-on-est/) : Thomy mène le business plan et le financement, Florian la discovery et la technique. Deux personnes, à Valenciennes et à Lille, sur chaque dossier.
+- [Parlons de votre situation](https://floops10.github.io/reskope/contact/) : Un premier échange gratuit de trente minutes pour comprendre votre situation. Si on ne peut pas vous aider, on vous le dit. Sinon, un prix écrit sous 48 h.
 
 ## Contact
-Formulaire : https://floops10.github.io/reskope/pme/contact/
+Formulaire : https://floops10.github.io/reskope/contact/
