@@ -1344,7 +1344,7 @@ a.espt__tuile:focus-visible {
 @media (prefers-reduced-motion: reduce) {
   /* Sans défilement piloté, la présentation ne remplace plus les boutons :
      elle se pose dessous, dans le flux, au lieu de les recouvrir. */
-  .heroform__stage { flex-direction: column; align-items: stretch; padding-bottom: 3rem; }
+  .heroform__stage { flex-direction: column; align-items: stretch; padding-top: clamp(6rem, 14vh, 8.5rem); padding-bottom: 3rem; }
   .heroform__presente {
     position: static;
     width: min(52ch, 100%);
@@ -2109,3 +2109,104 @@ a.esp__seg:hover { background: color-mix(in srgb, var(--indigo) 8%, transparent)
    contraste : le texte secondaire y prend le gris plus soutenu. */
 .am--fond:not(.am--sombre), .liv { --muted: var(--muted-fort); }
 .footer2__espaces { margin-bottom: clamp(1.6rem, 4vh, 2.6rem); }
+
+/* Les tuiles d'espace, à égale distance de la phrase au-dessus et des
+   liens en dessous. */
+.footer2 { --pied-ecart: clamp(2.4rem, 6.5vh, 4.2rem); }
+.footer2__top { margin-bottom: 0; }
+.footer2__espaces { margin-top: var(--pied-ecart); margin-bottom: var(--pied-ecart); }
+@media (max-width: 720px) { .footer2__top { margin-bottom: 0; padding-bottom: 0; } }
+
+/* ── Le portrait du client idéal, sur téléphone ──────────── */
+/* En grand sur un petit écran, le portrait prenait tout l'écran et laissait
+   voir des détails de l'image ; il devient une vignette à côté du nom. */
+@media (max-width: 979px) {
+  .pl-portrait {
+    display: grid;
+    grid-template-columns: clamp(6.5rem, 30vw, 9rem) minmax(0, 1fr);
+    gap: 1rem;
+    align-items: center;
+  }
+  .pl-portrait__cadre { border-radius: 14px; }
+  .pl-portrait__cadre::after { height: 4px; }
+  .pl-nom { margin-top: 0; font-size: 1.25rem; }
+  .pl-qui { font-size: 0.92rem; }
+}
+
+/* ════════════════════════════════════════════════════════════
+   LA MISE EN PAGE CENTRÉE — une colonne, au milieu.
+
+   Retour du 26/09/2026 : rien de calé trop à gauche ni trop à droite ; les
+   choses au centre, ou dans de bonnes cases, et un fond qui aide à lire.
+   La phrase d'amorce ouvre toujours la section, centrée ; le détail suit
+   dessous dans une colonne de lecture centrée (42 rem) ; les schémas
+   prennent une colonne plus large (64 rem), toujours au milieu.
+   ════════════════════════════════════════════════════════════ */
+@media (min-width: 900px) {
+  .am__in,
+  .am--large .am__in,
+  .ch__in,
+  .qs__in {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: clamp(2rem, 5vh, 3.2rem);
+  }
+  .am__tient, .ch__ask, .qs__tete { position: static; }
+  .qs__apres { grid-column: auto; }
+}
+.am__tient, .ch__ask, .qs__tete { width: 100%; text-align: center; }
+.am__lead { max-width: 24ch; margin-inline: auto; }
+.am__sous { margin-inline: auto; }
+.ch__q { max-width: 20ch; margin-inline: auto; }
+.qs__titre { max-width: 24ch; margin-inline: auto; }
+
+.am__corps { width: min(100%, 42rem); }
+.am__corps > .am__p { max-width: none; }
+.am--large .am__corps { width: min(100%, 64rem); }
+.am--large .am__corps > .am__p,
+.am--large .am__corps > .am__micro,
+.am--large .am__corps > .am__suite { width: min(100%, 42rem); margin-inline: auto; }
+.am__actions { justify-content: center; }
+.am__suite { text-align: center; }
+
+.ch__cases { width: min(100%, 46rem); }
+.ch__fin { margin-inline: auto; text-align: center; }
+.qs__liste, .qs__apres { width: min(100%, 46rem); }
+
+/* Les en-têtes de page, le livrable, la traversée, l'aiguillage, la suite. */
+.oh .container { text-align: center; }
+.oh__titre, .oh__lead { margin-inline: auto; }
+.liv__tete { grid-template-columns: 1fr !important; justify-items: center; text-align: center; }
+.liv__titre, .liv__dit { margin-inline: auto; }
+.liv__film { width: min(100%, 52rem); }
+.pl-onglets { justify-content: center; }
+.pl-projet { text-align: center; }
+.pl-legende { justify-content: center; }
+.seq__tete { text-align: center; }
+.seq__titre { margin-inline: auto; }
+.seq__apres { text-align: center; }
+.seq__posture { margin-inline: auto; }
+.seq__apres .nds { width: min(100%, 42rem); margin-inline: auto; text-align: left; }
+.aig__q, .aig__sous { margin-inline: auto; text-align: center; }
+.aig__pied { text-align: center; }
+.sui { text-align: center; }
+.sui__titre { margin-inline: auto; }
+.sui__rang { text-align: left; }
+.footer2__espaces .espt { margin-inline: auto; }
+
+/* Des fonds qui aident à lire : la trame des bandes ne passe plus derrière
+   le texte, elle reste sur les bords. */
+.am--fond::before,
+.liv::before {
+  -webkit-mask-image: radial-gradient(ellipse 72% 70% at 50% 50%, transparent 55%, #000 100%);
+  mask-image: radial-gradient(ellipse 72% 70% at 50% 50%, transparent 55%, #000 100%);
+}
+.rbp__legende { margin-inline: auto; text-align: center; }
+/* Le haut du pied de page, au centre lui aussi : la phrase, puis le bouton. */
+.footer2__top { flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+.footer2__statement { margin-inline: auto; }
+.ex-fin__in { text-align: center; }
+.ex-fin__titre, .ex-fin__p, .ex-fin__note { margin-inline: auto; }
+.ex-fin__actions { justify-content: center; }
+.ex-vb .container > .ex-vb__titre, .ex-vb__titre, .ex-vb__lead { margin-inline: auto; text-align: center; }
+.serments__titre { margin-inline: auto; text-align: center; }

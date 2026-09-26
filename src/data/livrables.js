@@ -29,7 +29,7 @@ export const CATEGORIES = {
 export const EXEMPLES = [
   {
     id: 'cafe',
-    onglet: 'Un coffee shop',
+    onglet: 'Ex : un coffee shop',
     projet: 'Ouvrir un coffee shop dans le centre de Valenciennes',
     photo: 'claire',
     alt: 'Portrait d’une femme d’une trentaine d’années dans un café, une tasse à la main',
@@ -66,7 +66,7 @@ export const EXEMPLES = [
   },
   {
     id: 'chauffage',
-    onglet: 'Un artisan',
+    onglet: 'Ex : un artisan',
     projet: 'Reprendre une entreprise de chauffage de quatre personnes',
     photo: 'marc-julie',
     alt: 'Portrait d’un couple d’une quarantaine d’années dans la cuisine de leur maison',
@@ -102,7 +102,7 @@ export const EXEMPLES = [
   },
   {
     id: 'logiciel',
-    onglet: 'Un logiciel',
+    onglet: 'Ex : un logiciel',
     projet: 'Lancer un logiciel de relance des factures pour les cabinets comptables',
     photo: 'sophie',
     alt: 'Portrait d’une femme d’une quarantaine d’années à son bureau',

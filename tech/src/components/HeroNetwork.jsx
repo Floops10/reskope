@@ -78,7 +78,7 @@ export default function HeroNetwork() {
           const m = nodes[j];
           const d = Math.hypot(n.x - m.x, n.y - m.y);
           if (d < LD) {
-            ctx.strokeStyle = `rgba(${INDIGO},${((1 - d / LD) * 0.1).toFixed(3)})`;
+            ctx.strokeStyle = `rgba(${INDIGO},${((1 - d / LD) * 0.07).toFixed(3)})`;
             ctx.lineWidth = 0.7;
             ctx.beginPath();
             ctx.moveTo(n.x, n.y);
@@ -101,7 +101,7 @@ export default function HeroNetwork() {
             n.y += (souris.y - n.y) * 0.002;
           }
         }
-        ctx.fillStyle = `rgba(${INDIGO},${(0.18 + 0.42 * pres).toFixed(3)})`;
+        ctx.fillStyle = `rgba(${INDIGO},${(0.13 + 0.42 * pres).toFixed(3)})`;
         ctx.beginPath();
         ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
         ctx.fill();

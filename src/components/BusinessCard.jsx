@@ -34,7 +34,7 @@ const PERSONNES = {
   },
   thomy: {
     prenom: 'Thomy',
-    nom: 'Thomy Delzenne',
+    nom: 'Thomy Phanzu',
     tel: 'KzMzIDcgNjEgMjUgNDQgNjU=',
     mail: 'dGhvbXlwaGFuenVAaWNsb3VkLmNvbQ==',
     fr: 'Cofondatrice · business plan, marque et financement',

@@ -4656,7 +4656,11 @@ textarea::selection {
   pointer-events: none;
 }
 .fond .hero2__net { position: absolute; inset: 0; }
-main, .nav, .footer2, .crumb { position: relative; z-index: 1; }
+/* La trame de fond (.fond) est à z-index 0 : le contenu passe devant. L'en-tête
+   n'est PAS dans cette liste : il est fixe (z-index 50) ; le remettre en
+   position relative le faisait défiler avec la page, et sa croix disparaissait
+   quand on ouvrait le menu plus bas. */
+main, .footer2, .crumb { position: relative; z-index: 1; }
 
 /* Le sol posé en attendant le moteur : exactement ce que la scène dessine en
    premier, pour que le raccord ne se voie pas. */
@@ -4688,4 +4692,12 @@ main, .nav, .footer2, .crumb { position: relative; z-index: 1; }
   font-size: clamp(0.98rem, 1.1vw, 1.06rem);
   line-height: 1.6;
   color: var(--muted);
+}
+
+/* Le R de la marque, plus présent dans l'en-tête ; sur téléphone, où le nom
+   n'est pas écrit à côté, il porte seul la marque. */
+.nav .wordmark__mark { width: 27px; }
+@media (max-width: 720px) {
+  .nav .wordmark { min-width: 44px; min-height: 44px; justify-content: center; }
+  .nav .wordmark__mark { width: 34px; }
 }

@@ -1,0 +1,26 @@
+CARTES DE VISITE RESKOPE : Florian Bouchart et Thomy Phanzu
+
+Fichiers à envoyer à l'imprimeur
+  reskope-carte-florian.pdf   (page 1 : recto, page 2 : verso)
+  reskope-carte-thomy.pdf     (page 1 : recto, page 2 : verso)
+
+Format
+  Carte finie : 85 × 55 mm, le format standard en France.
+  Fond perdu de 3 mm inclus : chaque page mesure 91 × 61 mm.
+  Aucun texte à moins de 4 mm du bord de coupe.
+  Polices incorporées, dessin vectoriel : aucune perte de netteté.
+
+À demander à l'imprimeur
+  Impression recto verso, couleurs.
+  Papier conseillé : 350 g, couché mat, avec pelliculage mat (toucher doux).
+  Les couleurs du fichier sont en RVB ; l'imprimeur les convertit en CMJN.
+  L'indigo (#1C0CB3) peut ternir un peu à l'impression : demander un bon à
+  tirer, ou un indigo « le plus vif possible » en CMJN (C 100 M 90 J 0 N 0
+  est une bonne base à tester).
+
+Adresse imprimée
+  floops10.github.io/reskope
+  Attendez d'avoir branché le nom de domaine avant de commander :
+  les cartes seront régénérées avec la nouvelle adresse (une commande).
+
+Aperçus : apercu-*.png (à l'écran seulement, ne pas imprimer ces fichiers).

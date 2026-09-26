@@ -45,7 +45,7 @@ const CONTENT = {
     duo: [
       { id: 'thomy', nom: 'Thomy', role: 'Stratégie · Modèle · Financement',
         dit: 'Elle met votre vision au clair et la rend tenable dans la durée.',
-        alt: 'Thomy, cofondatrice de Reskope' },
+        alt: 'Thomy Phanzu, cofondatrice de Reskope' },
       { id: 'florian', nom: 'Florian', role: 'Sites · Outils métier · Cartographie',
         dit: 'Il construit vos sites, reprend vos outils et relie ce qui ne se parle pas.',
         alt: 'Florian Bouchart, cofondateur de Reskope' },
@@ -100,7 +100,7 @@ const CONTENT = {
     duo: [
       { id: 'thomy', nom: 'Thomy', role: 'Strategy · Model · Funding',
         dit: 'She gets your vision clear, and makes it hold over time.',
-        alt: 'Thomy, co-founder of Reskope' },
+        alt: 'Thomy Phanzu, co-founder of Reskope' },
       { id: 'florian', nom: 'Florian', role: 'Websites · Business tools · Mapping',
         dit: 'He builds your sites, reworks your tools and connects what does not talk.',
         alt: 'Florian Bouchart, co-founder of Reskope' },

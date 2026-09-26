@@ -11,7 +11,7 @@ export const DUO = [
     nom: 'Thomy',
     mene: 'Mène le business plan et le passage devant les financeurs.',
     dit: 'Elle a accompagné pendant deux ans des créateurs d’entreprise jusqu’à leur rendez-vous avec la banque.',
-    alt: 'Thomy Delzenne, cofondatrice de Reskope',
+    alt: 'Thomy Phanzu, cofondatrice de Reskope',
   },
   {
     id: 'florian',

@@ -58,7 +58,7 @@ const CABINET = {
   url: `${SITE.origine}${SITE.base}/`,
   image: `${SITE.origine}${SITE.base}${SITE.image}`,
   founder: [
-    { '@type': 'Person', name: 'Thomy Delzenne' },
+    { '@type': 'Person', name: 'Thomy Phanzu' },
     { '@type': 'Person', name: 'Florian Bouchart' },
   ],
   areaServed: [

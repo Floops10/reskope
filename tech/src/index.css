@@ -12676,7 +12676,11 @@ html.eco-theme .crumb__node { background: rgba(125, 223, 168, 0.55); }
   pointer-events: none;
 }
 .fond .hero2__net { position: absolute; inset: 0; }
-main, .nav, .footer2, .breadcrumb, .crumb { position: relative; z-index: 1; }
+/* La trame de fond (.fond) est à z-index 0 : le contenu passe devant. L'en-tête
+   n'est PAS dans cette liste : il est fixe (z-index 50) ; le remettre en
+   position relative le faisait défiler avec la page, et sa croix disparaissait
+   quand on ouvrait le menu plus bas. */
+main, .footer2, .breadcrumb, .crumb { position: relative; z-index: 1; }
 
 /* Le sol posé en attendant le moteur : exactement ce que la scène dessine en
    premier, pour que le raccord ne se voie pas. */
@@ -13082,3 +13086,51 @@ a.espt__tuile:focus-visible {
 /* L'attente d'une page chargée à la demande : la place est tenue, rien ne saute. */
 .attente-page { display: block; min-height: 100svh; }
 .footer2__espaces { margin-bottom: clamp(1.6rem, 4vh, 2.6rem); }
+
+/* Les tuiles d'espace, à égale distance de la phrase au-dessus et des
+   liens en dessous. */
+.footer2 { --pied-ecart: clamp(2.4rem, 6.5vh, 4.2rem); }
+.footer2__top { margin-bottom: 0; }
+.footer2__espaces { margin-top: var(--pied-ecart); margin-bottom: var(--pied-ecart); }
+@media (max-width: 720px) { .footer2__top { margin-bottom: 0; padding-bottom: 0; } }
+
+/* Le R de la marque, plus présent dans l'en-tête ; sur téléphone, où le nom
+   n'est pas écrit à côté, il porte seul la marque. */
+.nav .wordmark__mark { width: 27px; }
+@media (max-width: 720px) {
+  .nav .wordmark { min-width: 44px; min-height: 44px; justify-content: center; }
+  .nav .wordmark__mark { width: 34px; }
+}
+
+/* Moins de mouvement : le titre passe sous l'en-tête fixe, et la
+   présentation se pose sous les boutons au lieu de les recouvrir. */
+@media (prefers-reduced-motion: reduce) {
+  .heroform__stage { flex-direction: column; align-items: stretch; padding-top: clamp(6rem, 14vh, 8.5rem); padding-bottom: 3rem; }
+  .heroform__presente {
+    position: static;
+    width: min(52ch, 100%);
+    margin: 2.6rem auto 0;
+    padding-inline: var(--gutter);
+    transform: none;
+  }
+}
+
+/* ── Au centre, comme le reste du site ───────────────────── */
+/* Les sections question + réponse passent en une colonne centrée : la
+   question en tête, la réponse dessous. */
+@media (min-width: 881px) {
+  .cond__in, .cib__in { grid-template-columns: 1fr; justify-items: center; }
+  .cond__ask, .cib__ask { position: static; }
+}
+.cond__ask, .cib__ask { width: 100%; text-align: center; }
+.cond__q, .cib__q { margin-inline: auto; }
+.cond__cases, .cib__corps { width: min(100%, 46rem); }
+.cond__fin, .cib__fin { margin-inline: auto; text-align: center; }
+.cond__cta, .cib__cta { justify-content: center; }
+.footer2__top { flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+.footer2__statement { margin-inline: auto; }
+.footer2__espaces .espt { margin-inline: auto; }
+.seq__tete { text-align: center; }
+.seq__titre { margin-inline: auto; }
+.seq__apres { text-align: center; }
+.seq__posture { margin-inline: auto; }
