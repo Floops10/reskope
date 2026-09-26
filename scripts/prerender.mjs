@@ -191,8 +191,7 @@ function page(route, f) {
 /* Une ancienne adresse : un renvoi immédiat, une canonique vers la nouvelle
    page, et un lien pour qui n'aurait pas été renvoyé. Aucun script : la
    balise suffit, et les moteurs la traitent comme une redirection. */
-function renvoi(vers) {
-  const cible = url(vers);
+function renvoi(cible) {
   return `<!doctype html>
 <html lang="fr">
   <head>
@@ -203,7 +202,7 @@ function renvoi(vers) {
     <title>Cette page a déménagé · ${SITE.marque}</title>
   </head>
   <body>
-    <p>Cette page a déménagé : <a href="${cible}">${ech(fiche(vers).titre)}</a>.</p>
+    <p>Cette page a déménagé : <a href="${cible}">la retrouver sur le site Reskope dédié à vos outils numériques</a>.</p>
   </body>
 </html>
 `;
@@ -227,16 +226,12 @@ ecrire('404.html', coquille);
 
 /* Les anciennes adresses. */
 let renvois = 0;
-for (const profil of ANCIENS_PROFILS) {
-  for (const route of ANCIENNES_ROUTES) {
-    const ancienne = `/${profil}${route === '/' ? '' : route}`;
-    const vers = nouvelleAdresse(ancienne) || '/';
-    ecrire(`${ancienne.slice(1)}/index.html`, renvoi(vers));
-    renvois += 1;
-  }
-}
-for (const [ancienne, vers] of Object.entries(RENOMMEES)) {
-  ecrire(`${ancienne.slice(1)}/index.html`, renvoi(vers));
+const anciennes = [
+  ...ANCIENS_PROFILS.flatMap((profil) => ANCIENNES_ROUTES.map((route) => `/${profil}${route === '/' ? '' : route}`)),
+  ...RENOMMEES,
+];
+for (const ancienne of anciennes) {
+  ecrire(`${ancienne.slice(1)}/index.html`, renvoi(nouvelleAdresse(ancienne)));
   renvois += 1;
 }
 

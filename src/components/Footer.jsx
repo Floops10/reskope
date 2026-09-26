@@ -9,6 +9,7 @@ import BusinessCard from './BusinessCard';
 import { useT } from '../i18n';
 import { CONTACT } from '../data/site';
 import { PORTES } from '../data/offres';
+import { SITE_NUMERIQUE } from '../data/seo';
 
 /* FOOTER — L'UNIVERS de clôture (plein écran).
    On termine EN IMMERSION dans le réseau de la marque : une poussière
@@ -171,6 +172,9 @@ export default function Footer() {
           <Link to="/comment-ca-se-passe">Comment ça se passe</Link>
           <Link to="/exemple">Un exemple complet</Link>
           <Link to="/qui-on-est">Qui on est</Link>
+          {/* L'autre site de Reskope : l'audit et la cartographie des outils,
+              en version TPE et PME, en français et en anglais. */}
+          <a href={SITE_NUMERIQUE.url}>{SITE_NUMERIQUE.lien}</a>
         </nav>
 
         <div className="footer2__col">

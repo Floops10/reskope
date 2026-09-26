@@ -138,39 +138,39 @@ export function fiche(route) {
   return PAR_ROUTE[route] || HORS_INDEX[route] || null;
 }
 
-/* ── Les anciennes adresses ──────────────────────────────────
-   Le site a longtemps existé en deux versions, /tpe/... et /pme/..., avec
-   d'autres noms de pages. Ces adresses ont été partagées et indexées : elles
-   ne doivent pas tomber sur une 404. Chacune renvoie vers la page qui dit
-   aujourd'hui la même chose, ou vers l'accueil quand plus rien ne lui
-   correspond. */
-export const RENOMMEES = {
-  '/offres': '/nos-offres',
-  '/methode': '/comment-ca-se-passe',
-  '/a-propos': '/qui-on-est',
-  '/pourquoi': '/',
-  '/numerique-responsable': '/',
+/* ── L'autre site de Reskope ─────────────────────────────────
+   Le site d'origine, celui de l'audit et de la cartographie des outils, en
+   version TPE et PME, en français et en anglais, vit à sa propre adresse. */
+export const SITE_NUMERIQUE = {
+  url: 'https://floops10.github.io/reskope-numerique/',
+  lien: 'Audit de vos outils numériques',
 };
+
+/* ── Les anciennes adresses ──────────────────────────────────
+   Le site d'origine publiait ses pages ici, sous /tpe/... et /pme/..., et ces
+   adresses ont été partagées et indexées. Leur contenu n'a pas disparu : il
+   vit sur l'autre site. Chacune y renvoie, vers la même page. */
+export const RENOMMEES = ['/offres', '/methode', '/a-propos', '/pourquoi', '/numerique-responsable'];
 
 export const ANCIENS_PROFILS = ['tpe', 'pme'];
 
-/* Les routes que l'ancienne version publiait sous chaque profil. */
+/* Les routes que le site d'origine publiait sous chaque profil. */
 export const ANCIENNES_ROUTES = [
   '/', '/pourquoi', '/methode', '/offres', '/atelier', '/exemple',
   '/numerique-responsable', '/a-propos', '/contact',
   '/mentions-legales', '/confidentialite', '/cgu', '/cgv',
 ];
 
-/** Où envoyer une ancienne adresse (chemin interne, sans la base). */
+/** Où envoyer une ancienne adresse : l'adresse complète de la même page sur
+    l'autre site, ou null si l'adresse n'est pas une ancienne adresse. */
 export function nouvelleAdresse(chemin) {
   const propre = chemin !== '/' ? chemin.replace(/\/+$/, '') : '/';
   const parts = propre.split('/').filter(Boolean);
   if (ANCIENS_PROFILS.includes(parts[0])) {
-    const reste = `/${parts.slice(1).join('/')}`;
-    /* L'exemple de l'ancienne version était un bilan d'outils : il a gardé
-       son contenu, sous un autre nom. */
-    if (reste === '/exemple') return '/exemple-bilan';
-    return RENOMMEES[reste] || (fiche(reste) ? reste : '/');
+    return `${SITE_NUMERIQUE.url}${parts.join('/')}/`;
   }
-  return RENOMMEES[propre] || null;
+  /* Les liens encore plus anciens, sans version : le site d'origine les
+     rattachait à sa version PME. */
+  if (RENOMMEES.includes(propre)) return `${SITE_NUMERIQUE.url}pme${propre}/`;
+  return null;
 }

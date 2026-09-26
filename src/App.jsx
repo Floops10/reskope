@@ -32,11 +32,15 @@ const CGV = lazy(() => import('./pages/Legales').then((m) => ({ default: m.CGV }
 const NotFound = lazy(() => import('./pages/Etats').then((m) => ({ default: m.NotFound })));
 const Merci = lazy(() => import('./pages/Etats').then((m) => ({ default: m.Merci })));
 
-/* Une ancienne adresse : on la renvoie vers la page qui dit aujourd'hui la
-   même chose, sans laisser d'entrée dans l'historique. */
+/* Une ancienne adresse : sa page vit sur l'autre site de Reskope. On l'y
+   renvoie sans laisser d'entrée dans l'historique. */
 function Ancienne() {
   const { pathname } = useLocation();
-  return <Navigate to={nouvelleAdresse(pathname) || '/'} replace />;
+  const vers = nouvelleAdresse(pathname);
+  useEffect(() => {
+    if (vers) window.location.replace(vers);
+  }, [vers]);
+  return vers ? <main id="contenu" className="attente-page" /> : <Navigate to="/" replace />;
 }
 
 export default function App() {
