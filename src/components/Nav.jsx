@@ -33,6 +33,8 @@ const PAGES = [
   { to: '/contact', label: 'Contact' },
 ];
 
+const FERMER = 'Fermer le menu';
+
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
@@ -61,6 +63,7 @@ export default function Nav() {
   const layerRef = useRef(null);
   const panelRef = useRef(null);
   const menuTl = useRef(null);
+  const fermerRef = useRef(null);
 
   /* Nav qui se masque au défilement vers le bas, réapparaît vers le haut.
      Durci pour mobile : y clampé à 0 (rebond iOS), seuil de 6px (évite le
@@ -153,6 +156,7 @@ export default function Nav() {
         .fromTo(rows, { yPercent: 130 }, { yPercent: 0, duration: 0.75, stagger: 0.05 }, 0.42)
         .fromTo(tuiles, { autoAlpha: 0, y: 18, rotateX: -24 }, { autoAlpha: 1, y: 0, rotateX: 0, duration: 0.6, stagger: 0.06 }, 0.38)
         .fromTo(foot, { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.55 }, 0.72)
+        .fromTo(fermerRef.current, { autoAlpha: 0, rotate: -90, scale: 0.6 }, { autoAlpha: 1, rotate: 0, scale: 1, duration: 0.6, ease: 'back.out(1.6)' }, 0.45)
         .fromTo(decor, { autoAlpha: 0, scale: 0.7 }, { autoAlpha: 0.55, scale: 1, duration: 0.7, ease: 'power2.out' }, 0.6);
     }
     menuTl.current = tl;
@@ -160,9 +164,12 @@ export default function Nav() {
 
   useEffect(() => {
     const tl = menuTl.current;
-    if (!tl) return;
+    if (!tl) return undefined;
     if (open) tl.timeScale(1).play();
     else tl.timeScale(1.5).reverse();
+    if (!open) return undefined;
+    const t = setTimeout(() => fermerRef.current && fermerRef.current.focus({ preventScroll: true }), 450);
+    return () => clearTimeout(t);
   }, [open]);
 
   return (
@@ -235,6 +242,18 @@ export default function Nav() {
         />
         <div className="menu2__layer" aria-hidden="true" ref={layerRef} />
         <div className="menu2__panel" ref={panelRef} aria-hidden={!open}>
+          {/* La croix du menu : l'en-tête s'efface quand le menu s'ouvre, le
+              menu porte sa propre sortie. */}
+          <button
+            type="button"
+            className="menu2__fermer"
+            ref={fermerRef}
+            onClick={() => setOpen(false)}
+            aria-label={FERMER}
+            tabIndex={open ? 0 : -1}
+          >
+            <span className="menu2__croix" aria-hidden="true" />
+          </button>
 
           <EspacesTuiles actif={espace} className="menu2__tuiles" />
 

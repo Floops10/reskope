@@ -72,7 +72,7 @@ export default function Methode() {
       </Suspense>
 
       {/* 2 — Le livrable */}
-      <section className="section">
+      <section className="section section--tint">
         <div className="container">
           <Reveal className="callout">
             <RevealItem as="h2" className="h2">{c.calloutTitle}</RevealItem>

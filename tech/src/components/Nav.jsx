@@ -30,6 +30,7 @@ export default function Nav() {
   const { lang } = useLang();
   const { profil } = useProfil();
   const t = useT();
+  const FERMER = lang === 'en' ? 'Close the menu' : 'Fermer le menu';
   /* Une page réservée à l'autre profil n'a rien à faire dans le menu :
      proposer un exemple d'audit à une entreprise de trois personnes,
      c'est promettre une prestation qu'on ne lui vendra pas. L'URL reste
@@ -54,6 +55,7 @@ export default function Nav() {
   const layerRef = useRef(null);
   const panelRef = useRef(null);
   const menuTl = useRef(null);
+  const fermerRef = useRef(null);
 
   /* Nav qui se masque au défilement vers le bas, réapparaît vers le haut.
      Durci pour mobile : y clampé à 0 (rebond iOS), seuil de 6px (évite le
@@ -145,6 +147,7 @@ export default function Nav() {
         .fromTo(head, { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, duration: 0.5 }, 0.44)
         .fromTo(rows, { yPercent: 130 }, { yPercent: 0, duration: 0.75, stagger: 0.06 }, 0.42)
         .fromTo(foot, { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.55 }, 0.68)
+        .fromTo(fermerRef.current, { autoAlpha: 0, rotate: -90, scale: 0.6 }, { autoAlpha: 1, rotate: 0, scale: 1, duration: 0.6, ease: 'back.out(1.6)' }, 0.45)
         .fromTo(decor, { autoAlpha: 0, scale: 0.7 }, { autoAlpha: 0.55, scale: 1, duration: 0.7, ease: 'power2.out' }, 0.6);
     }
     menuTl.current = tl;
@@ -152,9 +155,12 @@ export default function Nav() {
 
   useEffect(() => {
     const tl = menuTl.current;
-    if (!tl) return;
+    if (!tl) return undefined;
     if (open) tl.timeScale(1).play();
     else tl.timeScale(1.5).reverse();
+    if (!open) return undefined;
+    const t = setTimeout(() => fermerRef.current && fermerRef.current.focus({ preventScroll: true }), 450);
+    return () => clearTimeout(t);
   }, [open]);
 
   return (
@@ -228,6 +234,18 @@ export default function Nav() {
         />
         <div className="menu2__layer" aria-hidden="true" ref={layerRef} />
         <div className="menu2__panel" ref={panelRef} aria-hidden={!open}>
+          {/* La croix du menu : l'en-tête s'efface quand le menu s'ouvre, le
+              menu porte sa propre sortie. */}
+          <button
+            type="button"
+            className="menu2__fermer"
+            ref={fermerRef}
+            onClick={() => setOpen(false)}
+            aria-label={FERMER}
+            tabIndex={open ? 0 : -1}
+          >
+            <span className="menu2__croix" aria-hidden="true" />
+          </button>
 
           {/* Les espaces du site sont la première chose que le menu montre :
               sur téléphone, c'est là que la plupart des visiteurs les

@@ -25,5 +25,6 @@ export const BASE = DOMAINE ? '' : '/reskope';
 /** L'adresse complète de l'accueil, avec sa barre finale. */
 export const URL_SITE = `${ORIGINE}${BASE}/`;
 
-/** L'adresse telle qu'on l'imprime (cartes de visite). */
-export const ADRESSE_AFFICHEE = DOMAINE || 'floops10.github.io/reskope';
+/** L'adresse telle qu'on l'imprime (cartes de visite) : le nom de domaine
+    choisi, reskope.fr, même avant qu'il soit branché. */
+export const ADRESSE_AFFICHEE = 'reskope.fr';

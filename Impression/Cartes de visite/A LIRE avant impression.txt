@@ -19,8 +19,8 @@ Format
   est une bonne base à tester).
 
 Adresse imprimée
-  floops10.github.io/reskope
-  Attendez d'avoir branché le nom de domaine avant de commander :
-  les cartes seront régénérées avec la nouvelle adresse (une commande).
+  reskope.fr
+  Pensez à acheter et brancher le nom de domaine avant de distribuer
+  les cartes, pour que l'adresse mène bien au site.
 
 Aperçus : apercu-*.png (à l'écran seulement, ne pas imprimer ces fichiers).

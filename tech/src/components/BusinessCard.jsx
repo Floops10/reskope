@@ -114,7 +114,6 @@ function CardFront({ p, pour, t, m, lang, svgRef }) {
         <text x={128} y={90} fill={CREAM} fontSize={36} fontWeight="600" letterSpacing="-0.02em" fontFamily={FONT}>
           Reskope
         </text>
-        <line x1={58} y1={112} x2={300} y2={112} stroke={CREAM} strokeWidth="1" opacity="0.15" />
         <text x={58} y={140} fill={CREAM} fontSize={15} letterSpacing="0.04em" opacity="0.52" fontFamily={FONT}>
           {m.lieux}
         </text>
@@ -127,15 +126,12 @@ function CardFront({ p, pour, t, m, lang, svgRef }) {
         <text x={58} y={292} fill={CREAM} fontSize={52} fontWeight="600" letterSpacing="-0.025em" fontFamily={FONT}>
           {p.nom}
         </text>
-        <line x1={58} y1={314} x2={390} y2={314} stroke={CREAM} strokeWidth="1.5" opacity="0.22" />
         <text x={58} y={348} fill={CREAM} fontSize={18} opacity="0.78" fontFamily={FONT}>
           {p[lang] || p.fr}
         </text>
         <text x={58} y={374} fill={CREAM} fontSize={16} opacity="0.55" fontFamily={FONT}>
           {m.slogan}
         </text>
-
-        <line x1={58} y1={414} x2={310} y2={414} stroke={CREAM} strokeWidth="1" opacity="0.10" />
         <text x={58} y={454} fill={CREAM} fontSize={18} opacity="0.9" fontFamily={FONT}>
           {dec(p.tel)}
         </text>
@@ -169,7 +165,6 @@ function CardBack({ m, svgRef }) {
         <text x={W / 2} y={378} textAnchor="middle" fill={INDIGO} fontSize={52} fontWeight="600" letterSpacing="-0.02em" fontFamily={FONT}>
           Reskope
         </text>
-        <line x1={220} y1={402} x2={630} y2={402} stroke={INDIGO} strokeWidth="1" opacity="0.18" />
         <text x={W / 2} y={440} textAnchor="middle" fill={INDIGO} fontSize={19} opacity="0.66" fontFamily={FONT}>
           {m.slogan}
         </text>

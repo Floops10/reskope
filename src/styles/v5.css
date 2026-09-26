@@ -2210,3 +2210,112 @@ a.esp__seg:hover { background: color-mix(in srgb, var(--indigo) 8%, transparent)
 .ex-fin__actions { justify-content: center; }
 .ex-vb .container > .ex-vb__titre, .ex-vb__titre, .ex-vb__lead { margin-inline: auto; text-align: center; }
 .serments__titre { margin-inline: auto; text-align: center; }
+
+/* ════════════════════════════════════════════════════════════
+   LE MENU OUVERT : l'en-tête s'efface, le menu a sa croix, et son contenu
+   occupe toute la hauteur de l'écran (plus de vide en bas).
+   ════════════════════════════════════════════════════════════ */
+.nav.is-open {
+  transform: translateY(-110%);
+  visibility: hidden;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), visibility 0s linear 0.45s;
+}
+.menu2__fermer {
+  position: absolute;
+  z-index: 3;
+  top: calc(clamp(1rem, 2.4vh, 1.6rem) + env(safe-area-inset-top, 0px));
+  right: clamp(1rem, 3vw, 2.2rem);
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border: 1.5px solid color-mix(in srgb, var(--ink) 18%, transparent);
+  border-radius: 50%;
+  background: var(--cream);
+  color: var(--ink);
+  cursor: pointer;
+  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+}
+.menu2__fermer:hover,
+.menu2__fermer:focus-visible { background: var(--indigo); border-color: var(--indigo); color: var(--cream); }
+.menu2__fermer:focus-visible { outline: 2px solid var(--indigo); outline-offset: 3px; }
+.menu2__croix { position: relative; width: 20px; height: 20px; transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1); }
+.menu2__croix::before,
+.menu2__croix::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  height: 2px;
+  margin-top: -1px;
+  border-radius: 2px;
+  background: currentColor;
+}
+.menu2__croix::before { transform: rotate(45deg); }
+.menu2__croix::after { transform: rotate(-45deg); }
+.menu2__fermer:hover .menu2__croix { transform: rotate(90deg); }
+
+/* Le contenu se répartit sur toute la hauteur : les espaces en haut, le
+   bouton en bas, les liens entre les deux, en grand sur les grands écrans. */
+.menu2__panel {
+  justify-content: space-between;
+  gap: clamp(1rem, 2.4vh, 2rem);
+  padding-top: calc(clamp(5rem, 11vh, 7rem) + env(safe-area-inset-top, 0px));
+  padding-bottom: calc(clamp(1.4rem, 4vh, 2.6rem) + env(safe-area-inset-bottom, 0px));
+}
+.menu2__panel .menu2__label { font-size: clamp(1.3rem, 3.6vh, 2.3rem); }
+.menu2__panel .menu2__row { padding-block: clamp(0.35rem, 1.3vh, 0.95rem); }
+.menu2__foot { margin-top: 0; }
+@media (max-width: 480px) {
+  .menu2__panel .menu2__label { font-size: clamp(1.2rem, 3.1vh, 1.75rem); }
+}
+
+/* ════════════════════════════════════════════════════════════
+   LE SURVOL DES LIENS — un trait qui se dessine de gauche à droite, puis
+   un fond léger qui monte derrière le texte. Au repos, aucun soulignement :
+   trop de traits sous les mots alourdissent la page. Au départ du survol,
+   le fond redescend d'abord, puis le trait se retire.
+   ════════════════════════════════════════════════════════════ */
+:root { --lien-fond: color-mix(in srgb, #1c0cb3 13%, transparent); }
+.footer2, .am--sombre, [data-nav-dark] { --lien-fond: rgba(240, 238, 232, 0.17); }
+
+.lien-fleche, .lien-souligne, .duo__lien, .ch__finlien, .link,
+.footer2__col a, .footer2__legal-links a, .crumb a, .breadcrumb a,
+.menu2__page .menu2__row, .ctc__consent a, .qs__r a, .am__p a,
+.infotip__pop a, .resv__lien, .chp__passer, .legal a {
+  text-decoration: none;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 2px;
+  box-shadow: inset 0 0 0 var(--lien-fond);
+  border-radius: 3px;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  transition: box-shadow 0.22s ease, background-size 0.3s cubic-bezier(0.22, 1, 0.36, 1) 0.12s, color 0.25s ease;
+}
+.lien-fleche:hover, .lien-souligne:hover, .duo__lien:hover, .ch__finlien:hover, .link:hover,
+.footer2__col a:hover, .footer2__legal-links a:hover, .crumb a:hover, .breadcrumb a:hover,
+.menu2__page:hover .menu2__row, .ctc__consent a:hover, .qs__r a:hover, .am__p a:hover,
+.infotip__pop a:hover, .resv__lien:hover, .chp__passer:hover, .legal a:hover,
+.lien-fleche:focus-visible, .lien-souligne:focus-visible, .duo__lien:focus-visible, .ch__finlien:focus-visible, .link:focus-visible,
+.footer2__col a:focus-visible, .footer2__legal-links a:focus-visible, .crumb a:focus-visible, .breadcrumb a:focus-visible,
+.menu2__page:focus-visible .menu2__row, .ctc__consent a:focus-visible, .qs__r a:focus-visible, .am__p a:focus-visible,
+.infotip__pop a:focus-visible, .resv__lien:focus-visible, .chp__passer:focus-visible, .legal a:focus-visible {
+  background-size: 100% 2px;
+  box-shadow: inset 0 -3em 0 var(--lien-fond);
+  transition: background-size 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1) 0.22s, color 0.25s ease;
+}
+/* L'ancien trait du lien générique laisse la place au nouvel effet. */
+.link::after { display: none; }
+/* Le lien à flèche garde une grande zone de toucher (44 px), mais son fond
+   ne couvre que la hauteur du texte. */
+.lien-fleche { position: relative; min-height: 0; padding-block: 0.12em; }
+.lien-fleche::before { content: ''; position: absolute; inset: -11px -4px; }
+.footer2__col a:hover { transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .lien-fleche, .lien-souligne, .duo__lien, .ch__finlien, .link, .footer2__col a, .footer2__legal-links a,
+  .crumb a, .breadcrumb a, .menu2__page .menu2__row, .ctc__consent a, .qs__r a, .am__p a,
+  .infotip__pop a, .resv__lien, .chp__passer, .legal a { transition: none; }
+}

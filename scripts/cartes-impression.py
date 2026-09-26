@@ -10,8 +10,8 @@ SORTIE = os.path.join(DEPOT, 'Impression', 'Cartes de visite')
 EXE = os.path.expanduser('~/Library/Caches/ms-playwright/chromium_headless_shell-1223/chrome-headless-shell-mac-arm64/chrome-headless-shell')
 
 conf = open(os.path.join(DEPOT, 'site.config.mjs'), encoding='utf-8').read()
-m = re.search(r"^export const DOMAINE = (null|'([^']+)')", conf, re.M)
-ADRESSE = m.group(2) if m and m.group(2) else 'floops10.github.io/reskope'
+m = re.search(r"^export const ADRESSE_AFFICHEE = '([^']+)'", conf, re.M)
+ADRESSE = m.group(1) if m else 'reskope.fr'
 
 b64 = lambda p: base64.b64encode(open(p, 'rb').read()).decode()
 POLICE_R = b64(os.path.join(DEPOT, 'public/fonts/NeueEinstellung-Regular.woff2'))
@@ -51,12 +51,9 @@ def recto(p):
         f'<g stroke="{CREME}" stroke-width="1.4" opacity="0.22"><line x1="560" y1="178" x2="668" y2="180"/><line x1="540" y1="292" x2="668" y2="330"/><line x1="560" y1="446" x2="668" y2="456"/></g>' + \
         r_mark(560, 90, 3.0, CREME, 1.6, 2.4) + r_mark(58, 46, 0.5, CREME, 8, 6) + \
         t(128, 90, 'Reskope', 36, 1, 600, ls='-0.72') + \
-        f'<line x1="58" y1="112" x2="300" y2="112" stroke="{CREME}" stroke-width="1" opacity="0.15"/>' + \
         t(58, 140, 'Valenciennes · Lille', 15, 0.55, ls='0.6') + \
         t(58, 292, p['nom'], 52, 1, 600, ls='-1.3') + \
-        f'<line x1="58" y1="314" x2="390" y2="314" stroke="{CREME}" stroke-width="1.5" opacity="0.22"/>' + \
         t(58, 348, p['role'], 18, 0.8) + t(58, 374, SLOGAN, 16, 0.58) + \
-        f'<line x1="58" y1="414" x2="310" y2="414" stroke="{CREME}" stroke-width="1" opacity="0.10"/>' + \
         t(58, 452, p['tel'], 18, 0.92) + t(58, 480, p['mail'], 17, 0.86) + \
         t(806, 500, ADRESSE, 15, 0.45, anc='end', ls='0.9')
     return svg(INDIGO, corps)
@@ -65,7 +62,6 @@ def verso():
     sc = 2.7
     corps = f'<g opacity="0.07">{trame(INDIGO)}</g>' + r_mark(425 - 70 * sc, 64 - 30 * sc, sc, INDIGO, 1.8, 2.8) + \
         t(425, 378, 'Reskope', 52, 1, 600, 'middle', '-1.04', INDIGO) + \
-        f'<line x1="220" y1="402" x2="630" y2="402" stroke="{INDIGO}" stroke-width="1" opacity="0.18"/>' + \
         t(425, 440, SLOGAN, 19, 0.7, anc='middle', coul=INDIGO) + \
         t(425, 496, ADRESSE, 15, 0.45, anc='middle', ls='0.9', coul=INDIGO)
     return svg(CREME, corps)
