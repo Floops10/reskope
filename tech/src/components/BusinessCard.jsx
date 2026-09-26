@@ -1,5 +1,7 @@
 import { useState, useRef } from 'react';
 import { R_NODES, R_LINKS } from './Logo';
+import CroixReseau from './CroixReseau';
+import { MOT_LOGO, MOT_BOITE, R_BOITE, CORPS_MOT, BASE_MOT } from '../data/logoMot';
 import { useT, useLang } from '../i18n';
 import { ADRESSE_AFFICHEE } from '../data/site';
 
@@ -13,6 +15,10 @@ import { ADRESSE_AFFICHEE } from '../data/site';
    Les coordonnées s'affichent sur la carte (elle est faite pour être
    partagée) mais n'apparaissent pas en clair dans le code livré : les
    robots qui moissonnent les adresses ne les trouvent pas.
+
+   Le logo y est celui de l'en-tête, aux mêmes proportions (R et mot
+   vectorisé, voir scripts/logo.py), et le fichier téléchargé embarque la
+   police : il ne s'ouvre plus en Helvetica chez l'imprimeur.
    ════════════════════════════════════════════════════════════ */
 
 const W = 850;
@@ -22,6 +28,24 @@ const CREAM = '#F0EEE8';
 const INDIGO = '#1c0cb3';
 
 const dec = (s) => (typeof atob !== 'undefined' ? atob(s) : '');
+
+/* La police de la marque, embarquée dans le fichier téléchargé. */
+const POLICES = [['NeueEinstellung-Regular.woff2', 400], ['NeueEinstellung-SemiBold.woff2', 600]];
+const enBase64 = (buf) => {
+  const octets = new Uint8Array(buf);
+  let bin = '';
+  for (let i = 0; i < octets.length; i += 0x8000) bin += String.fromCharCode(...octets.subarray(i, i + 0x8000));
+  return btoa(bin);
+};
+async function policesEmbarquees() {
+  const regles = await Promise.all(POLICES.map(async ([fichier, poids]) => {
+    const rep = await fetch(`${import.meta.env.BASE_URL}fonts/${fichier}`);
+    if (!rep.ok) throw new Error(fichier);
+    const b64 = enBase64(await rep.arrayBuffer());
+    return `@font-face{font-family:'Neue Einstellung';src:url(data:font/woff2;base64,${b64}) format('woff2');font-weight:${poids};}`;
+  }));
+  return regles.join('');
+}
 
 const PERSONNES = {
   florian: {
@@ -47,21 +71,53 @@ const MOTS = {
   en: { qui: 'Card of', slogan: 'We help you decide, and we build what comes next.', lieux: 'Valenciennes · Lille, France' },
 };
 
-function RMark({ x, y, scale = 1, color = CREAM, sw = 6, nr = 7 }) {
+/* Le R de la marque, toujours aux proportions du logo (Logo.jsx) : traits 3,
+   nœuds 5,5, jonction 7. On change sa taille, jamais ces rapports. */
+function RTrace({ color }) {
   return (
-    <g transform={`translate(${x}, ${y}) scale(${scale})`}>
-      <g stroke={color} strokeWidth={sw} fill="none" strokeLinecap="round" strokeLinejoin="round">
+    <>
+      <g stroke={color} strokeWidth="3" fill="none" strokeLinecap="round">
         {R_LINKS.map(([a, b], i) => (
           <line key={i} x1={R_NODES[a][0]} y1={R_NODES[a][1]} x2={R_NODES[b][0]} y2={R_NODES[b][1]} />
         ))}
       </g>
       <g fill={color}>
         {R_NODES.map(([nx, ny], i) => (
-          <circle key={i} cx={nx} cy={ny} r={i === 3 ? nr * 1.25 : nr} />
+          <circle key={i} cx={nx} cy={ny} r={i === 3 ? 7 : 5.5} />
         ))}
       </g>
+    </>
+  );
+}
+
+function RMark({ x, y, scale = 1, color = CREAM, opacity = 1 }) {
+  return (
+    <g transform={`translate(${x}, ${y}) scale(${scale})`} opacity={opacity}>
+      <RTrace color={color} />
     </g>
   );
+}
+
+/* Le logo horizontal, posé comme dans l'en-tête. (x, y) : bord gauche du R
+   et centre des capitales ; corps : taille du mot. */
+function LogoCarte({ x, y, corps, color }) {
+  const s = corps / CORPS_MOT;
+  const tx = x - R_BOITE[0] * s;
+  const ty = y - 76 * s;
+  return (
+    <g transform={`translate(${tx.toFixed(2)}, ${ty.toFixed(2)}) scale(${s.toFixed(5)})`}>
+      <RTrace color={color} />
+      <path d={MOT_LOGO} fill={color} />
+    </g>
+  );
+}
+
+/* Le mot du logo seul, centré sur cx, posé sur sa ligne de base. */
+function MotCarte({ cx, base, corps, color }) {
+  const s = corps / CORPS_MOT;
+  const tx = cx - ((MOT_BOITE[0] + MOT_BOITE[2]) / 2) * s;
+  const ty = base - BASE_MOT * s;
+  return <path d={MOT_LOGO} fill={color} transform={`translate(${tx.toFixed(2)}, ${ty.toFixed(2)}) scale(${s.toFixed(5)})`} />;
 }
 
 /* La trame (12 nœuds), la même que sur toutes les cartes Reskope. */
@@ -108,12 +164,10 @@ function CardFront({ p, pour, t, m, lang, svgRef }) {
           <line x1={540} y1={292} x2={668} y2={330} />
           <line x1={560} y1={446} x2={668} y2={456} />
         </g>
-        <RMark x={560} y={90} scale={3.0} color={CREAM} sw={1.6} nr={2.4} />
+        {/* Le grand R, en filigrane comme la trame : le logo, c'est celui du coin. */}
+        <RMark x={560} y={90} scale={3.0} color={CREAM} opacity={0.3} />
 
-        <RMark x={58} y={46} scale={0.5} color={CREAM} sw={8} nr={6} />
-        <text x={128} y={90} fill={CREAM} fontSize={36} fontWeight="600" letterSpacing="-0.02em" fontFamily={FONT}>
-          Reskope
-        </text>
+        <LogoCarte x={60} y={77} corps={44} color={CREAM} />
         <text x={58} y={140} fill={CREAM} fontSize={15} letterSpacing="0.04em" opacity="0.52" fontFamily={FONT}>
           {m.lieux}
         </text>
@@ -148,9 +202,9 @@ function CardFront({ p, pour, t, m, lang, svgRef }) {
 
 /* ——— VERSO ——— le R centré sur fond crème, commun aux deux cartes. */
 function CardBack({ m, svgRef }) {
-  const SC = 2.7;
+  const SC = 2.4;
   const RX = W / 2 - 70 * SC;
-  const RY = 64 - 30 * SC;
+  const RY = 76 - 30 * SC;
   return (
     <svg ref={svgRef} viewBox={`0 0 ${W} ${H}`} xmlns="http://www.w3.org/2000/svg" className="bcard__svg">
       <defs>
@@ -161,10 +215,8 @@ function CardBack({ m, svgRef }) {
       <g clipPath="url(#bcardClipBack)">
         <rect width={W} height={H} fill={CREAM} />
         <g opacity="0.07"><Trame color={INDIGO} /></g>
-        <RMark x={RX} y={RY} scale={SC} color={INDIGO} sw={1.8} nr={2.8} />
-        <text x={W / 2} y={378} textAnchor="middle" fill={INDIGO} fontSize={52} fontWeight="600" letterSpacing="-0.02em" fontFamily={FONT}>
-          Reskope
-        </text>
+        <RMark x={RX} y={RY} scale={SC} color={INDIGO} />
+        <MotCarte cx={W / 2} base={378} corps={52} color={INDIGO} />
         <text x={W / 2} y={440} textAnchor="middle" fill={INDIGO} fontSize={19} opacity="0.66" fontFamily={FONT}>
           {m.slogan}
         </text>
@@ -188,10 +240,20 @@ export default function BusinessCard({ onClose }) {
   const backRef = useRef(null);
   const p = PERSONNES[qui];
 
-  const downloadSVG = () => {
+  const downloadSVG = async () => {
     const svg = (side === 'front' ? frontRef : backRef).current;
     if (!svg) return;
-    const str = new XMLSerializer().serializeToString(svg);
+    const copie = svg.cloneNode(true);
+    copie.setAttribute('width', '85mm');
+    copie.setAttribute('height', '54mm');
+    try {
+      const style = document.createElementNS('http://www.w3.org/2000/svg', 'style');
+      style.textContent = await policesEmbarquees();
+      copie.insertBefore(style, copie.firstChild);
+    } catch {
+      /* Hors ligne : le fichier part sans la police ; le logo, vectorisé, reste juste. */
+    }
+    const str = new XMLSerializer().serializeToString(copie);
     const blob = new Blob([str], { type: 'image/svg+xml;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -211,10 +273,7 @@ export default function BusinessCard({ onClose }) {
       <div className="bcard-backdrop" onClick={onClose} aria-hidden="true" />
       <div className="bcard-panel">
         <button className="bcard-close" onClick={onClose} aria-label={lang === 'en' ? 'Close' : 'Fermer'}>
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.2">
-            <line x1="18" y1="6" x2="6" y2="18" />
-            <line x1="6" y1="6" x2="18" y2="18" />
-          </svg>
+          <CroixReseau />
         </button>
 
         <h3 className="bcard-panel__title">{t.panelTitle}</h3>

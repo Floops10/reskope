@@ -2236,25 +2236,26 @@ a.esp__seg:hover { background: color-mix(in srgb, var(--indigo) 8%, transparent)
   cursor: pointer;
   transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
 }
-.menu2__fermer:hover,
 .menu2__fermer:focus-visible { background: var(--indigo); border-color: var(--indigo); color: var(--cream); }
-.menu2__fermer:focus-visible { outline: 2px solid var(--indigo); outline-offset: 3px; }
-.menu2__croix { position: relative; width: 20px; height: 20px; transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1); }
-.menu2__croix::before,
-.menu2__croix::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 50%;
-  width: 100%;
-  height: 2px;
-  margin-top: -1px;
-  border-radius: 2px;
-  background: currentColor;
+@media (hover: hover) {
+  .menu2__fermer:hover { background: var(--indigo); border-color: var(--indigo); color: var(--cream); }
 }
-.menu2__croix::before { transform: rotate(45deg); }
-.menu2__croix::after { transform: rotate(-45deg); }
-.menu2__fermer:hover .menu2__croix { transform: rotate(90deg); }
+.menu2__fermer:focus-visible { outline: 2px solid var(--indigo); outline-offset: 3px; }
+/* La croix en réseau (CroixReseau.jsx) : quatre liens partis d'un nœud
+   central, un nœud au bout de chacun, comme le burger. Au survol, les bras se
+   resserrent vers le centre, comme les nœuds du burger glissent vers l'intérieur. */
+.croix { display: block; width: 24px; height: 24px; flex: none; overflow: visible; }
+.croix__lien { stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
+.croix__n,
+.croix__coeur { fill: currentColor; }
+.croix__bras { transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1); }
+button:focus-visible .croix__bras { transform: translate(var(--dx), var(--dy)); }
+@media (hover: hover) {
+  button:hover .croix__bras { transform: translate(var(--dx), var(--dy)); }
+}
+.menu2__fermer .croix { width: 26px; height: 26px; }
+.bcard-close .croix { width: 20px; height: 20px; }
+.expl3d__fermer .croix { width: 17px; height: 17px; }
 
 /* Le contenu se répartit sur toute la hauteur : les espaces en haut, le
    bouton en bas, les liens entre les deux, en grand sur les grands écrans. */
@@ -2319,3 +2320,9 @@ a.esp__seg:hover { background: color-mix(in srgb, var(--indigo) 8%, transparent)
   .crumb a, .breadcrumb a, .menu2__page .menu2__row, .ctc__consent a, .qs__r a, .am__p a,
   .infotip__pop a, .resv__lien, .chp__passer, .legal a { transition: none; }
 }
+
+/* ════════════════════════════════════════════════════════════
+   PAS DE FILETS HORIZONTAUX (direction artistique) : l'espace et les bandes
+   de couleur séparent les blocs ; aucun lien n'est souligné au repos.
+   ════════════════════════════════════════════════════════════ */
+.crumb, .footer2__grid, .legal__updated, .section--tint, .faq { border-top: 0; border-bottom: 0; }

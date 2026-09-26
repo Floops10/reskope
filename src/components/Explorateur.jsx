@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { useLang } from '../i18n';
 import { SCENES, EXPL_MOTS } from '../lib/scenes';
 import { lockScroll, getLenis } from '../lib/smoothScroll';
+import CroixReseau from './CroixReseau';
 
 const SceneOffre = lazy(() => import('./SceneOffre'));
 
@@ -106,7 +107,7 @@ export default function Explorateur({ figure, onFermer, plus }) {
         <div className="expl3d__texte">
           <button type="button" className="expl3d__fermer" onClick={onFermer} ref={rendu}>
             <span>{m.fermer}</span>
-            <i aria-hidden="true" />
+            <CroixReseau />
           </button>
 
           <h2 className="expl3d__titre">{c.titre}</h2>

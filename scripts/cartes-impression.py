@@ -2,7 +2,7 @@
 85 × 55 mm, fond perdu 3 mm (document 91 × 61 mm), PDF vectoriel recto-verso,
 polices incorporées, plus des aperçus PNG. L'adresse imprimée vient de
 site.config.mjs (DOMAINE) : relancer ce script une fois le domaine branché."""
-import asyncio, base64, os, re
+import asyncio, base64, json, os, re
 from playwright.async_api import async_playwright
 
 DEPOT = '/Users/florian.bouchart/Developer/2-Reskope'
@@ -19,8 +19,10 @@ POLICE_S = b64(os.path.join(DEPOT, 'public/fonts/NeueEinstellung-SemiBold.woff2'
 
 INDIGO, CREME = '#1c0cb3', '#F0EEE8'
 FONT = "'Neue Einstellung', sans-serif"
-R_NODES = [(36, 30), (92, 30), (104, 62), (36, 80), (36, 122), (104, 122)]
-R_LINKS = [(0, 3), (3, 4), (0, 1), (1, 2), (2, 3), (3, 5)]
+# Le logo : la géométrie de scripts/logo.py (R officiel et mot vectorisé).
+GEO = json.load(open(os.path.join(DEPOT, 'logo', 'geometrie.json'), encoding='utf-8'))
+R_NODES = GEO['r_noeuds']
+R_LINKS = GEO['r_liens']
 TRAME = [(300, 82), (418, 110), (520, 88), (360, 180), (470, 198), (560, 178), (300, 252), (432, 268), (540, 292), (500, 384), (560, 446), (430, 402)]
 TRAME_LIENS = [(0, 1), (1, 2), (1, 3), (3, 4), (4, 5), (3, 6), (4, 7), (7, 8), (8, 9), (9, 10), (7, 11), (6, 7), (2, 5)]
 
@@ -30,11 +32,38 @@ PERSONNES = {
 }
 SLOGAN = 'On vous aide à décider, et on construit la suite.'
 
-def r_mark(x, y, s, couleur, sw, nr):
+# Mise en page (unités de la carte : 1 = 0,1 mm). Le petit logo du recto a
+# des traits de 0,12 mm : ce sont les proportions du logo, pas une erreur.
+LOGO_CORPS = 44      # taille du mot dans le logo du recto (logo de 22 mm)
+GRAND_R_OP = 0.3     # le grand R du recto, en filigrane comme la trame
+VERSO_R = 2.4        # le R du verso
+VERSO_HAUT = 76      # hauteur de son nœud du haut
+
+def r_trace(couleur):
+    # Le R tel quel : traits 3, nœuds 5,5, jonction 7. On change sa taille,
+    # jamais ces rapports.
     l = ''.join(f'<line x1="{R_NODES[a][0]}" y1="{R_NODES[a][1]}" x2="{R_NODES[b][0]}" y2="{R_NODES[b][1]}"/>' for a, b in R_LINKS)
-    c = ''.join(f'<circle cx="{nx}" cy="{ny}" r="{nr * 1.25 if i == 3 else nr}"/>' for i, (nx, ny) in enumerate(R_NODES))
-    return (f'<g transform="translate({x},{y}) scale({s})"><g stroke="{couleur}" stroke-width="{sw}" fill="none" stroke-linecap="round" stroke-linejoin="round">{l}</g>'
-            f'<g fill="{couleur}">{c}</g></g>')
+    c = ''.join(f'<circle cx="{nx}" cy="{ny}" r="{GEO["jonction"] if i == 3 else GEO["noeud"]}"/>' for i, (nx, ny) in enumerate(R_NODES))
+    return (f'<g stroke="{couleur}" stroke-width="{GEO["trait"]}" fill="none" stroke-linecap="round">{l}</g>'
+            f'<g fill="{couleur}">{c}</g>')
+
+def r_mark(x, y, s, couleur, op=1):
+    return f'<g transform="translate({x},{y}) scale({s})" opacity="{op}">{r_trace(couleur)}</g>'
+
+def logo(x, y, corps, couleur):
+    # Le logo horizontal, comme dans l'en-tête du site. (x, y) : bord gauche
+    # du R et centre des capitales ; corps : taille du mot.
+    s = corps / GEO['corps_mot']
+    tx, ty = x - GEO['r_boite'][0] * s, y - 76 * s
+    return (f'<g transform="translate({tx:.2f},{ty:.2f}) scale({s:.5f})">{r_trace(couleur)}'
+            f'<path fill="{couleur}" d="{GEO["mot_d"]}"/></g>')
+
+def mot(cx, base, corps, couleur):
+    # Le mot du logo seul, centré sur cx, posé sur la ligne de base.
+    s = corps / GEO['corps_mot']
+    x0, _, x1, _ = GEO['mot_boite']
+    return (f'<g transform="translate({cx - (x0 + x1) / 2 * s:.2f},{base - GEO["ligne_de_base"] * s:.2f}) scale({s:.5f})">'
+            f'<path fill="{couleur}" d="{GEO["mot_d"]}"/></g>')
 
 def trame(couleur):
     l = ''.join(f'<line x1="{TRAME[a][0]}" y1="{TRAME[a][1]}" x2="{TRAME[b][0]}" y2="{TRAME[b][1]}"/>' for a, b in TRAME_LIENS)
@@ -49,8 +78,7 @@ def recto(p):
     # zone de coupe 85 × 55 mm, elle-même dans le document avec fond perdu.
     corps = (trame_bloc := f'<g opacity="0.18">{trame(CREME)}</g>') + \
         f'<g stroke="{CREME}" stroke-width="1.4" opacity="0.22"><line x1="560" y1="178" x2="668" y2="180"/><line x1="540" y1="292" x2="668" y2="330"/><line x1="560" y1="446" x2="668" y2="456"/></g>' + \
-        r_mark(560, 90, 3.0, CREME, 1.6, 2.4) + r_mark(58, 46, 0.5, CREME, 8, 6) + \
-        t(128, 90, 'Reskope', 36, 1, 600, ls='-0.72') + \
+        r_mark(560, 90, 3.0, CREME, GRAND_R_OP) + logo(60, 77, LOGO_CORPS, CREME) + \
         t(58, 140, 'Valenciennes · Lille', 15, 0.55, ls='0.6') + \
         t(58, 292, p['nom'], 52, 1, 600, ls='-1.3') + \
         t(58, 348, p['role'], 18, 0.8) + t(58, 374, SLOGAN, 16, 0.58) + \
@@ -59,9 +87,9 @@ def recto(p):
     return svg(INDIGO, corps)
 
 def verso():
-    sc = 2.7
-    corps = f'<g opacity="0.07">{trame(INDIGO)}</g>' + r_mark(425 - 70 * sc, 64 - 30 * sc, sc, INDIGO, 1.8, 2.8) + \
-        t(425, 378, 'Reskope', 52, 1, 600, 'middle', '-1.04', INDIGO) + \
+    sc = VERSO_R
+    corps = f'<g opacity="0.07">{trame(INDIGO)}</g>' + r_mark(425 - 70 * sc, VERSO_HAUT - 30 * sc, sc, INDIGO) + \
+        mot(425, 378, 52, INDIGO) + \
         t(425, 440, SLOGAN, 19, 0.7, anc='middle', coul=INDIGO) + \
         t(425, 496, ADRESSE, 15, 0.45, anc='middle', ls='0.9', coul=INDIGO)
     return svg(CREME, corps)
@@ -106,4 +134,5 @@ async def main():
     for f in sorted(os.listdir(SORTIE)):
         print(f, os.path.getsize(os.path.join(SORTIE, f)) // 1024, 'Ko')
 
-asyncio.run(main())
+if __name__ == '__main__':
+    asyncio.run(main())

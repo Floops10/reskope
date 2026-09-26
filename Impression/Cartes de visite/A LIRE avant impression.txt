@@ -9,6 +9,8 @@ Format
   Fond perdu de 3 mm inclus : chaque page mesure 91 × 61 mm.
   Aucun texte à moins de 4 mm du bord de coupe.
   Polices incorporées, dessin vectoriel : aucune perte de netteté.
+  Le petit logo du recto a des traits fins (0,12 mm, soit 0,34 pt) : ce sont
+  les proportions du logo. C'est au-dessus du minimum courant (0,25 pt).
 
 À demander à l'imprimeur
   Impression recto verso, couleurs.

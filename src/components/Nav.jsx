@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { gsap, useGSAP } from '../lib/gsap';
 import { LogoMark } from './Logo';
+import CroixReseau from './CroixReseau';
 import { lockScroll } from '../lib/smoothScroll';
 import { GLYPH_SHAPES } from '../lib/net3d';
 import Net3D from './Net3D';
@@ -143,6 +144,9 @@ export default function Nav() {
     const tuiles = menuRef.current.querySelectorAll('.espt__tuile');
     const foot = menuRef.current.querySelector('.menu2__foot');
     const decor = menuRef.current.querySelector('.menu2__decor');
+    const croixCoeur = fermerRef.current.querySelector('.croix__coeur');
+    const croixLiens = fermerRef.current.querySelectorAll('.croix__lien');
+    const croixNoeuds = fermerRef.current.querySelectorAll('.croix__n');
 
     const tl = gsap.timeline({ paused: true, defaults: { ease: 'power4.out' } });
     tl.set(menuRef.current, { visibility: 'visible' }, 0);
@@ -156,7 +160,12 @@ export default function Nav() {
         .fromTo(rows, { yPercent: 130 }, { yPercent: 0, duration: 0.75, stagger: 0.05 }, 0.42)
         .fromTo(tuiles, { autoAlpha: 0, y: 18, rotateX: -24 }, { autoAlpha: 1, y: 0, rotateX: 0, duration: 0.6, stagger: 0.06 }, 0.38)
         .fromTo(foot, { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.55 }, 0.72)
-        .fromTo(fermerRef.current, { autoAlpha: 0, rotate: -90, scale: 0.6 }, { autoAlpha: 1, rotate: 0, scale: 1, duration: 0.6, ease: 'back.out(1.6)' }, 0.45)
+        .fromTo(fermerRef.current, { autoAlpha: 0, scale: 0.6 }, { autoAlpha: 1, scale: 1, duration: 0.5, ease: 'back.out(1.6)' }, 0.45)
+        /* La croix se construit comme un réseau : le nœud central, puis les
+           liens qui en partent, puis un nœud au bout de chacun. */
+        .fromTo(croixCoeur, { scale: 0, transformOrigin: '50% 50%' }, { scale: 1, duration: 0.35, ease: 'back.out(2.4)' }, 0.55)
+        .fromTo(croixLiens, { strokeDashoffset: 11 }, { strokeDashoffset: 0, duration: 0.4, ease: 'power2.out', stagger: 0.04 }, 0.62)
+        .fromTo(croixNoeuds, { scale: 0, transformOrigin: '50% 50%' }, { scale: 1, duration: 0.35, ease: 'back.out(2.4)', stagger: 0.04 }, 0.8)
         .fromTo(decor, { autoAlpha: 0, scale: 0.7 }, { autoAlpha: 0.55, scale: 1, duration: 0.7, ease: 'power2.out' }, 0.6);
     }
     menuTl.current = tl;
@@ -252,7 +261,7 @@ export default function Nav() {
             aria-label={FERMER}
             tabIndex={open ? 0 : -1}
           >
-            <span className="menu2__croix" aria-hidden="true" />
+            <CroixReseau />
           </button>
 
           <EspacesTuiles actif={espace} className="menu2__tuiles" />

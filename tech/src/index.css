@@ -7365,7 +7365,6 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   justify-content: space-between;
   gap: 1rem 2rem;
   padding-top: clamp(1rem, 2.5vh, 1.6rem);
-  border-top: 1px solid var(--hairline);
 }
 .menu2__contact {
   display: flex;
@@ -12159,23 +12158,6 @@ html.eco-theme .crumb__node { background: rgba(125, 223, 168, 0.55); }
   cursor: pointer;
   transition: color 0.25s ease;
 }
-.expl3d__fermer i {
-  position: relative;
-  width: 14px;
-  height: 14px;
-}
-.expl3d__fermer i::before,
-.expl3d__fermer i::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 0;
-  width: 100%;
-  height: 1.5px;
-  background: currentColor;
-}
-.expl3d__fermer i::before { transform: rotate(45deg); }
-.expl3d__fermer i::after { transform: rotate(-45deg); }
 .expl3d__fermer:hover { color: var(--indigo); }
 
 .expl3d__titre {
@@ -13160,25 +13142,26 @@ a.espt__tuile:focus-visible {
   cursor: pointer;
   transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
 }
-.menu2__fermer:hover,
 .menu2__fermer:focus-visible { background: var(--indigo); border-color: var(--indigo); color: var(--cream); }
-.menu2__fermer:focus-visible { outline: 2px solid var(--indigo); outline-offset: 3px; }
-.menu2__croix { position: relative; width: 20px; height: 20px; transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1); }
-.menu2__croix::before,
-.menu2__croix::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 50%;
-  width: 100%;
-  height: 2px;
-  margin-top: -1px;
-  border-radius: 2px;
-  background: currentColor;
+@media (hover: hover) {
+  .menu2__fermer:hover { background: var(--indigo); border-color: var(--indigo); color: var(--cream); }
 }
-.menu2__croix::before { transform: rotate(45deg); }
-.menu2__croix::after { transform: rotate(-45deg); }
-.menu2__fermer:hover .menu2__croix { transform: rotate(90deg); }
+.menu2__fermer:focus-visible { outline: 2px solid var(--indigo); outline-offset: 3px; }
+/* La croix en réseau (CroixReseau.jsx) : quatre liens partis d'un nœud
+   central, un nœud au bout de chacun, comme le burger. Au survol, les bras se
+   resserrent vers le centre, comme les nœuds du burger glissent vers l'intérieur. */
+.croix { display: block; width: 24px; height: 24px; flex: none; overflow: visible; }
+.croix__lien { stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
+.croix__n,
+.croix__coeur { fill: currentColor; }
+.croix__bras { transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1); }
+button:focus-visible .croix__bras { transform: translate(var(--dx), var(--dy)); }
+@media (hover: hover) {
+  button:hover .croix__bras { transform: translate(var(--dx), var(--dy)); }
+}
+.menu2__fermer .croix { width: 26px; height: 26px; }
+.bcard-close .croix { width: 20px; height: 20px; }
+.expl3d__fermer .croix { width: 17px; height: 17px; }
 
 /* Le contenu se répartit sur toute la hauteur : les espaces en haut, le
    bouton en bas, les liens entre les deux, en grand sur les grands écrans. */
@@ -13207,7 +13190,7 @@ a.espt__tuile:focus-visible {
 .lien-fleche, .lien-souligne, .duo__lien, .ch__finlien, .link,
 .footer2__col a, .footer2__legal-links a, .crumb a, .breadcrumb a,
 .menu2__page .menu2__row, .ctc__consent a, .qs__r a, .am__p a,
-.infotip__pop a, .resv__lien, .chp__passer, .legal a {
+.infotip__pop a, .resv__lien, .chp__passer, .legal a, .pv3__src, .plr__lien {
   text-decoration: none;
   background-image: linear-gradient(currentColor, currentColor);
   background-repeat: no-repeat;
@@ -13222,11 +13205,11 @@ a.espt__tuile:focus-visible {
 .lien-fleche:hover, .lien-souligne:hover, .duo__lien:hover, .ch__finlien:hover, .link:hover,
 .footer2__col a:hover, .footer2__legal-links a:hover, .crumb a:hover, .breadcrumb a:hover,
 .menu2__page:hover .menu2__row, .ctc__consent a:hover, .qs__r a:hover, .am__p a:hover,
-.infotip__pop a:hover, .resv__lien:hover, .chp__passer:hover, .legal a:hover,
+.infotip__pop a:hover, .resv__lien:hover, .chp__passer:hover, .legal a:hover, .pv3__src:hover, .plr__lien:hover,
 .lien-fleche:focus-visible, .lien-souligne:focus-visible, .duo__lien:focus-visible, .ch__finlien:focus-visible, .link:focus-visible,
 .footer2__col a:focus-visible, .footer2__legal-links a:focus-visible, .crumb a:focus-visible, .breadcrumb a:focus-visible,
 .menu2__page:focus-visible .menu2__row, .ctc__consent a:focus-visible, .qs__r a:focus-visible, .am__p a:focus-visible,
-.infotip__pop a:focus-visible, .resv__lien:focus-visible, .chp__passer:focus-visible, .legal a:focus-visible {
+.infotip__pop a:focus-visible, .resv__lien:focus-visible, .chp__passer:focus-visible, .legal a:focus-visible, .pv3__src:focus-visible, .plr__lien:focus-visible {
   background-size: 100% 2px;
   box-shadow: inset 0 -3em 0 var(--lien-fond);
   transition: background-size 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1) 0.22s, color 0.25s ease;
@@ -13241,7 +13224,7 @@ a.espt__tuile:focus-visible {
 @media (prefers-reduced-motion: reduce) {
   .lien-fleche, .lien-souligne, .duo__lien, .ch__finlien, .link, .footer2__col a, .footer2__legal-links a,
   .crumb a, .breadcrumb a, .menu2__page .menu2__row, .ctc__consent a, .qs__r a, .am__p a,
-  .infotip__pop a, .resv__lien, .chp__passer, .legal a { transition: none; }
+  .infotip__pop a, .resv__lien, .chp__passer, .legal a, .pv3__src, .plr__lien { transition: none; }
 }
 
 /* ════════════════════════════════════════════════════════════
@@ -13282,3 +13265,11 @@ html[data-profil="pme"] { --espace: var(--ciel); --espace-pale: var(--ciel-pale)
   -webkit-mask-image: radial-gradient(ellipse 72% 70% at 50% 50%, transparent 55%, #000 100%);
   mask-image: radial-gradient(ellipse 72% 70% at 50% 50%, transparent 55%, #000 100%);
 }
+
+/* ════════════════════════════════════════════════════════════
+   PAS DE FILETS HORIZONTAUX (direction artistique) : l'espace et les bandes
+   de couleur séparent les blocs ; aucun lien n'est souligné au repos.
+   ════════════════════════════════════════════════════════════ */
+.crumb, .footer2__grid, .legal__updated, .section--tint, .faq { border-top: 0; border-bottom: 0; }
+.pv3__src, .plr__lien { border-bottom: 0; }
+.cfy-flat-item, .constat-bridge__pied { border-top: 0; }
