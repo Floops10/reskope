@@ -12,7 +12,8 @@
     "deploy": "npm run build && gh-pages -d dist",
     "prerender": "node scripts/prerender.mjs",
     "build:tech": "vite build --config tech/vite.config.js && node tech/scripts/prerender.mjs",
-    "dev:tech": "vite --config tech/vite.config.js --port 5182"
+    "dev:tech": "vite --config tech/vite.config.js --port 5186",
+    "apercu": "node scripts/apercu.mjs"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

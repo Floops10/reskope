@@ -60,7 +60,9 @@ export function ProfilProvider({ children }) {
   const setProfil = useCallback((p) => {
     if (!PROFILS.includes(p) || p === profil) return;
     const interne = cheminInterne();
-    const dest = `${BASE}/${p}${interne === '/' ? '' : interne}`;
+    /* L'accueil d'un espace garde sa barre finale : c'est son adresse
+       canonique, celle qu'on partage. */
+    const dest = `${BASE}/${p}${interne === '/' ? '/' : interne}`;
     window.history.pushState({}, '', dest + window.location.search + window.location.hash);
     setProfilState(p);
   }, [profil]);

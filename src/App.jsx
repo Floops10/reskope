@@ -50,7 +50,7 @@ function VersEntreprises() {
   if (dev) {
     return (
       <main id="contenu" className="attente-page attente-page--dev">
-        <p>En développement, l’espace des entreprises tourne à part : <code>npm run dev:tech</code>, puis <code>localhost:5182{import.meta.env.BASE_URL}{vers}</code>.</p>
+        <p>En développement, l’espace des entreprises tourne à part : <code>npm run dev:tech</code>, puis <code>localhost:5186{import.meta.env.BASE_URL}{vers}</code>.</p>
       </main>
     );
   }
