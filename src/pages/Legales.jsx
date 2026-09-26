@@ -14,10 +14,10 @@ import { CONTACT } from '../data/site';
    juridique, adresse du siège, code APE, délais de paiement et de réserve,
    et le médiateur de la consommation si la clientèle est grand public. */
 
-function LegalPage({ meta, eyebrow, title, lead, sections, updated }) {
+function LegalPage({ meta, title, lead, sections, updated }) {
   return (
     <Page title={meta} description={lead}>
-      <PageHeader eyebrow={eyebrow} title={title} lead={lead} />
+      <PageHeader title={title} lead={lead} />
       <section className="section section--tight">
         <div className="container legal">
           {sections.map((s) => (
@@ -46,14 +46,14 @@ const MENTIONS = {
     eyebrow: 'Informations',
     title: 'Mentions légales.',
     lead: "Les informations légales relatives à l'éditeur et à l'hébergement de ce site.",
-    updated: 'Dernière mise à jour : 14 septembre 2026.',
+    updated: 'Dernière mise à jour : 26 septembre 2026.',
     sections: [
       { h: 'Éditeur du site', p: [
         `Le site Reskope est édité par Florian Bouchart, [À COMPLÉTER : forme juridique, ex. entrepreneur individuel / micro-entreprise].`,
         'Siège : [À COMPLÉTER : adresse du siège].',
         'SIRET : 939 285 003 00017 · Code APE : [À COMPLÉTER : code APE].',
         'TVA : non applicable, article 293 B du CGI (franchise en base).',
-        `Contact : ${CONTACT.email}`,
+        'Contact : par le formulaire de la page Contact de ce site. [À COMPLÉTER : un numéro de téléphone ou une adresse électronique joignable, exigés par la loi pour l’éditeur d’un site professionnel.]',
       ] },
       { h: 'Directeur de la publication', p: [
         'Directeur de la publication : Florian Bouchart.',
@@ -65,7 +65,7 @@ const MENTIONS = {
         "L'ensemble des contenus de ce site (textes, identité visuelle, logo, animations, code) est la propriété de Reskope, sauf mention contraire. Toute reproduction, représentation, modification ou adaptation, totale ou partielle, sans autorisation écrite préalable, est interdite et constitue une contrefaçon.",
       ] },
       { h: 'Données personnelles', p: [
-        `Les traitements de données personnelles réalisés via ce site (formulaires de contact, questionnaire) sont détaillés dans la politique de confidentialité. Pour toute question ou pour exercer vos droits : ${CONTACT.email}`,
+        'Les traitements de données personnelles réalisés via ce site (formulaire de contact, prise de rendez-vous) sont détaillés dans la politique de confidentialité. Pour toute question ou pour exercer vos droits : le formulaire de la page Contact.',
       ] },
       { h: 'Cookies', p: [
         "Ce site n'utilise aucun cookie de suivi ou de publicité. Voir la politique de confidentialité pour le détail.",
@@ -124,14 +124,14 @@ const PRIVACY = {
     eyebrow: 'Vos données',
     title: 'Politique de confidentialité.',
     lead: 'Ce que ce site collecte (très peu), pourquoi, où vont vos données, et vos droits.',
-    updated: 'Dernière mise à jour : 14 septembre 2026.',
+    updated: 'Dernière mise à jour : 26 septembre 2026.',
     sections: [
       { h: 'Responsable du traitement', p: [
-        `Le responsable du traitement est Florian Bouchart (Reskope), [À COMPLÉTER : adresse]. Pour toute question relative à vos données : ${CONTACT.email}`,
+        'Le responsable du traitement est Florian Bouchart (Reskope), [À COMPLÉTER : adresse]. Pour toute question relative à vos données : le formulaire de la page Contact, en précisant « Données personnelles ».',
       ] },
       { h: 'Données collectées', p: [
-        "Ce site ne demande la création d'aucun compte et n'utilise aucun outil de suivi publicitaire ni de mesure d'audience. Les seules données personnelles collectées sont celles que vous transmettez volontairement via les formulaires de contact et le questionnaire : nom, adresse e-mail et contenu de votre message.",
-        'Quelques éléments sont enregistrés localement dans votre navigateur et ne quittent jamais votre appareil : la langue choisie, la version du site retenue (TPE ou PME), et le schéma que vous composez dans l’atelier — noms des outils, niveaux d’utilisation et liaisons. Ce schéma n’est transmis nulle part : il reste sur votre appareil tant que vous ne décidez pas de nous l’envoyer, et vous l’effacez à tout moment avec le bouton « Tout effacer » de l’atelier ou en vidant les données de site de votre navigateur.',
+        "Ce site ne demande la création d'aucun compte et n'utilise aucun outil de suivi publicitaire ni de mesure d'audience. Les seules données personnelles collectées sont celles que vous transmettez volontairement par le formulaire de contact : votre nom, votre adresse e-mail, le nom de votre entreprise ou de votre projet si vous le donnez, la situation que vous cochez et le contenu de votre message.",
+        'Un seul élément peut être enregistré localement dans votre navigateur, et seulement si vous utilisez l’atelier : le schéma que vous y composez (noms des outils, niveaux d’utilisation et liaisons). Il n’est transmis nulle part : il reste sur votre appareil tant que vous ne décidez pas de nous l’envoyer, et vous l’effacez à tout moment avec le bouton « Tout effacer » de l’atelier ou en vidant les données de site de votre navigateur. Les préférences de langue et de version que l’ancienne version du site enregistrait sont effacées à votre première visite.',
         'Ces enregistrements ne servent qu’au fonctionnement du site, jamais à vous suivre ni à vous identifier.',
       ] },
       { h: 'Finalités et bases légales', p: [
@@ -143,6 +143,11 @@ const PRIVACY = {
         "La prise de rendez-vous est assurée par Cal.com. Le script de Cal.com n'est chargé qu'au moment où vous cliquez volontairement sur le bouton de réservation : tant que vous ne demandez pas de rendez-vous, aucune donnée n'est transmise à ce prestataire. Si vous réservez un créneau, les informations que vous saisissez (nom, e-mail, motif) sont traitées par Cal.com conformément à sa propre politique de confidentialité.",
         "L'hébergement du site est assuré par GitHub, Inc. (États-Unis). Vos données ne sont ni vendues ni cédées à des fins commerciales, et ne sont partagées avec aucun autre tiers que les prestataires techniques strictement nécessaires ci-dessus.",
       ] },
+      { h: 'Si nous vous avons interrogé pour l’un de nos clients', p: [
+        "Pendant une mission, nous interrogeons des clients ou des prospects de l'entreprise qui nous a missionnés. Cette entreprise est responsable du traitement ; nous agissons pour son compte, en qualité de sous-traitant.",
+        "Vous avez été prévenu par elle avant l'entretien, et vous pouviez refuser. Ce que vous nous dites sert uniquement à la mission : vos propos sont cités sans votre nom dans ce que nous lui remettons, un entretien n'est enregistré qu'avec votre accord, et vos coordonnées comme les enregistrements sont effacés à la fin de la mission.",
+        "Pour exercer vos droits, adressez-vous à l'entreprise qui vous a prévenu, ou écrivez-nous par le formulaire de la page Contact : nous lui transmettrons votre demande.",
+      ] },
       { h: 'Durée de conservation', p: [
         "Vos messages sont conservés le temps de l'échange, puis au maximum 3 ans après le dernier contact, avant suppression.",
       ] },
@@ -150,11 +155,11 @@ const PRIVACY = {
         "Le site est servi en HTTPS. Des mesures raisonnables sont prises pour protéger vos données contre tout accès non autorisé ; aucune transmission sur Internet ne peut toutefois être garantie à 100 %.",
       ] },
       { h: 'Vos droits', p: [
-        `Conformément au RGPD, vous disposez d'un droit d'accès, de rectification, d'effacement, de limitation, d'opposition et de portabilité sur vos données, ainsi que du droit de retirer votre consentement. Pour l'exercer : ${CONTACT.email}`,
+        "Conformément au RGPD, vous disposez d'un droit d'accès, de rectification, d'effacement, de limitation, d'opposition et de portabilité sur vos données, ainsi que du droit de retirer votre consentement. Pour l'exercer : le formulaire de la page Contact, en précisant « Données personnelles ». On vous répond sous un mois au plus.",
         "Vous pouvez également introduire une réclamation auprès de la CNIL (cnil.fr).",
       ] },
       { h: 'Cookies', p: [
-        "Ce site n'utilise aucun cookie de suivi ou de publicité. La seule information stockée localement est votre préférence de langue (localStorage), qui ne nécessite pas de consentement et ne quitte pas votre appareil.",
+        "Ce site n'utilise aucun cookie de suivi ou de publicité. Le seul stockage local est celui de l'atelier, décrit plus haut : il sert au fonctionnement de l'outil que vous utilisez, ne nécessite pas de consentement et ne quitte pas votre appareil.",
       ] },
       { h: 'Mise à jour', p: [
         "Cette politique peut être mise à jour pour refléter des évolutions légales ou techniques. La date de dernière mise à jour figure ci-dessous.",
@@ -211,10 +216,10 @@ const TERMS = {
     eyebrow: 'Cadre',
     title: "Conditions générales d'utilisation.",
     lead: "Les règles simples qui encadrent l'utilisation de ce site.",
-    updated: 'Dernière mise à jour : 14 septembre 2026.',
+    updated: 'Dernière mise à jour : 26 septembre 2026.',
     sections: [
       { h: 'Objet', p: [
-        "Les présentes conditions encadrent l'accès et l'utilisation du site Reskope, site vitrine présentant les services d'audit, de conseil et d'ingénierie numérique proposés par Reskope. En utilisant le site, vous acceptez ces conditions.",
+        "Les présentes conditions encadrent l'accès et l'utilisation du site Reskope, site vitrine présentant les missions de conseil et de réalisation proposées par Reskope. En utilisant le site, vous acceptez ces conditions.",
       ] },
       { h: 'Accès au site', p: [
         "Le site est accessible gratuitement, 24 h/24 dans la mesure du possible. Reskope ne saurait être tenu responsable d'une indisponibilité temporaire (maintenance, hébergeur, force majeure).",
@@ -280,29 +285,29 @@ const SALES = {
     meta: 'Conditions générales de vente',
     eyebrow: 'Prestations',
     title: 'Conditions générales de vente.',
-    lead: "Le cadre des prestations d'audit, de mise en œuvre, de développement et de suivi.",
-    updated: 'Dernière mise à jour : 14 septembre 2026.',
+    lead: "Le cadre des missions : discovery, relecture et business plan, cadre de marque, réalisation.",
+    updated: 'Dernière mise à jour : 26 septembre 2026.',
     sections: [
       { h: 'Objet et champ d’application', p: [
-        "Les présentes conditions générales de vente (CGV) régissent les prestations de conseil, d'audit numérique, de développement, d'automatisation et de suivi fournies par Reskope à ses clients professionnels. Toute commande implique l'acceptation sans réserve des présentes CGV, qui prévalent sur tout autre document du client.",
+        "Les présentes conditions générales de vente (CGV) régissent les missions de conseil et de réalisation fournies par Reskope à ses clients professionnels. Toute commande implique l'acceptation sans réserve des présentes CGV, qui prévalent sur tout autre document du client.",
       ] },
       { h: 'Prestataire', p: [
         'Reskope, Florian Bouchart, [À COMPLÉTER : forme juridique, SIRET, adresse]. Coordonnées complètes dans les mentions légales.',
       ] },
       { h: 'Prestations', p: [
-        "Reskope propose quatre types de prestations : l'audit numérique (diagnostic terrain et bilan priorisé), l'audit assorti de la mise en œuvre, le développement et l'automatisation sur-mesure, et le suivi mensuel. Le périmètre précis de chaque mission est défini au devis.",
+        "Reskope propose des missions de discovery (tester une idée, comprendre ses clients, trouver et tester une solution, comprendre comment ses équipes travaillent), des missions autour du business plan et du financement (relecture d'un dossier, contribution au business plan, préparation du passage devant les financeurs), la définition du cadre d'une marque, et des missions de réalisation (développement, automatisation, passage de relais aux équipes). Le périmètre précis de chaque mission est défini dans la proposition écrite.",
       ] },
       { h: 'Devis et formation du contrat', p: [
-        "Chaque mission fait l'objet d'un devis personnalisé, gratuit et sans engagement. Les prix affichés sur le site sont indicatifs (« à partir de ») et ne constituent pas une offre ferme. Le contrat est formé à l'acceptation écrite du devis par le client (signature ou accord par e-mail).",
+        "Chaque mission fait l'objet d'une proposition écrite personnalisée, remise après un premier échange gratuit et sans engagement. Aucun prix n'est affiché sur le site. Le contrat est formé à l'acceptation écrite de la proposition par le client (signature ou accord par e-mail).",
       ] },
       { h: 'Prix et TVA', p: [
-        "Les prix sont exprimés en euros et s'entendent nets. Aucun barème n'est publié : le montant de chaque prestation, au forfait ou au temps passé, est fixé au devis et accepté avant tout commencement d'exécution.",
-        "Aucun tarif n'est publié : le prix est établi mission par mission et figure au devis, accepté avant tout commencement d'exécution. Le montant de l'audit est intégralement déduit du devis de mise en œuvre lorsque celle-ci est confiée à Reskope.",
+        "Les prix sont exprimés en euros et s'entendent nets. Le prix de chaque mission est fixe : il figure dans la proposition écrite, acceptée avant tout commencement d'exécution, et ne change pas en cours de mission, sauf modification du périmètre demandée par écrit par le client. Les missions de réalisation sont estimées en jours avant de démarrer.",
+        "Le montant de la mission « Comprendre comment vos équipes travaillent » est intégralement déduit de la mission de réalisation qui la suit, lorsque celle-ci est confiée à Reskope.",
         'TVA : non applicable, article 293 B du CGI (franchise en base).',
       ] },
       { h: 'Garantie bilan', p: [
-        "Si, à la remise du bilan d'audit, le client estime que celui-ci ne lui apporte aucun élément exploitable, il dispose de sept (7) jours calendaires pour le signaler par écrit, en motivant sa position. Reskope propose alors, au choix du client, soit une reprise du bilan sans supplément, soit l'annulation de la facture correspondante.",
-        "En cas d'annulation, le bilan et l'ensemble des documents remis doivent être restitués et ne peuvent faire l'objet d'aucune exploitation, directe ou indirecte. Cette garantie porte sur la prestation d'audit uniquement, à l'exclusion des journées de mise en œuvre, des développements et de l'abonnement de suivi.",
+        "Si, à la remise du bilan de la mission « Comprendre comment vos équipes travaillent », le client estime que celui-ci ne lui apporte aucun élément exploitable, il dispose de sept (7) jours calendaires pour le signaler par écrit, en motivant sa position. Reskope propose alors, au choix du client, soit une reprise du bilan sans supplément, soit l'annulation de la facture correspondante.",
+        "En cas d'annulation, le bilan et l'ensemble des documents remis doivent être restitués et ne peuvent faire l'objet d'aucune exploitation, directe ou indirecte. Cette garantie porte sur cette mission uniquement, à l'exclusion des autres missions et des journées de réalisation.",
       ] },
       { h: 'Modalités et délais de paiement', p: [
         'Paiement par virement bancaire. [À COMPLÉTER : acompte à la commande, ex. 30 % ; solde à la livraison ou selon l’échéancier du devis].',
@@ -324,7 +329,8 @@ const SALES = {
         "Chaque partie s'engage à garder confidentielles les informations non publiques échangées dans le cadre de la mission, pendant celle-ci et après son terme.",
       ] },
       { h: 'Protection des données', p: [
-        "Lorsque, dans le cadre d'une mission, Reskope traite des données personnelles pour le compte du client, elle agit en qualité de sous-traitant au sens de l'article 28 du RGPD, dans le cadre d'un accord de traitement dédié précisant finalités, durées et mesures de sécurité.",
+        "Lorsque, dans le cadre d'une mission, Reskope traite des données personnelles pour le compte du client, notamment celles des clients et prospects qu'elle interroge, elle agit en qualité de sous-traitant au sens de l'article 28 du RGPD, sur les seules instructions du client et dans le cadre d'un accord de traitement annexé à la proposition.",
+        "Le client prévient lui-même les personnes interrogées et recueille leur accord. Reskope ne les contacte que pour la mission, ne leur propose rien, cite leurs propos sans leur nom, n'enregistre un entretien qu'avec leur accord, garde ces données confidentielles, et efface les coordonnées et les enregistrements à la fin de la mission. Elle aide le client à répondre aux demandes d'exercice de droits qui lui parviennent.",
       ] },
       { h: 'Garantie et responsabilité', p: [
         "Reskope répond des défauts de conformité imputables à ses prestations. Sa responsabilité est limitée aux dommages directs et prévisibles, et plafonnée au montant hors taxes effectivement payé pour la mission concernée. Sont exclus les dommages indirects (perte d'exploitation, de données, de chiffre d'affaires).",
@@ -333,13 +339,13 @@ const SALES = {
         "Aucune partie ne saurait être tenue responsable d'un manquement dû à un cas de force majeure au sens de l'article 1218 du Code civil.",
       ] },
       { h: 'Durée et résiliation', p: [
-        "Les missions ponctuelles prennent fin à la livraison. Le suivi mensuel est sans engagement de durée, résiliable à tout moment par chaque partie moyennant un préavis de [À COMPLÉTER : ex. 30 jours], les prestations en cours restant dues.",
+        "Les missions prennent fin à la remise des livrables. Le client peut interrompre une mission en cours par écrit ; les conséquences sur le prix sont précisées dans la proposition. [À COMPLÉTER : règle retenue en cas d'interruption, par exemple le travail réalisé dû au prorata.]",
       ] },
       { h: 'Droit de rétractation', p: [
         "Les prestations s'adressent à des clients professionnels agissant dans le cadre de leur activité : le droit de rétractation prévu pour les consommateurs ne s'applique en principe pas. Le cas échéant, il peut s'appliquer au professionnel employant cinq salariés ou moins lorsque l'objet de la prestation n'entre pas dans le champ de son activité principale (art. L221-3 du Code de la consommation).",
       ] },
       { h: 'Réclamations et médiation', p: [
-        `Toute réclamation peut être adressée à ${CONTACT.email}. [À COMPLÉTER : en cas de clientèle consommateur, coordonnées du médiateur de la consommation compétent].`,
+        'Toute réclamation peut être adressée par le formulaire de la page Contact. [À COMPLÉTER : en cas de clientèle consommateur, coordonnées du médiateur de la consommation compétent].',
       ] },
       { h: 'Litiges et droit applicable', p: [
         "Les présentes CGV sont soumises au droit français. En cas de différend, les parties rechercheront une solution amiable avant toute action ; à défaut, les tribunaux français seront compétents.",

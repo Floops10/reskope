@@ -6,8 +6,7 @@
 
 User-agent: *
 Allow: /
-Disallow: /reskope/pme/merci
-Disallow: /reskope/tpe/merci
+Disallow: /reskope/merci
 
 # Les moteurs de réponse sont explicitement admis. Le site est pré-rendu :
 # ils lisent du vrai texte sans avoir à exécuter de JavaScript.

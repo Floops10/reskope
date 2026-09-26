@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { createContext, useContext, useEffect, useCallback } from 'react';
 
 /* ============================================================
    Internationalisation FR / EN
@@ -68,8 +68,8 @@ const SHARED = {
       dlBack: 'Télécharger le verso',
       note: 'Fichier vectoriel · 85 × 54 mm · recto & verso · à ouvrir dans Illustrator, Figma ou chez votre imprimeur.',
       pour: 'Pour',
-      role1: 'Conseil & ingénierie numérique',
-      role2: 'Développement web · automatisation',
+      role1: 'On vous aide à décider,',
+      role2: 'et on construit la suite.',
     },
   },
   en: {
@@ -136,31 +136,31 @@ const SHARED = {
   },
 };
 
+/* Le site ne parle plus qu'une langue. La version anglaise traduisait mot
+   à mot un discours écrit pour des dirigeants des Hauts-de-France : elle
+   doublait le travail à chaque phrase et ne servait personne. Le contexte
+   reste, pour que les composants qui lisent encore la langue n'aient rien
+   à changer ; il répond toujours « fr ». */
 const LangContext = createContext({ lang: 'fr', setLang: () => {}, t: SHARED.fr });
 
 export function LangProvider({ children }) {
-  const [lang, setLangState] = useState(() => {
-    if (typeof localStorage !== 'undefined') {
-      const s = localStorage.getItem('reskope-lang');
-      if (s === 'fr' || s === 'en') return s;
-    }
-    if (typeof navigator !== 'undefined' && navigator.language?.startsWith('en')) return 'en';
-    return 'fr';
-  });
-
   useEffect(() => {
-    document.documentElement.lang = lang;
+    document.documentElement.lang = 'fr';
+    /* Une préférence laissée par l'ancienne version du site n'a plus de
+       raison de rester dans le navigateur du visiteur. */
     try {
-      localStorage.setItem('reskope-lang', lang);
+      localStorage.removeItem('reskope-lang');
+      localStorage.removeItem('reskope-profil');
+      sessionStorage.removeItem('reskope-porte-vue');
     } catch {
-      /* ignore */
+      /* navigation privée */
     }
-  }, [lang]);
+  }, []);
 
-  const setLang = useCallback((l) => setLangState(l), []);
+  const setLang = useCallback(() => {}, []);
 
   return (
-    <LangContext.Provider value={{ lang, setLang, t: SHARED[lang] }}>
+    <LangContext.Provider value={{ lang: 'fr', setLang, t: SHARED.fr }}>
       {children}
     </LangContext.Provider>
   );
@@ -173,29 +173,4 @@ export function useLang() {
 
 export function useT() {
   return useContext(LangContext).t;
-}
-
-/* Bascule FR / EN */
-export function LangToggle({ className = '' }) {
-  const { lang, setLang } = useLang();
-  return (
-    <div className={`langtoggle ${className}`} role="group" aria-label="Langue / Language">
-      <button
-        type="button"
-        className={`langtoggle__opt${lang === 'fr' ? ' is-on' : ''}`}
-        aria-pressed={lang === 'fr'}
-        onClick={() => setLang('fr')}
-      >
-        FR
-      </button>
-      <button
-        type="button"
-        className={`langtoggle__opt${lang === 'en' ? ' is-on' : ''}`}
-        aria-pressed={lang === 'en'}
-        onClick={() => setLang('en')}
-      >
-        EN
-      </button>
-    </div>
-  );
 }

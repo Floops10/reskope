@@ -1,5 +1,4 @@
 import { useLang } from '../i18n';
-import { useProfil } from '../profil';
 
 /* ZONE D'INTERVENTION — carte dessinée en SVG, dans le langage réseau de la
    marque (villes = nœuds, déplacements = liens), plus un lien d'itinéraire.
@@ -25,10 +24,10 @@ const VILLES = [
 const CONTENT = {
   fr: {
     eyebrow: 'Zone d’intervention',
-    title: 'Sur le terrain, pas à distance.',
-    lead: 'Basés à Valenciennes et à Lille, on intervient sur place dans tout le Hainaut et les Hauts-de-France. L’audit se fait chez vous, salarié par salarié : c’est ce qui en fait la valeur.',
+    title: 'On vient vous voir.',
+    lead: 'Basés à Valenciennes et à Lille, on vient vous voir pour le premier rendez-vous et pour la restitution, partout dans les Hauts-de-France. Les entretiens avec vos clients se font au téléphone, en visio ou sur place, selon ce qui les arrange.',
     radius: 'Déplacement sans frais dans un rayon de 60 km',
-    beyond: 'Au-delà, les frais sont annoncés dans le devis, jamais après.',
+    beyond: 'Au-delà, les frais sont écrits dans la proposition, jamais ajoutés après.',
     itinerary: 'Ouvrir l’itinéraire',
     baseLabel: 'Points de départ',
     bases: 'Valenciennes et Lille',
@@ -51,9 +50,8 @@ const CONTENT = {
 
 export default function ZoneMap() {
   const { lang } = useLang();
-  const { profil } = useProfil();
   const c = CONTENT[lang];
-  const lead = profil === 'tpe' ? c.leadTpe : c.lead;
+  const { lead } = c;
   /* geo: ouvre l'app de cartes native ; fallback web si non supportée */
   const directions = 'https://www.openstreetmap.org/directions?to=50.3573%2C3.5234';
 
@@ -63,7 +61,6 @@ export default function ZoneMap() {
     <section className="zone couture-claire" aria-labelledby="zone-title">
       <div className="container zone__inner">
         <div className="zone__copy">
-          <p className="eyebrow eyebrow--index">{c.eyebrow}</p>
           <h2 className="h2" id="zone-title">{c.title}</h2>
           <p className="lead">{lead}</p>
           <ul className="zone__facts">

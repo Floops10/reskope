@@ -4,10 +4,10 @@ import { instant } from '../lib/scrub';
 import Net3D from './Net3D';
 import { GLYPH_SHAPES } from '../lib/net3d';
 import { Reveal, RevealItem } from './Reveal';
-import { Link } from 'react-router-dom';
 import { useLang } from '../i18n';
 import { CONTACT, FORMULAIRE } from '../data/site';
 import { openCalModal, CAL_FALLBACK_URL, isCalConfigured } from '../lib/cal';
+import { scrollToEl } from '../lib/smoothScroll';
 
 /* PRENDRE RENDEZ-VOUS — la scène reste entièrement dans la DA Reskope ;
    Cal.com n'apparaît qu'en surcouche, au clic (voir src/lib/cal.js). */
@@ -57,7 +57,7 @@ export default function Booking({ c }) {
 
       <div className="container bk__inner">
         <Reveal>
-          <RevealItem as="p" className="eyebrow bk__eyebrow bk__reveal">{c.eyebrow}</RevealItem>
+          {c.eyebrow && <RevealItem as="p" className="eyebrow bk__eyebrow bk__reveal">{c.eyebrow}</RevealItem>}
           <RevealItem as="h2" className="bk__title bk__reveal">{c.title}</RevealItem>
           <RevealItem as="p" className="bk__lead bk__reveal">{c.lead}</RevealItem>
         </Reveal>
@@ -100,7 +100,13 @@ export default function Booking({ c }) {
             {CONTACT.ouverte ? (
               <a className="link" href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
             ) : (
-              <Link className="link" to="/contact">{FORMULAIRE[lang] || FORMULAIRE.fr}</Link>
+              <button
+                type="button"
+                className="link bk__vers-form"
+                onClick={() => scrollToEl(document.getElementById('contact-form'))}
+              >
+                {FORMULAIRE[lang] || FORMULAIRE.fr}
+              </button>
             )}
           </p>
         </div>

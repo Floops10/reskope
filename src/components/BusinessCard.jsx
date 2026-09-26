@@ -130,7 +130,7 @@ function CardFront({ pour, t, svgRef }) {
 
         {/* URL */}
         <text x={W - 44} y={H - 26} textAnchor="end" fill={CREAM} fontSize={15} letterSpacing="0.06em" opacity="0.38" fontFamily={FONT}>
-          reskope.fr
+          floops10.github.io/reskope
         </text>
       </g>
     </svg>
@@ -176,7 +176,7 @@ function CardBack({ t, svgRef }) {
           {t.role2}
         </text>
         <text x={W / 2} y={504} textAnchor="middle" fill={INDIGO} fontSize={15} letterSpacing="0.06em" opacity="0.38" fontFamily={FONT}>
-          reskope.fr
+          floops10.github.io/reskope
         </text>
       </g>
     </svg>

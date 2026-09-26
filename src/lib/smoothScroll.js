@@ -60,3 +60,10 @@ export function scrollToTop(immediate = true) {
   if (lenis) lenis.scrollTo(0, { immediate });
   else window.scrollTo(0, 0);
 }
+
+/* Va jusqu'à un élément de la page, sous l'en-tête fixe. */
+export function scrollToEl(el, offset = -96) {
+  if (!el) return;
+  if (lenis) lenis.scrollTo(el, { offset, duration: 1.1 });
+  else window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY + offset, behavior: 'smooth' });
+}

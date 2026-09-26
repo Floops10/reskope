@@ -1,15 +1,13 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { useProfil } from '../profil';
 import { SITE, fiche, url } from '../data/seo';
 
-/* Enveloppe de page : contenu toujours visible (les entrées sont portées par
-   les <Reveal>). Elle tient aussi les balises de référencement.
+/* Enveloppe de page. Elle tient aussi les balises de référencement.
 
    Le build écrit déjà un fichier HTML complet par adresse (voir
    scripts/prerender.mjs) : c'est ce que lisent les moteurs. Mais dès qu'on
-   navigue à l'intérieur du site, plus aucune page n'est rechargée — il faut
-   donc remettre à jour le titre, la description, la CANONIQUE et les balises
+   navigue à l'intérieur du site, plus aucune page n'est rechargée : il faut
+   donc remettre à jour le titre, la description, la canonique et les balises
    de partage à la main. Sans la canonique, un lien copié depuis la barre
    d'adresse pendant la navigation renvoyait vers l'accueil.
 
@@ -26,19 +24,17 @@ function baliser(selecteur, attribut, cle, valeur) {
   el.setAttribute(selecteur.startsWith('link') ? 'href' : 'content', valeur);
 }
 
-export default function Page({ children, title, description }) {
+export default function Page({ children, title, description, className }) {
   const { pathname } = useLocation();
-  const { profil } = useProfil();
 
   useEffect(() => {
-    /* Une adresse pré-rendue se termine par une barre (/offres/), une adresse
-       atteinte par navigation interne non (/offres). C'est la même page : on
-       range la barre avant de chercher la fiche. */
+    /* Une adresse pré-rendue se termine par une barre (/contact/), une
+       adresse atteinte par navigation interne non. C'est la même page. */
     const route = pathname !== '/' ? pathname.replace(/\/+$/, '') : '/';
-    const f = fiche(profil || 'pme', route);
+    const f = fiche(route);
     const t = f ? f.titre : title;
     const d = f ? f.description : description;
-    const complet = t ? `${t} · ${SITE.marque}` : `${SITE.marque} · Conseil et ingénierie numérique`;
+    const complet = t ? `${t} · ${SITE.marque}` : `${SITE.marque} · On vous aide à décider, et on construit la suite`;
 
     document.title = complet;
     if (d) {
@@ -49,10 +45,10 @@ export default function Page({ children, title, description }) {
     baliser('meta[property="og:title"]', 'property', 'og:title', complet);
     baliser('meta[name="twitter:title"]', 'name', 'twitter:title', complet);
 
-    const adresse = url(profil, route);
+    const adresse = url(route);
     baliser('link[rel="canonical"]', 'rel', 'canonical', adresse);
     baliser('meta[property="og:url"]', 'property', 'og:url', adresse);
-  }, [pathname, profil, title, description]);
+  }, [pathname, title, description]);
 
-  return <main>{children}</main>;
+  return <main id="contenu" className={className}>{children}</main>;
 }

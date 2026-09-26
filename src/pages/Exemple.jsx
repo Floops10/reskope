@@ -1,515 +1,310 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import ReservePme from '../components/ReservePme';
 import Page from '../components/Page';
-import MorphTitle from '../components/MorphTitle';
-import NetWord from '../components/NetWord';
-import Net3D from '../components/Net3D';
-import { GLYPH_SHAPES } from '../lib/net3d';
+import Amorce from '../components/Amorce';
+import Noeuds from '../components/Noeuds';
+import Planche from '../components/Planche';
+import Verbatims from '../components/Verbatims';
+import Compte from '../components/Compte';
+import Semaine from '../components/Semaine';
+import SwapLabel from '../components/SwapLabel';
 import { gsap, useGSAP } from '../lib/gsap';
-import { useLang } from '../i18n';
-import { BILAN, CARTO_NODES, CARTO_LINKS } from '../data/bilan';
+import { instant } from '../lib/scrub';
 
-/* ============================================================
-   EXEMPLE DE BILAN — l'explorateur interactif.
-   Pas un document qui défile : une interface. Sept volets (onglets),
-   chacun avec ses interactions : chiffres comptés, barres avant/après,
-   accordéon des constats, CARTOGRAPHIE DU SI avant/après cliquable,
-   board d'actions filtrable, feuille de route priorisée.
-   ============================================================ */
+/* ════════════════════════════════════════════════════════════
+   UN EXEMPLE COMPLET — une mission « Comprendre vos clients », du premier
+   lundi à la décision.
 
-const reduced = () =>
-  typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+   Reskope démarre : on n'a pas encore de mission réelle à montrer, et on ne
+   va pas en inventer une en la faisant passer pour vraie. Ce cas d'école le
+   dit en tête de page et le répète à la fin. L'entreprise, les personnes et
+   les chiffres sont inventés ; les questions, les documents et la manière
+   de lire les chiffres sont ceux qu'on applique.
 
-/* — Chiffre compté à l'apparition — */
-function CountStat({ s, locale }) {
-  const ref = useRef(null);
-  useEffect(() => {
-    const el = ref.current;
-    const fmt = new Intl.NumberFormat(locale === 'fr' ? 'fr-FR' : 'en-US', {
-      minimumFractionDigits: s.decimals || 0,
-      maximumFractionDigits: s.decimals || 0,
-    });
-    const render = (v) => {
-      el.textContent = `${s.prefix || ''}${fmt.format(v)}${s.suffix || ''}`;
-    };
-    if (s.mode === 'fromto') {
-      el.textContent = `${s.value} → ${s.to}`;
-      return;
-    }
-    if (reduced()) { render(s.value); return; }
-    const proxy = { v: 0 };
-    const tw = gsap.to(proxy, {
-      v: s.value, duration: 1.4, ease: 'power3.out', delay: 0.15,
-      onUpdate: () => render(proxy.v),
-    });
-    return () => tw.kill();
-  }, [s, locale]);
-  return (
-    <div className="bilan-stat">
-      <span className="bilan-stat__num" ref={ref}>0</span>
-      <span className="bilan-stat__label">{s.label}</span>
-    </div>
-  );
-}
+   La page doit rester complète : c'est ici qu'un dirigeant voit ce qu'il
+   aura entre les mains, sans avoir à nous croire sur parole.
+   ════════════════════════════════════════════════════════════ */
 
-/* — Barres avant / après (temps) — */
-function fmtMin(min) {
-  if (min < 60) return `${min} min`;
-  const h = Math.floor(min / 60);
-  const m = min % 60;
-  return m ? `${h} h ${String(m).padStart(2, '0')}` : `${h} h`;
-}
-function TimeRows({ t }) {
-  const rootRef = useRef(null);
-  useEffect(() => {
-    if (reduced()) return;
-    const bars = rootRef.current.querySelectorAll('.bilan-time__bar i');
-    const tw = gsap.fromTo(bars, { scaleX: 0 }, {
-      scaleX: 1, duration: 1.1, ease: 'power4.out', stagger: 0.08, delay: 0.2,
-    });
-    return () => tw.kill();
-  }, [t]);
-  const max = Math.max(...t.rows.map((r) => r.before));
-  return (
-    <div className="bilan-time" ref={rootRef}>
-      {t.rows.map((r) => (
-        <div className="bilan-time__row" key={r.label}>
-          <div className="bilan-time__head">
-            <span className="bilan-time__label">{r.label}</span>
-            <span className="bilan-time__unit">{r.unit}</span>
-          </div>
-          <div className="bilan-time__bars">
-            <div className="bilan-time__bar bilan-time__bar--before">
-              <i style={{ width: `${(r.before / max) * 100}%` }} />
-              <b>{t.unitBefore} · {fmtMin(r.before)}</b>
-            </div>
-            <div className="bilan-time__bar bilan-time__bar--after">
-              <i style={{ width: `${(r.after / max) * 100}%` }} />
-              <b>{t.unitAfter} · {fmtMin(r.after)}</b>
-            </div>
-          </div>
-          <span className="bilan-time__gain">−{Math.round((1 - r.after / r.before) * 100)} %</span>
-        </div>
-      ))}
-      <p className="bilan-note">{t.note}</p>
-    </div>
-  );
-}
+const CROYAIT = [
+  'Nos prix sont trop hauts face aux artisans qui cassent les prix.',
+  'Les clients comparent tout sur internet avant d’appeler.',
+  'On manque de visibilité : il faudrait refaire le site.',
+];
 
-/* — Accordéon des constats — */
-function Findings({ c }) {
-  const [open, setOpen] = useState(0);
-  return (
-    <div className="bilan-acc">
-      {c.items.map((it, i) => {
-        const on = open === i;
-        return (
-          <div className={`bilan-acc__item${on ? ' is-open' : ''}`} key={it.title}>
-            <button type="button" className="bilan-acc__q" aria-expanded={on} onClick={() => setOpen(on ? -1 : i)}>
-              <span className={`bilan-acc__sev bilan-acc__sev--${it.sev}`} aria-hidden="true">
-                <i /><i /><i />
-              </span>
-              <span className="bilan-acc__title">{it.title}</span>
-              <span className="bilan-acc__icon" aria-hidden="true" />
-            </button>
-            <div className="bilan-acc__a"><p>{it.text}</p></div>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
+const INTERROGES = [
+  { texte: 'Quatre clients qui ont signé dans l’année', suite: 'Pour comprendre ce qui a fait la différence, vu de chez eux.' },
+  { texte: 'Quatre personnes qui ont demandé un devis sans le signer', suite: 'Ce sont elles qui expliquent la baisse. Elles parlent volontiers à quelqu’un d’extérieur.' },
+  { texte: 'Trois anciens clients qui ne sont pas revenus', suite: 'Pour savoir ce qui se passe après un premier chantier.' },
+];
 
-/* — Cartographie du SI avant/après — */
-function CartoMap({ c }) {
-  const [view, setView] = useState('avant');
-  const [sel, setSel] = useState('erp');
-  const nodeById = useMemo(() => Object.fromEntries(CARTO_NODES.map((n) => [n.id, n])), []);
-  const pos = (n) => (view === 'avant' ? n.a : n.b);
-  const selNode = sel && nodeById[sel] && c.nodes[sel] ? { ...nodeById[sel], ...c.nodes[sel] } : null;
+const QUESTIONS_POSEES = [
+  'Racontez-moi comment le projet est né. Qu’est-ce qui vous a décidé à demander des devis ?',
+  'Combien d’entreprises avez-vous contactées, et comment les aviez-vous trouvées ?',
+  'Que s’est-il passé entre votre demande et le moment où vous avez reçu le devis ?',
+  'Quand vous avez eu les devis en main, comment les avez-vous comparés ?',
+  'Qu’est-ce qui vous a fait choisir, ou renoncer ?',
+];
 
-  const renderLinks = (list, phase) => (
-    <g className={`bilan-carto__links bilan-carto__links--${phase}`}>
-      {list.map(([a, b]) => {
-        const pa = phase === 'avant' ? nodeById[a].a : nodeById[a].b;
-        const pb = phase === 'avant' ? nodeById[b].a : nodeById[b].b;
-        if (!pa || !pb) return null;
-        return <line key={`${a}-${b}`} x1={pa[0]} y1={pa[1]} x2={pb[0]} y2={pb[1]} />;
-      })}
-    </g>
-  );
+const SUJETS = [
+  {
+    nom: 'Le délai de réponse',
+    n: 7,
+    citations: [
+      { t: 'J’ai attendu le devis trois semaines. Entre-temps, l’autre était déjà venu mesurer.', qui: 'Une propriétaire', issue: 'refuse' },
+      { t: 'Ils sont venus le surlendemain, c’est pour ça que je les ai pris.', qui: 'Un client', issue: 'signe' },
+      { t: 'Je ne savais même pas s’ils avaient bien reçu ma demande.', qui: 'Un couple', issue: 'refuse' },
+      { t: 'J’ai rappelé deux fois pour avoir une date de visite.', qui: 'Un ancien client', issue: 'parti' },
+    ],
+  },
+  {
+    nom: 'Le devis difficile à lire',
+    n: 5,
+    citations: [
+      { t: 'Trois pages de lignes, je ne savais pas ce qui était compris dedans.', qui: 'Un propriétaire', issue: 'refuse' },
+      { t: 'L’autre devis tenait sur une page, avec le prix pièce par pièce.', qui: 'Une cliente', issue: 'refuse' },
+      { t: 'J’ai dû appeler pour comprendre la ligne « divers ».', qui: 'Un ancien client', issue: 'parti' },
+    ],
+  },
+  {
+    nom: 'Le prix',
+    n: 2,
+    citations: [
+      { t: 'C’était un peu plus cher, mais ils avaient l’air sérieux.', qui: 'Un client', issue: 'signe' },
+      { t: 'Le prix, on s’y attendait, c’est le prix de la qualité.', qui: 'Une cliente', issue: 'signe' },
+    ],
+  },
+];
 
-  return (
-    <div className="bilan-carto">
-      <div className="bilan-carto__bar">
-        <div className="bilan-carto__toggle" role="tablist" aria-label={c.title}>
-          <span className={`bilan-carto__thumb${view === 'apres' ? ' is-right' : ''}`} aria-hidden="true" />
-          <button type="button" role="tab" aria-selected={view === 'avant'} className={view === 'avant' ? 'is-on' : ''} onClick={() => setView('avant')}>
-            {c.before}
-          </button>
-          <button type="button" role="tab" aria-selected={view === 'apres'} className={view === 'apres' ? 'is-on' : ''} onClick={() => setView('apres')}>
-            {c.after}
-          </button>
-        </div>
-        <div className="bilan-carto__legend" aria-hidden="true">
-          {Object.entries(c.statuses).map(([k, lab]) => (
-            <span key={k} className={`bilan-carto__lg bilan-carto__lg--${k}`}><i />{lab}</span>
-          ))}
-        </div>
-      </div>
+const PORTRAITS = [
+  {
+    nom: 'Le propriétaire pressé',
+    fait: 'Il veut que les travaux commencent avant l’été. Il retient la première entreprise sérieuse qui se déplace.',
+    decide: 'la vitesse de réponse',
+    cite: 'Le premier qui rappelle a le chantier.',
+  },
+  {
+    nom: 'Le comparateur prudent',
+    fait: 'Il demande trois devis et les pose côte à côte sur la table de la cuisine. Il élimine celui qu’il ne comprend pas.',
+    decide: 'un devis lisible, pièce par pièce',
+    cite: 'L’autre tenait sur une page.',
+  },
+  {
+    nom: 'Le fidèle déçu',
+    fait: 'Il a déjà fait appel à l’entreprise. Il n’est pas revenu parce qu’il est resté sans nouvelles après un appel.',
+    decide: 'qu’on se souvienne de lui',
+    cite: 'Je pensais qu’ils me rappelleraient.',
+  },
+];
 
-      <div className="bilan-carto__body">
-        <div className="bilan-carto__mapwrap">
-          <svg className={`bilan-carto__map is-${view}`} viewBox="0 0 100 60" role="img" aria-label={c.title}>
-            {renderLinks(CARTO_LINKS.avant, 'avant')}
-            {renderLinks(CARTO_LINKS.apres, 'apres')}
-            {CARTO_NODES.map((n) => {
-              const p = pos(n) || n.a || n.b;
-              const off = !pos(n);
-              const info = c.nodes[n.id];
-              return (
-                <g
-                  key={n.id}
-                  className={`bilan-carto__node bilan-carto__node--${n.status}${off ? ' is-off' : ''}${sel === n.id ? ' is-sel' : ''}`}
-                  style={{ transform: `translate(${p[0]}px, ${p[1]}px)` }}
-                  onClick={() => !off && setSel(n.id)}
-                  role="button"
-                  tabIndex={off ? -1 : 0}
-                  aria-label={info.label}
-                  onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && !off && (e.preventDefault(), setSel(n.id))}
-                >
-                  <circle className="bilan-carto__halo" r="4.4" />
-                  <circle className="bilan-carto__dot" r={n.big ? 2.6 : 1.8} />
-                  <text y={n.ly || (n.big ? -4.4 : -3.2)}>{info.label}</text>
-                </g>
-              );
-            })}
-          </svg>
-          <p className="bilan-carto__hint" aria-hidden="true">{c.hint}</p>
-        </div>
+const REMIS = [
+  { texte: 'Ses trois hypothèses, avec leur verdict', suite: 'Le prix : contredite. Internet : vraie, mais sans effet sur le choix. Le site : aucune preuve, rien à engager maintenant.' },
+  { texte: 'Les onze entretiens, résumés, avec les citations', suite: 'Sans les noms : ce qui a été dit, jamais qui l’a dit.' },
+  { texte: 'Trois portraits de ses clients', suite: 'Avec, pour chacun, ce qui le décide.' },
+  { texte: 'Le test, son résultat, et la façon de continuer à le mesurer', suite: 'Un tableau d’une ligne par demande, tenu par l’assistante.' },
+  { texte: 'Une page de décision', suite: 'Ce qu’on arrête, ce qu’on garde, ce qu’on essaie ensuite.' },
+];
 
-        {selNode && (
-          <aside key={sel} className="bilan-carto__detail">
-            <span className={`bilan-carto__status bilan-carto__status--${selNode.status}`}>
-              {c.statuses[selNode.status]}
-            </span>
-            <h4>{selNode.label}</h4>
-            <p className="bilan-carto__group">{c.groupLabel} · {selNode.group}</p>
-            <p className="bilan-carto__note">{selNode.note}</p>
-          </aside>
-        )}
-      </div>
-    </div>
-  );
-}
-
-/* — Board d'actions filtrable — */
-function ActionsBoard({ a }) {
-  const [filter, setFilter] = useState('all');
-  const types = Object.keys(a.types);
-  const items = filter === 'all' ? a.items : a.items.filter((it) => it.type === filter);
-  return (
-    <div className="bilan-actions">
-      <div className="bilan-actions__filters" role="tablist" aria-label={a.title}>
-        <button type="button" role="tab" aria-selected={filter === 'all'} className={`bilan-chip${filter === 'all' ? ' is-on' : ''}`} onClick={() => setFilter('all')}>
-          {a.all} <b>{a.items.length}</b>
-        </button>
-        {types.map((tp) => {
-          const count = a.items.filter((it) => it.type === tp).length;
-          return (
-            <button type="button" role="tab" aria-selected={filter === tp} key={tp} className={`bilan-chip${filter === tp ? ' is-on' : ''}`} onClick={() => setFilter(tp)}>
-              {a.types[tp]} <b>{count}</b>
-            </button>
-          );
-        })}
-      </div>
-      <motion.div className="bilan-actions__grid" layout>
-        <AnimatePresence mode="popLayout">
-          {items.map((it) => (
-            <motion.article
-              layout
-              key={it.title}
-              className={`bilan-action bilan-action--${it.type}`}
-              initial={{ opacity: 0, scale: 0.92, y: 14 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.92 }}
-              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <span className="bilan-action__type">{a.types[it.type]}</span>
-              <h4>{it.title}</h4>
-              <p>{it.note}</p>
-            </motion.article>
-          ))}
-        </AnimatePresence>
-      </motion.div>
-    </div>
-  );
-}
-
-/* — Feuille de route priorisée — */
-function RecoList({ r }) {
-  return (
-    <div className="bilan-recos">
-      {[1, 2, 3].map((p) => (
-        <div className="bilan-recos__group" key={p}>
-          <span className="bilan-recos__p" aria-label={`Priorité ${p}`}>P{p}</span>
-          <div className="bilan-recos__list">
-            {r.items.filter((it) => it.p === p).map((it) => (
-              <article className={`bilan-reco${it.done ? ' is-done' : ''}`} key={it.title}>
-                <span className="bilan-reco__check" aria-hidden="true" />
-                <div className="bilan-reco__body">
-                  <h4>{it.title}</h4>
-                  <p>{it.note}</p>
-                  <div className="bilan-reco__meta">
-                    <span>{r.impact} · {r.levels[it.impact]}</span>
-                    <span>{r.effort} · {r.levels[it.effort]}</span>
-                    <em>{it.done ? r.done : r.todo}</em>
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-/* ————————————————————————————————————————————————— */
-/* — Hero compact : le 1er mot se forme en réseau, un dossier-glyphe 3D
-     flotte à droite, les chips de mission arrivent en cascade, et le bilan
-     commence juste dessous (fini l'écran blanc). — */
-function BilanHero({ hero }) {
-  const rootRef = useRef(null);
-  const word = hero.title.split(' ')[0];
-  const rest = hero.title.slice(word.length).replace(/^\s+/, '');
-
+function Tete() {
+  const racine = useRef(null);
   useGSAP(() => {
-    if (reduced()) return;
-    gsap.from(rootRef.current.querySelectorAll('.bilan-hero__reveal'), {
-      y: 26, autoAlpha: 0, duration: 0.8, ease: 'power3.out', stagger: 0.08, delay: 0.1,
-    });
-    gsap.from(rootRef.current.querySelectorAll('.bilan-hero__chip'), {
-      y: 14, autoAlpha: 0, duration: 0.55, ease: 'power3.out', stagger: 0.06, delay: 0.5,
-    });
-  }, { scope: rootRef });
+    if (instant()) return;
+    const q = gsap.utils.selector(racine);
+    gsap.timeline({ delay: 0.15 })
+      .from(q('.oh__titre'), { z: -760, y: 60, rotateX: -32, autoAlpha: 0, duration: 1.1, ease: 'power3.out' }, 0)
+      .from(q('.oh__lead'), { z: -420, y: 30, autoAlpha: 0, duration: 0.9, ease: 'power3.out' }, 0.25)
+      .from(q('.ex__nature'), { z: -300, y: 20, autoAlpha: 0, duration: 0.8, ease: 'power3.out' }, 0.45);
+  }, { scope: racine });
 
   return (
-    <header className="bilan-hero" ref={rootRef}>
-      <div className="container bilan-hero__grid">
-        <div className="bilan-hero__copy">
-          <p className="eyebrow eyebrow--index bilan-hero__reveal">{hero.eyebrow}</p>
-          <h1 className="bilan-hero__title bilan-hero__reveal">
-            <span className="bilan-hero__word">
-              <span className="bilan-hero__ghost">{word}</span>
-              <NetWord className="bilan-hero__netword">{word}</NetWord>
-            </span>
-            {rest ? ` ${rest}` : ''}
-          </h1>
-          <p className="bilan-hero__lead bilan-hero__reveal">{hero.lead}</p>
-          <div className="bilan-hero__chips">
-            {/* La première pastille dit ce qu'est ce dossier. Elle est
-                marquée pour qu'on ne la lise pas comme un fait de mission
-                parmi les autres : personne ne doit croire à un vrai client. */}
-            {hero.chips.map((chip, i) => (
-              <span className={`bilan-hero__chip${i === 0 ? ' bilan-hero__chip--nature' : ''}`} key={chip}>
-                {chip}
-              </span>
-            ))}
-          </div>
-        </div>
-        <div className="bilan-hero__viz bilan-hero__reveal" aria-hidden="true">
-          <span className="bilan-hero__glyph">
-            <Net3D shape={GLYPH_SHAPES[0]} size={190} speed={0.6} tiltX={0.45} nodeR={3.2} />
-          </span>
-        </div>
+    <header className="oh" ref={racine}>
+      <div className="container">
+        <h1 className="oh__titre">Pourquoi une entreprise de rénovation signait moins de devis.</h1>
+        <p className="oh__lead">
+          Une mission « Comprendre vos clients », du premier lundi à la décision : les hypothèses, les
+          entretiens, ce qui revient, les chiffres et la façon de les lire, le test, et ce que le dirigeant
+          a eu entre les mains.
+        </p>
+        <p className="ex__nature">
+          <span className="ex__nature-noeud" aria-hidden="true" />
+          Cas d’école : l’entreprise, les personnes et les chiffres sont inventés pour l’exemple. Les
+          questions, les documents et la manière de lire les chiffres sont ceux qu’on applique.
+        </p>
       </div>
     </header>
   );
 }
 
-const TAB_IDS = ['resume', 'finances', 'temps', 'constats', 'carto', 'actions', 'recos'];
-
 export default function Exemple() {
-  const { lang } = useLang();
-  const b = BILAN[lang];
-  /* Deep-link : /exemple#carto ouvre directement le volet (partageable) */
-  const [tab, setTab] = useState(() => {
-    const h = typeof window !== 'undefined' ? window.location.hash.replace('#', '') : '';
-    return TAB_IDS.includes(h) ? h : 'resume';
-  });
-  const goTab = (id) => {
-    setTab(id);
-    try { window.history.replaceState(null, '', `#${id}`); } catch { /* noop */ }
-  };
-  /* Suivre aussi les changements de hash (liens internes, précédent/suivant) */
-  useEffect(() => {
-    const onHash = () => {
-      const h = window.location.hash.replace('#', '');
-      if (TAB_IDS.includes(h)) setTab(h);
-    };
-    window.addEventListener('hashchange', onHash);
-    return () => window.removeEventListener('hashchange', onHash);
-  }, []);
-
   return (
-    <Page title={b.metaTitle} description={b.metaDesc}>
-      {/* L'exemple de bilan est un audit poste par poste : il ne
-          concerne pas une entreprise de moins de dix personnes. */}
-      <ReservePme pour="pme" />
+    <Page>
+      <Tete />
 
-      {/* Hero COMPACT : une phrase, une animation, le bilan juste dessous */}
-      <BilanHero key={lang} hero={b.hero} />
+      <Amorce id="depart" lead="Au départ, un dirigeant sûr que c’était le prix.">
+        <blockquote className="ex__voix">
+          « On fait autant de devis qu’avant, et on en signe moins. Les gens comparent tout sur internet, on
+          est trop chers. »
+        </blockquote>
+        <p className="am__p">
+          Rénovation intérieure, huit personnes, près de Valenciennes. Une quarantaine de devis par
+          trimestre : un sur trois était signé il y a deux ans, un sur cinq aujourd’hui. Le dirigeant hésitait
+          entre baisser ses prix et refaire son site. Deux dépenses, et aucune preuve que l’une ou l’autre
+          réglerait le problème.
+        </p>
+        <p className="am__p am__p--fort">Le premier lundi, on a écrit ce qu’il croyait :</p>
+        <Noeuds items={CROYAIT} etat="creux" />
+        <Planche
+          scene="hypotheses"
+          etape={1}
+          noms={false}
+          legende="Au centre, son entreprise. Autour, ce qu’il croit : en fil de fer, parce que personne ne l’a encore vérifié."
+        />
+      </Amorce>
 
-      {/* l'explorateur */}
-      <section className="section section--tight">
-        <div className="container bilan">
-          {/* L'enveloppe porte le dégradé de bord : sur un téléphone, elle dit
-              qu'il y a d'autres sections à droite. */}
-          <div className="bilan__tabs-wrap">
-          <nav className="bilan__tabs" aria-label={b.hero.eyebrow}>
-            {b.tabs.map((t) => (
-              <button
-                key={t.id}
-                type="button"
-                className={`bilan__tab${tab === t.id ? ' is-on' : ''}`}
-                aria-current={tab === t.id}
-                onClick={() => goTab(t.id)}
-              >
-                <span>{t.label}</span>
-              </button>
-            ))}
-          </nav>
-          </div>
+      <Amorce id="qui" lead="Onze personnes, choisies pour se contredire.">
+        <Noeuds items={INTERROGES} />
+        <p className="am__p">
+          Le dirigeant a prévenu chacune par un message qu’on avait écrit ensemble. Deux ont refusé : on en a
+          appelé deux autres. Chaque entretien a duré trente à cinquante minutes, au téléphone, sur leur
+          dernier projet de travaux.
+        </p>
+        <Planche
+          scene="entretiens"
+          etape={1}
+          legende="Onze personnes autour de l’offre. La hauteur de chaque bloc, c’est le temps qu’elle nous a accordé."
+        />
+      </Amorce>
 
-          <div className="bilan__panelwrap">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={tab + lang}
-                className="bilan__panel"
-                initial={{ opacity: 0, y: 26 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -16 }}
-                transition={{ duration: 0.34, ease: [0.22, 1, 0.36, 1] }}
-              >
-                {tab === 'resume' && (
-                  <>
-                    <MorphTitle as="h2" text={b.resume.title} textClass="bilan__h2" />
-                    {/* Quatre cent cinquante signes d'affilée, personne ne
-                        les commençait. Le verdict passe devant, en grand ;
-                        le détail le suit et se lit d'autant mieux. */}
-                    {b.resume.verdictTitre && <p className="bilan__verdict">{b.resume.verdictTitre}</p>}
-                    <p className="bilan__intro">{b.resume.verdict}</p>
-                    <div className="bilan-stats">
-                      {b.resume.stats.map((s) => <CountStat s={s} key={s.label} locale={lang} />)}
-                    </div>
-                    <ul className="bilan-points">
-                      {b.resume.points.map((pt) => <li key={pt}>{pt}</li>)}
-                    </ul>
-                  </>
-                )}
+      <Amorce id="questions" lead="On ne demande jamais « pourquoi vous n’avez pas signé ? ».">
+        <p className="am__p">
+          Une question directe appelle une réponse polie, et souvent : « c’était trop cher ». On fait plutôt
+          raconter un moment précis, dans l’ordre, et les vraies raisons sortent d’elles-mêmes. Voici le fil
+          qu’on a suivi :
+        </p>
+        <ol className="ex__guide">
+          {QUESTIONS_POSEES.map((q) => <li key={q}>{q}</li>)}
+        </ol>
+        <p className="am__p">
+          Pas de question sur ce qu’ils feraient « si » : ce qu’on imagine faire et ce qu’on fait vraiment
+          sont rarement la même chose.
+        </p>
+      </Amorce>
 
-                {tab === 'finances' && (
-                  <>
-                    <MorphTitle as="h2" text={b.finances.title} textClass="bilan__h2" />
-                    <div className="bilan-fin">
-                      <div className="bilan-fin__col">
-                        <h3>{b.finances.invest.heading}</h3>
-                        {b.finances.invest.lines.map((l) => (
-                          <div className="bilan-fin__line" key={l.label}><span>{l.label}</span><b>{l.value}</b></div>
-                        ))}
-                        <div className="bilan-fin__line bilan-fin__line--total">
-                          <span>{b.finances.invest.total.label}</span><b>{b.finances.invest.total.value}</b>
-                        </div>
-                      </div>
-                      <div className="bilan-fin__col bilan-fin__col--gains">
-                        <h3>{b.finances.gains.heading}</h3>
-                        {b.finances.gains.lines.map((l) => (
-                          <div className="bilan-fin__line" key={l.label}><span>{l.label}</span><b>{l.value}</b></div>
-                        ))}
-                        <p className="bilan-note">{b.finances.gains.note}</p>
-                      </div>
-                    </div>
-                    <div className="bilan-roi">
-                      <CountStat s={b.finances.roi.stat} locale={lang} />
-                      <div>
-                        <h3>{b.finances.roi.label}</h3>
-                        <p>{b.finances.roi.text}</p>
-                      </div>
-                    </div>
-                  </>
-                )}
-
-                {tab === 'temps' && (
-                  <>
-                    <MorphTitle as="h2" text={b.temps.title} textClass="bilan__h2" />
-                    <p className="bilan__intro">{b.temps.intro}</p>
-                    <TimeRows t={b.temps} />
-                  </>
-                )}
-
-                {tab === 'constats' && (
-                  <>
-                    <MorphTitle as="h2" text={b.constats.title} textClass="bilan__h2" />
-                    <p className="bilan__intro">{b.constats.intro}</p>
-                    <div className="bilan-quotes">
-                      {b.constats.verbatims.map((v) => (
-                        <blockquote className="bilan-quote" key={v.quote}>
-                          <p>{v.quote}</p>
-                          <cite>{v.role}</cite>
-                        </blockquote>
-                      ))}
-                    </div>
-                    <Findings c={b.constats} />
-                  </>
-                )}
-
-                {tab === 'carto' && (
-                  <>
-                    <MorphTitle as="h2" text={b.carto.title} textClass="bilan__h2" />
-                    <p className="bilan__intro">{b.carto.intro}</p>
-                    <CartoMap c={b.carto} />
-                  </>
-                )}
-
-                {tab === 'actions' && (
-                  <>
-                    <MorphTitle as="h2" text={b.actions.title} textClass="bilan__h2" />
-                    <p className="bilan__intro">{b.actions.intro}</p>
-                    <ActionsBoard a={b.actions} />
-                  </>
-                )}
-
-                {tab === 'recos' && (
-                  <>
-                    <MorphTitle as="h2" text={b.recos.title} textClass="bilan__h2" />
-                    <p className="bilan__intro">{b.recos.intro}</p>
-                    <RecoList r={b.recos} />
-                  </>
-                )}
-              </motion.div>
-            </AnimatePresence>
-          </div>
+      <section className="ex-vb" aria-labelledby="revient-t">
+        <div className="container">
+          <h2 className="ex-vb__titre" id="revient-t">Ce qui revient, avec leurs mots.</h2>
+          <p className="ex-vb__lead">
+            Un sujet par colonne, d’autant plus gros que plus de personnes en ont parlé sans qu’on le leur
+            demande. Sous chaque citation, ce que la personne a fait.
+          </p>
+          <Verbatims sujets={SUJETS} />
         </div>
       </section>
 
-      {/* closing */}
-      <section className="section">
-        <div className="container">
-          <div className="direct-band">
-            <div className="direct-band__inner">
-              <div className="direct-band__text">
-                <h2 className="direct-band__title">{b.cta.title}</h2>
-                <p>{b.cta.text}</p>
-              </div>
-              <Link to="/contact" className="btn btn--primary direct-band__btn" data-cursor-label={b.cta.btn}>
-                {b.cta.btn}
-                <span className="btn__arrow" aria-hidden="true">→</span>
-              </Link>
-            </div>
+      <Amorce id="chiffres" lead="Comment on lit ces chiffres.">
+        <Compte
+          rangs={[
+            { sujet: 'Le délai de réponse', n: 7 },
+            { sujet: 'Le devis difficile à lire', n: 5 },
+            { sujet: 'Le prix', n: 2 },
+          ]}
+          legende="Un nœud par personne interrogée, plein si elle en a parlé d’elle-même."
+        />
+        <p className="am__p am__p--fort">Sept sur onze, ce n’est pas 64 %.</p>
+        <p className="am__p">
+          Onze entretiens ne font pas un sondage : ils disent ce qui compte et pourquoi, pas combien de
+          clients pensent la même chose. On n’en tire donc aucun pourcentage.
+        </p>
+        <p className="am__p">
+          Ce qui rend le délai sérieux : personne ne l’a cité parce qu’on le lui demandait, chacun a raconté
+          un moment précis, et il revient autant chez ceux qui ont signé que chez ceux qui ont refusé.
+        </p>
+        <p className="am__p">
+          Ce qui rend le prix secondaire : deux personnes seulement en parlent, et toutes les deux ont signé
+          quand même. Ce qu’on n’en conclut pas, c’est que le prix n’a aucune importance. Seulement qu’il
+          n’explique pas la baisse, et que baisser les prix n’aurait sans doute rien réglé.
+        </p>
+      </Amorce>
+
+      <Amorce id="portraits" lead="Trois portraits, tirés des entretiens." large>
+        <Planche
+          scene="synthese"
+          etape={1}
+          legende="Les mêmes onze personnes, regroupées par ce qu’elles font, pas par leur âge ou leur métier."
+        />
+        <div className="ex__portraits">
+          {PORTRAITS.map((p) => (
+            <article className="ex__portrait" key={p.nom}>
+              <span className="ex__portrait-noeud" aria-hidden="true" />
+              <h3 className="ex__portrait-nom">{p.nom}</h3>
+              <p className="ex__portrait-fait">{p.fait}</p>
+              <p className="ex__portrait-decide"><span>Ce qui le décide :</span> {p.decide}</p>
+              <p className="ex__portrait-cite">« {p.cite} »</p>
+            </article>
+          ))}
+        </div>
+      </Amorce>
+
+      <Amorce id="test" lead="Un essai de quatre semaines, qui ne coûte presque rien.">
+        <p className="am__p am__p--fort">
+          Rappeler chaque demande sous quarante-huit heures, et envoyer un devis d’une page, prix pièce par
+          pièce, avec le détail en annexe.
+        </p>
+        <p className="am__p">
+          Ce que ça a coûté : un modèle de devis et un rappel dans l’agenda de l’assistante. Ce qu’on a
+          mesuré : les devis signés sur les demandes de ces quatre semaines, comparés aux mêmes semaines de
+          l’année d’avant.
+        </p>
+        <Compte
+          rangs={[
+            { sujet: 'Pendant le test', n: 4, total: 9, unite: 'devis signés' },
+            { sujet: 'Les mêmes semaines, un an avant', n: 2, total: 10, unite: 'devis signés' },
+          ]}
+          legende="Un nœud par devis envoyé, plein s’il a été signé."
+        />
+        <p className="am__p">
+          Quatre sur neuf, sur un mois, ne prouve rien à lui seul. Mais ça va dans le sens des onze
+          entretiens, pour presque rien : on continue, et on mesure encore deux mois avant d’engager la
+          moindre dépense.
+        </p>
+      </Amorce>
+
+      <Amorce id="remis" lead="Ce que le dirigeant a eu entre les mains.">
+        <Noeuds items={REMIS} />
+        <Planche
+          scene="decision"
+          etape={0}
+          noms={false}
+          legende="Ses hypothèses, après les entretiens : pleines quand ses clients les ont confirmées, en fil de fer quand ils les ont contredites."
+        />
+        <p className="am__p am__p--fort">
+          Il n’a pas baissé ses prix, et il n’a pas refait son site. Il a changé sa façon de répondre.
+        </p>
+      </Amorce>
+
+      <Amorce id="temps" lead="Ce que ça lui a demandé : trois heures, sur trois semaines.">
+        <Semaine />
+      </Amorce>
+
+      <section className="ex-fin" aria-labelledby="ex-fin-t">
+        <div className="container ex-fin__in">
+          <h2 className="ex-fin__titre" id="ex-fin-t">Et chez vous ?</h2>
+          <p className="ex-fin__p">
+            C’est la mission « Comprendre vos clients ». Le prix est fixe et écrit avant de commencer, et le
+            premier échange est gratuit.
+          </p>
+          <div className="ex-fin__actions">
+            <Link to="/comprendre-vos-clients" className="btn btn--primary">
+              <SwapLabel>Voir la mission</SwapLabel>
+              <span className="btn__arrow" aria-hidden="true">→</span>
+            </Link>
+            <Link to="/contact" state={{ situation: 'clients' }} className="btn btn--ghost">
+              <SwapLabel>Parlons de vos clients</SwapLabel>
+            </Link>
           </div>
+          <p className="ex-fin__note">
+            Rappel : ce cas est inventé pour l’exemple. Un autre exemple complet existe, celui du{' '}
+            <Link to="/exemple-bilan" className="lien-souligne">bilan des outils d’une équipe de vingt-quatre personnes</Link>.
+          </p>
         </div>
       </section>
     </Page>

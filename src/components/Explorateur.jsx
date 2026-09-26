@@ -146,22 +146,26 @@ export default function Explorateur({ figure, onFermer, plus }) {
 
           {/* Après avoir regardé notre schéma, on propose de poser le sien :
               c'est le même plateau, et c'est là qu'on comprend vraiment. */}
-          <Link to="/atelier" className="expl3d__atelier" onClick={onFermer}>
-            {m.atelier}
-            <span aria-hidden="true">→</span>
-          </Link>
+          {scene.atelier !== false && (
+            <Link to="/atelier" className="expl3d__atelier" onClick={onFermer}>
+              {m.atelier}
+              <span aria-hidden="true">→</span>
+            </Link>
+          )}
 
           {/* Ouvert depuis la page des offres, le volume porte aussi ce que
               contient le chantier et ce qui en fait bouger le prix : on ne
               renvoie pas le visiteur ailleurs pour finir sa lecture. */}
           {plus && (
             <div className="expl3d__plus">
-              <p className="expl3d__detail">{plus.detail}</p>
-              <p className="expl3d__tarif">{plus.tarifLabel}</p>
-              <ul className="expl3d__facteurs">
-                {plus.facteurs.map((f) => <li key={f}>{f}</li>)}
-              </ul>
-              <Link to={plus.cta.to} className="btn btn--primary expl3d__cta" onClick={onFermer}>
+              {plus.detail && <p className="expl3d__detail">{plus.detail}</p>}
+              {plus.tarifLabel && <p className="expl3d__tarif">{plus.tarifLabel}</p>}
+              {plus.facteurs && (
+                <ul className="expl3d__facteurs">
+                  {plus.facteurs.map((f) => <li key={f}>{f}</li>)}
+                </ul>
+              )}
+              <Link to={plus.cta.to} state={plus.cta.state} className="btn btn--primary expl3d__cta" onClick={onFermer}>
                 {plus.cta.label}
                 <span className="btn__arrow" aria-hidden="true">→</span>
               </Link>

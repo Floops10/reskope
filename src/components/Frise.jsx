@@ -2,15 +2,13 @@ import { useState, useCallback, useRef, useEffect, useMemo, lazy, Suspense } fro
 import { Link } from 'react-router-dom';
 import { ScrollTrigger, useGSAP } from '../lib/gsap';
 import { mouvementRefuse } from '../lib/scrub';
-import { useLang } from '../i18n';
-import { useProfil } from '../profil';
-import { FRISE } from '../data/frise';
+import { MISSION } from '../data/mission';
 import Explorateur from './Explorateur';
 
 const Sequence = lazy(() => import('./Sequence'));
 
 /* ============================================================
-   CE QU'ON FAIT — la ville, traversée au défilement.
+   UNE MISSION — la ville, traversée au défilement.
 
    La section reste collée pendant qu'on descend, et c'est le défilement qui
    fait avancer le voyageur d'un quartier à l'autre. Rien ne tourne tout seul :
@@ -21,10 +19,9 @@ const Sequence = lazy(() => import('./Sequence'));
    Le détail attend derrière ce bouton — la ville, elle, se lit.
    ============================================================ */
 
-export default function Frise() {
-  const { lang } = useLang();
-  const { profil } = useProfil();
-  const c = (FRISE[profil] || FRISE.pme)[lang] || FRISE.pme.fr;
+export default function Frise({ data = MISSION }) {
+  const lang = 'fr';
+  const c = data;
 
   const racine = useRef(null);
   const avance = useRef(0);
@@ -105,7 +102,7 @@ export default function Frise() {
       },
     });
     return () => st.kill();
-  }, { scope: racine, dependencies: [profil, lang, reduit] });
+  }, { scope: racine, dependencies: [reduit] });
 
   /* La liste des figures doit garder la MÊME identité d'un rendu à l'autre :
      recréée à chaque fois, elle relançait les porteurs de la scène à zéro
@@ -122,7 +119,6 @@ export default function Frise() {
       {/* Le titre vit AVANT la traversée, en flux normal. Posé dans le
           conteneur collant, il se serait superposé à la scène. */}
       <div className="container seq__tete">
-        <p className="eyebrow eyebrow--index">{c.sur}</p>
         <h2 className="h2 seq__titre" id="seq-titre">{c.titre}</h2>
       </div>
 
@@ -166,8 +162,12 @@ export default function Frise() {
           </div>
 
           <div className="container seq__pied">
-            <p className="seq__quand" key={`q${etape.figure}`}>{etape.quand}</p>
-            <p className="seq__nom" key={etape.figure}>{etape.nom}</p>
+            {/* Une phrase, pas une étiquette au-dessus d'un titre : le moment
+                et ce qu'on y fait se lisent d'un seul tenant. */}
+            <p className="seq__nom" key={etape.figure}>
+              <span className="seq__quand">{etape.quand},</span>{' '}
+              {etape.nom.charAt(0).toLowerCase() + etape.nom.slice(1)}.
+            </p>
             <button type="button" className="seq__ouvrir" onClick={() => setOuverte(etape.figure)}>
               {c.ouvrir}
               <span aria-hidden="true">→</span>
@@ -192,7 +192,7 @@ export default function Frise() {
           ))}
         </ol>
         <p className="seq__posture">{c.posture}</p>
-        <Link to="/offres" className="btn btn--ghost seq__act">
+        <Link to={c.actTo} className="btn btn--ghost seq__act">
           {c.act}
           <span className="btn__arrow" aria-hidden="true">→</span>
         </Link>

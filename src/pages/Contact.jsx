@@ -1,148 +1,88 @@
 import { useRef, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Page from '../components/Page';
 import MorphTitle from '../components/MorphTitle';
-import Quiz from '../components/Quiz';
 import Booking from '../components/Booking';
-import ZoneMap from '../components/ZoneMap';
-import { Reveal, RevealItem } from '../components/Reveal';
 import { gsap, useGSAP } from '../lib/gsap';
-import { useLang } from '../i18n';
-import { useProfil } from '../profil';
-import { CONTACT_TPE } from '../data/profils';
-import { CONTACT, FORMSUBMIT_URL } from '../data/site';
+import { instant } from '../lib/scrub';
+import { FORMSUBMIT_URL } from '../data/site';
 
-/* CONTACT — clair, net, fonctionnel.
-   1. HERO-FORMULAIRE : le formulaire est DANS le premier écran (carte de
-      verre révélée par balayage), la réassurance à gauche (délais, cadre,
-      étapes), le fond réseau vivant. Zéro friction : on arrive, on écrit.
-   2. LE QUESTIONNAIRE : mis en scène proprement (3 repères clairs), le
-      Quiz guide vers la bonne offre et envoie en un clic. */
+/* ════════════════════════════════════════════════════════════
+   CONTACT — on arrive, on se situe, on écrit.
 
-const reduced = () =>
-  typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+   Le formulaire est dans le premier écran. Il commence par la seule
+   question qui nous aide vraiment à répondre vite : où en êtes-vous ? Les
+   trois situations du site y sont, dans ses mots, et celle d'où l'on vient
+   est déjà cochée. Le message se pré-remplit d'une phrase de départ qu'on
+   peut effacer : personne ne sait par quoi commencer un message à un
+   inconnu.
+   ════════════════════════════════════════════════════════════ */
 
-const CONTENT = {
-  fr: {
-    metaTitle: 'Contact · parlons de vos outils',
-    metaDesc:
-      "Un premier échange de 30 minutes, sans engagement, pour comprendre votre contexte et voir s'il y a quelque chose à faire.",
-    eyebrow: 'Contact',
-    title: 'Parlons de vos outils.',
-    lead: "Décrivez votre contexte en trois lignes. On vous répond sous 24 h, franchement : s'il n'y a rien à faire, on vous le dit.",
-    nextTitle: 'Ce qui se passe ensuite',
-    next: [
-      { n: '01', label: 'On échange 30 minutes sur votre contexte' },
-      { n: '02', label: 'On vous dit franchement s’il y a un sujet' },
-      { n: '03', label: 'Vous recevez un cadrage clair, chiffré' },
-    ],
-    directLabel: 'Ou par e-mail, tout simplement',
-    name: 'Votre nom',
-    email: 'Votre e-mail',
-    message: 'Votre message',
-    messagePh: 'Votre équipe, vos outils, ce qui coince…',
-    submit: 'Envoyer le message',
-    sending: 'Envoi en cours…',
-    successTitle: 'Message envoyé !',
-    successText: 'On vous répond sous 24 h.',
-    errorText: 'Une erreur est survenue. Réessayez ou écrivez-nous directement.',
-    consent: 'En envoyant ce message, vous acceptez que vos données soient utilisées pour vous répondre, conformément à la',
-    consentLink: 'politique de confidentialité',
-    quizEyebrow: 'Encore plus simple',
-    quizTitle: 'Laissez-vous guider.',
-    quizLead: 'Le questionnaire cerne votre besoin et prépare votre demande : vous validez, on a tout.',
-    quizMarks: [
-      { n: '01', label: '2 minutes, 8 questions' },
-      { n: '02', label: 'Une recommandation chiffrée' },
-      { n: '03', label: 'Votre demande pré-remplie, envoyée en 1 clic' },
-    ],
-    booking: {
-      eyebrow: 'Prendre rendez-vous',
-      title: 'Trente minutes, à l’heure qui vous arrange.',
-      lead: 'Choisissez directement un créneau dans notre agenda. On parle de vos outils, de ce qui coince, et on vous dit franchement s’il y a un sujet, ou non.',
-      points: [
-        { value: '30 min', label: 'En visio ou par téléphone, comme vous préférez' },
-        { value: '0 €', label: 'Sans engagement, et sans relance commerciale' },
-        { value: '24 h', label: 'Si aucun créneau ne convient, on répond sous 24 h' },
-      ],
-      cta: 'Choisir un créneau',
-      ctaFallback: 'Décrire mon besoin',
-      loading: 'Ouverture de l’agenda…',
-      or: 'Vous préférez écrire ?',
-      error: 'L’agenda n’a pas pu s’ouvrir. Réessayez, ou passez directement par',
-      privacy: 'L’agenda est fourni par Cal.com. Son script n’est chargé qu’au moment où vous cliquez : tant que vous ne demandez pas de rendez-vous, aucune donnée ne quitte ce site.',
-    },
-  },
-  en: {
-    metaTitle: "Contact · let's talk about your tools",
-    metaDesc:
-      "A first 30-minute conversation, no strings attached, to understand your context and see whether there's something worth doing.",
-    eyebrow: 'Contact',
-    title: 'Talk about your tools.',
-    lead: "Describe your context in three lines. We reply within 24 h, frankly: if there is nothing worth doing, we say so.",
-    nextTitle: 'What happens next',
-    next: [
-      { n: '01', label: 'We talk for 30 minutes about your context' },
-      { n: '02', label: 'I tell you honestly whether there is a case' },
-      { n: '03', label: 'You receive a clear, quantified scoping' },
-    ],
-    directLabel: 'Or simply by email',
-    name: 'Your name',
-    email: 'Your email',
-    message: 'Your message',
-    messagePh: 'Your team, your tools, what gets in the way…',
-    submit: 'Send the message',
-    sending: 'Sending…',
-    successTitle: 'Message sent!',
-    successText: "I'll get back to you within 24 h.",
-    errorText: 'Something went wrong. Please try again or write to us directly.',
-    consent: 'By sending this message, you agree that your data will be used to reply to you, in accordance with the',
-    consentLink: 'privacy policy',
-    quizEyebrow: 'Even simpler',
-    quizTitle: 'Let it guide you.',
-    quizLead: 'The questionnaire pinpoints your need and prepares your request: you approve, I have everything.',
-    quizMarks: [
-      { n: '01', label: '2 minutes, 8 questions' },
-      { n: '02', label: 'A quantified recommendation' },
-      { n: '03', label: 'Your request pre-filled, sent in 1 click' },
-    ],
-    booking: {
-      eyebrow: 'Book a meeting',
-      title: 'Thirty minutes, at a time that suits you.',
-      lead: 'Pick a slot directly in our calendar. We talk about your tools, what gets in the way, and we tell you frankly whether there is a case, or not.',
-      points: [
-        { value: '30 min', label: 'Video call or phone, whichever you prefer' },
-        { value: '€0', label: 'No strings attached, and no sales follow-up' },
-        { value: '24 h', label: 'If no slot works, I reply within 24 h' },
-      ],
-      cta: 'Pick a slot',
-      ctaFallback: 'Describe my need',
-      loading: 'Opening the calendar…',
-      or: 'Rather write?',
-      error: 'The calendar could not open. Try again, or go directly to',
-      privacy: 'The calendar is provided by Cal.com. Its script is only loaded when you click: until you request a meeting, no data leaves this site.',
-    },
-  },
+const SITUATIONS = [
+  { id: 'idee', label: 'J’ai une idée à tester', amorce: 'Mon idée, en deux phrases : ' },
+  { id: 'clients', label: 'Je veux comprendre mes clients', amorce: 'Ce qui a changé ces derniers mois : ' },
+  { id: 'dossier', label: 'Mon dossier doit être relu', amorce: 'Mon rendez-vous avec le financeur est prévu le : ' },
+  { id: 'autre', label: 'Autre chose', amorce: '' },
+];
+
+const ENSUITE = [
+  'On vous répond sous vingt-quatre heures pour caler trente minutes.',
+  'On échange trente minutes, gratuitement. Si on ne peut pas vous aider, on vous le dit.',
+  'Sous quarante-huit heures, vous recevez une proposition écrite, avec un prix fixe.',
+];
+
+const BOOKING = {
+  title: 'Trente minutes, à l’heure qui vous arrange.',
+  lead: 'Choisissez directement un créneau dans notre agenda. Vous nous racontez votre situation, et on vous dit franchement si on peut vous aider, ou non.',
+  points: [
+    { value: '30 min', label: 'Au téléphone ou en visio, comme vous préférez' },
+    { value: '0 €', label: 'Gratuit, sans engagement et sans relance commerciale' },
+    { value: '48 h', label: 'Pour recevoir ensuite une proposition écrite, à prix fixe' },
+  ],
+  cta: 'Choisir un créneau',
+  ctaFallback: 'Écrire plutôt',
+  loading: 'Ouverture de l’agenda…',
+  or: 'Vous préférez écrire ?',
+  error: 'L’agenda n’a pas pu s’ouvrir. Réessayez, ou passez directement par',
+  privacy: 'L’agenda est fourni par Cal.com. Son script n’est chargé qu’au moment où vous cliquez : tant que vous ne demandez pas de rendez-vous, aucune donnée ne quitte ce site.',
 };
 
 export default function Contact() {
-  const { lang } = useLang();
-  const { profil } = useProfil();
-  const c = profil === 'tpe' ? { ...CONTENT[lang], ...CONTACT_TPE[lang] } : CONTENT[lang];
-  const rootRef = useRef(null);
+  const racine = useRef(null);
   const navigate = useNavigate();
+  const { state } = useLocation();
+
+  const depart = SITUATIONS.find((s) => s.id === state?.situation) || null;
   /* L'atelier envoie ici le relevé du schéma qu'on vient de composer : on
      arrive avec le message déjà écrit, il n'y a plus qu'à signer. */
-  const prepare = typeof window !== 'undefined' ? window.history.state?.usr?.message : null;
-  const [form, setForm] = useState({ name: '', email: '', message: prepare || '' });
-  const [trap, setTrap] = useState(''); // honeypot anti-bot : doit rester vide
-  const [status, setStatus] = useState('idle'); // idle | sending | sent | error
+  const [form, setForm] = useState({
+    situation: depart ? depart.id : '',
+    name: '',
+    email: '',
+    entreprise: '',
+    message: state?.message || (depart ? depart.amorce : ''),
+  });
+  const [trap, setTrap] = useState(''); // honeypot anti-robot : doit rester vide
+  const [status, setStatus] = useState('idle'); // idle | sending | error
+
   const update = (e) => setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
+
+  /* Changer de situation remplace la phrase de départ, mais seulement si
+     on n'a encore rien écrit d'autre : on n'efface jamais un vrai message. */
+  const choisir = (id) => {
+    setForm((f) => {
+      const avant = SITUATIONS.find((s) => s.id === f.situation);
+      const vide = !f.message.trim() || (avant && f.message === avant.amorce);
+      const apres = SITUATIONS.find((s) => s.id === id);
+      return { ...f, situation: id, message: vide ? apres.amorce : f.message };
+    });
+  };
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    if (trap) { setStatus('sent'); return; } // bot détecté : on ignore silencieusement
+    if (trap) { navigate('/merci'); return; } // robot : on ignore sans le lui dire
     setStatus('sending');
+    const situation = SITUATIONS.find((s) => s.id === form.situation);
     try {
       const res = await fetch(FORMSUBMIT_URL, {
         method: 'POST',
@@ -150,17 +90,15 @@ export default function Contact() {
         body: JSON.stringify({
           name: form.name,
           email: form.email,
+          entreprise: form.entreprise,
+          situation: situation ? situation.label : 'Non précisée',
           message: form.message,
-          _subject: `Contact Reskope · ${form.name}`,
+          _subject: `Contact Reskope · ${situation ? situation.label : 'Nouvelle demande'} · ${form.name}`,
           _template: 'table',
           _honey: trap,
         }),
       });
       if (res.ok) {
-        setStatus('sent');
-        setForm({ name: '', email: '', message: '' });
-        /* Page de remerciement dediee : adresse reelle, partageable et
-           mesurable, plutot qu'un simple message inline. */
         navigate('/merci');
       } else {
         setStatus('error');
@@ -171,14 +109,11 @@ export default function Contact() {
   };
 
   useGSAP(() => {
-    if (reduced()) return;
-    const root = rootRef.current;
+    if (instant()) return;
+    const root = racine.current;
     gsap.from(root.querySelectorAll('.ctc__reveal'), {
-      y: 28, autoAlpha: 0, duration: 0.85, ease: 'power3.out', stagger: 0.08, delay: 0.12,
+      z: -480, y: 36, rotateX: -20, autoAlpha: 0, duration: 0.95, ease: 'power3.out', stagger: 0.08, delay: 0.12,
     });
-
-    /* La suite des événements se dessine : le fil descend du premier point
-       au dernier, et chaque point s'allume quand le fil l'atteint. */
     const fil = root.querySelector('.ctc__fil i');
     const pts = root.querySelectorAll('.ctc__steps li > i');
     if (fil) {
@@ -187,134 +122,117 @@ export default function Contact() {
       tl.fromTo(pts, { scale: 0.2, autoAlpha: 0 },
         { scale: 1, autoAlpha: 1, duration: 0.4, ease: 'back.out(2.4)', stagger: 0.3 }, 0.1);
     }
-    /* la carte formulaire se révèle par balayage, puis flotte à peine */
     const card = root.querySelector('.ctc__card');
     if (card) {
       gsap.fromTo(card,
-        { clipPath: 'inset(0% 0% 100% 0% round 22px)', y: 34 },
-        { clipPath: 'inset(0% 0% 0% 0% round 22px)', y: 0, duration: 1.15, ease: 'power4.out', delay: 0.35,
-          onComplete: () => gsap.set(card, { clearProps: 'clipPath' }) });
+        { clipPath: 'inset(0% 0% 100% 0% round 22px)', z: -300, rotateX: 14 },
+        {
+          clipPath: 'inset(0% 0% 0% 0% round 22px)', z: 0, rotateX: 0, duration: 1.15, ease: 'power4.out', delay: 0.35,
+          onComplete: () => gsap.set(card, { clearProps: 'clipPath,transform' }),
+        });
     }
-  }, { scope: rootRef, dependencies: [lang] });
+  }, { scope: racine });
 
   return (
-    <Page title={c.metaTitle} description={c.metaDesc}>
-      <div ref={rootRef}>
-        {/* 1 — HERO-FORMULAIRE : on arrive, on écrit */}
-        <header className="ctc" key={lang}>
+    <Page>
+      <div ref={racine}>
+        <header className="ctc">
           <div className="ctc__bg" aria-hidden="true">
             <div className="hero2__grain" />
           </div>
 
           <div className="container ctc__grid">
             <div className="ctc__copy">
-              <p className="eyebrow eyebrow--index ctc__reveal">{c.eyebrow}</p>
               <div className="ctc__reveal">
-                <MorphTitle as="h1" text={c.title} textClass="ctc__title" intro />
+                <MorphTitle as="h1" text="Parlons de votre situation." textClass="ctc__title" intro />
               </div>
-              <p className="lead ctc__lead ctc__reveal">{c.lead}</p>
+              <p className="lead ctc__lead ctc__reveal">
+                Dites-nous en quelques lignes où vous en êtes. On vous répond sous vingt-quatre heures, et si on
+                ne peut pas vous aider, on vous le dit franchement.
+              </p>
 
-              {/* Il y avait ici deux listes à puces l'une sous l'autre, six
-                  lignes dans le premier écran. La première disait « réponse
-                  sous 24 h, échange de 30 minutes, un seul interlocuteur » :
-                  exactement les trois faits que la prise de rendez-vous
-                  répète plus bas sur la même page. Elle est partie.
-
-                  Reste la suite des événements, et elle est dessinée comme
-                  une suite : un fil qui se trace du premier point au
-                  dernier, et chaque point qui s'allume à son tour. */}
               <div className="ctc__next ctc__reveal">
-                <span className="ctc__next-title">{c.nextTitle}</span>
+                <p className="ctc__next-title">Ce qui se passe ensuite</p>
                 <ol className="ctc__steps">
                   <span className="ctc__fil" aria-hidden="true"><i /></span>
-                  {c.next.map((s) => (
-                    <li key={s.n}><i aria-hidden="true" />{s.label}</li>
+                  {ENSUITE.map((s) => (
+                    <li key={s}><i aria-hidden="true" />{s}</li>
                   ))}
                 </ol>
               </div>
-
-              {CONTACT.ouverte && (
-                <p className="ctc__direct ctc__reveal">
-                  <span>{c.directLabel}</span>
-                  <a href={`mailto:${CONTACT.email}`} className="link link--lg">{CONTACT.email}</a>
-                </p>
-              )}
             </div>
 
-            {/* Le formulaire, dans le premier écran */}
-            <div className="ctc__card" id="contact-form" aria-label={c.title}>
-              {status === 'sent' ? (
-                <div className="ctc__success">
-                  <span className="quiz__done" aria-hidden="true" />
-                  <p className="ctc__success-title">{c.successTitle}</p>
-                  <p className="ctc__success-text">{c.successText}</p>
-                </div>
-              ) : (
-                <form className="ctc__form" onSubmit={onSubmit}>
-                  {/* Honeypot anti-bot : invisible pour un humain, laissé vide */}
-                  <input
-                    type="text" tabIndex={-1} autoComplete="off" aria-hidden="true"
-                    className="ctc__hp" value={trap} onChange={(e) => setTrap(e.target.value)}
+            <div className="ctc__card" id="contact-form">
+              <form className="ctc__form" onSubmit={onSubmit} noValidate={false}>
+                {/* Piège à robots : invisible pour un humain, laissé vide. */}
+                <input
+                  type="text" tabIndex={-1} autoComplete="off" aria-hidden="true" name="_honey"
+                  className="ctc__hp" value={trap} onChange={(e) => setTrap(e.target.value)}
+                />
+
+                <fieldset className="ctc__situ">
+                  <legend>Où en êtes-vous ?</legend>
+                  <div className="ctc__choix">
+                    {SITUATIONS.map((s) => (
+                      <label key={s.id} className={`ctc__puce${form.situation === s.id ? ' is-on' : ''}`}>
+                        <input
+                          type="radio"
+                          name="situation"
+                          value={s.id}
+                          checked={form.situation === s.id}
+                          onChange={() => choisir(s.id)}
+                        />
+                        <span className="ctc__puce-noeud" aria-hidden="true" />
+                        {s.label}
+                      </label>
+                    ))}
+                  </div>
+                </fieldset>
+
+                <label className="ctc__field">
+                  <span>Votre nom</span>
+                  <input type="text" name="name" value={form.name} onChange={update} required autoComplete="name" />
+                </label>
+                <label className="ctc__field">
+                  <span>Votre e-mail</span>
+                  <input type="email" name="email" value={form.email} onChange={update} required autoComplete="email" inputMode="email" />
+                </label>
+                <label className="ctc__field">
+                  <span>Votre entreprise ou votre projet <em>(facultatif)</em></span>
+                  <input type="text" name="entreprise" value={form.entreprise} onChange={update} autoComplete="organization" />
+                </label>
+                <label className="ctc__field">
+                  <span>Votre message</span>
+                  <textarea
+                    name="message"
+                    rows="5"
+                    value={form.message}
+                    onChange={update}
+                    required
+                    placeholder="Où vous en êtes, et la décision qui vous attend."
                   />
-                  <label className="ctc__field">
-                    <span>{c.name}</span>
-                    <input type="text" name="name" value={form.name} onChange={update} required autoComplete="name" />
-                  </label>
-                  <label className="ctc__field">
-                    <span>{c.email}</span>
-                    <input type="email" name="email" value={form.email} onChange={update} required autoComplete="email" />
-                  </label>
-                  <label className="ctc__field">
-                    <span>{c.message}</span>
-                    <textarea name="message" rows="6" value={form.message} onChange={update} required placeholder={c.messagePh} />
-                  </label>
-                  {status === 'error' && <p className="ctc__error">{c.errorText}</p>}
-                  <button type="submit" className="btn btn--primary ctc__submit" disabled={status === 'sending'}>
-                    {status === 'sending' ? c.sending : c.submit}
-                    <span className="btn__arrow" aria-hidden="true">→</span>
-                  </button>
-                  <p className="ctc__consent">
-                    {c.consent} <Link to="/confidentialite">{c.consentLink}</Link>.
+                </label>
+
+                {status === 'error' && (
+                  <p className="ctc__error" role="alert">
+                    Le message n’est pas parti. Vérifiez votre connexion et réessayez : ce que vous avez écrit est
+                    toujours là.
                   </p>
-                </form>
-              )}
+                )}
+                <button type="submit" className="btn btn--primary ctc__submit" disabled={status === 'sending'}>
+                  {status === 'sending' ? 'Envoi en cours…' : 'Envoyer le message'}
+                  <span className="btn__arrow" aria-hidden="true">→</span>
+                </button>
+                <p className="ctc__consent">
+                  Vos réponses servent uniquement à vous répondre. Le détail est dans la{' '}
+                  <Link to="/confidentialite">politique de confidentialité</Link>.
+                </p>
+              </form>
             </div>
           </div>
         </header>
 
-        {/* 2 — PRENDRE RENDEZ-VOUS : scène en DA, Cal.com en surcouche au clic */}
-        <Booking c={c.booking} />
-
-        {/* 3 — ZONE D'INTERVENTION : carte réseau + itinéraire */}
-        <ZoneMap />
-
-        {/* 4 — LE QUESTIONNAIRE : guidé, clair, organisé */}
-        <section className="section section--tint ctc-quiz" id="qcm">
-          <div className="container">
-            <Reveal className="section__head section__head--center">
-              <RevealItem as="p" className="eyebrow eyebrow--index">{c.quizEyebrow}</RevealItem>
-              <RevealItem>
-                <MorphTitle as="h2" text={c.quizTitle} textClass="h2" />
-              </RevealItem>
-              <RevealItem as="p" className="lead">{c.quizLead}</RevealItem>
-            </Reveal>
-
-            <Reveal className="ctc-quiz__marks" amount={0.2}>
-              {c.quizMarks.map((m) => (
-                <RevealItem as="div" className="ctc-quiz__mark" key={m.n}>
-                  <i aria-hidden="true" />
-                  <span>{m.label}</span>
-                </RevealItem>
-              ))}
-            </Reveal>
-
-            <Reveal className="quiz-wrap" amount={0.1}>
-              <RevealItem>
-                <Quiz />
-              </RevealItem>
-            </Reveal>
-          </div>
-        </section>
+        <Booking c={BOOKING} />
       </div>
     </Page>
   );

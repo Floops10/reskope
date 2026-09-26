@@ -1,67 +1,54 @@
 import { Link, useLocation } from 'react-router-dom';
-import { useT, useLang } from '../i18n';
+import { fiche, url } from '../data/seo';
 
-/* Fil d'Ariane — situe le visiteur et donne à Google la hiérarchie du site.
-   Rendu uniquement sur les pages intérieures (jamais sur l'accueil, où il
-   n'aurait rien à afficher). Le JSON-LD BreadcrumbList accompagne le rendu
-   visuel : c'est lui qui produit le chemin sous le lien dans les résultats. */
+/* Fil d'Ariane : situe le visiteur et donne à Google la hiérarchie du site.
+   Rendu uniquement sur les pages intérieures. Le JSON-LD BreadcrumbList
+   accompagne le rendu visuel : c'est lui qui produit le chemin sous le lien
+   dans les résultats. Les libellés viennent de la table de référencement,
+   la même que le pré-rendu. */
 
-const SITE = 'https://floops10.github.io/reskope';
-
-/* Pages absentes du menu principal : leur libellé n'est pas dans t.nav.tabs */
-const EXTRA = {
-  fr: {
-    '/contact': 'Contact',
-    '/merci': 'Message envoyé',
-    '/mentions-legales': 'Mentions légales',
-    '/confidentialite': 'Confidentialité',
-    '/cgu': 'CGU',
-    '/cgv': 'CGV',
-  },
-  en: {
-    '/contact': 'Contact',
-    '/merci': 'Message sent',
-    '/mentions-legales': 'Legal notice',
-    '/confidentialite': 'Privacy',
-    '/cgu': 'Terms of use',
-    '/cgv': 'Terms of sale',
-  },
+/* Les trois missions par lesquelles on commence vivent sous « Nos offres » :
+   le fil le dit, et le visiteur qui arrive par un moteur remonte d'un cran
+   vers l'ensemble de l'offre plutôt que vers l'accueil. */
+const PARENT = {
+  '/tester-une-idee': '/nos-offres',
+  '/comprendre-vos-clients': '/nos-offres',
+  '/relire-votre-dossier': '/nos-offres',
+  '/exemple-bilan': '/exemple',
 };
 
 export default function Breadcrumb() {
   const { pathname } = useLocation();
-  const { lang } = useLang();
-  const t = useT();
+  const route = pathname !== '/' ? pathname.replace(/\/+$/, '') : '/';
+  if (route === '/') return null;
 
-  if (pathname === '/' || pathname === '') return null;
+  const f = fiche(route);
+  if (!f) return null; // route inconnue (404) : pas de fil d'Ariane
 
-  const label = t.nav.tabs?.[pathname] || EXTRA[lang]?.[pathname];
-  if (!label) return null; // route inconnue (404) : pas de fil d'Ariane
-
-  const home = lang === 'fr' ? 'Accueil' : 'Home';
+  const chaine = [{ route: '/', label: 'Accueil' }];
+  if (PARENT[route]) chaine.push({ route: PARENT[route], label: fiche(PARENT[route]).fil });
+  chaine.push({ route, label: f.fil });
 
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
-    itemListElement: [
-      { '@type': 'ListItem', position: 1, name: home, item: `${SITE}/` },
-      { '@type': 'ListItem', position: 2, name: label, item: `${SITE}${pathname}` },
-    ],
+    itemListElement: chaine.map((c, i) => ({
+      '@type': 'ListItem', position: i + 1, name: c.label, item: url(c.route),
+    })),
   };
 
   return (
-    <nav className="crumb" aria-label={lang === 'fr' ? "Fil d'Ariane" : 'Breadcrumb'}>
+    <nav className="crumb" aria-label="Fil d’Ariane">
       <div className="container crumb__inner">
         <ol>
-          <li>
-            <Link to="/">{home}</Link>
-          </li>
-          <li aria-hidden="true" className="crumb__sep">
-            <span className="crumb__node" />
-          </li>
-          <li>
-            <span aria-current="page">{label}</span>
-          </li>
+          {chaine.map((c, i) => (
+            <li key={c.route}>
+              {i > 0 && <span className="crumb__sep" aria-hidden="true"><span className="crumb__node" /></span>}
+              {i < chaine.length - 1
+                ? <Link to={c.route}>{c.label}</Link>
+                : <span aria-current="page">{c.label}</span>}
+            </li>
+          ))}
         </ol>
       </div>
       <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>

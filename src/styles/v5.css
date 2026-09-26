@@ -1,0 +1,1315 @@
+/* ════════════════════════════════════════════════════════════
+   RESKOPE v5 — le site du dirigeant qui s'apprête à engager de l'argent.
+
+   Cette feuille vient APRÈS index.css et n'en change pas la charte : les
+   mêmes jetons (indigo, crème, encre, argent), la même police, le même
+   réseau de nœuds. Elle ajoute la grammaire de la nouvelle version :
+
+   - une AMORCE en grand qui tient à gauche, le détail qui défile à droite ;
+   - des NŒUDS partout où il y a une liste : plein pour ce qui est acquis,
+     en fil de fer pour ce qui ne l'est pas, clair pour ce qu'on apporte ;
+   - des volumes AXONOMÉTRIQUES pour expliquer sans phrase ;
+   - aucune carte encadrée, aucun petit libellé au-dessus d'un titre, aucune
+     numérotation décorative, aucun filet entre des éléments répétés.
+
+   Tout ce qui arrive vient de la profondeur : les parents des éléments
+   animés portent une perspective, sinon le « z » des animations serait
+   écrasé à plat.
+   ════════════════════════════════════════════════════════════ */
+
+:root {
+  --neuf-t: #a79cf7;
+  --neuf-r: #6b5bea;
+  --neuf-l: #4b3cc9;
+  --socle-t: #2a1e7a;
+  --socle-r: #190c5c;
+  --socle-l: #120741;
+  --v5-lead: clamp(1.75rem, 3.5vw, 3rem);
+  --v5-titre: clamp(2.3rem, 5.6vw, 4.8rem);
+  --v5-texte: clamp(1rem, 1.25vw, 1.12rem);
+  --v5-section: clamp(4.5rem, 12vh, 8.5rem);
+  --v5-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Les parents qui donnent de la profondeur aux arrivées. */
+.ch__ask, .ch__list, .am__tient, .am__corps, .nds, .drl, .dbt, .qs__tete,
+.qs__liste, .duo__in, .duo__gens, .cpt, .vb, .ph__texte, .ph__in, .sui .container,
+.sui__rang, .oh .container, .ex-fin__in, .ctc__grid, .ctc__copy, .pl, .co,
+.ex__portraits, .ex-vb .container {
+  perspective: 1200px;
+}
+
+/* ── Utilitaires ─────────────────────────────────────────── */
+.evitement {
+  position: fixed;
+  left: 1rem;
+  top: -5rem;
+  z-index: 200;
+  padding: 0.75rem 1.1rem;
+  border-radius: 10px;
+  background: var(--indigo);
+  color: var(--cream);
+  font-weight: 500;
+  transition: top 0.25s var(--v5-ease);
+}
+.evitement:focus { top: 1rem; }
+
+.attente-page { display: block; min-height: 100svh; }
+
+.lien-fleche {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-weight: 500;
+  color: var(--indigo);
+  cursor: pointer;
+  text-align: left;
+}
+.lien-fleche span { display: inline-block; transition: transform 0.35s var(--v5-ease); }
+.lien-fleche:hover span, .lien-fleche:focus-visible span { transform: translateX(5px); }
+.lien-souligne {
+  color: var(--indigo);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+/* ── L'en-tête de page (offres, méthode, exemple) ────────── */
+.oh {
+  position: relative;
+  padding-top: clamp(7.5rem, 17vh, 11rem);
+  padding-bottom: clamp(1.5rem, 5vh, 3.5rem);
+}
+.oh__titre {
+  max-width: 18ch;
+  font-size: var(--v5-titre);
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+}
+.oh__lead {
+  max-width: 56ch;
+  margin-top: 1.4rem;
+  font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+  line-height: 1.6;
+  color: var(--muted);
+}
+.oh--court { padding-bottom: 0; }
+
+/* ── L'amorce : la phrase à gauche, le détail à droite ───── */
+.am {
+  position: relative;
+  padding-block: var(--v5-section);
+}
+.am__in {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(1.8rem, 5vh, 2.8rem);
+}
+.am__lead {
+  max-width: 17ch;
+  margin: 0;
+  font-size: var(--v5-lead);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+.am__sous {
+  max-width: 34ch;
+  margin: 1rem 0 0;
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--muted);
+}
+.am__corps {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.4rem, 3.4vh, 2.2rem);
+  min-width: 0;
+}
+.am__corps:has(> .of) { gap: clamp(2.4rem, 6vh, 3.6rem); }
+.am__p {
+  max-width: 56ch;
+  margin: 0;
+  font-size: var(--v5-texte);
+  line-height: 1.68;
+  color: var(--muted);
+}
+.am__p--fort { color: var(--ink); font-weight: 500; }
+.am__suite, .am__micro { margin: 0; }
+.am__micro { font-size: 0.9rem; color: var(--muted); }
+.am__actions { display: flex; flex-wrap: wrap; gap: 0.9rem; }
+
+@media (min-width: 900px) {
+  .am__in {
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    gap: clamp(3rem, 6vw, 6.5rem);
+    align-items: start;
+  }
+  .am--large .am__in { grid-template-columns: minmax(0, 0.68fr) minmax(0, 1.32fr); }
+  /* La phrase ne s'en va pas avant que son détail soit lu. */
+  .am__tient { position: sticky; top: 22vh; }
+}
+
+/* ── Les situations : « laquelle vous ressemble ? » ──────── */
+.ch {
+  position: relative;
+  padding-block: clamp(5rem, 14vh, 9rem);
+}
+.ch__in {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(2.2rem, 6vh, 3.4rem);
+}
+.ch__q {
+  max-width: 14ch;
+  margin: 0;
+  font-size: clamp(2rem, 4.6vw, 3.9rem);
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+.ch__list {
+  display: grid;
+  gap: clamp(0.6rem, 2vh, 1.2rem);
+  margin: 0 0 clamp(2.2rem, 6vh, 3.6rem);
+  padding: 0;
+  list-style: none;
+}
+.ch__et {
+  display: block;
+  margin: 0 0 0.3rem 2.35rem;
+  font-size: clamp(0.9rem, 1.1vw, 1rem);
+  font-weight: 500;
+  color: var(--indigo);
+}
+.ch__corps {
+  display: grid;
+  grid-template-columns: 1.1rem minmax(0, 1fr);
+  column-gap: 1.25rem;
+  row-gap: 0.45rem;
+  padding-block: 0.9rem;
+  color: var(--ink);
+  text-decoration: none;
+  will-change: transform, opacity;
+}
+.ch__noeud {
+  grid-row: 1;
+  align-self: start;
+  width: 1.1rem;
+  height: 1.1rem;
+  margin-top: 0.42em;
+  border-radius: 50%;
+  border: 1.5px solid var(--indigo);
+  background: var(--cream);
+  transition: background-color 0.3s ease, transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.ch__voix {
+  grid-column: 2;
+  max-width: 24ch;
+  font-size: clamp(1.4rem, 2.8vw, 2.35rem);
+  font-weight: 500;
+  line-height: 1.14;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+  transition: transform 0.5s var(--v5-ease);
+}
+.ch__nom {
+  grid-column: 2;
+  display: block;
+  font-size: clamp(1rem, 1.25vw, 1.12rem);
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--indigo);
+}
+/* La flèche suit le dernier mot, même quand le nom passe sur deux lignes. */
+.ch__fleche { display: inline-block; margin-left: 0.45rem; transition: transform 0.4s var(--v5-ease); }
+.ch__faits { grid-column: 2; font-size: 0.93rem; color: var(--muted); }
+.ch__corps:hover .ch__noeud,
+.ch__corps:focus-visible .ch__noeud { background: var(--indigo); transform: scale(1.18); }
+.ch__corps:hover .ch__voix,
+.ch__corps:focus-visible .ch__voix { transform: translateX(6px); }
+.ch__corps:hover .ch__fleche,
+.ch__corps:focus-visible .ch__fleche { transform: translateX(5px); }
+.ch__fin {
+  max-width: 44ch;
+  margin: 0;
+  font-size: clamp(1.02rem, 1.35vw, 1.2rem);
+  line-height: 1.55;
+  color: var(--muted);
+}
+.ch__finlien { color: var(--indigo); font-weight: 500; white-space: nowrap; }
+@media (min-width: 900px) {
+  .ch__in {
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: clamp(3rem, 7vw, 7rem);
+    align-items: start;
+  }
+  .ch__ask { position: sticky; top: 24vh; }
+}
+
+/* ── La ville : l'étape se lit comme une phrase ──────────── */
+.seq__nom {
+  max-width: 21ch;
+  font-size: clamp(1.35rem, 2.7vw, 2.15rem);
+}
+.seq__nom .seq__quand {
+  display: inline;
+  margin: 0;
+  font: inherit;
+  color: var(--indigo);
+  animation: none;
+}
+
+/* ── Les nœuds d'une liste ───────────────────────────────── */
+.nds {
+  position: relative;
+  display: grid;
+  gap: clamp(1rem, 2.4vh, 1.5rem);
+  margin: 0;
+  padding: 0 0 0 2rem;
+  list-style: none;
+}
+.nds__fil {
+  position: absolute;
+  left: 0.44rem;
+  top: 0.6rem;
+  bottom: 0.6rem;
+  width: 1.5px;
+  background: color-mix(in srgb, var(--indigo) 26%, transparent);
+  transform-origin: top center;
+}
+.nds__item { position: relative; }
+.nds__noeud {
+  position: absolute;
+  left: -2rem;
+  top: 0.36em;
+  width: 0.9rem;
+  height: 0.9rem;
+  border-radius: 50%;
+  background: var(--indigo);
+  box-shadow: 0 0 0 4px var(--cream);
+}
+.nds--creux .nds__noeud {
+  background: var(--cream);
+  border: 1.5px solid var(--indigo);
+}
+.nds__t {
+  display: block;
+  font-size: clamp(1.04rem, 1.3vw, 1.2rem);
+  font-weight: 500;
+  line-height: 1.38;
+  color: var(--ink);
+}
+.nds--grand .nds__t {
+  max-width: 34ch;
+  font-size: clamp(1.18rem, 1.9vw, 1.55rem);
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+}
+.nds__suite {
+  display: block;
+  max-width: 54ch;
+  margin-top: 0.3rem;
+  font-size: 0.98rem;
+  font-weight: 400;
+  line-height: 1.58;
+  color: var(--muted);
+}
+
+/* ── Le déroulé : un emploi du temps ─────────────────────── */
+.drl {
+  position: relative;
+  display: grid;
+  gap: clamp(1.6rem, 4vh, 2.4rem);
+  margin: 0;
+  padding: 0 0 0 2.1rem;
+  list-style: none;
+}
+.drl__axe {
+  position: absolute;
+  left: 0.5rem;
+  top: 0.55rem;
+  bottom: 0.55rem;
+  width: 2px;
+  background: var(--hairline);
+}
+.drl__axe i {
+  position: absolute;
+  inset: 0;
+  background: var(--indigo);
+  transform-origin: top center;
+}
+.drl__pas { position: relative; display: grid; gap: 0.45rem; }
+.drl__point {
+  position: absolute;
+  left: calc(-2.1rem + 0.5rem - 5.5px);
+  top: 0.32em;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--indigo);
+  box-shadow: 0 0 0 4px var(--cream);
+}
+.drl__quand {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.drl__quoi {
+  max-width: 54ch;
+  margin: 0;
+  font-size: var(--v5-texte);
+  line-height: 1.62;
+  color: var(--muted);
+}
+.drl__vous {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  margin: 0.15rem 0 0;
+  font-size: 0.97rem;
+  font-weight: 500;
+  color: var(--indigo);
+}
+.drl__signe {
+  flex: none;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--indigo);
+  transform: translateY(-1px);
+}
+.drl__vous.is-libre { color: var(--muted); font-weight: 400; }
+.drl__vous.is-libre .drl__signe { background: transparent; border: 1.5px solid var(--silver); }
+@media (min-width: 1100px) {
+  .drl__pas {
+    grid-template-columns: minmax(8.5rem, 0.3fr) minmax(0, 1fr);
+    column-gap: 1.8rem;
+  }
+  .drl__quand { grid-row: 1 / span 2; }
+}
+
+/* ── Comment on commence : trois moments, un fil ─────────── */
+.dbt {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0 0 0 2.2rem;
+  list-style: none;
+}
+.dbt__fil {
+  position: absolute;
+  left: 0.5rem;
+  top: 0.5rem;
+  bottom: 1.4rem;
+  width: 2px;
+  background: var(--hairline);
+}
+.dbt__fil i {
+  position: absolute;
+  inset: 0;
+  background: var(--indigo);
+  transform-origin: top left;
+}
+.dbt__pas { position: relative; }
+.dbt__noeud {
+  position: absolute;
+  left: calc(-2.2rem + 0.5rem - 0.55rem + 1px);
+  top: 0.18em;
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 50%;
+  border: 2px solid var(--indigo);
+  background: var(--cream);
+}
+.dbt__pas.is-dernier .dbt__noeud { background: var(--indigo); }
+.dbt__quand { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--ink); }
+.dbt__quoi { max-width: 34ch; margin: 0.35rem 0 0; line-height: 1.55; color: var(--muted); }
+@media (min-width: 1100px) {
+  .dbt {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.8rem;
+    padding: 0;
+  }
+  .dbt__fil { left: 0.55rem; right: 33%; top: 0.5rem; bottom: auto; width: auto; height: 2px; }
+  .dbt__pas { padding-top: 2.1rem; }
+  .dbt__noeud { left: 0; top: 0; }
+}
+
+/* ── Votre semaine, en axonométrie ───────────────────────── */
+.sem { margin: 0; }
+.sem__svg { display: block; width: 100%; height: auto; overflow: visible; }
+.sem__plaque .axo-t { fill: color-mix(in srgb, var(--indigo) 16%, var(--cream)); }
+.sem__plaque .axo-r { fill: color-mix(in srgb, var(--indigo) 30%, var(--cream)); }
+.sem__plaque .axo-l { fill: color-mix(in srgb, var(--indigo) 42%, var(--cream)); }
+.sem__plaque.is-libre line {
+  stroke: var(--indigo);
+  stroke-width: 0.055;
+  opacity: 0.5;
+}
+.sem__jour { font-size: 0.78px; fill: var(--muted-fort); }
+.sem__semaine {
+  font-size: 0.8px;
+  font-weight: 500;
+  fill: var(--ink);
+  paint-order: stroke;
+  stroke: var(--cream);
+  stroke-width: 0.3px;
+  stroke-linejoin: round;
+}
+.sem__valeur {
+  font-size: 0.95px;
+  font-weight: 600;
+  fill: var(--ink);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  paint-order: stroke;
+  stroke: var(--cream);
+  stroke-width: 0.28px;
+  stroke-linejoin: round;
+}
+@media (max-width: 720px) {
+  .sem__jour { font-size: 1.05px; }
+  .sem__semaine { font-size: 1.1px; }
+  .sem__valeur { font-size: 1.3px; }
+}
+.sem__legende {
+  max-width: 52ch;
+  margin-top: 1rem;
+  font-size: 0.98rem;
+  line-height: 1.55;
+  color: var(--muted);
+}
+.sem__legende strong { color: var(--ink); font-weight: 600; }
+
+/* ── Une scène projetée à plat ───────────────────────────── */
+.axs { display: block; width: 100%; height: auto; overflow: visible; }
+.axs__sol line { stroke: var(--indigo); stroke-width: 0.05; opacity: 0.22; }
+.axs__cadre { fill: none; stroke: var(--indigo); stroke-width: 0.09; opacity: 0.4; }
+.axs__bloc { transition: opacity 0.4s ease; }
+.axs__bloc--creux line { stroke: var(--indigo); stroke-width: 0.09; }
+.axs__bloc--neuf .axo-t { fill: var(--neuf-t); }
+.axs__bloc--neuf .axo-r { fill: var(--neuf-r); }
+.axs__bloc--neuf .axo-l { fill: var(--neuf-l); }
+.axs__bloc--socle .axo-t { fill: var(--socle-t); }
+.axs__bloc--socle .axo-r { fill: var(--socle-r); }
+.axs__bloc--socle .axo-l { fill: var(--socle-l); }
+.axs__bloc.is-eteint { opacity: 0.26; }
+.axs__lien { fill: none; stroke: var(--indigo); stroke-width: 0.1; }
+.axs__lien--manquant { stroke-dasharray: 0.45 0.35; opacity: 0.75; }
+.axs__nom {
+  font-size: 1px;
+  font-weight: 500;
+  fill: var(--ink);
+  paint-order: stroke;
+  stroke: var(--cream);
+  stroke-width: 0.32px;
+  stroke-linejoin: round;
+}
+
+/* ── Un emplacement de motion design ─────────────────────── */
+.mslot { width: 100%; margin: 0; }
+.mslot__cadre {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  aspect-ratio: var(--mslot-ratio, 16 / 9);
+  overflow: hidden;
+  border-radius: 22px;
+  background:
+    radial-gradient(90% 80% at 50% 38%, color-mix(in srgb, var(--cream-light) 92%, transparent), transparent 72%),
+    color-mix(in srgb, var(--indigo) 5%, var(--cream));
+}
+.mslot__affiche {
+  position: absolute;
+  inset: 9%;
+  width: 82%;
+  height: 82%;
+  animation: v5Flotte 8s ease-in-out infinite;
+}
+.mslot__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.mslot__lire {
+  position: absolute;
+  left: 1rem;
+  bottom: 1rem;
+  min-height: 44px;
+  padding: 0.6rem 1.1rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--indigo);
+  color: var(--cream);
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+}
+.mslot__dev {
+  position: absolute;
+  top: 0.8rem;
+  left: 0.8rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--ink) 80%, transparent);
+  color: var(--cream);
+  font-size: 0.72rem;
+  pointer-events: none;
+}
+@media (max-width: 720px) {
+  .mslot__cadre { aspect-ratio: var(--mslot-ratio-m, var(--mslot-ratio, 16 / 9)); border-radius: 16px; }
+}
+
+@keyframes v5Flotte {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+  50% { transform: translate3d(0, -1.6%, 0) rotate(-0.4deg); }
+}
+
+/* ── Une planche ─────────────────────────────────────────── */
+.pl { margin: 0; }
+.pl__vol { transform-style: preserve-3d; transform-origin: 50% 80%; }
+.pl__flotte { animation: v5Flotte 9s ease-in-out infinite; }
+.pl__legende {
+  max-width: 50ch;
+  margin-top: 0.9rem;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+/* ── Les questions ───────────────────────────────────────── */
+.qs { position: relative; padding-block: var(--v5-section); }
+.qs__in { display: grid; grid-template-columns: 1fr; gap: clamp(1.8rem, 5vh, 2.6rem); }
+.qs__titre {
+  max-width: 16ch;
+  margin: 0;
+  font-size: var(--v5-lead);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+.qs__liste { display: grid; gap: 0.2rem; margin: 0; padding: 0; list-style: none; }
+.qs__item { position: relative; }
+.qs__h { margin: 0; font-size: inherit; font-weight: inherit; letter-spacing: normal; line-height: inherit; }
+.qs__q {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 1rem;
+  width: 100%;
+  min-height: 44px;
+  padding: 0.95rem 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: clamp(1.08rem, 1.55vw, 1.32rem);
+  font-weight: 500;
+  line-height: 1.32;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+}
+.qs__noeud {
+  width: 0.8rem;
+  height: 0.8rem;
+  margin-top: 0.36em;
+  border-radius: 50%;
+  border: 1.5px solid var(--indigo);
+  transition: background-color 0.3s ease;
+}
+.qs__item.is-ouverte .qs__noeud { background: var(--indigo); }
+.qs__signe {
+  position: relative;
+  width: 0.9rem;
+  height: 0.9rem;
+  margin-top: 0.34em;
+}
+.qs__signe::before,
+.qs__signe::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  height: 1.5px;
+  background: var(--indigo);
+  transition: transform 0.4s var(--v5-ease);
+}
+.qs__signe::after { transform: rotate(90deg); }
+.qs__item.is-ouverte .qs__signe::after { transform: rotate(0deg); }
+.qs__q:hover .qs__texte { color: var(--indigo); }
+.qs__corps { overflow: hidden; }
+.qs__r {
+  max-width: 60ch;
+  margin: 0;
+  padding: 0 2.2rem 1.2rem 1.8rem;
+  line-height: 1.68;
+  color: var(--muted);
+}
+.qs__apres {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.6rem;
+  margin-top: clamp(1.8rem, 4vh, 2.6rem);
+}
+.qs__relance { max-width: 38ch; margin: 0; color: var(--muted); }
+@media (min-width: 900px) {
+  .qs__in {
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: clamp(3rem, 6vw, 6.5rem);
+    align-items: start;
+  }
+  .qs__tete { position: sticky; top: 22vh; }
+  .qs__apres { grid-column: 2; }
+}
+
+/* ── Qui vous aurez en face ──────────────────────────────── */
+.duo { position: relative; padding-block: var(--v5-section); }
+.duo__titre {
+  max-width: 22ch;
+  margin: 0;
+  font-size: clamp(1.9rem, 4vw, 3.3rem);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+.duo__gens {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1rem, 4vw, 3.6rem);
+  max-width: 980px;
+  margin-top: clamp(2rem, 5vh, 3rem);
+}
+.duo__fil {
+  position: absolute;
+  z-index: 0;
+  top: 32%;
+  left: 25%;
+  right: 25%;
+  height: 2px;
+  background: var(--indigo);
+  transform-origin: left center;
+}
+.duo__p { position: relative; z-index: 1; margin: 0; }
+.duo__cadre {
+  aspect-ratio: 5 / 6;
+  overflow: hidden;
+  border-radius: 16px;
+  background: var(--cream-shade);
+}
+.duo__img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 12%; }
+.duo__cap { display: grid; gap: 0.3rem; margin-top: 0.95rem; }
+.duo__masque { display: block; overflow: hidden; }
+.duo__nom {
+  display: block;
+  font-size: clamp(1.3rem, 2.2vw, 1.8rem);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+.duo__mene { font-size: clamp(0.92rem, 1.1vw, 1.02rem); font-weight: 500; line-height: 1.4; color: var(--ink); }
+.duo__dit { font-size: clamp(0.86rem, 1vw, 0.95rem); line-height: 1.5; color: var(--muted); }
+.duo__franchise {
+  max-width: 58ch;
+  margin-top: clamp(2rem, 5vh, 2.8rem);
+  font-size: clamp(1.02rem, 1.3vw, 1.15rem);
+  line-height: 1.6;
+  color: var(--muted-fort);
+}
+.duo__lien { color: var(--indigo); font-weight: 500; white-space: nowrap; }
+
+/* ── La carte des offres ─────────────────────────────────── */
+.co-sec { padding-block: clamp(1rem, 4vh, 3rem) clamp(2rem, 6vh, 4rem); }
+.co { margin: 0; }
+.co__scene { transform-style: preserve-3d; }
+.co__plan {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  transform-origin: 50% 72%;
+}
+/* Des régions, pas des cartes : une teinte à peine plus claire que le fond,
+   sans bord. */
+.co__zone { fill: color-mix(in srgb, var(--indigo) 3%, var(--cream-light)); }
+.co__zone--bp { fill: color-mix(in srgb, var(--indigo-bright) 5%, var(--cream-light)); }
+.co__zone--construire { fill: color-mix(in srgb, var(--indigo-deep) 4%, var(--cream-light)); }
+.co__pole { font-size: 19px; font-weight: 600; fill: var(--indigo); }
+.co__pole-ligne { font-size: 14.5px; fill: var(--muted); }
+.co__lien {
+  fill: none;
+  stroke: var(--silver);
+  stroke-width: 1.5;
+  transition: stroke 0.2s ease, stroke-width 0.2s ease, opacity 0.2s ease;
+}
+.co__lien.is-chaud { stroke: var(--indigo); stroke-width: 2.2; }
+.co__plan.is-attentif .co__lien:not(.is-chaud) { opacity: 0.18; }
+.co__pointe { fill: var(--silver); fill: context-stroke; }
+.co__dit {
+  font-size: 13.5px;
+  fill: var(--indigo);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  paint-order: stroke;
+  stroke: var(--cream);
+  stroke-width: 5px;
+  stroke-linejoin: round;
+}
+.co__dit.is-chaud { opacity: 1; }
+.co__noeud { cursor: pointer; outline: none; transition: opacity 0.25s ease; }
+.co__noeud.is-loin { opacity: 0.28; }
+.co__point { fill: var(--indigo); }
+.co__noeud--suite .co__point { fill: var(--indigo-bright); }
+.co__noeud--plustard .co__point {
+  fill: var(--cream);
+  stroke: var(--indigo);
+  stroke-width: 1.8;
+  stroke-dasharray: 3 3;
+}
+.co__halo {
+  fill: color-mix(in srgb, var(--indigo) 12%, transparent);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.co__noeud:hover .co__halo,
+.co__noeud:focus-visible .co__halo,
+.co__noeud.is-chaud .co__halo { opacity: 1; }
+.co__noeud:focus-visible .co__point { stroke: var(--ink); stroke-width: 3; }
+.co__nom { font-size: 16.5px; fill: var(--ink); }
+.co__noeud--porte .co__nom { font-weight: 600; }
+.co--colonne .co__nom--ligne { font-size: 17px; }
+.co__nom--ligne.is-porte { font-weight: 600; }
+.co__statut { font-size: 13px; fill: var(--muted); }
+.co--colonne .co__pole { font-size: 15px; }
+.co__legende {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.6rem;
+  margin-top: 1.2rem;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+.co__legende span { display: inline-flex; align-items: center; gap: 0.5rem; }
+.co__cle { width: 12px; height: 12px; border-radius: 50%; background: var(--indigo); }
+.co__cle--suite { background: var(--indigo-bright); }
+.co__cle--plustard { background: var(--cream); border: 1.5px dashed var(--indigo); }
+
+/* ── Une offre, dans la liste de son pôle ────────────────── */
+.of { position: relative; padding-left: 2rem; }
+.of__noeud {
+  position: absolute;
+  left: 0;
+  top: 0.42em;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  background: var(--indigo);
+}
+.of--suite .of__noeud { background: var(--indigo-bright); }
+.of--plustard .of__noeud { background: var(--cream); border: 1.5px dashed var(--indigo); }
+.of__nom {
+  margin: 0;
+  font-size: clamp(1.3rem, 2vw, 1.7rem);
+  font-weight: 600;
+  line-height: 1.16;
+  letter-spacing: -0.025em;
+}
+.of__dit { max-width: 56ch; margin: 0.6rem 0 0; font-size: 1.02rem; line-height: 1.62; color: var(--muted-fort); }
+.of__meta { margin: 0.6rem 0 0; font-size: 0.9rem; font-weight: 500; color: var(--indigo); }
+.of__qui { max-width: 56ch; margin: 0.5rem 0 0; font-size: 0.95rem; line-height: 1.55; color: var(--muted); }
+.of__qui span { color: var(--ink); font-weight: 500; }
+.of__recu { display: grid; gap: 0.35rem; margin: 0.8rem 0 0; padding: 0; list-style: none; }
+.of__recu li { position: relative; padding-left: 1.1rem; font-size: 0.96rem; line-height: 1.45; color: var(--ink); }
+.of__recu li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.52em;
+  width: 0.42rem;
+  height: 0.42rem;
+  border-radius: 50%;
+  background: var(--indigo);
+}
+.of__actions { display: flex; flex-wrap: wrap; gap: 0.2rem 1.6rem; margin-top: 0.7rem; }
+
+/* ── Compter des personnes ───────────────────────────────── */
+.cpt { display: grid; gap: 1.3rem; margin: 0; }
+.cpt__rang {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas: 'sujet n' 'gens gens';
+  align-items: center;
+  gap: 0.55rem 1rem;
+}
+.cpt__sujet { grid-area: sujet; margin: 0; font-weight: 500; color: var(--ink); }
+.cpt__gens { grid-area: gens; display: flex; flex-wrap: wrap; gap: 0.42rem; margin: 0; }
+.cpt__n {
+  grid-area: n;
+  margin: 0;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--indigo);
+  white-space: nowrap;
+}
+.cpt__p {
+  display: grid;
+  place-items: center;
+  width: 1.05rem;
+  height: 1.05rem;
+  border-radius: 50%;
+  border: 1.5px solid color-mix(in srgb, var(--indigo) 45%, transparent);
+}
+.cpt__p i { display: block; width: 100%; height: 100%; border-radius: 50%; }
+.cpt__p.is-plein { border-color: var(--indigo); }
+.cpt__p.is-plein i { background: var(--indigo); }
+.cpt__legende { max-width: 56ch; font-size: 0.88rem; line-height: 1.5; color: var(--muted); }
+@media (min-width: 1100px) {
+  .cpt__rang {
+    grid-template-columns: minmax(10rem, 13rem) minmax(0, 1fr) auto;
+    grid-template-areas: 'sujet gens n';
+  }
+}
+
+/* ── Ce qui revient, avec leurs mots ─────────────────────── */
+.ex-vb { position: relative; padding-block: var(--v5-section); }
+.ex-vb__titre {
+  max-width: 20ch;
+  margin: 0;
+  font-size: var(--v5-lead);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+}
+.ex-vb__lead {
+  max-width: 58ch;
+  margin: 1.1rem 0 clamp(2.2rem, 5vh, 3.2rem);
+  font-size: var(--v5-texte);
+  line-height: 1.6;
+  color: var(--muted);
+}
+.vb {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(2.4rem, 6vh, 3.4rem);
+  align-items: start;
+}
+.vb__sujet { --vb-r: 2.4rem; }
+.vb__haut { display: flex; align-items: center; gap: 1rem; }
+.vb__hub {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: var(--vb-r);
+  height: var(--vb-r);
+  border-radius: 50%;
+  background: var(--indigo);
+  color: var(--cream);
+  font-size: calc(var(--vb-r) * 0.4);
+  font-weight: 600;
+  box-shadow: 0 14px 30px -16px rgba(28, 12, 179, 0.7);
+}
+.vb__nom { margin: 0; font-size: clamp(1.15rem, 1.6vw, 1.4rem); font-weight: 600; letter-spacing: -0.02em; }
+.vb__n { margin: 0.15rem 0 0; font-size: 0.9rem; color: var(--muted); }
+.vb__liste {
+  position: relative;
+  display: grid;
+  gap: 1.15rem;
+  margin: 1.2rem 0 0;
+  padding: 0 0 0 calc(var(--vb-r) / 2 + 1.2rem);
+  list-style: none;
+}
+.vb__fil {
+  position: absolute;
+  left: calc(var(--vb-r) / 2 - 0.75px);
+  top: -1.2rem;
+  bottom: 0.7rem;
+  width: 1.5px;
+  background: color-mix(in srgb, var(--indigo) 32%, transparent);
+  transform-origin: top center;
+}
+.vb__cite { position: relative; }
+.vb__noeud {
+  position: absolute;
+  left: calc(-1.2rem - 6px);
+  top: 0.42em;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--cream);
+  border: 1.5px solid var(--indigo);
+}
+.vb__noeud--signe { background: var(--indigo); }
+.vb__noeud--parti { border-style: dashed; }
+.vb__t { margin: 0; font-size: 1.02rem; line-height: 1.5; color: var(--ink); }
+.vb__qui { margin: 0.25rem 0 0; font-size: 0.86rem; color: var(--muted); }
+@media (min-width: 900px) {
+  .vb { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(1.8rem, 4vw, 3.4rem); }
+}
+
+/* ── Une porte d'entrée : le premier écran ───────────────── */
+.ph {
+  position: relative;
+  padding-top: clamp(7rem, 16vh, 10rem);
+  padding-bottom: clamp(2.5rem, 7vh, 4.5rem);
+}
+.ph__in {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(2.2rem, 5vh, 3rem);
+  align-items: center;
+}
+.ph__voix {
+  max-width: 32ch;
+  margin: 0 0 1.1rem;
+  font-size: clamp(1.12rem, 1.8vw, 1.45rem);
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: -0.015em;
+  color: var(--muted-fort);
+}
+.ph__titre {
+  max-width: 16ch;
+  font-size: clamp(2.2rem, 5vw, 4.3rem);
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+}
+.ph__accroche {
+  max-width: 52ch;
+  margin-top: 1.4rem;
+  font-size: clamp(1.04rem, 1.35vw, 1.2rem);
+  line-height: 1.6;
+  color: var(--muted);
+}
+.ph__faits {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.1rem 2rem;
+  margin: 2rem 0 0;
+}
+.ph__fait dt { margin: 0; font-size: 0.86rem; color: var(--muted); }
+.ph__fait dd { margin: 0.22rem 0 0; font-size: 1.02rem; font-weight: 500; line-height: 1.35; color: var(--ink); }
+.ph__actions { display: flex; flex-wrap: wrap; gap: 0.9rem; margin-top: 2.2rem; }
+.ph__mene { margin-top: 1.2rem; font-size: 0.92rem; color: var(--muted); }
+.ph__visuel { transform-style: preserve-3d; }
+@media (min-width: 900px) {
+  .ph__in { grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); gap: clamp(2.5rem, 5vw, 5rem); }
+}
+
+/* ── Et après ? ──────────────────────────────────────────── */
+.sui { position: relative; padding-block: var(--v5-section); }
+.sui__titre {
+  max-width: 22ch;
+  margin: 0;
+  font-size: var(--v5-lead);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+}
+.sui__rang {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(2rem, 5vh, 2.6rem);
+  margin-top: clamp(2rem, 5vh, 3rem);
+}
+.sui__fil { display: none; }
+.sui__offre { position: relative; padding-left: 2rem; }
+.sui__noeud {
+  position: absolute;
+  left: 0;
+  top: 0.3em;
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 50%;
+  background: var(--indigo-bright);
+}
+.sui__noeud--porte { background: var(--indigo); }
+.sui__noeud--plustard { background: var(--cream); border: 1.5px dashed var(--indigo); }
+.sui__nom { margin: 0; font-size: clamp(1.15rem, 1.6vw, 1.4rem); font-weight: 600; line-height: 1.2; letter-spacing: -0.02em; }
+.sui__dit { max-width: 46ch; margin: 0.6rem 0 0; font-size: 0.98rem; line-height: 1.6; color: var(--muted); }
+.sui__lien { margin-top: 0.4rem; }
+.sui__note { max-width: 56ch; margin-top: clamp(2rem, 5vh, 2.8rem); color: var(--muted-fort); }
+@media (min-width: 900px) {
+  .sui__rang { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(1.6rem, 4vw, 3rem); }
+  .sui__fil {
+    display: block;
+    position: absolute;
+    top: 0.55rem;
+    left: 0.55rem;
+    right: 30%;
+    height: 1.5px;
+    background: color-mix(in srgb, var(--indigo) 30%, transparent);
+    transform-origin: left center;
+  }
+  .sui__offre { padding: 2.1rem 0 0; }
+  .sui__noeud { top: 0; }
+}
+
+/* ── Les mots, en regard ─────────────────────────────────── */
+.lex { display: grid; gap: 1.15rem; margin: 0; }
+.lex__ligne { display: grid; gap: 0.25rem; }
+.lex__terme { font-weight: 600; color: var(--ink); }
+.lex__dit { margin: 0; line-height: 1.55; color: var(--muted); }
+@media (min-width: 700px) {
+  .lex__ligne { grid-template-columns: minmax(8rem, 13rem) minmax(0, 1fr); column-gap: 1.4rem; }
+}
+
+/* ── L'exemple ───────────────────────────────────────────── */
+.ex__nature {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+  max-width: 62ch;
+  margin-top: 1.6rem;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--muted-fort);
+}
+.ex__nature-noeud {
+  flex: none;
+  width: 0.9rem;
+  height: 0.9rem;
+  margin-top: 0.3em;
+  border-radius: 50%;
+  border: 1.5px dashed var(--indigo);
+}
+.ex__voix {
+  max-width: 32ch;
+  margin: 0;
+  font-size: clamp(1.25rem, 2.2vw, 1.8rem);
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+.ex__guide {
+  position: relative;
+  display: grid;
+  gap: 0.85rem;
+  margin: 0;
+  padding: 0 0 0 1.8rem;
+  list-style: none;
+}
+.ex__guide::before {
+  content: '';
+  position: absolute;
+  left: 0.36rem;
+  top: 0.6rem;
+  bottom: 0.6rem;
+  width: 1.5px;
+  background: color-mix(in srgb, var(--indigo) 26%, transparent);
+}
+.ex__guide li { position: relative; font-size: 1.05rem; line-height: 1.5; color: var(--ink); }
+.ex__guide li::before {
+  content: '';
+  position: absolute;
+  left: -1.8rem;
+  top: 0.42em;
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+  background: var(--cream);
+  border: 1.5px solid var(--indigo);
+}
+.ex__portraits { display: grid; grid-template-columns: 1fr; gap: clamp(1.6rem, 4vh, 2.2rem); }
+.ex__portrait { position: relative; padding-left: 2rem; }
+.ex__portrait-noeud {
+  position: absolute;
+  left: 0;
+  top: 0.2em;
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 50%;
+  background: var(--neuf-r);
+}
+.ex__portrait-nom { margin: 0; font-size: 1.2rem; font-weight: 600; letter-spacing: -0.02em; }
+.ex__portrait-fait { margin: 0.5rem 0 0; font-size: 0.97rem; line-height: 1.55; color: var(--muted); }
+.ex__portrait-decide { margin: 0.55rem 0 0; font-size: 0.96rem; color: var(--ink); }
+.ex__portrait-decide span { color: var(--muted); }
+.ex__portrait-cite { margin: 0.55rem 0 0; font-weight: 500; color: var(--indigo); }
+@media (min-width: 1100px) {
+  .ex__portraits { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .ex__portrait { padding: 2rem 0 0; }
+  .ex__portrait-noeud { top: 0; }
+}
+
+/* ── Une fin de page ─────────────────────────────────────── */
+.ex-fin { position: relative; padding-block: var(--v5-section); }
+.ex-fin__titre {
+  margin: 0;
+  font-size: clamp(2rem, 4.6vw, 3.8rem);
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+}
+.ex-fin__p { max-width: 52ch; margin-top: 1rem; font-size: 1.08rem; line-height: 1.6; color: var(--muted); }
+.ex-fin__actions { display: flex; flex-wrap: wrap; gap: 0.9rem; margin-top: 1.8rem; }
+.ex-fin__note { max-width: 62ch; margin-top: 2rem; font-size: 0.92rem; line-height: 1.55; color: var(--muted-fort); }
+
+/* ── Qui on est ──────────────────────────────────────────── */
+.serments__titre {
+  max-width: 20ch;
+  margin: 0 0 clamp(1.8rem, 4vh, 2.6rem);
+  font-size: var(--v5-lead);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+}
+.ahero__pf-role { text-transform: none; letter-spacing: normal; }
+
+/* ── Le menu : les situations d'abord ────────────────────── */
+.menu2__links--portes { gap: clamp(0.4rem, 1.2vh, 0.8rem); }
+.menu2__porte { display: block; }
+.menu2__voix {
+  display: block;
+  max-width: 40ch;
+  margin: -0.4rem 0 0.2rem calc(9px + clamp(0.9rem, 2vw, 1.5rem) + 0.3rem);
+  font-size: 0.92rem;
+  line-height: 1.4;
+  color: var(--muted);
+}
+.menu2__links--pages {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem 1.6rem;
+  margin-top: clamp(0.8rem, 2vh, 1.4rem);
+}
+.menu2__page .menu2__row { padding-block: 0.3rem; }
+.menu2__page .menu2__label {
+  font-size: clamp(1rem, 1.4vw, 1.2rem);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+/* ── Le fil d'Ariane ─────────────────────────────────────── */
+.crumb__inner ol { flex-wrap: wrap; }
+.crumb__inner ol li { display: inline-flex; align-items: center; gap: 0.6rem; }
+
+/* ── Le contact ──────────────────────────────────────────── */
+.ctc__situ { min-width: 0; margin: 0 0 0.3rem; padding: 0; border: 0; }
+.ctc__situ legend { margin-bottom: 0.6rem; padding: 0; font-size: 0.85rem; font-weight: 500; color: var(--ink); }
+.ctc__choix { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.ctc__puce {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding: 0.5rem 0.95rem;
+  border-radius: 999px;
+  border: 1px solid var(--silver);
+  font-size: 0.9rem;
+  line-height: 1.2;
+  color: var(--ink);
+  cursor: pointer;
+  transition: border-color 0.25s ease, background-color 0.25s ease, color 0.25s ease;
+}
+.ctc__puce input { position: absolute; inset: 0; margin: 0; opacity: 0; cursor: pointer; }
+.ctc__puce:has(input:focus-visible) { outline: 2px solid var(--indigo); outline-offset: 2px; }
+.ctc__puce.is-on {
+  border-color: var(--indigo);
+  background: color-mix(in srgb, var(--indigo) 7%, transparent);
+  color: var(--indigo);
+}
+.ctc__puce-noeud { flex: none; width: 0.7rem; height: 0.7rem; border-radius: 50%; border: 1.5px solid var(--indigo); }
+.ctc__puce.is-on .ctc__puce-noeud { background: var(--indigo); }
+.ctc__field em { font-style: normal; font-weight: 400; color: var(--muted); }
+.ctc__next-title { font-weight: 500; }
+
+/* ── Les pages d'état : la suite, sur un fil ─────────────── */
+.state-page__steps--fil { position: relative; list-style: none; padding-left: 1.7rem; }
+.state-page__steps--fil::before {
+  content: '';
+  position: absolute;
+  left: 0.3rem;
+  top: 0.6rem;
+  bottom: 0.6rem;
+  width: 1.5px;
+  background: rgba(240, 238, 232, 0.3);
+}
+.state-page__steps--fil li { position: relative; }
+.state-page__steps--fil li::before {
+  content: '';
+  position: absolute;
+  left: -1.7rem;
+  top: 0.45em;
+  width: 0.65rem;
+  height: 0.65rem;
+  border-radius: 50%;
+  background: var(--cream);
+}
+
+/* ── Le pied de page tient dans un écran de téléphone ────── */
+@media (max-width: 720px) {
+  .footer2 { padding-top: 3.2rem; }
+  .footer2--universe { min-height: 0; }
+  .footer2__net { display: none; }
+  .footer2__top { margin-bottom: 2rem; gap: 1.2rem; }
+  .footer2__statement { font-size: clamp(1.7rem, 8vw, 2.2rem); }
+  .footer2__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 1.4rem;
+    padding-bottom: 1.5rem;
+  }
+  .footer2__grid > :last-child { grid-column: 1 / -1; }
+  .footer2__heading { margin-bottom: 0.35rem; }
+  .footer2__word-wrap { padding-top: 1.2rem; }
+  .footer2__word { font-size: 22vw; }
+}
+
+/* ── Moins de mouvement, sur demande ─────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  /* Sans défilement piloté, la présentation ne remplace plus les boutons :
+     elle se pose dessous, dans le flux, au lieu de les recouvrir. */
+  .heroform__stage { flex-direction: column; align-items: stretch; padding-bottom: 3rem; }
+  .heroform__presente {
+    position: static;
+    width: min(52ch, 100%);
+    margin: 2.6rem auto 0;
+    padding-inline: var(--gutter);
+    transform: none;
+  }
+  .mslot__affiche, .pl__flotte { animation: none; }
+  .ch__voix, .ch__fleche, .lien-fleche span { transition: none; }
+}
+
+.mfl-flat__liste { margin-top: clamp(1.8rem, 4vh, 2.6rem); max-width: 60rem; }
+.mfl-flat__liste .nds__suite strong { color: var(--ink); font-weight: 500; }
+
+.bk__vers-form { padding: 0; border: 0; background: none; font: inherit; cursor: pointer; }
+
+/* La suite, sur la page de remerciement : un fil, pas un encadré. */
+.state-page__next { padding: 0; border: 0; border-radius: 0; }
+/* Le bouton secondaire sur fond sombre : filet crème, remplissage crème au survol. */
+.btn--on-dark.btn--ghost-dark {
+  --bb: transparent;
+  --bt: var(--cream);
+  --bc: var(--cream);
+  --ba: var(--indigo);
+  --bh: var(--indigo);
+  --bd: rgba(240, 238, 232, 0.4);
+  box-shadow: none;
+}

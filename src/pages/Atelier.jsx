@@ -332,7 +332,6 @@ export default function Atelier() {
     <Page title={c.metaTitle} description={c.metaDesc}>
       <section className="section atl">
         <div className="container">
-          <p className="eyebrow eyebrow--index">{c.eyebrow}</p>
           <h1 className="h1 atl__titre">{c.titre}</h1>
           <p className="lead atl__lead">{c.lead}</p>
           {c.leadSuite && <p className="atl__lead-suite">{c.leadSuite}</p>}

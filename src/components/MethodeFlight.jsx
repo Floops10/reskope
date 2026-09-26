@@ -224,25 +224,27 @@ export default function MethodeFlight({ jalons, film, labels }) {
     return () => { st.kill(); window.removeEventListener('pointermove', onMove); };
   }, { scope: rootRef, dependencies: [] });
 
+  /* Sans mouvement, le vol devient la liste de ses cinq moments, dans la
+     même langue que le reste du site : un fil, un nœud par moment. */
   if (reduced) {
     return (
       <section className="mfl-flat">
         <div className="container">
-          <p className="eyebrow eyebrow--index">{film.introKicker}</p>
           <h2 className="mfl-flat__title">{film.introTitle}</h2>
           <p className="mfl-flat__lead">{film.introText}</p>
-          <div className="jalons-list">
+          <ol className="nds nds--grand mfl-flat__liste">
+            <span className="nds__fil" aria-hidden="true" />
             {jalons.map((j) => (
-              <div className={`jalon-card${j.here ? ' is-here' : ''}`} key={j.n}>
-                <span className="jalon-card__body">
-                  <span className="jalon-card__label">{j.label}{j.here && <span className="jalon-card__here">{labels.here}</span>}</span>
-                  <h3>{j.title}</h3>
-                  <p>{j.text}</p>
-                  <p className="jalon-card__deliver"><strong>{labels.youGet} :</strong> {j.deliver}</p>
+              <li className="nds__item" key={j.n}>
+                <span className="nds__noeud" aria-hidden="true" />
+                <span className="nds__t">
+                  {j.title}
+                  <span className="nds__suite">{j.text}</span>
+                  <span className="nds__suite"><strong>{labels.youGet} :</strong> {j.deliver}</span>
                 </span>
-              </div>
+              </li>
             ))}
-          </div>
+          </ol>
         </div>
       </section>
     );
@@ -274,7 +276,6 @@ export default function MethodeFlight({ jalons, film, labels }) {
             const shown = active === i || hoveredStation === i;
             return (
               <article className={`mfl__panel${shown ? ' is-active' : ''}`} key={i}>
-                <p className="mfl__kicker">{s.kicker}{s.here && <span className="mfl__here">{labels.here}</span>}</p>
                 <h2 className="mfl__title">{splitWords(s.title)}</h2>
                 <p className="mfl__body">{splitWords(s.body)}</p>
                 {s.deliver && <p className="mfl__deliver"><span>{labels.youGet}</span>{s.deliver}</p>}

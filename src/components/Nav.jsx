@@ -6,40 +6,40 @@ import { lockScroll } from '../lib/smoothScroll';
 import { GLYPH_SHAPES } from '../lib/net3d';
 import Net3D from './Net3D';
 import SwapLabel from './SwapLabel';
-import { useT, useLang, LangToggle } from '../i18n';
-import { ProfilToggle, useProfil } from '../profil';
-import { PAGES_PROFIL } from '../data/profils';
-import { CONTACT } from '../data/site';
+import { PORTES } from '../data/offres';
 import { openCalModal, isCalConfigured } from '../lib/cal';
 
-/* NAV — header minimal + MENU refait (exigence premium).
-   Ouverture en couches : le voile s'assombrit, une lame indigo glisse,
-   le panneau crème la suit avec un léger retard (profondeur), puis les
-   liens — GRANDS, numérotés — montent un à un derrière leurs masques,
-   le pied arrive en dernier, un objet réseau 3D flotte en décor.
-   Fermeture : la même chorégraphie, rejouée à l'envers, accélérée.
-   Survol d'un lien : la ligne s'indente, le numéro s'allume, la flèche
-   arrive, un nœud-réseau pulse. Mobile : panneau plein écran, même soin. */
+/* NAV — un en-tête minimal, et un menu qui commence par le visiteur.
+
+   Le menu ne s'ouvre plus sur une liste de pages : il s'ouvre sur les trois
+   situations qui amènent un dirigeant chez nous, dans ses mots, et chacune
+   mène à la page qui lui répond. Les pages du site viennent ensuite, plus
+   petites. Quelqu'un qui ne sait pas encore ce qu'il cherche se reconnaît
+   dans une phrase ; il ne se reconnaît pas dans « Nos offres ».
+
+   La chorégraphie reste celle de la marque : le voile s'assombrit, une lame
+   indigo glisse, le panneau crème la suit avec un léger retard, puis les
+   lignes montent une à une derrière leurs masques. Fermeture : la même,
+   rejouée à l'envers et accélérée. */
+
+const PAGES = [
+  { to: '/nos-offres', label: 'Nos offres' },
+  { to: '/comment-ca-se-passe', label: 'Comment ça se passe' },
+  { to: '/exemple', label: 'Un exemple complet' },
+  { to: '/qui-on-est', label: 'Qui on est' },
+  { to: '/contact', label: 'Contact' },
+];
+
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [open, setOpen] = useState(false);
   const [dark, setDark] = useState(false);
   const { pathname } = useLocation();
-  const { lang } = useLang();
-  const { profil } = useProfil();
-  const t = useT();
-  /* Une page réservée à l'autre profil n'a rien à faire dans le menu :
-     proposer un exemple d'audit à une entreprise de trois personnes,
-     c'est promettre une prestation qu'on ne lui vendra pas. L'URL reste
-     valide, seul le chemin de navigation disparaît. */
-  const tabs = Object.entries(t.nav.tabs)
-    .filter(([to]) => !PAGES_PROFIL[to] || PAGES_PROFIL[to] === profil);
 
-  /* Deux CTA distincts dans le header : « Écrire » mène au formulaire,
-     « Réserver » ouvre l'agenda. Un seul bouton pour les deux intentions
-     créait une ambiguïté (le lien naviguait ET tentait d'ouvrir le pop-up).
-     Si Cal.com n'est pas joignable, on bascule sur le formulaire. */
+  /* Deux intentions, deux boutons : écrire mène au formulaire, réserver
+     ouvre l'agenda. Si Cal.com n'est pas joignable, on bascule sur le
+     formulaire plutôt que de laisser un bouton muet. */
   const book = (e) => {
     e.preventDefault();
     setOpen(false);
@@ -73,13 +73,17 @@ export default function Nav() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  useEffect(() => setOpen(false), [pathname]);
+  /* Changer de page referme le menu. L'ajustement se fait pendant le rendu,
+     pas dans un effet : on évite un rendu de plus avec le menu encore ouvert. */
+  const [adresse, setAdresse] = useState(pathname);
+  if (adresse !== pathname) {
+    setAdresse(pathname);
+    setOpen(false);
+  }
 
   /* Contraste : le header passe en clair quand une section sombre
-     ([data-nav-dark]) est SOUS la barre. Calcul en pixels (hauteur réelle du
-     header), recalculé au scroll : déterministe sur mobile, là où une bande
-     en % du viewport laissait le logo invisible dans la zone frontière.
-     Un MutationObserver re-collecte quand les pages lazy montent. */
+     ([data-nav-dark]) est sous la barre. Calcul en pixels, recalculé au
+     défilement ; un MutationObserver re-collecte quand les pages montent. */
   useEffect(() => {
     let els = [];
     let raf = 0;
@@ -121,14 +125,11 @@ export default function Nav() {
     };
   }, [open]);
 
-  /* Chorégraphie d'ouverture (fermeture = reverse accéléré).
-     Elle dépend du PROFIL autant que de la langue : le menu perd une
-     entrée quand une page ne concerne pas le visiteur, et une timeline
-     construite sur l'ancienne liste laisse une ligne figée. */
+  /* Chorégraphie d'ouverture (fermeture = reverse accéléré). */
   useGSAP(() => {
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const rows = menuRef.current.querySelectorAll('.menu2__row');
-    const head = menuRef.current.querySelector('.menu2__head');
+    const voix = menuRef.current.querySelectorAll('.menu2__voix');
     const foot = menuRef.current.querySelector('.menu2__foot');
     const decor = menuRef.current.querySelector('.menu2__decor');
 
@@ -141,13 +142,13 @@ export default function Nav() {
       tl.fromTo(backdropRef.current, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6, ease: 'power2.out' }, 0)
         .fromTo(layerRef.current, { xPercent: 101 }, { xPercent: 0, duration: 0.6, ease: 'power4.inOut' }, 0)
         .fromTo(panelRef.current, { xPercent: 103 }, { xPercent: 0, duration: 0.72, ease: 'power4.inOut' }, 0.1)
-        .fromTo(head, { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, duration: 0.5 }, 0.44)
-        .fromTo(rows, { yPercent: 130 }, { yPercent: 0, duration: 0.75, stagger: 0.06 }, 0.42)
-        .fromTo(foot, { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.55 }, 0.68)
+        .fromTo(rows, { yPercent: 130 }, { yPercent: 0, duration: 0.75, stagger: 0.05 }, 0.42)
+        .fromTo(voix, { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.5, stagger: 0.05 }, 0.5)
+        .fromTo(foot, { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.55 }, 0.72)
         .fromTo(decor, { autoAlpha: 0, scale: 0.7 }, { autoAlpha: 0.55, scale: 1, duration: 0.7, ease: 'power2.out' }, 0.6);
     }
     menuTl.current = tl;
-  }, { scope: menuRef, dependencies: [lang, profil] });
+  }, { scope: menuRef });
 
   useEffect(() => {
     const tl = menuTl.current;
@@ -169,18 +170,13 @@ export default function Nav() {
           </Link>
 
           <div className="nav__actions">
-            {/* Deux réglages de même nature : la langue, et la taille de
-                la structure. Le second change ce que le site propose. */}
-            <ProfilToggle className="nav__profil" />
-            <LangToggle className="nav__lang" />
-            {/* Deux intentions, deux boutons : écrire / réserver */}
             <div className="nav__ctas">
               <Link to="/contact" className="nav__cta nav__cta--ghost">
-                <SwapLabel>{t.nav.cta}</SwapLabel>
+                <SwapLabel>Nous écrire</SwapLabel>
               </Link>
               {isCalConfigured && (
                 <button type="button" className="nav__cta nav__cta--solid" onClick={book}>
-                  <SwapLabel>{t.nav.ctaBook}</SwapLabel>
+                  <SwapLabel>Réserver 30 min</SwapLabel>
                   <span className="nav__cta-arrow" aria-hidden="true">→</span>
                 </button>
               )}
@@ -190,6 +186,7 @@ export default function Nav() {
               className={`nav__menu-btn${open ? ' is-open' : ''}`}
               aria-label={open ? 'Fermer le menu' : 'Ouvrir le menu'}
               aria-expanded={open}
+              aria-controls="menu-principal"
               onClick={() => setOpen((o) => !o)}
             >
               <span className={`burger${open ? ' is-open' : ''}`}>
@@ -201,8 +198,8 @@ export default function Nav() {
         </div>
       </nav>
 
-      {/* Pastille compacte : quand le header se détache au scroll, seul le
-          menu reste, en verre flouté en haut à droite */}
+      {/* Pastille compacte : quand le header se détache au défilement, seul
+          le menu reste, en verre flouté en haut à droite. */}
       <button
         type="button"
         className={`nav-pill${hidden && !open ? ' is-on' : ''}${dark ? ' nav-pill--dark' : ''}`}
@@ -216,7 +213,7 @@ export default function Nav() {
         </span>
       </button>
 
-      <div className={`menu2${open ? ' is-open' : ''}`} ref={menuRef}>
+      <div className={`menu2${open ? ' is-open' : ''}`} ref={menuRef} id="menu-principal">
         <div
           className="menu2__backdrop"
           aria-hidden="true"
@@ -226,26 +223,37 @@ export default function Nav() {
         <div className="menu2__layer" aria-hidden="true" ref={layerRef} />
         <div className="menu2__panel" ref={panelRef} aria-hidden={!open}>
 
-          {/* La version du site est la première chose que le menu montre.
-              Elle était en bas, après deux boutons : sur téléphone, où le
-              sélecteur du header ne tient pas, personne ne découvrait qu'il
-              existe deux versions. C'est un réglage, il se pose en tête. */}
-          <div className="menu2__head">
-            <ProfilToggle className="menu2__profil" />
-          </div>
-
-          <nav className="menu2__links" aria-label="Pages">
-            {tabs.map(([to, label]) => (
+          {/* Les trois situations d'abord : chacune dit, dans les mots du
+              dirigeant, ce qui l'amène. */}
+          <nav className="menu2__links menu2__links--portes" aria-label="Par où commencer">
+            {PORTES.map((p) => (
               <NavLink
-                key={to}
-                to={to}
-                className={({ isActive }) => `menu2__link${isActive ? ' is-current' : ''}`}
+                key={p.id}
+                to={p.slug}
+                className={({ isActive }) => `menu2__link menu2__porte${isActive ? ' is-current' : ''}`}
               >
                 <span className="menu2__mask">
                   <span className="menu2__row">
                     <span className="menu2__node" aria-hidden="true" />
-                    <span className="menu2__label">{label}</span>
+                    <span className="menu2__label">{p.court}</span>
                     <span className="menu2__arrow" aria-hidden="true">→</span>
+                  </span>
+                </span>
+                <span className="menu2__voix">« {p.amorce} »</span>
+              </NavLink>
+            ))}
+          </nav>
+
+          <nav className="menu2__links menu2__links--pages" aria-label="Pages">
+            {PAGES.map((l) => (
+              <NavLink
+                key={l.to}
+                to={l.to}
+                className={({ isActive }) => `menu2__link menu2__page${isActive ? ' is-current' : ''}`}
+              >
+                <span className="menu2__mask">
+                  <span className="menu2__row">
+                    <span className="menu2__label">{l.label}</span>
                   </span>
                 </span>
               </NavLink>
@@ -253,22 +261,16 @@ export default function Nav() {
           </nav>
 
           <div className="menu2__foot">
-            {CONTACT.ouverte && (
-              <div className="menu2__contact">
-                <a href={`mailto:${CONTACT.email}`} className="menu2__contact-link">{CONTACT.email}</a>
-              </div>
-            )}
             <div className="menu2__foot-actions">
               <Link to="/contact" className="btn btn--ghost">
-                <SwapLabel>{t.nav.cta}</SwapLabel>
+                <SwapLabel>Nous écrire</SwapLabel>
               </Link>
               {isCalConfigured && (
                 <button type="button" className="btn btn--primary" onClick={book}>
-                  <SwapLabel>{t.nav.ctaBook}</SwapLabel>
+                  <SwapLabel>Réserver 30 min</SwapLabel>
                   <span className="btn__arrow" aria-hidden="true">→</span>
                 </button>
               )}
-              <LangToggle className="menu2__lang" />
             </div>
           </div>
 

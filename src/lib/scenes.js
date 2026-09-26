@@ -485,13 +485,253 @@ const rampe = {
   ],
 };
 
+
+/* ════════════════════════════════════════════════════════════
+   LA MISSION — quatre scènes pour raconter une discovery.
+
+   Le même vocabulaire que les offres : un bloc plein est vérifié, un bloc
+   en fil de fer ne l'est pas encore, un bloc clair est ce que la mission
+   apporte. Les scènes se suivent : ce que vous croyez, ce que vivent vos
+   clients, ce qui revient, ce que vous décidez. Les hypothèses de la
+   première reviennent dans la dernière, remplies ou non.
+   ════════════════════════════════════════════════════════════ */
+
+const HYP = [
+  ['h1', 1.6, 1.2, 3.4, ['Des clients en veulent', 'People want it']],
+  ['h2', 15.4, 1.2, 3.0, ['Ils paieront ce prix', 'They will pay this price']],
+  ['h3', 1.6, 10.2, 2.8, ['On sait où les trouver', 'We know where to find them']],
+  ['h4', 15.4, 10.2, 2.4, ['Personne ne le fait déjà', 'Nobody does it already']],
+];
+
+const hypotheses = {
+  atelier: false,
+  sol: { W: 20, D: 14, pas: 2 },
+  blocs: [
+    b('projet', 8, 5, 4, 4, 5.2, 'socle', ['Votre projet', 'Your project']),
+    ...HYP.map(([id, x, y, h, nom]) => b(id, x, y, 3, 2.6, h, 'creux', nom)),
+  ],
+  liens: [],
+  fr: {
+    titre: 'Ce que vous croyez',
+    intro: 'Au centre, votre projet. Autour, quatre affirmations en fil de fer : tant que personne ne les a vérifiées auprès de vos clients, ce sont des suppositions.',
+    fin: 'On classe ces hypothèses par risque, et on commence par celle qui ferait tout tomber.',
+  },
+  etapes: [
+    {
+      ids: ['projet'],
+      mots: ['projet'],
+      fr: { nom: 'Votre projet', dit: 'Au départ, il y a votre idée ou votre entreprise, et une décision qui va engager de l’argent : lancer, investir, emprunter.' },
+    },
+    {
+      ids: ['projet', 'h1', 'h2', 'h3', 'h4'],
+      mots: ['h1', 'h2'],
+      liens: ['h1', 'h2', 'h3', 'h4'].map((h) => ({ de: 'projet', vers: h, etat: 'manquant', z: 3.2 })),
+      fr: { nom: 'Ce qui doit être vrai', dit: 'Quatre affirmations tiennent le projet debout. Elles sont en fil de fer parce que personne ne les a encore vérifiées. C’est la première heure qu’on passe avec vous.' },
+    },
+    {
+      ids: ['h2', 'h1'],
+      mots: ['h2'],
+      fr: { nom: 'Le plus risqué d’abord', dit: 'On les classe par risque. On commence par celle qui ferait tout tomber si elle était fausse, et c’est souvent le prix.' },
+    },
+  ],
+};
+
+/* Onze personnes autour de l'offre : quatre qui ont signé, quatre qui ont
+   refusé, trois qui sont parties. La hauteur d'un bloc est le temps que la
+   personne a accordé à l'entretien. */
+const PERSONNES = Array.from({ length: 11 }, (_, i) => {
+  const a = -Math.PI / 2 + (i / 11) * Math.PI * 2;
+  const qui = i % 3 === 0 ? ['Un client parti', 'A customer who left']
+    : i % 3 === 1 ? ['Un client qui a signé', 'A customer who signed']
+      : ['Un client qui a refusé', 'A customer who said no'];
+  const h = 1.6 + ((i * 7) % 5) * 0.35;
+  return b(`c${i + 1}`, 11 + Math.cos(a) * 8 - 0.75, 8 + Math.sin(a) * 5.6 - 0.75, 1.5, 1.5, h, 'neuf', qui);
+});
+const IDS_PERSONNES = PERSONNES.map((g) => g.id);
+
+const entretiens = {
+  atelier: false,
+  sol: { W: 22, D: 16, pas: 2.2 },
+  blocs: [
+    b('offre', 9, 6.5, 4, 3, 3.2, 'socle', ['Votre offre', 'Your offer']),
+    ...PERSONNES,
+  ],
+  liens: [],
+  fr: {
+    titre: 'Ce que vivent vos clients',
+    intro: 'Onze personnes autour de votre offre : des clients gagnés, perdus, partis. Chacune est interrogée quarante-cinq minutes sur ce qu’elle a vécu.',
+    fin: 'Ils savent pourquoi on les appelle, et ils peuvent refuser. On ne garde pas leurs coordonnées après la mission.',
+  },
+  etapes: [
+    {
+      ids: IDS_PERSONNES,
+      mots: ['c1'],
+      fr: { nom: 'Dix à douze personnes', dit: 'Des clients qui ont signé, d’autres qui ont refusé ou qui sont partis. Chacun est interrogé sur un achat précis, pas sur ses goûts.' },
+    },
+    {
+      ids: ['offre', ...IDS_PERSONNES],
+      mots: ['offre'],
+      liens: IDS_PERSONNES.map((c) => ({ de: c, vers: 'offre', etat: 'pose', z: 1.4 })),
+      fr: { nom: 'Votre offre, vue d’en face', dit: 'La hauteur de chaque bloc, c’est le temps que la personne nous a accordé. Au centre, ce que vous proposez, enfin regardé depuis la place du client.' },
+    },
+    {
+      ids: ['c1', 'c4', 'c7', 'c10'],
+      mots: ['c4'],
+      fr: { nom: 'Ceux qui sont partis', dit: 'Les clients perdus sont souvent ceux qui en disent le plus. Ils parlent plus librement à quelqu’un d’extérieur qu’à vous.' },
+    },
+  ],
+};
+
+/* Trois tours au fond : une personne, un étage. Devant, les onze mêmes
+   personnes, regroupées par ce qu'elles font. */
+const grappe = (pre, x0, n, nom) => Array.from({ length: n }, (_, k) => (
+  b(`${pre}${String.fromCharCode(97 + k)}`, x0 + (k % 2) * 1.9, 8.6 + Math.floor(k / 2) * 1.9, 1.4, 1.4, 1.8 + (k % 2) * 0.4, 'neuf', nom)
+));
+const G1 = grappe('g1', 1.8, 4, ['Le propriétaire pressé', 'The owner in a hurry']);
+const G2 = grappe('g2', 9.2, 4, ['Le comparateur prudent', 'The careful comparer']);
+const G3 = grappe('g3', 16.4, 3, ['Le fidèle déçu', 'The disappointed regular']);
+
+const synthese = {
+  atelier: false,
+  sol: { W: 22, D: 14, pas: 2.2 },
+  blocs: [
+    b('t1', 1.8, 1.4, 3, 3, 7, 'plein', ['Le délai de réponse', 'The response time']),
+    b('t2', 9.2, 1.4, 3, 3, 5, 'plein', ['Le devis difficile à lire', 'The hard-to-read quote']),
+    b('t3', 16.4, 1.4, 3, 3, 2, 'plein', ['Le prix', 'The price']),
+    ...G1, ...G2, ...G3,
+  ],
+  liens: [],
+  fr: {
+    titre: 'Ce qui revient',
+    intro: 'Chaque tour monte d’un étage par personne qui en a parlé sans qu’on le lui demande. Devant, les mêmes personnes, regroupées par ce qu’elles font.',
+    fin: 'Sept personnes sur onze, c’est un signal fort. Ce n’est pas un pourcentage : onze entretiens ne font pas un sondage.',
+  },
+  etapes: [
+    {
+      ids: ['t1', 't2', 't3'],
+      mots: ['t1'],
+      fr: { nom: 'Ce qui revient le plus', dit: 'Sept personnes sur onze ont parlé du délai de réponse, sans qu’on le leur souffle. C’est la tour la plus haute, et la première chose à regarder.' },
+    },
+    {
+      ids: [...G1, ...G2, ...G3].map((g) => g.id),
+      mots: ['g1a', 'g2a'],
+      fr: { nom: 'Deux ou trois portraits', dit: 'Les gens se regroupent par ce qu’ils font, pas par leur âge ou leur métier. Chaque portrait renvoie à des citations : si on ne peut pas dire qui l’a dit, on ne l’écrit pas.' },
+    },
+    {
+      ids: ['t3'],
+      mots: ['t3'],
+      fr: { nom: 'Ce qui compte moins que prévu', dit: 'La petite tour, c’est souvent la surprise. Ici, le prix, dont tout le monde parlait en interne, et que deux clients seulement ont cité.' },
+    },
+  ],
+};
+
+const decision = {
+  atelier: false,
+  sol: { W: 20, D: 14, pas: 2 },
+  blocs: [
+    b('projet', 8, 5, 4, 4, 5.2, 'socle', ['Votre projet', 'Your project']),
+    ...HYP.map(([id, x, y, h, nom]) => b(id, x, y, 3, 2.6, h, id === 'h2' || id === 'h4' ? 'creux' : 'plein', nom)),
+    b('test', 12.8, 5.4, 2.4, 2.4, 4.4, 'neuf', ['Ce qu’on teste', 'What we test']),
+    b('synthese', 6, 11.2, 8, 2.2, 0.7, 'socle', ['Votre synthèse', 'Your summary']),
+  ],
+  liens: [],
+  fr: {
+    titre: 'Ce que vous décidez',
+    intro: 'Les mêmes hypothèses, après les entretiens. Celles qui se sont remplies ont été confirmées par vos clients ; celles qui restent en fil de fer ont été contredites.',
+    fin: 'Vous décidez : continuer, ajuster ou arrêter. Et vous le décidez sur des preuves.',
+  },
+  etapes: [
+    {
+      ids: ['projet', 'h1', 'h2', 'h3', 'h4'],
+      mots: ['h1'],
+      liens: [
+        { de: 'projet', vers: 'h1', etat: 'pose', z: 3.2 },
+        { de: 'projet', vers: 'h3', etat: 'pose', z: 3.2 },
+        { de: 'projet', vers: 'h2', etat: 'manquant', z: 3.2 },
+        { de: 'projet', vers: 'h4', etat: 'manquant', z: 3.2 },
+      ],
+      fr: { nom: 'Ce qui tient', dit: 'Deux hypothèses sont pleines : vos clients les ont confirmées. Les deux autres restent en fil de fer, et ce sont elles qui vous évitent de dépenser au mauvais endroit.' },
+    },
+    {
+      ids: ['projet', 'test'],
+      mots: ['test'],
+      fr: { nom: 'Ce qu’on teste', dit: 'La piste la plus prometteuse est essayée pour de vrai, avec le moins de moyens possible : un nouveau prix, une page, un devis plus clair.' },
+    },
+    {
+      ids: ['synthese'],
+      mots: ['synthese'],
+      fr: { nom: 'Ce que vous emportez', dit: 'Une synthèse rangée comme un financeur la lit, avec vos preuves. Elle vous sert à décider, et à convaincre.' },
+    },
+  ],
+};
+
+/* Le dossier, chapitre par chapitre, face à celui qui va le lire. */
+const CHAPITRES = [
+  ['p-resume', 'plein', ['Le résumé', 'The summary']],
+  ['p-marche', 'creux', ['Le marché', 'The market']],
+  ['p-clients', 'plein', ['La clientèle', 'The customers']],
+  ['p-offre', 'plein', ['L’offre et le prix', 'The offer and the price']],
+  ['p-previ', 'creux', ['Le prévisionnel', 'The forecast']],
+  ['p-plan', 'plein', ['Le plan de financement', 'The financing plan']],
+];
+const IDS_CHAP = CHAPITRES.map(([id]) => id);
+
+const relecture = {
+  atelier: false,
+  sol: { W: 20, D: 13, pas: 2 },
+  apparition: ['preuves'],
+  blocs: [
+    ...CHAPITRES.map(([id, etat, nom], k) => b(id, 2, 3.4, 7, 6, 0.62, etat, nom, k * 0.72)),
+    b('financeur', 15, 4, 3, 3, 6.5, 'socle', ['Le financeur', 'The lender']),
+    b('q', 12.2, 9.4, 1.6, 1.6, 1.4, 'neuf', ['Ses questions', 'Their questions']),
+    b('preuves', 10.4, 3.4, 2.4, 2.4, 2.2, 'neuf', ['Les preuves qui manquaient', 'The missing evidence']),
+  ],
+  liens: [],
+  fr: {
+    titre: 'Votre dossier, relu',
+    intro: 'À gauche, votre dossier, chapitre par chapitre. À droite, celui qui va le lire. Les plaques en fil de fer sont celles où une affirmation n’a pas encore de preuve.',
+    fin: 'On ne rédige pas votre business plan : on le relit avec les yeux du financeur, et on vous dit quoi renforcer.',
+  },
+  etapes: [
+    {
+      ids: IDS_CHAP,
+      mots: ['p-resume'],
+      fr: { nom: 'Votre dossier', dit: 'Chaque plaque est un chapitre. On les lit toutes, dans l’ordre où un financeur les lit.' },
+    },
+    {
+      ids: ['p-marche', 'p-previ', 'financeur'],
+      mots: ['financeur'],
+      liens: [
+        { de: 'p-marche', vers: 'financeur', etat: 'manquant', z: 1.4 },
+        { de: 'p-previ', vers: 'financeur', etat: 'manquant', z: 3.6 },
+      ],
+      fr: { nom: 'Ce qui ne tient pas encore', dit: 'Deux chapitres affirment sans prouver : le marché, et le prévisionnel qui en découle. C’est là que les questions tomberont.' },
+    },
+    {
+      ids: ['q', 'financeur'],
+      mots: ['q'],
+      fr: { nom: 'Ce qu’on va vous demander', dit: 'On liste les questions que le financeur posera, et on vous aide à préparer vos réponses avant le rendez-vous.' },
+    },
+    {
+      ids: ['preuves', 'p-marche', 'p-previ'],
+      mots: ['preuves'],
+      fr: { nom: 'Les preuves qui manquaient', dit: 'Quand une preuve manque, on vous dit comment l’obtenir. Parfois, c’est une mission terrain de quelques semaines.' },
+    },
+  ],
+};
+
 export const SCENES = {
   inventaire, liaison, chantier, estrade, vitrine, creneaux, cadre, rampe,
+  hypotheses, entretiens, synthese, decision, relecture,
 };
 
 /* Quelle scène va avec quelle offre. Les quatre premiers identifiants sont
    ceux de la version PME, les quatre suivants ceux de la version TPE. */
 export const FIGURE_OFFRE = {
+  idee: 'hypotheses',
+  clients: 'entretiens',
+  dossier: 'relecture',
+  suite: 'decision',
   audit: 'inventaire',
   'audit-plus': 'liaison',
   developpement: 'chantier',

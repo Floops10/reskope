@@ -6,10 +6,9 @@ import { buildR3D } from '../lib/net3d';
 import Net3D from './Net3D';
 import SwapLabel from './SwapLabel';
 import BusinessCard from './BusinessCard';
-import { useT, useLang } from '../i18n';
+import { useT } from '../i18n';
 import { CONTACT } from '../data/site';
-import { useProfil } from '../profil';
-import { PAGES_PROFIL } from '../data/profils';
+import { PORTES } from '../data/offres';
 
 /* FOOTER — L'UNIVERS de clôture (plein écran).
    On termine EN IMMERSION dans le réseau de la marque : une poussière
@@ -32,19 +31,15 @@ const DUST = Array.from({ length: 34 }, (_, i) => {
 });
 
 export default function Footer() {
-  const { profil } = useProfil();
-  const visible = (to) => !PAGES_PROFIL[to] || PAGES_PROFIL[to] === profil;
   const [cardOpen, setCardOpen] = useState(false);
   const rootRef = useRef(null);
   const stRef = useRef(null);
   const wordRef = useRef(null);
-  const t = useT();
-  const { lang } = useLang();
-  const f = t.footer;
-  const tabs = t.nav.tabs;
+  const f = useT().footer;
   const rShape = buildR3D(14, 0.6);
-  // Clôture courte et directe : pas de paragraphe qui alourdit la scène
-  const statement = lang === 'fr' ? 'Parlons de vos outils.' : 'Let’s talk about your tools.';
+  /* Clôture courte et directe : la même phrase que le bouton de l'en-tête,
+     pour que le visiteur retrouve en bas ce qu'on lui a proposé en haut. */
+  const statement = 'Parlons de votre situation.';
 
   useGSAP(() => {
     if (instant()) return;
@@ -156,44 +151,38 @@ export default function Footer() {
 
       <div className="container footer2__top">
         <p className="footer2__statement" ref={stRef}>{statement}</p>
-        <Link to="/contact" className="btn btn--on-dark footer2__cta" data-cursor-label={f.cta}>
-          <SwapLabel>{f.cta}</SwapLabel>
+        <Link to="/contact" className="btn btn--on-dark footer2__cta" data-cursor-label="Écrire">
+          <SwapLabel>Nous écrire</SwapLabel>
           <span className="btn__arrow" aria-hidden="true">→</span>
         </Link>
       </div>
 
       <div className="container footer2__grid">
-        {/* Le pied de page proposait « Le constat » et « Exemple de
-            bilan » en version TPE : deux pages réservées aux PME, qu'on
-            avait pris soin de retirer du menu. Il suit maintenant la
-            même règle que lui. */}
-        <nav className="footer2__col" aria-label={f.site}>
-          <span className="footer2__heading">{f.site}</span>
-          <Link to="/">{f.home}</Link>
-          {visible('/pourquoi') && <Link to="/pourquoi">{tabs['/pourquoi']}</Link>}
-          <Link to="/methode">{tabs['/methode']}</Link>
-          <Link to="/offres">{tabs['/offres']}</Link>
+        {/* Les trois situations d'abord, comme dans le menu : c'est par
+            elles qu'on entre chez nous. */}
+        <nav className="footer2__col" aria-label="Pour commencer">
+          <span className="footer2__heading">Pour commencer</span>
+          {PORTES.map((p) => <Link key={p.id} to={p.slug}>{p.court}</Link>)}
         </nav>
 
-        <nav className="footer2__col" aria-label={f.resources}>
-          <span className="footer2__heading">{f.resources}</span>
-          <Link to="/atelier">{tabs['/atelier']}</Link>
-          {visible('/exemple') && <Link to="/exemple">{tabs['/exemple']}</Link>}
-          <Link to="/numerique-responsable">{tabs['/numerique-responsable']}</Link>
-          <Link to="/a-propos">{tabs['/a-propos']}</Link>
+        <nav className="footer2__col" aria-label="Le site">
+          <span className="footer2__heading">Le site</span>
+          <Link to="/nos-offres">Nos offres</Link>
+          <Link to="/comment-ca-se-passe">Comment ça se passe</Link>
+          <Link to="/exemple">Un exemple complet</Link>
+          <Link to="/qui-on-est">Qui on est</Link>
         </nav>
 
         <div className="footer2__col">
-          <span className="footer2__heading">{f.contact}</span>
+          <span className="footer2__heading">Nous joindre</span>
           {CONTACT.ouverte && <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>}
-          <Link to="/contact">{f.talk}</Link>
+          <Link to="/contact">Nous écrire</Link>
           <button type="button" className="footer2__card-btn" onClick={() => setCardOpen(true)}>
             {f.card} <span aria-hidden="true">→</span>
           </button>
-          {/* Là où on se déplace. Sans adresse à afficher, la colonne
-              contact n'avait plus qu'un lien répété d'une colonne à
-              l'autre : dire d'où on vient est une information. */}
-          <span className="footer2__zone">{f.zone}</span>
+          {/* D'où on part : sans adresse à afficher, dire la zone est une
+              information. */}
+          <span className="footer2__zone">Valenciennes et Lille</span>
         </div>
       </div>
 
@@ -211,13 +200,13 @@ export default function Footer() {
       </div>
 
       <div className="container footer2__legal">
-        <nav className="footer2__legal-links" aria-label={f.mentions}>
+        <nav className="footer2__legal-links" aria-label="Informations légales">
           <Link to="/mentions-legales">{f.mentions}</Link>
           <Link to="/confidentialite">{f.privacy}</Link>
           <Link to="/cgu">{f.terms}</Link>
           <Link to="/cgv">{f.sales}</Link>
         </nav>
-        <p>© {new Date().getFullYear()} Reskope · {f.rights}</p>
+        <p>© {new Date().getFullYear()} Reskope · On vous aide à décider, et on construit la suite.</p>
       </div>
 
       {cardOpen && <BusinessCard onClose={() => setCardOpen(false)} />}
