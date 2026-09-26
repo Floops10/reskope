@@ -31,6 +31,7 @@ const MINUTES = {
   idee: [60, 0, 0, 0, 30, 0, 0, 0, 0, 30, 0, 0, 0, 0, 60],
   clients: [60, 0, 0, 0, 30, 0, 0, 0, 0, 30, 0, 0, 0, 0, 60],
   dossier: [0, 0, 0, 0, 0, 0, 60, 0, 0, 60],
+  bp: [60, 0, 0, 0, 0, 60, 0, 0, 0, 0, 120, 0, 0, 0, 0, 60, 0, 0, 0, 0, 0, 0, 0, 0, 60],
 };
 
 const FAITS = [
@@ -106,7 +107,7 @@ function Suite({ ids }) {
   return (
     <section className="sui" ref={racine} aria-labelledby="sui-t">
       <div className="container">
-        <h2 className="sui__titre" id="sui-t">Et après ? Ce que cette mission peut ouvrir.</h2>
+        <h2 className="sui__titre" id="sui-t">Et après ? Ce que cette mission peut ouvrir.</h2>
         <div className="sui__rang">
           <span className="sui__fil" aria-hidden="true" />
           {ids.map((id) => {
@@ -129,7 +130,7 @@ function Suite({ ids }) {
           })}
         </div>
         <p className="sui__note">
-          Rien de tout cela n’est inclus d’office : on vous le propose seulement si la mission l’a montré.
+          Rien de tout cela n’est inclus d’office : on vous le propose seulement si la mission l’a montré.
         </p>
       </div>
     </section>
@@ -171,7 +172,7 @@ export default function PortePage({ id }) {
       <Suite ids={p.suite} />
 
       <Questions titre="Les questions qu’on nous pose sur cette mission." items={p.faq}>
-        <p className="qs__relance">Une autre question ? Posez-la directement, on vous répond sous vingt-quatre heures.</p>
+        <p className="qs__relance">Une autre question ? Posez-la directement, on vous répond sous vingt-quatre heures.</p>
         <Link to="/contact" state={{ situation: p.id }} className="btn btn--primary">
           <SwapLabel>{p.cta}</SwapLabel>
           <span className="btn__arrow" aria-hidden="true">→</span>

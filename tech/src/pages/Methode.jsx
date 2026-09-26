@@ -1,0 +1,93 @@
+import { Suspense, lazy } from 'react';
+import { Link } from 'react-router-dom';
+import Page from '../components/Page';
+import { Reveal, RevealItem } from '../components/Reveal';
+import { useLang } from '../i18n';
+import { JALONS } from '../data/site';
+import { useProfil } from '../profil';
+import { JALONS_TPE, METHODE_TPE } from '../data/profils';
+
+const MethodeFlight = lazy(() => import('../components/MethodeFlight'));
+
+/* LA MÉTHODE — le vol cinématographique (WebGL) :
+   1. LE VOL : caméra qui traverse une structure-réseau (fond crème), texte
+      HTML net ancré en 3D, jalon par jalon.
+   2. LIVRABLE : le bilan que vous gardez. */
+
+const CONTENT = {
+  fr: {
+    metaTitle: 'La méthode · du premier rendez-vous jusqu’aux clés',
+    metaDesc:
+      "Reskope ne propose jamais de solution avant le diagnostic. Cadrage, audit, bilan, mise en œuvre, autonomie : le parcours qui assemble vos outils en un système clair, en toute transparence.",
+    labels: { milestone: 'Étape', here: 'vous démarrez ici', youGet: 'Ce que vous obtenez', hint: 'Survolez un point du réseau pour les détails' },
+    film: {
+      introKicker: 'La méthode',
+      introTitle: 'On avance étape par étape.',
+      introText: 'Des outils éparpillés aujourd’hui. Un parcours court pour en faire un ensemble qui tient tout seul.',
+      synthCap: 'Cinq étapes. Et rien qui se décide sans vous.',
+    },
+    calloutTitle: 'Le livrable : un bilan que vous gardez.',
+    calloutText:
+      "À la fin de l'audit, vous repartez avec un document clair : constats, cartographie, recommandations priorisées et gains estimés. Vous l'appliquez vous-même, ou vous nous en confiez la mise en œuvre.",
+    calloutBtn: 'Voir un exemple de bilan',
+  },
+  en: {
+    metaTitle: 'The method · from the first meeting to the keys',
+    metaDesc:
+      'Reskope never proposes a solution before the diagnosis. Framing, audit, report, delivery, autonomy: the journey that assembles your tools into a clear system, in full transparency.',
+    labels: { milestone: 'Step', here: 'you start here', youGet: 'What you get', hint: 'Hover a network point for details' },
+    film: {
+      introKicker: 'The method',
+      introTitle: 'We move one step at a time.',
+      introText: 'Scattered tools today. A short journey to turn them into something that stands on its own.',
+      synthCap: 'Five steps. And nothing decided without you.',
+    },
+    calloutTitle: 'The deliverable: a report you keep.',
+    calloutText:
+      'Findings, mapping, prioritized recommendations and estimated gains.',
+    calloutSuite:
+      'You apply it yourself, or you entrust the delivery to us. Either way, the document is yours.',
+    calloutBtn: 'See an example report',
+  },
+};
+
+export default function Methode() {
+  const { lang } = useLang();
+  const { profil } = useProfil();
+  const tpe = profil === 'tpe';
+  /* Chez cinq personnes il n'y a personne à interroger pendant trois
+     jours : le parcours part d'un cadrage court et enchaîne sur la
+     construction. Même transparence, autre rythme. */
+  const c = tpe
+    ? { ...CONTENT[lang], ...METHODE_TPE[lang], film: { ...CONTENT[lang].film, ...METHODE_TPE[lang].film } }
+    : CONTENT[lang];
+  const jalons = tpe ? JALONS_TPE[lang] : JALONS[lang];
+
+  return (
+    <Page title={c.metaTitle} description={c.metaDesc}>
+
+      {/* 1 — Le vol : la traversée de la structure-réseau */}
+      <Suspense fallback={<div className="mfl-loading" aria-hidden="true" />}>
+        <MethodeFlight key={profil} jalons={jalons} film={c.film} labels={c.labels} />
+      </Suspense>
+
+      {/* 2 — Le livrable */}
+      <section className="section">
+        <div className="container">
+          <Reveal className="callout">
+            <RevealItem as="h2" className="h2">{c.calloutTitle}</RevealItem>
+            <RevealItem as="p" className="lead">{c.calloutText}</RevealItem>
+            {c.calloutSuite && <RevealItem as="p" className="callout__suite">{c.calloutSuite}</RevealItem>}
+            <RevealItem>
+              <Link className="btn btn--ghost" to={c.calloutTo || '/exemple'}>
+                {c.calloutBtn}
+                <span className="btn__arrow" aria-hidden="true">→</span>
+              </Link>
+            </RevealItem>
+          </Reveal>
+        </div>
+      </section>
+
+    </Page>
+  );
+}

@@ -1,8 +1,6 @@
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
-import {
-  SITE, PAGES, url, fiche, RENOMMEES, ANCIENS_PROFILS, ANCIENNES_ROUTES, nouvelleAdresse,
-} from '../src/data/seo.js';
+import { SITE, PAGES, url, fiche, VERS_ENTREPRISES } from '../src/data/seo.js';
 import { OFFRES, OFFRE } from '../src/data/offres.js';
 
 /* ════════════════════════════════════════════════════════════
@@ -56,7 +54,7 @@ const CABINET = {
   '@id': `${SITE.origine}${SITE.base}/#cabinet`,
   name: SITE.marque,
   slogan: 'On vous aide à décider, et on construit la suite.',
-  description: 'On interroge les clients des dirigeants de TPE et de PME, on relit leur business plan avec les yeux d’un financeur, et on construit seulement ce qui a été validé.',
+  description: 'Pour la personne qui crée ou reprend une entreprise : trouver son client idéal, construire son business plan, convaincre la banque. Pour les TPE et les PME : des sites, des outils qui se parlent, des équipes qui gagnent du temps.',
   url: `${SITE.origine}${SITE.base}/`,
   image: `${SITE.origine}${SITE.base}${SITE.image}`,
   founder: [
@@ -77,11 +75,14 @@ const CABINET = {
   knowsLanguage: ['fr'],
 };
 
+/* Le fil d'Ariane : les pages de l'espace « en projet » descendent de son
+   accueil. (La même table vit dans src/components/Breadcrumb.jsx.) */
 const PARENT = {
-  '/tester-une-idee': '/nos-offres',
-  '/comprendre-vos-clients': '/nos-offres',
-  '/relire-votre-dossier': '/nos-offres',
-  '/exemple-bilan': '/exemple',
+  '/tester-une-idee': '/creation',
+  '/construire-votre-business-plan': '/creation',
+  '/relire-votre-dossier': '/creation',
+  '/nos-offres': '/creation',
+  '/comment-ca-se-passe': '/creation',
 };
 
 function service(o) {
@@ -116,7 +117,7 @@ function schemaDe(route, f) {
     { '@type': 'BreadcrumbList', itemListElement: fil },
   ];
 
-  if (route === '/') blocs.push(CABINET);
+  if (route === '/' || route === '/creation') blocs.push(CABINET);
   if (f.porte) blocs.push(service(OFFRE[f.porte]));
   if (route === '/nos-offres') {
     blocs.push({
@@ -191,18 +192,21 @@ function page(route, f) {
 /* Une ancienne adresse : un renvoi immédiat, une canonique vers la nouvelle
    page, et un lien pour qui n'aurait pas été renvoyé. Aucun script : la
    balise suffit, et les moteurs la traitent comme une redirection. */
-function renvoi(cible) {
+/* Le renvoi suit un chemin relatif à la racine (il marche aussi en local) ;
+   la canonique, elle, doit être une adresse complète. */
+function renvoi(chemin) {
+  const cible = `${SITE.origine}${chemin}`;
   return `<!doctype html>
 <html lang="fr">
   <head>
     <meta charset="UTF-8" />
     <meta name="robots" content="noindex" />
-    <meta http-equiv="refresh" content="0; url=${cible}" />
+    <meta http-equiv="refresh" content="0; url=${chemin}" />
     <link rel="canonical" href="${cible}" />
     <title>Cette page a déménagé · ${SITE.marque}</title>
   </head>
   <body>
-    <p>Cette page a déménagé : <a href="${cible}">la retrouver sur le site Reskope dédié à vos outils numériques</a>.</p>
+    <p>Cette page a déménagé : <a href="${chemin}">la retrouver dans l’espace des entreprises</a>.</p>
   </body>
 </html>
 `;
@@ -224,14 +228,13 @@ for (const p of PAGES) {
    doit pas se faire passer pour l'accueil. */
 ecrire('404.html', coquille);
 
-/* Les anciennes adresses. */
+/* Les anciennes adresses sans espace, et les pages qui vivent désormais
+   dans l'espace des entreprises : un renvoi vers la même page. Les adresses
+   /tpe/... et /pme/... ne sont pas touchées : ce sont les vraies pages de
+   cet espace, posées par scripts/assembler.mjs. */
 let renvois = 0;
-const anciennes = [
-  ...ANCIENS_PROFILS.flatMap((profil) => ANCIENNES_ROUTES.map((route) => `/${profil}${route === '/' ? '' : route}`)),
-  ...RENOMMEES,
-];
-for (const ancienne of anciennes) {
-  ecrire(`${ancienne.slice(1)}/index.html`, renvoi(nouvelleAdresse(ancienne)));
+for (const [ancienne, vers] of Object.entries(VERS_ENTREPRISES)) {
+  ecrire(`${ancienne.slice(1)}/index.html`, renvoi(`${SITE.base}/${vers}/`));
   renvois += 1;
 }
 
@@ -248,13 +251,14 @@ const portes = PAGES.filter((p) => p.porte);
 const autres = PAGES.filter((p) => !p.porte && parseFloat(p.priorite) >= 0.5);
 ecrire('llms.txt', `# Reskope
 
-> On vous aide à décider, et on construit la suite. Reskope accompagne les
-> dirigeants de TPE et de PME des Hauts-de-France au moment où ils
-> s'apprêtent à engager de l'argent : on interroge leurs clients, on relit
-> leur business plan avec les yeux d'un financeur, et on construit seulement
-> ce qui a été validé. Thomy et Florian, à Valenciennes et à Lille.
+> On vous aide à décider, et on construit la suite. Reskope accompagne trois
+> personnes : celle qui crée ou reprend une entreprise (trouver son client
+> idéal, construire son business plan, convaincre la banque), le dirigeant
+> d'une TPE de 1 à 10 personnes et celui d'une PME de 10 à 250 personnes
+> (sites, outils qui se parlent, équipes qui gagnent du temps). Thomy et
+> Florian, à Valenciennes et à Lille.
 
-## Pour commencer
+## Pour créer ou reprendre une entreprise
 ${portes.map((p) => `- [${p.titre}](${url(p.route)}) : ${p.description}`).join('\n')}
 
 ## Le site

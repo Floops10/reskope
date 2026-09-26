@@ -46,7 +46,7 @@ const JALONS = [
   {
     n: 'test', label: 'Le test',
     title: 'On essaie pour de vrai.',
-    text: 'La piste la plus prometteuse est testée avec le moins de moyens possible : un prix, une page, un devis plus clair. On mesure ce qui se passe.',
+    text: 'La piste la plus prometteuse est testée avec le moins de moyens possible : un prix, une page, un devis plus clair. On mesure ce qui se passe.',
     deliver: 'Un résultat mesuré, plutôt qu’une opinion.',
   },
   {
@@ -82,10 +82,10 @@ const TERMES = {
 };
 
 const QUESTIONS = [
-  { q: 'Combien de personnes interrogez-vous ?', r: 'Dix à douze en général. Au-delà, on apprend rarement quelque chose de nouveau : les mêmes sujets reviennent. En dessous de huit, on ne sait pas encore distinguer un avis d’un motif.' },
-  { q: 'Et si je n’ai pas encore de clients ?', r: 'On interroge les gens qui devraient l’être : on les trouve par les réseaux locaux, les recommandations et le terrain. C’est le cas de la plupart des créations d’entreprise.' },
-  { q: 'Pourquoi pas un questionnaire en ligne ?', r: 'Un questionnaire vous dit ce que les gens pensent faire. Un entretien sur un moment précis vous dit ce qu’ils ont fait, et pourquoi. C’est cette différence qui évite de se tromper de décision.' },
-  { q: 'Est-ce que je peux arrêter en cours de route ?', r: 'Oui. Chaque vendredi, vous voyez où on en est, et vous pouvez dire stop. Ce que ça change au prix est écrit dans la proposition, avant de commencer.' },
+  { q: 'Combien de personnes interrogez-vous ?', r: 'Dix à douze en général. Au-delà, on apprend rarement quelque chose de nouveau : les mêmes sujets reviennent. En dessous de huit, on ne sait pas encore distinguer un avis d’un motif.' },
+  { q: 'Et si je n’ai pas encore de clients ?', r: 'On interroge les gens qui devraient l’être : on les trouve par les réseaux locaux, les recommandations et le terrain. C’est le cas de la plupart des créations d’entreprise.' },
+  { q: 'Pourquoi pas un questionnaire en ligne ?', r: 'Un questionnaire vous dit ce que les gens pensent faire. Un entretien sur un moment précis vous dit ce qu’ils ont fait, et pourquoi. C’est cette différence qui évite de se tromper de décision.' },
+  { q: 'Est-ce que je peux arrêter en cours de route ?', r: 'Oui. Chaque vendredi, vous voyez où on en est, et vous pouvez dire stop. Ce que ça change au prix est écrit dans la proposition, avant de commencer.' },
 ];
 
 function Tete() {
@@ -103,7 +103,7 @@ function Tete() {
       <div className="container">
         <h1 className="oh__titre">Comment se déroule une mission.</h1>
         <p className="oh__lead">
-          Du premier échange à votre décision : ce qu’on fait, ce que ça vous demande, et ce qu’on fait des
+          Du premier échange à votre décision : ce qu’on fait, ce que ça vous demande, et ce qu’on fait des
           réponses de vos clients.
         </p>
       </div>
@@ -128,7 +128,7 @@ export default function CommentCaSePasse() {
       <Amorce id="vos-clients" lead="Ce qu’on fait des réponses de vos clients.">
         <Noeuds items={CLIENTS} />
         <p className="am__p">
-          Pour ces entretiens, on traite des données de vos clients pour votre compte : le cadre est écrit
+          Pour ces entretiens, on traite des données de vos clients pour votre compte : le cadre est écrit
           dans nos <Link to="/cgv" className="lien-souligne">conditions de vente</Link>, et vous pouvez nous
           demander à tout moment ce qu’on en a fait.
         </p>
@@ -149,9 +149,9 @@ export default function CommentCaSePasse() {
           c’est la première chose à regarder.
         </p>
         <p className="am__p">
-          Ce qui donne du poids à un sujet : qu’il soit venu spontanément, qu’il s’appuie sur un moment
+          Ce qui donne du poids à un sujet : qu’il soit venu spontanément, qu’il s’appuie sur un moment
           précis que la personne raconte, et qu’il revienne chez des clients qui n’ont rien à voir entre eux.
-          Et le contraire compte aussi : le prix, dont tout le monde parlait en interne, n’est cité que par
+          Et le contraire compte aussi : le prix, dont tout le monde parlait en interne, n’est cité que par
           deux clients. On le note, et on ne dépense pas là.
         </p>
         <p className="am__suite">
@@ -171,7 +171,7 @@ export default function CommentCaSePasse() {
           ))}
         </dl>
         <p className="am__p">
-          On travaille comme une équipe produit : des hypothèses, des entretiens, des tests courts, une
+          On travaille comme une équipe produit : des hypothèses, des entretiens, des tests courts, une
           décision chaque semaine. On garde simplement ces mots pour nous, et on vous parle de vos clients.
         </p>
       </Amorce>

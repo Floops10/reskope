@@ -1502,8 +1502,19 @@ textarea::selection {
 
 /* ============================================================
    CURSEUR CUSTOM
+   Seulement avec une souris, et seulement si le visiteur n'a pas demandé
+   moins d'animation : dans ce cas le script ne dessine pas le curseur
+   maison, et masquer le curseur système le laisserait sans pointeur.
    ============================================================ */
-@media (hover: hover) and (pointer: fine) {
+.cursor-dot,
+.cursor-label {
+  display: none;
+}
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .cursor-dot,
+  .cursor-label {
+    display: block;
+  }
   *,
   *::before,
   *::after {

@@ -9,7 +9,7 @@ import SwapLabel from '../components/SwapLabel';
 import { gsap, useGSAP } from '../lib/gsap';
 import { instant } from '../lib/scrub';
 import { scrollToEl } from '../lib/smoothScroll';
-import { OFFRES, POLES, STATUTS, PRIX } from '../data/offres';
+import { OFFRES, POLES, STATUTS, PRIX, ORDRE_CREATION } from '../data/offres';
 
 /* ════════════════════════════════════════════════════════════
    NOS OFFRES — tout ce qu'on sait faire, et par où on entre.
@@ -21,11 +21,8 @@ import { OFFRES, POLES, STATUTS, PRIX } from '../data/offres';
    montrées.
    ════════════════════════════════════════════════════════════ */
 
-const ORDRE = {
-  discovery: ['idee', 'clients', 'solution', 'equipes', 'continue'],
-  bp: ['dossier', 'modele', 'financeurs', 'marque'],
-  construire: ['construire', 'autonomie'],
-};
+const ORDRE = ORDRE_CREATION;
+const BASE = import.meta.env.BASE_URL;
 
 function Offre({ o, onVoir }) {
   const meta = [
@@ -40,7 +37,7 @@ function Offre({ o, onVoir }) {
       <h3 className="of__nom">{o.nom}</h3>
       <p className="of__dit">{o.accroche}</p>
       <p className="of__meta">{meta}</p>
-      {o.pourQui && <p className="of__qui"><span>Pour qui :</span> {o.pourQui}</p>}
+      {o.pourQui && <p className="of__qui"><span>Pour qui :</span> {o.pourQui}</p>}
       <ul className="of__recu" aria-label="Ce que vous recevez">
         {(o.recevez || []).map((r) => <li key={r}>{r}</li>)}
       </ul>
@@ -55,11 +52,15 @@ function Offre({ o, onVoir }) {
             Voir en 3D<span aria-hidden="true">→</span>
           </button>
         )}
-        {(o.liens || []).map((l) => (
+        {(o.liens || []).map((l) => (l.espace ? (
+          <a key={l.espace} href={`${BASE}${l.espace}`} className="lien-fleche">
+            {l.label}<span aria-hidden="true">→</span>
+          </a>
+        ) : (
           <Link key={l.to} to={l.to} className="lien-fleche">
             {l.label}<span aria-hidden="true">→</span>
           </Link>
-        ))}
+        )))}
       </div>
     </article>
   );
@@ -78,10 +79,11 @@ function Tete() {
   return (
     <header className="oh" ref={racine}>
       <div className="container">
-        <h1 className="oh__titre">Toutes nos offres, et comment elles s’enchaînent.</h1>
+        <h1 className="oh__titre">Tout ce qu’on fait pour votre projet, et comment ça s’enchaîne.</h1>
         <p className="oh__lead">
-          On commence toujours par l’une des trois missions en plein. Les autres se proposent ensuite, quand
-          une première mission a montré qu’elles servent à quelque chose, et jamais d’office.
+          On commence par l’une des missions en plein. Les autres se proposent ensuite, quand une première mission
+          a montré qu’elles vous servent, et jamais d’office. Vous dirigez déjà une TPE ou une PME ? Vos offres sont
+          dans votre espace, en haut de la page.
         </p>
       </div>
     </header>
@@ -116,7 +118,7 @@ export default function NosOffres() {
         <Amorce
           key={pole}
           id={`pole-${pole}`}
-          lead={`${POLES[pole].nom} : ${POLES[pole].ligne.charAt(0).toLowerCase()}${POLES[pole].ligne.slice(1)}`}
+          lead={`${POLES[pole].nom} : ${POLES[pole].ligne.charAt(0).toLowerCase()}${POLES[pole].ligne.slice(1)}`}
           sous={POLES[pole].mene}
         >
           {ids.map((id) => <Offre key={id} o={OFFRES.find((o) => o.id === id)} onVoir={setScene} />)}

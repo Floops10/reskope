@@ -12,7 +12,7 @@
    ════════════════════════════════════════════════════════════ */
 
 export const MISSION = {
-  titre: 'Trois à quatre semaines, et vos clients au centre.',
+  titre: 'Comment on trouve votre client idéal, en trois à quatre semaines.',
   etapes: [
     {
       figure: 'hypotheses',
@@ -29,8 +29,8 @@ export const MISSION = {
     {
       figure: 'synthese',
       quand: 'Chaque vendredi',
-      nom: 'On range ce qui revient',
-      dit: 'Ce qui revient sans qu’on le souffle, avec leurs mots, et les portraits qui en sortent.',
+      nom: 'On dessine votre client idéal',
+      dit: 'Ce qui revient sans qu’on le souffle, avec leurs mots, et le portrait qui en sort.',
     },
     {
       figure: 'decision',

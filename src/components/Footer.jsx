@@ -8,8 +8,8 @@ import SwapLabel from './SwapLabel';
 import BusinessCard from './BusinessCard';
 import { useT } from '../i18n';
 import { CONTACT } from '../data/site';
-import { PORTES } from '../data/offres';
-import { SITE_NUMERIQUE } from '../data/seo';
+import { PORTES_CREATION } from '../data/offres';
+import { ESPACES, adresseEspace } from '../data/espaces';
 
 /* FOOTER — L'UNIVERS de clôture (plein écran).
    On termine EN IMMERSION dans le réseau de la marque : une poussière
@@ -158,23 +158,28 @@ export default function Footer() {
         </Link>
       </div>
 
-      <div className="container footer2__grid">
-        {/* Les trois situations d'abord, comme dans le menu : c'est par
-            elles qu'on entre chez nous. */}
-        <nav className="footer2__col" aria-label="Pour commencer">
-          <span className="footer2__heading">Pour commencer</span>
-          {PORTES.map((p) => <Link key={p.id} to={p.slug}>{p.court}</Link>)}
+      <div className="container footer2__grid footer2__grid--quatre">
+        <nav className="footer2__col" aria-label="Créer ou reprendre une entreprise">
+          <span className="footer2__heading">Créer ou reprendre</span>
+          <Link to="/creation">L’espace « en projet »</Link>
+          {PORTES_CREATION.map((p) => <Link key={p.id} to={p.slug}>{p.court}</Link>)}
+        </nav>
+
+        {/* Les deux autres espaces, pour qui dirige déjà une entreprise. */}
+        <nav className="footer2__col" aria-label="Vous dirigez une entreprise">
+          <span className="footer2__heading">Entreprises</span>
+          {ESPACES.filter((e) => e.id !== 'creation').map((e) => (
+            <a key={e.id} href={adresseEspace(e.id)}>{e.court}, {e.taille}</a>
+          ))}
+          <Link to="/exemple">Un exemple complet</Link>
         </nav>
 
         <nav className="footer2__col" aria-label="Le site">
           <span className="footer2__heading">Le site</span>
+          <Link to="/">Changer d’espace</Link>
           <Link to="/nos-offres">Nos offres</Link>
           <Link to="/comment-ca-se-passe">Comment ça se passe</Link>
-          <Link to="/exemple">Un exemple complet</Link>
           <Link to="/qui-on-est">Qui on est</Link>
-          {/* L'autre site de Reskope : l'audit et la cartographie des outils,
-              en version TPE et PME, en français et en anglais. */}
-          <a href={SITE_NUMERIQUE.url}>{SITE_NUMERIQUE.lien}</a>
         </nav>
 
         <div className="footer2__col">

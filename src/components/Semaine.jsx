@@ -129,7 +129,7 @@ export default function Semaine({ minutes = TEMPS_MISSION, legende = true }) {
 
   const parSemaine = Array.from({ length: semaines }, (_, s) => minutes.slice(s * 5, s * 5 + 5).reduce((a, b) => a + b, 0));
   const maxi = Math.max(...parSemaine);
-  const recit = parSemaine.map((m, s) => `semaine ${s + 1} : ${m ? libelle(m) : 'rien'}`).join(', ');
+  const recit = parSemaine.map((m, s) => `semaine ${s + 1} : ${m ? libelle(m) : 'rien'}`).join(', ');
 
   /* Les colonnes se tracent de l'arrière vers l'avant : ce qui est devant
      recouvre ce qui est derrière. */

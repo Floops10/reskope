@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { gsap, useGSAP } from '../lib/gsap';
 import { instant } from '../lib/scrub';
-import { PORTES } from '../data/offres';
+import { PORTES_CREATION } from '../data/offres';
 
 /* ════════════════════════════════════════════════════════════
    LES CHEMINS — « laquelle de ces situations vous ressemble ? »
@@ -21,8 +21,9 @@ import { PORTES } from '../data/offres';
    ════════════════════════════════════════════════════════════ */
 
 export default function Chemins({
-  question = 'Laquelle de ces situations vous ressemble ?',
-  fin = 'Aucune ne vous ressemble tout à fait ? Racontez-nous la vôtre.',
+  portes = PORTES_CREATION,
+  question = 'Laquelle de ces situations vous ressemble ?',
+  fin = 'Aucune ne vous ressemble tout à fait ? Racontez-nous la vôtre.',
   finLien = 'Parlons de votre situation',
 }) {
   const racine = useRef(null);
@@ -66,7 +67,7 @@ export default function Chemins({
 
         <div className="ch__cases">
           <ul className="ch__list">
-            {PORTES.map((p, i) => (
+            {portes.map((p, i) => (
               <li className="ch__item" key={p.id}>
                 {i > 0 && <span className="ch__et" aria-hidden="true">et / ou</span>}
                 <Link to={p.slug} className="ch__corps" data-cursor-label="Voir">

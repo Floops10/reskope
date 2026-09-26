@@ -1,6 +1,6 @@
 # Les emplacements de motion design (étape HyperFrames)
 
-Le site réserve déjà la place de cinq films. Chaque emplacement montre en attendant
+Le site réserve déjà la place de six films. Chaque emplacement montre en attendant
 une affiche : la scène de la mission projetée en axonométrie, dans la langue de la
 marque. Le site est donc complet sans les vidéos, et il le reste si l'une d'elles ne
 charge pas.
@@ -10,9 +10,10 @@ d'affiche et script de chaque film).
 
 | Emplacement | Page | Format | Durée |
 |---|---|---|---|
-| `accueil-livrables` | Accueil, « Ce que vous avez entre les mains à la fin » | 16/9, 4/5 sur téléphone | 20 à 25 s, en boucle |
+| `creation-client-ideal` | Créer ou reprendre, « Ce que vous recevez : votre client idéal » | 16/9, 4/5 sur téléphone | 20 à 25 s, en boucle |
 | `porte-idee` | Tester votre idée, premier écran | 1/1 | 15 à 20 s, en boucle |
 | `porte-clients` | Comprendre vos clients, premier écran | 1/1 | 15 à 20 s, en boucle |
+| `porte-bp` | Construire votre business plan, premier écran | 1/1 | 15 à 20 s, en boucle |
 | `porte-dossier` | Relire votre dossier, premier écran | 1/1 | 15 à 20 s, en boucle |
 | `comment-semaine` | Comment ça se passe, « Votre temps » | 16/9, 4/5 sur téléphone | 25 à 30 s, en boucle |
 

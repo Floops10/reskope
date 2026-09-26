@@ -30,8 +30,8 @@ const PHOTOS = {
 const BIO = [
   'On ne fait pas du conseil à la chaîne. Sur chaque dossier, on s’investit comme s’il s’agissait de notre propre entreprise.',
   'Thomy mène le business plan, la stratégie et le passage devant les financeurs. Elle a accompagné pendant deux ans des créateurs d’entreprise jusqu’à ce rendez-vous, et elle sait ce qu’un financeur lit en premier.',
-  'Florian mène les entretiens avec vos clients, de la première question à la synthèse, puis la partie technique quand la suite en demande : les sites, les outils, et ce qu’on relie entre eux.',
-  'Aucun des deux ne reste dans son couloir : Florian a lui aussi accompagné des créations d’entreprise et relit les chiffres des dossiers, et Thomy est en appui sur chaque discovery. C’est ce qui fait qu’un dossier avance d’un seul tenant, de la preuve à la décision.',
+  'Florian mène les entretiens avec vos clients, de la première question à la synthèse, puis la partie technique quand la suite en demande : les sites, les outils, et ce qu’on relie entre eux.',
+  'Aucun des deux ne reste dans son couloir : Florian a lui aussi accompagné des créations d’entreprise et relit les chiffres des dossiers, et Thomy est en appui sur chaque discovery. C’est ce qui fait qu’un dossier avance d’un seul tenant, de la preuve à la décision.',
 ];
 
 const SERMENTS = [
@@ -44,7 +44,7 @@ const SERMENTS = [
 const FRANCHISE = [
   { texte: 'Reskope démarre', suite: 'On n’a pas encore de clients à vous citer. On vous montre donc la méthode en entier, et un exemple complet, en disant qu’il est inventé.' },
   { texte: 'On n’est pas graphistes diplômés', suite: 'On pose le cadre d’une marque, ses règles et ce qu’il faut produire. Quand une identité demande un spécialiste, on le dit, et on lui transmet le cadre.' },
-  { texte: 'On travaille avec les TPE et les PME', suite: 'Pas avec les grands groupes : à deux, on ne sait pas les servir correctement, et on préfère le dire.' },
+  { texte: 'On travaille avec les TPE et les PME', suite: 'Pas avec les grands groupes : à deux, on ne sait pas les servir correctement, et on préfère le dire.' },
 ];
 
 export default function QuiOnEst() {
@@ -208,7 +208,7 @@ export default function QuiOnEst() {
 
         <section className="ex-fin" aria-labelledby="qo-fin-t">
           <div className="container ex-fin__in">
-            <h2 className="ex-fin__titre" id="qo-fin-t">On se parle ?</h2>
+            <h2 className="ex-fin__titre" id="qo-fin-t">On se parle ?</h2>
             <p className="ex-fin__p">
               Trente minutes, gratuites. Au minimum, vous repartez avec un regard extérieur honnête sur votre
               projet.

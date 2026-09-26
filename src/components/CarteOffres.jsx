@@ -22,46 +22,44 @@ import { OFFRE, OFFRES, LIENS, POLES, STATUTS } from '../data/offres';
    un à un et les liens se tracent. Toucher un point ouvre son offre.
    ════════════════════════════════════════════════════════════ */
 
-/* Le réseau du livret, en coordonnées de la carte (1100 × 700). */
+/* Le réseau des offres de l'espace « en projet », en coordonnées de la
+   carte (1100 × 700). */
 const POS = {
-  continue: [92, 180], idee: [300, 205], clients: [92, 330], solution: [300, 450], equipes: [92, 505],
-  dossier: [620, 205], financeurs: [870, 150], modele: [870, 330], marque: [640, 455],
-  construire: [440, 629], autonomie: [690, 629],
+  idee: [300, 205], clients: [92, 330], solution: [300, 450],
+  bp: [640, 205], dossier: [890, 150], financeurs: [890, 360], marque: [640, 455],
+  construire: [470, 629],
 };
 const LBL = {
-  continue: ['Écouter vos clients', 'chaque semaine'],
-  idee: ['Tester votre idée', 'avant d’investir'],
-  clients: ['Pourquoi vos clients', 'achètent, ou partent'],
+  idee: ['Tester votre idée', 'et votre client idéal'],
+  clients: ['Comprendre les clients', 'de l’entreprise reprise'],
   solution: ['Trouver la solution', 'et la tester'],
-  equipes: ['Comment vos équipes', 'travaillent vraiment'],
+  bp: ['Construire votre', 'business plan'],
   dossier: ['Relire votre dossier', 'avant les financeurs'],
   financeurs: ['Préparer le passage', 'devant les financeurs'],
-  modele: ['Nourrir votre', 'business plan'],
-  marque: ['Poser le cadre', 'de votre marque'],
-  construire: ['Construire la', 'solution validée'],
-  autonomie: ['Passer le relais', 'à vos équipes'],
+  marque: ['Poser votre marque', 'et communiquer'],
+  construire: ['Construire ce qui', 'a été validé'],
 };
 const ZONES = [
   { pole: 'discovery', x: 24, y: 70, w: 470, h: 480, titre: [48, 36] },
   { pole: 'bp', x: 560, y: 70, w: 516, h: 460, titre: [584, 36] },
-  { pole: 'construire', x: 360, y: 565, w: 560, h: 112, titre: [384, 594], court: true },
+  { pole: 'construire', x: 360, y: 565, w: 460, h: 112, titre: [384, 594], court: true },
 ];
 /* Les libellés sont à droite des points : un lien qui partirait tout droit
    vers la droite les traverserait. Ces courbes passent par en dessous ou
    par au-dessus. */
 const CTRL = {
-  'dossier>idee': [380, 80], 'idee>modele': [330, 330], 'idee>marque': [340, 420],
-  'idee>solution': [362, 330],
-  'clients>solution': [110, 460], 'equipes>construire': [110, 625], 'solution>construire': [320, 560],
-  'dossier>financeurs': [640, 110], 'construire>autonomie': [470, 700],
+  'idee>bp': [470, 120], 'clients>bp': [420, 300], 'idee>marque': [420, 400],
+  'bp>marque': [600, 330], 'bp>dossier': [760, 110], 'dossier>financeurs': [1000, 255],
+  'dossier>idee': [560, 40], 'idee>solution': [362, 330], 'solution>construire': [330, 590],
+  'marque>construire': [620, 600],
 };
 const R = { porte: 15, suite: 10, plustard: 9 };
 
 /* L'ordre de la colonne sur téléphone : pôle par pôle, les portes d'abord. */
 const COLONNE = [
-  { pole: 'discovery', ids: ['idee', 'clients', 'solution', 'equipes', 'continue'] },
-  { pole: 'bp', ids: ['dossier', 'modele', 'financeurs', 'marque'] },
-  { pole: 'construire', ids: ['construire', 'autonomie'] },
+  { pole: 'discovery', ids: ['idee', 'clients', 'solution'] },
+  { pole: 'bp', ids: ['bp', 'dossier', 'financeurs', 'marque'] },
+  { pole: 'construire', ids: ['construire'] },
 ];
 
 const unit = (x, y) => { const n = Math.hypot(x, y) || 1; return [x / n, y / n]; };
@@ -239,7 +237,7 @@ export default function CarteOffres({ onChoisir }) {
                   </text>
                   <text className="co__statut" x={colonne.X + 28} y={ln.y + 25}>
                     {chaud === ln.id && sortants.length
-                      ? `Mène à : ${sortants.map(([, b]) => OFFRE[b].court || LBL[b].join(' ')).join(', ')}`
+                      ? `Mène à : ${sortants.map(([, b]) => OFFRE[b].court || LBL[b].join(' ')).join(', ')}`
                       : STATUTS[o.statut]}
                   </text>
                 </g>
@@ -271,7 +269,7 @@ export default function CarteOffres({ onChoisir }) {
             {reseau.liens.map((l) => (
               <text key={`t-${l.de}-${l.vers}`} className={`co__dit${estChaud(l) ? ' is-chaud' : ''}`} x={l.mx} y={l.my} textAnchor="middle">{l.dit}</text>
             ))}
-            {OFFRES.map((o) => point(o.id, POS[o.id][0], POS[o.id][1], true))}
+            {OFFRES.filter((o) => POS[o.id]).map((o) => point(o.id, POS[o.id][0], POS[o.id][1], true))}
           </svg>
         )}
       </div>

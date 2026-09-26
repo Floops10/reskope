@@ -6,11 +6,13 @@
   "homepage": "https://floops10.github.io/reskope",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && node scripts/prerender.mjs",
+    "build": "vite build && node scripts/prerender.mjs && npm run build:tech && node scripts/assembler.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
     "deploy": "npm run build && gh-pages -d dist",
-    "prerender": "node scripts/prerender.mjs"
+    "prerender": "node scripts/prerender.mjs",
+    "build:tech": "vite build --config tech/vite.config.js && node tech/scripts/prerender.mjs",
+    "dev:tech": "vite --config tech/vite.config.js --port 5182"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

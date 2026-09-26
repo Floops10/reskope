@@ -6,7 +6,10 @@ import { lockScroll } from '../lib/smoothScroll';
 import { GLYPH_SHAPES } from '../lib/net3d';
 import Net3D from './Net3D';
 import SwapLabel from './SwapLabel';
-import { PORTES } from '../data/offres';
+import { PORTES_CREATION } from '../data/offres';
+import { fiche } from '../data/seo';
+import { ESPACES, adresseEspace } from '../data/espaces';
+import Espaces from './Espaces';
 import { openCalModal, isCalConfigured } from '../lib/cal';
 
 /* NAV — un en-tête minimal, et un menu qui commence par le visiteur.
@@ -36,6 +39,11 @@ export default function Nav() {
   const [open, setOpen] = useState(false);
   const [dark, setDark] = useState(false);
   const { pathname } = useLocation();
+  /* L'espace de la page : l'aiguillage n'en a pas, les pages communes
+     (contact, qui on est...) non plus. */
+  const route = pathname !== '/' ? pathname.replace(/\/+$/, '') : '/';
+  const espace = fiche(route)?.espace || null;
+  const aiguillage = route === '/';
 
   /* Deux intentions, deux boutons : écrire mène au formulaire, réserver
      ouvre l'agenda. Si Cal.com n'est pas joignable, on bascule sur le
@@ -164,10 +172,15 @@ export default function Nav() {
         aria-label="Navigation principale"
       >
         <div className="container nav__inner">
-          <Link to="/" className="wordmark" aria-label="Reskope, accueil">
-            <LogoMark className="wordmark__mark" />
-            <span className="wordmark__text">Reskope</span>
-          </Link>
+          <div className="nav__marque">
+            <Link to={espace === 'creation' ? '/creation' : '/'} className="wordmark" aria-label="Reskope, accueil">
+              <LogoMark className="wordmark__mark" />
+              <span className="wordmark__text">Reskope</span>
+            </Link>
+            {/* Les trois espaces, toujours visibles : on sait où l'on est, et
+                on change en un geste. Sur l'aiguillage, la question suffit. */}
+            {!aiguillage && <Espaces actif={espace} className="nav__espaces" />}
+          </div>
 
           <div className="nav__actions">
             <div className="nav__ctas">
@@ -225,8 +238,8 @@ export default function Nav() {
 
           {/* Les trois situations d'abord : chacune dit, dans les mots du
               dirigeant, ce qui l'amène. */}
-          <nav className="menu2__links menu2__links--portes" aria-label="Par où commencer">
-            {PORTES.map((p) => (
+          <nav className="menu2__links menu2__links--portes" aria-label="Vous créez ou reprenez une entreprise">
+            {PORTES_CREATION.map((p) => (
               <NavLink
                 key={p.id}
                 to={p.slug}
@@ -257,6 +270,18 @@ export default function Nav() {
                   </span>
                 </span>
               </NavLink>
+            ))}
+          </nav>
+
+          {/* Les deux autres espaces, pour qui dirige déjà une entreprise. */}
+          <nav className="menu2__entreprises" aria-label="Vous dirigez une entreprise">
+            {ESPACES.filter((e) => e.id !== 'creation').map((e) => (
+              <a key={e.id} href={adresseEspace(e.id)} className={`menu2__espace esp--${e.accent}`}>
+                <i className="esp__point" aria-hidden="true" />
+                <span className="menu2__espace-t">{e.court}</span>
+                <span className="menu2__espace-d">{e.taille}</span>
+                <span aria-hidden="true">→</span>
+              </a>
             ))}
           </nav>
 

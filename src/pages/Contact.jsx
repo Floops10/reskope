@@ -19,9 +19,9 @@ import { FORMSUBMIT_URL } from '../data/site';
    ════════════════════════════════════════════════════════════ */
 
 const SITUATIONS = [
-  { id: 'idee', label: 'J’ai une idée à tester', amorce: 'Mon idée, en deux phrases : ' },
-  { id: 'clients', label: 'Je veux comprendre mes clients', amorce: 'Ce qui a changé ces derniers mois : ' },
-  { id: 'dossier', label: 'Mon dossier doit être relu', amorce: 'Mon rendez-vous avec le financeur est prévu le : ' },
+  { id: 'idee', label: 'J’ai une idée à tester', amorce: 'Mon idée, en deux phrases : ' },
+  { id: 'clients', label: 'Je veux comprendre mes clients', amorce: 'Ce qui a changé ces derniers mois : ' },
+  { id: 'dossier', label: 'Mon dossier doit être relu', amorce: 'Mon rendez-vous avec le financeur est prévu le : ' },
   { id: 'autre', label: 'Autre chose', amorce: '' },
 ];
 
@@ -42,9 +42,9 @@ const BOOKING = {
   cta: 'Choisir un créneau',
   ctaFallback: 'Écrire plutôt',
   loading: 'Ouverture de l’agenda…',
-  or: 'Vous préférez écrire ?',
+  or: 'Vous préférez écrire ?',
   error: 'L’agenda n’a pas pu s’ouvrir. Réessayez, ou passez directement par',
-  privacy: 'L’agenda est fourni par Cal.com. Son script n’est chargé qu’au moment où vous cliquez : tant que vous ne demandez pas de rendez-vous, aucune donnée ne quitte ce site.',
+  privacy: 'L’agenda est fourni par Cal.com. Son script n’est chargé qu’au moment où vous cliquez : tant que vous ne demandez pas de rendez-vous, aucune donnée ne quitte ce site.',
 };
 
 export default function Contact() {
@@ -171,7 +171,7 @@ export default function Contact() {
                 />
 
                 <fieldset className="ctc__situ">
-                  <legend>Où en êtes-vous ?</legend>
+                  <legend>Où en êtes-vous ?</legend>
                   <div className="ctc__choix">
                     {SITUATIONS.map((s) => (
                       <label key={s.id} className={`ctc__puce${form.situation === s.id ? ' is-on' : ''}`}>
@@ -215,7 +215,7 @@ export default function Contact() {
 
                 {status === 'error' && (
                   <p className="ctc__error" role="alert">
-                    Le message n’est pas parti. Vérifiez votre connexion et réessayez : ce que vous avez écrit est
+                    Le message n’est pas parti. Vérifiez votre connexion et réessayez : ce que vous avez écrit est
                     toujours là.
                   </p>
                 )}

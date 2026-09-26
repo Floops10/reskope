@@ -4,6 +4,7 @@ import { ScrollTrigger, useGSAP } from '../lib/gsap';
 import { mouvementRefuse } from '../lib/scrub';
 import { MISSION } from '../data/mission';
 import Explorateur from './Explorateur';
+import Noeuds from './Noeuds';
 
 const Sequence = lazy(() => import('./Sequence'));
 
@@ -161,6 +162,7 @@ export default function Frise({ data = MISSION }) {
             )}
           </div>
 
+          {!reduit && (
           <div className="container seq__pied">
             {/* Une phrase, pas une étiquette au-dessus d'un titre : le moment
                 et ce qu'on y fait se lisent d'un seul tenant. */}
@@ -173,24 +175,40 @@ export default function Frise({ data = MISSION }) {
               <span aria-hidden="true">→</span>
             </button>
           </div>
+          )}
 
           {/* Où l'on en est dans la ville : quatre quartiers, celui qu'on visite. */}
+          {!reduit && (
           <div className="seq__jalons" aria-hidden="true">
             {c.etapes.map((e, i) => (
               <span key={e.figure} className={`seq__jalon${i === actif ? ' is-ici' : ''}`} />
             ))}
           </div>
+          )}
         </div>
       </div>
 
       {/* La scène est un canvas : un lecteur d'écran n'en tire rien. La chaîne
-          est donc aussi écrite, pour lui et pour les moteurs. */}
+          est donc aussi écrite, pour lui et pour les moteurs. Et pour qui a
+          demandé moins de mouvement, la traversée ne défile pas : les quatre
+          étapes sont écrites en clair, sous la ville. */}
       <div className="container seq__apres">
-        <ol className="sr-only">
-          {c.etapes.map((e) => (
-            <li key={e.figure}>{e.quand} : {e.nom}. {e.dit}</li>
-          ))}
-        </ol>
+        {reduit ? (
+          <Noeuds
+            grand
+            className="seq__etapes"
+            items={c.etapes.map((e) => ({
+              texte: `${e.quand}, ${e.nom.charAt(0).toLowerCase()}${e.nom.slice(1)}.`,
+              suite: e.dit,
+            }))}
+          />
+        ) : (
+          <ol className="sr-only">
+            {c.etapes.map((e) => (
+              <li key={e.figure}>{e.quand} : {e.nom}. {e.dit}</li>
+            ))}
+          </ol>
+        )}
         <p className="seq__posture">{c.posture}</p>
         <Link to={c.actTo} className="btn btn--ghost seq__act">
           {c.act}

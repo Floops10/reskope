@@ -21,7 +21,7 @@ const BASE = import.meta.env.BASE_URL;
 
 export default function Duo({
   titre = 'Deux personnes sur votre dossier, du premier échange à la fin.',
-  franchise = 'Reskope démarre. On n’a pas encore de clients à vous citer, et on ne va pas en inventer : on vous montre la méthode en entier, et un exemple complet.',
+  franchise = 'Reskope démarre. On n’a pas encore de clients à vous citer, et on ne va pas en inventer : on vous montre la méthode en entier, et un exemple complet.',
   lien = true,
 }) {
   const racine = useRef(null);

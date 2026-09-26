@@ -3,7 +3,7 @@ import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { ScrollTrigger } from './lib/gsap';
 import { initSmoothScroll, destroySmoothScroll } from './lib/smoothScroll';
 import { initContentGuard } from './lib/contentGuard';
-import { nouvelleAdresse } from './data/seo';
+import { versEntreprises } from './data/seo';
 import ScrollToTop from './components/ScrollToTop';
 import Cursor from './components/Cursor';
 import HeroNetwork from './components/HeroNetwork';
@@ -12,17 +12,16 @@ import Interactions from './components/Interactions';
 import Nav from './components/Nav';
 import Breadcrumb from './components/Breadcrumb';
 import Footer from './components/Footer';
-import Accueil from './pages/Accueil';
+import Aiguillage from './pages/Aiguillage';
 
-/* L'accueil part avec le paquet principal ; toutes les autres pages ne sont
-   demandées qu'à la visite. Le dirigeant qui lit l'accueil sur son
-   téléphone, entre deux rendez-vous, ne télécharge rien d'autre. */
+/* L'aiguillage part avec le paquet principal ; toutes les autres pages ne
+   sont demandées qu'à la visite. Qui arrive sur son téléphone, entre deux
+   rendez-vous, ne télécharge que la question. */
+const Creation = lazy(() => import('./pages/Creation'));
 const PortePage = lazy(() => import('./pages/PortePage'));
 const NosOffres = lazy(() => import('./pages/NosOffres'));
 const CommentCaSePasse = lazy(() => import('./pages/CommentCaSePasse'));
 const Exemple = lazy(() => import('./pages/Exemple'));
-const ExempleBilan = lazy(() => import('./pages/ExempleBilan'));
-const Atelier = lazy(() => import('./pages/Atelier'));
 const QuiOnEst = lazy(() => import('./pages/QuiOnEst'));
 const Contact = lazy(() => import('./pages/Contact'));
 const MentionsLegales = lazy(() => import('./pages/Legales').then((m) => ({ default: m.MentionsLegales })));
@@ -32,15 +31,30 @@ const CGV = lazy(() => import('./pages/Legales').then((m) => ({ default: m.CGV }
 const NotFound = lazy(() => import('./pages/Etats').then((m) => ({ default: m.NotFound })));
 const Merci = lazy(() => import('./pages/Etats').then((m) => ({ default: m.Merci })));
 
-/* Une ancienne adresse : sa page vit sur l'autre site de Reskope. On l'y
-   renvoie sans laisser d'entrée dans l'historique. */
-function Ancienne() {
+/* Une adresse qui vit dans l'espace des entreprises (TPE et PME), servi par
+   l'autre application du site : on y va par un vrai chargement de page, sans
+   laisser d'entrée dans l'historique. En développement, cet espace tourne à
+   part (npm run dev:tech) : on le dit plutôt que de boucler. */
+function VersEntreprises() {
   const { pathname } = useLocation();
-  const vers = nouvelleAdresse(pathname);
+  const cible = versEntreprises(pathname);
+  /* Garde-fou : si la page visée manquait à la construction, on reviendrait
+     ici indéfiniment. Dans ce cas, on s'arrête sur l'accueil de l'espace. */
+  const ici = (p) => p.replace(/\/+$/, '');
+  const vers = cible && ici(`/${cible}`) === ici(pathname) ? `${cible.split('/')[0]}/` : cible;
+  const dev = import.meta.env.DEV;
   useEffect(() => {
-    if (vers) window.location.replace(vers);
-  }, [vers]);
-  return vers ? <main id="contenu" className="attente-page" /> : <Navigate to="/" replace />;
+    if (vers && !dev) window.location.replace(`${import.meta.env.BASE_URL}${vers}`);
+  }, [vers, dev]);
+  if (!vers) return <Navigate to="/" replace />;
+  if (dev) {
+    return (
+      <main id="contenu" className="attente-page attente-page--dev">
+        <p>En développement, l’espace des entreprises tourne à part : <code>npm run dev:tech</code>, puis <code>localhost:5182{import.meta.env.BASE_URL}{vers}</code>.</p>
+      </main>
+    );
+  }
+  return <main id="contenu" className="attente-page" />;
 }
 
 export default function App() {
@@ -71,15 +85,15 @@ export default function App() {
       <Nav />
       <Suspense fallback={<main id="contenu" className="attente-page" />}>
         <Routes>
-          <Route path="/" element={<Accueil />} />
+          <Route path="/" element={<Aiguillage />} />
+          <Route path="/creation" element={<Creation />} />
           <Route path="/tester-une-idee" element={<PortePage key="idee" id="idee" />} />
+          <Route path="/construire-votre-business-plan" element={<PortePage key="bp" id="bp" />} />
           <Route path="/comprendre-vos-clients" element={<PortePage key="clients" id="clients" />} />
           <Route path="/relire-votre-dossier" element={<PortePage key="dossier" id="dossier" />} />
           <Route path="/nos-offres" element={<NosOffres />} />
           <Route path="/comment-ca-se-passe" element={<CommentCaSePasse />} />
           <Route path="/exemple" element={<Exemple />} />
-          <Route path="/exemple-bilan" element={<ExempleBilan />} />
-          <Route path="/atelier" element={<Atelier />} />
           <Route path="/qui-on-est" element={<QuiOnEst />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/mentions-legales" element={<MentionsLegales />} />
@@ -88,14 +102,16 @@ export default function App() {
           <Route path="/cgv" element={<CGV />} />
           <Route path="/merci" element={<Merci />} />
 
-          {/* Les adresses de l'ancienne version du site. */}
-          <Route path="/tpe/*" element={<Ancienne />} />
-          <Route path="/pme/*" element={<Ancienne />} />
-          <Route path="/offres" element={<Ancienne />} />
-          <Route path="/methode" element={<Ancienne />} />
-          <Route path="/a-propos" element={<Ancienne />} />
-          <Route path="/pourquoi" element={<Ancienne />} />
-          <Route path="/numerique-responsable" element={<Ancienne />} />
+          {/* L'espace des entreprises, et les anciennes adresses qui y mènent. */}
+          <Route path="/tpe/*" element={<VersEntreprises />} />
+          <Route path="/pme/*" element={<VersEntreprises />} />
+          <Route path="/offres" element={<VersEntreprises />} />
+          <Route path="/methode" element={<VersEntreprises />} />
+          <Route path="/a-propos" element={<VersEntreprises />} />
+          <Route path="/pourquoi" element={<VersEntreprises />} />
+          <Route path="/numerique-responsable" element={<VersEntreprises />} />
+          <Route path="/atelier" element={<VersEntreprises />} />
+          <Route path="/exemple-bilan" element={<VersEntreprises />} />
 
           <Route path="*" element={<NotFound />} />
         </Routes>

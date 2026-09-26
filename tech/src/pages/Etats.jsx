@@ -1,0 +1,180 @@
+import { Link } from 'react-router-dom';
+import Page from '../components/Page';
+import { Reveal, RevealItem } from '../components/Reveal';
+import { LogoMark } from '../components/Logo';
+import { useLang } from '../i18n';
+import { useProfil } from '../profil';
+import { ETATS_TPE } from '../data/profils';
+import { CONTACT, FORMULAIRE } from '../data/site';
+
+/* Pages d'état : 404 (route inconnue) et remerciement (après envoi d'une
+   demande). Toutes deux ramènent vers une action utile plutôt que de laisser
+   le visiteur dans une impasse. */
+
+const CONTENT = {
+  fr: {
+    notFound: {
+      meta: 'Page introuvable',
+      code: '404',
+      title: 'Cette page n’existe pas.',
+      lead: 'Le lien est peut-être ancien, ou l’adresse comporte une coquille. Voici les pages les plus utiles.',
+      links: [
+        { to: '/offres', label: 'Les offres et les tarifs' },
+        { to: '/exemple', label: 'Un exemple de bilan complet' },
+        { to: '/methode', label: 'La méthode, étape par étape' },
+        { to: '/contact', label: 'Nous contacter directement' },
+      ],
+      cta: 'Retour à l’accueil',
+    },
+    thanks: {
+      meta: 'Message envoyé',
+      code: 'Merci',
+      title: 'Votre message est parti.',
+      lead: 'On vous répond sous 24 h, directement, pas par un accusé de réception automatique. Si votre demande ne relève pas de notre métier, on vous le dira franchement.',
+      nextTitle: 'Ce qui se passe maintenant',
+      next: [
+        'On lit votre message et on regarde votre contexte.',
+        'On vous propose un créneau de 30 minutes, sans engagement.',
+        'À l’issue de l’échange, vous recevez un cadrage clair et chiffré.',
+      ],
+      meanwhile: 'En attendant, vous pouvez consulter un exemple de bilan complet : exactement ce que vous recevriez à l’issue d’un audit.',
+      cta: 'Voir un exemple de bilan',
+      home: 'Retour à l’accueil',
+      urgent: 'Besoin de nous joindre plus vite ?',
+    },
+  },
+  en: {
+    notFound: {
+      meta: 'Page not found',
+      code: '404',
+      title: 'This page does not exist.',
+      lead: 'The link may be old, or the address contains a typo. Here are the most useful pages.',
+      links: [
+        { to: '/offres', label: 'Offers and pricing' },
+        { to: '/exemple', label: 'A full example report' },
+        { to: '/methode', label: 'The method, milestone by milestone' },
+        { to: '/contact', label: 'Contact me directly' },
+      ],
+      cta: 'Back to home',
+    },
+    thanks: {
+      meta: 'Message sent',
+      code: 'Thank you',
+      title: 'Your message is on its way.',
+      lead: 'We reply within 24 h, personally, not with an automated acknowledgement. If your request is outside our scope, we will tell you frankly.',
+      nextTitle: 'What happens now',
+      next: [
+        'I read your message and look at your context.',
+        'I offer you a 30-minute slot, no strings attached.',
+        'After the conversation, you receive a clear, quantified scoping.',
+      ],
+      meanwhile: 'In the meantime, you can browse a full example report: exactly what you would receive after an audit.',
+      cta: 'See an example report',
+      home: 'Back to home',
+      urgent: 'Need to reach us faster?',
+    },
+  },
+};
+
+export function NotFound() {
+  const { lang } = useLang();
+  const { profil } = useProfil();
+  /* L'exemple de bilan ne concerne que les PME : en version TPE, on
+     remplace le lien plutôt que d'envoyer dans un cul-de-sac. */
+  const base = CONTENT[lang].notFound;
+  /* On RETIRE l'exemple de bilan en version TPE, on ne le remplace pas :
+     le lien de remplacement doublonnait avec les offres déjà listées, et
+     trois liens utiles valent mieux que quatre dont deux identiques. */
+  const c = profil === 'tpe'
+    ? { ...base, links: base.links.filter((l) => l.to !== '/exemple') }
+    : base;
+
+  return (
+    <Page title={c.meta} description={c.lead}>
+      {/* Fond presque noir : le header et le curseur doivent y passer
+          en clair, sinon « Réserver » reste indigo sur nuit. */}
+      <section className="state-page" data-nav-dark data-cursor-dark>
+        <div className="container state-page__inner">
+          <Reveal>
+            <RevealItem>
+              <span className="state-page__mark" aria-hidden="true"><LogoMark /></span>
+            </RevealItem>
+            <RevealItem as="p" className="state-page__code">{c.code}</RevealItem>
+            <RevealItem as="h1" className="state-page__title">{c.title}</RevealItem>
+            <RevealItem as="p" className="state-page__lead">{c.lead}</RevealItem>
+            <RevealItem>
+              <ul className="state-page__links">
+                {c.links.map((l) => (
+                  <li key={l.to}>
+                    <Link to={l.to}>{l.label}<span aria-hidden="true">→</span></Link>
+                  </li>
+                ))}
+              </ul>
+            </RevealItem>
+            <RevealItem>
+              <Link to="/" className="btn btn--primary">
+                {c.cta}<span className="btn__arrow" aria-hidden="true">→</span>
+              </Link>
+            </RevealItem>
+          </Reveal>
+        </div>
+      </section>
+    </Page>
+  );
+}
+
+export function Merci() {
+  const { lang } = useLang();
+  const { profil } = useProfil();
+  const c = profil === 'tpe'
+    ? { ...CONTENT[lang].thanks, ...ETATS_TPE[lang] }
+    : CONTENT[lang].thanks;
+
+  return (
+    <Page title={c.meta} description={c.lead}>
+      <section className="state-page state-page--thanks" data-nav-dark data-cursor-dark>
+        <div className="container state-page__inner">
+          <Reveal>
+            <RevealItem>
+              <span className="state-page__mark state-page__mark--ok" aria-hidden="true"><LogoMark /></span>
+            </RevealItem>
+            <RevealItem as="p" className="state-page__code">{c.code}</RevealItem>
+            <RevealItem as="h1" className="state-page__title">{c.title}</RevealItem>
+            <RevealItem as="p" className="state-page__lead">{c.lead}</RevealItem>
+
+            <RevealItem>
+              <div className="state-page__next">
+                <p className="state-page__next-title">{c.nextTitle}</p>
+                <ol className="state-page__steps">
+                  {c.next.map((s, i) => (
+                    <li key={s}><b aria-hidden="true">{i + 1}</b>{s}</li>
+                  ))}
+                </ol>
+              </div>
+            </RevealItem>
+
+            <RevealItem as="p" className="state-page__meanwhile">{c.meanwhile}</RevealItem>
+
+            <RevealItem>
+              <div className="state-page__actions">
+                <Link to={c.to || '/exemple'} className="btn btn--primary">
+                  {c.cta}<span className="btn__arrow" aria-hidden="true">→</span>
+                </Link>
+                <Link to="/" className="btn btn--ghost">{c.home}</Link>
+              </div>
+            </RevealItem>
+
+            <RevealItem as="p" className="state-page__urgent">
+              {c.urgent}{' '}
+              {CONTACT.ouverte ? (
+                <a className="link" href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
+              ) : (
+                <Link className="link" to="/contact">{FORMULAIRE[lang] || FORMULAIRE.fr}</Link>
+              )}
+            </RevealItem>
+          </Reveal>
+        </div>
+      </section>
+    </Page>
+  );
+}

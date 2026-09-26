@@ -7,14 +7,15 @@ import { fiche, url } from '../data/seo';
    dans les résultats. Les libellés viennent de la table de référencement,
    la même que le pré-rendu. */
 
-/* Les trois missions par lesquelles on commence vivent sous « Nos offres » :
-   le fil le dit, et le visiteur qui arrive par un moteur remonte d'un cran
-   vers l'ensemble de l'offre plutôt que vers l'accueil. */
+/* Les pages de l'espace « en projet » descendent de son accueil : le
+   visiteur qui arrive par un moteur remonte d'un cran vers son espace plutôt
+   que vers l'aiguillage. (La même table vit dans scripts/prerender.mjs.) */
 const PARENT = {
-  '/tester-une-idee': '/nos-offres',
-  '/comprendre-vos-clients': '/nos-offres',
-  '/relire-votre-dossier': '/nos-offres',
-  '/exemple-bilan': '/exemple',
+  '/tester-une-idee': '/creation',
+  '/construire-votre-business-plan': '/creation',
+  '/relire-votre-dossier': '/creation',
+  '/nos-offres': '/creation',
+  '/comment-ca-se-passe': '/creation',
 };
 
 export default function Breadcrumb() {

@@ -2,7 +2,6 @@ import Page from '../components/Page';
 import PageHeader from '../components/PageHeader';
 import { Reveal, RevealItem } from '../components/Reveal';
 import { useLang } from '../i18n';
-import { CONTACT } from '../data/site';
 
 /* Pages légales : mentions, confidentialité, CGU, CGV.
    Sobres et lisibles (prose), même squelette pour les quatre.
@@ -83,14 +82,14 @@ const MENTIONS = {
     eyebrow: 'Information',
     title: 'Legal notice.',
     lead: 'Legal information about the publisher and hosting of this site.',
-    updated: 'Last updated: 14 September 2026.',
+    updated: 'Last updated: 26 September 2026.',
     sections: [
       { h: 'Publisher', p: [
         'The Reskope website is published by Florian Bouchart, [TO COMPLETE: legal form, e.g. sole proprietor / micro-enterprise].',
         'Registered address: [TO COMPLETE: registered address].',
         'SIRET: 939 285 003 00017 · APE code: [TO COMPLETE: APE code].',
         'VAT: not applicable, article 293 B of the French Tax Code (small-business exemption).',
-        `Contact: ${CONTACT.email}`,
+        'Contact: the contact form on this site.',
       ] },
       { h: 'Publication director', p: [
         'Publication director: Florian Bouchart.',
@@ -102,7 +101,7 @@ const MENTIONS = {
         'All content on this site (texts, visual identity, logo, animations, code) is the property of Reskope unless stated otherwise. Any reproduction, representation, modification or adaptation, in whole or in part, without prior written consent, is prohibited and constitutes infringement.',
       ] },
       { h: 'Personal data', p: [
-        `Personal data processing carried out through this site (contact forms, questionnaire) is detailed in the privacy policy. For any question or to exercise your rights: ${CONTACT.email}`,
+        `Personal data processing carried out through this site (contact forms, questionnaire) is detailed in the privacy policy. For any question or to exercise your rights: the contact form on this site, mentioning “Personal data”.`,
       ] },
       { h: 'Cookies', p: [
         'This site uses no tracking or advertising cookies. See the privacy policy for details.',
@@ -131,7 +130,7 @@ const PRIVACY = {
       ] },
       { h: 'Données collectées', p: [
         "Ce site ne demande la création d'aucun compte et n'utilise aucun outil de suivi publicitaire ni de mesure d'audience. Les seules données personnelles collectées sont celles que vous transmettez volontairement par le formulaire de contact : votre nom, votre adresse e-mail, le nom de votre entreprise ou de votre projet si vous le donnez, la situation que vous cochez et le contenu de votre message.",
-        'Un seul élément peut être enregistré localement dans votre navigateur, et seulement si vous utilisez l’atelier : le schéma que vous y composez (noms des outils, niveaux d’utilisation et liaisons). Il n’est transmis nulle part : il reste sur votre appareil tant que vous ne décidez pas de nous l’envoyer, et vous l’effacez à tout moment avec le bouton « Tout effacer » de l’atelier ou en vidant les données de site de votre navigateur. Les préférences de langue et de version que l’ancienne version du site enregistrait sont effacées à votre première visite.',
+        "Deux éléments peuvent être enregistrés localement dans votre navigateur, et ils ne quittent jamais votre appareil : la langue que vous choisissez dans l’espace des entreprises (français ou anglais) et, si vous utilisez l’atelier, le schéma que vous y composez (noms des outils, niveaux d’utilisation et liaisons). Ce schéma n’est transmis nulle part tant que vous ne décidez pas de nous l’envoyer, et vous l’effacez à tout moment avec le bouton « Tout effacer » de l’atelier ou en vidant les données de site de votre navigateur.",
         'Ces enregistrements ne servent qu’au fonctionnement du site, jamais à vous suivre ni à vous identifier.',
       ] },
       { h: 'Finalités et bases légales', p: [
@@ -171,14 +170,14 @@ const PRIVACY = {
     eyebrow: 'Your data',
     title: 'Privacy policy.',
     lead: 'What this site collects (very little), why, where your data goes, and your rights.',
-    updated: 'Last updated: 14 September 2026.',
+    updated: 'Last updated: 26 September 2026.',
     sections: [
       { h: 'Data controller', p: [
-        `The data controller is Florian Bouchart (Reskope), [TO COMPLETE: address]. For any question about your data: ${CONTACT.email}`,
+        `The data controller is Florian Bouchart (Reskope), [TO COMPLETE: address]. For any question about your data: the contact form on this site, mentioning “Personal data”.`,
       ] },
       { h: 'Data collected', p: [
         'This site requires no account and uses no advertising trackers or analytics. The only personal data collected is what you voluntarily submit through the contact forms and the questionnaire: name, email address and the content of your message.',
-        'A technical preference (your chosen language) is stored locally in your browser (localStorage) and never leaves your device.',
+        "Two things may be stored locally in your browser, and they never leave your device: the language you choose in the business space (French or English) and, if you use the workshop, the diagram you build there (tool names, usage levels and links). That diagram is sent nowhere unless you decide to send it to us, and you can erase it at any time with the workshop’s “Clear everything” button or by clearing your browser’s site data.",
       ] },
       { h: 'Purpose and legal basis', p: [
         'Your data is used solely to handle and answer your request (pre-contractual steps and legitimate interest in talking with you) and to follow up on any exchanges.',
@@ -196,11 +195,11 @@ const PRIVACY = {
         'The site is served over HTTPS. Reasonable measures are taken to protect your data against unauthorized access; no transmission over the Internet can, however, be guaranteed 100%.',
       ] },
       { h: 'Your rights', p: [
-        `Under the GDPR, you have the right to access, rectify, erase, restrict, object to and port your data, as well as the right to withdraw your consent. To exercise it: ${CONTACT.email}`,
+        `Under the GDPR, you have the right to access, rectify, erase, restrict, object to and port your data, as well as the right to withdraw your consent. To exercise it: the contact form on this site, mentioning “Personal data”. We reply within one month at most.`,
         'You may also lodge a complaint with the French authority, the CNIL (cnil.fr).',
       ] },
       { h: 'Cookies', p: [
-        'This site uses no tracking or advertising cookies. The only information stored locally is your language preference (localStorage), which requires no consent and does not leave your device.',
+        "This site uses no tracking or advertising cookies. The only local storage is the one described above, your language and the workshop diagram: it is needed for the site to work, requires no consent and does not leave your device.",
       ] },
       { h: 'Updates', p: [
         'This policy may be updated to reflect legal or technical changes. The date of the last update appears below.',
@@ -249,7 +248,7 @@ const TERMS = {
     eyebrow: 'Framework',
     title: 'Terms of use.',
     lead: 'The simple rules governing the use of this site.',
-    updated: 'Last updated: 14 September 2026.',
+    updated: 'Last updated: 26 September 2026.',
     sections: [
       { h: 'Purpose', p: [
         'These terms govern access to and use of the Reskope website, a showcase site presenting the audit, consulting and digital engineering services offered by Reskope. By using the site, you accept these terms.',
@@ -357,7 +356,7 @@ const SALES = {
     eyebrow: 'Services',
     title: 'Terms of sale.',
     lead: 'The framework for audit, delivery, development and retainer engagements.',
-    updated: 'Last updated: 14 September 2026.',
+    updated: 'Last updated: 26 September 2026.',
     sections: [
       { h: 'Purpose and scope', p: [
         'These terms of sale govern the consulting, digital audit, development, automation and retainer services provided by Reskope to its professional clients. Any order implies unreserved acceptance of these terms, which prevail over any other document from the client.',
@@ -415,7 +414,7 @@ const SALES = {
         'Services are aimed at professional clients acting within their business: the right of withdrawal provided for consumers does not, in principle, apply. Where applicable, it may apply to a professional employing five staff or fewer where the subject of the service does not fall within their main activity (art. L221-3 of the French Consumer Code).',
       ] },
       { h: 'Complaints and mediation', p: [
-        `Any complaint may be sent to ${CONTACT.email}. [TO COMPLETE: for consumer clients, details of the competent consumer mediator].`,
+        `Any complaint may be sent through the contact form on this site. [TO COMPLETE: for consumer clients, details of the competent consumer mediator].`,
       ] },
       { h: 'Disputes and applicable law', p: [
         'These terms of sale are governed by French law. In the event of a dispute, the parties will seek an amicable solution before any action; failing that, French courts have jurisdiction.',

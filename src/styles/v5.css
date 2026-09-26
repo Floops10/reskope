@@ -1313,3 +1313,528 @@
   --bd: rgba(240, 238, 232, 0.4);
   box-shadow: none;
 }
+
+/* ════════════════════════════════════════════════════════════
+   LES COULEURS D'EXPLICATION — la marque reste indigo et crème.
+
+   Pour expliquer, il faut distinguer : son quotidien, là où la toucher, ce
+   qui compte pour elle, le moment clé. Ces couleurs ne servent qu'à ça, dans
+   les schémas, jamais pour décorer un titre ou un bouton. Chacun des trois
+   espaces en porte une en accent : soleil pour les projets, menthe pour les
+   TPE, ciel pour les PME.
+   ════════════════════════════════════════════════════════════ */
+:root {
+  --soleil: #f2a93b;
+  --menthe: #2fae8e;
+  --ciel: #3b9de8;
+  --corail: #ef6f5e;
+  --lilas: #8b7ff0;
+  --soleil-pale: color-mix(in srgb, var(--soleil) 18%, var(--cream));
+  --menthe-pale: color-mix(in srgb, var(--menthe) 16%, var(--cream));
+  --ciel-pale: color-mix(in srgb, var(--ciel) 16%, var(--cream));
+  --corail-pale: color-mix(in srgb, var(--corail) 16%, var(--cream));
+}
+
+/* Les catégories : un point (fond), un trait (contour). */
+.pl-noeud {
+  display: inline-block;
+  flex: none;
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 50%;
+  background: var(--indigo);
+}
+.pl-noeud.pl-c--offre { background: var(--indigo); }
+.pl-noeud.pl-c--vie, .pl-noeud.pl-c--menthe { background: var(--menthe); }
+.pl-noeud.pl-c--media, .pl-noeud.pl-c--ciel { background: var(--ciel); }
+.pl-noeud.pl-c--valeur, .pl-noeud.pl-c--corail { background: var(--corail); }
+.pl-noeud.pl-c--cle, .pl-noeud.pl-c--soleil { background: var(--soleil); }
+.pl-noeud.pl-c--lilas { background: var(--lilas); }
+.pl-noeud--creux { background: transparent !important; border: 2px solid var(--corail); }
+line.pl-c--offre { stroke: var(--indigo); }
+line.pl-c--vie, line.pl-c--menthe { stroke: var(--menthe); }
+line.pl-c--media, line.pl-c--ciel { stroke: var(--ciel); }
+line.pl-c--valeur, line.pl-c--corail { stroke: var(--corail); }
+line.pl-c--cle, line.pl-c--soleil { stroke: var(--soleil); }
+line.pl-c--lilas { stroke: var(--lilas); }
+
+/* ── Le sélecteur d'espace ───────────────────────────────── */
+.nav__marque { display: flex; align-items: center; gap: clamp(0.8rem, 2vw, 1.4rem); min-width: 0; }
+.esp {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid color-mix(in srgb, var(--ink) 14%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--cream) 82%, transparent);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+.esp__seg {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 36px;
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.86rem;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--ink);
+  white-space: nowrap;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+a.esp__seg:hover { background: color-mix(in srgb, var(--indigo) 8%, transparent); }
+.esp__seg.is-actif { background: var(--indigo); color: var(--cream); }
+.esp__point { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.esp--soleil .esp__point, .esp__point.esp--soleil { background: var(--soleil); }
+.esp--menthe .esp__point, .esp__point.esp--menthe { background: var(--menthe); }
+.esp--ciel .esp__point, .esp__point.esp--ciel { background: var(--ciel); }
+.nav--dark .esp { border-color: rgba(240, 238, 232, 0.3); background: rgba(14, 11, 31, 0.35); }
+.nav--dark .esp__seg { color: var(--cream); }
+.nav--dark .esp__seg.is-actif { background: var(--cream); color: var(--indigo); }
+@media (max-width: 720px) {
+  .esp__seg { padding: 0.3rem 0.62rem; font-size: 0.8rem; min-height: 38px; }
+  .nav__marque .wordmark__text { display: none; }
+}
+
+/* ── L'aiguillage ────────────────────────────────────────── */
+/* Une question, trois réponses. Sur téléphone, les trois tiennent dans le
+   premier écran : la question monte en haut, les cartes se resserrent. */
+.aig { display: block; }
+.aig__in {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: 100svh;
+  padding-top: clamp(5.6rem, 12vh, 9rem);
+  padding-bottom: clamp(2rem, 6vh, 4.5rem);
+}
+.aig__q {
+  max-width: 16ch;
+  margin: 0;
+  font-size: clamp(2.2rem, 6.4vw, 5.6rem);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.045em;
+}
+.aig__sous {
+  max-width: 48ch;
+  margin-top: 0.9rem;
+  font-size: clamp(1rem, 1.4vw, 1.2rem);
+  line-height: 1.5;
+  color: var(--muted);
+}
+.aig__choix {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.25rem;
+  margin: clamp(1.4rem, 4vh, 3.6rem) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.aig__choix > li { display: flex; }
+.aig__carte {
+  position: relative;
+  flex: 1;
+  display: grid;
+  grid-template-columns: 4.4rem minmax(0, 1fr) auto;
+  grid-template-areas: 'reseau taille fleche' 'reseau qui fleche' 'reseau dit fleche';
+  column-gap: 0.9rem;
+  align-items: center;
+  padding: 0.8rem 0.6rem;
+  border-radius: 20px;
+  color: var(--ink);
+  text-decoration: none;
+  transition: background-color 0.35s ease;
+}
+.aig__reseau { grid-area: reseau; width: 4.4rem; height: 4.4rem; align-self: center; }
+.aig__taille { grid-area: taille; font-size: clamp(1.3rem, 3.2vw, 2.4rem); font-weight: 600; letter-spacing: -0.03em; line-height: 1.1; }
+.aig__qui { grid-area: qui; margin-top: 0.15rem; font-size: 0.95rem; font-weight: 500; color: var(--ink); }
+.aig__dit { grid-area: dit; margin-top: 0.25rem; font-size: 0.9rem; line-height: 1.4; color: var(--muted); }
+.aig__fleche { grid-area: fleche; font-size: 1.4rem; color: var(--indigo); transition: transform 0.4s var(--v5-ease); }
+.aig__carte:hover, .aig__carte:focus-visible { background: var(--cible-pale, var(--cream-light)); }
+.aig__carte:hover .aig__fleche, .aig__carte:focus-visible .aig__fleche { transform: translateX(6px); }
+.aig--soleil { --cible: var(--soleil); --cible-pale: var(--soleil-pale); }
+.aig--menthe { --cible: var(--menthe); --cible-pale: var(--menthe-pale); }
+.aig--ciel { --cible: var(--ciel); --cible-pale: var(--ciel-pale); }
+.aig__pied { margin-top: clamp(1.4rem, 5vh, 3rem); font-size: 0.95rem; color: var(--muted); }
+@media (min-width: 960px) {
+  .aig__in { justify-content: center; padding-top: clamp(6.5rem, 14vh, 9rem); }
+  .aig__choix { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(1rem, 2.4vw, 2rem); }
+  .aig__carte {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.6rem 1.4rem 1.4rem;
+  }
+  .aig__reseau { width: clamp(8rem, 13vw, 11rem); height: clamp(8rem, 13vw, 11rem); margin-bottom: 1rem; }
+  /* Une ligne pour chaque taille : les trois cartes restent alignées. */
+  .aig__taille { font-size: clamp(1.4rem, 2.15vw, 2rem); white-space: nowrap; }
+  .aig__fleche { margin-top: auto; padding-top: 1.2rem; }
+}
+
+/* Le réseau d'une taille d'entreprise */
+.rt { display: block; width: 100%; height: 100%; overflow: visible; }
+.rt__l { stroke: color-mix(in srgb, var(--cible, var(--indigo)) 55%, var(--indigo)); stroke-width: 0.9; opacity: 0.55; }
+.rt__l--futur { stroke-dasharray: 2 2.2; opacity: 0.5; }
+.rt__n { fill: var(--cible, var(--indigo)); transition: transform 0.5s var(--v5-ease); transform-box: fill-box; transform-origin: center; }
+.rt__n--coeur { fill: var(--indigo); }
+.rt__n--futur { fill: var(--cream); stroke: var(--cible, var(--indigo)); stroke-width: 1.1; stroke-dasharray: 2 1.6; }
+.aig__carte:hover .rt__n { transform: scale(1.15); }
+
+/* ── Le menu : les espaces des entreprises ───────────────── */
+.menu2__entreprises {
+  display: grid;
+  gap: 0.4rem;
+  padding-top: clamp(0.8rem, 2vh, 1.2rem);
+}
+.menu2__espace {
+  display: grid;
+  grid-template-columns: auto auto 1fr auto;
+  align-items: center;
+  gap: 0.7rem;
+  min-height: 44px;
+  padding: 0.4rem 0.2rem;
+  color: var(--ink);
+}
+.menu2__espace .esp__point { width: 9px; height: 9px; }
+.menu2__espace-t { font-weight: 600; }
+.menu2__espace-d { color: var(--muted); font-size: 0.92rem; }
+.menu2__espace:hover { color: var(--indigo); }
+
+/* ── Le livrable : votre client idéal ────────────────────── */
+.liv { position: relative; padding-block: var(--v5-section); }
+.liv__tete {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(1.4rem, 4vh, 2.4rem);
+  align-items: center;
+  margin-bottom: clamp(2rem, 5vh, 3rem);
+  perspective: 1200px;
+}
+.liv__titre {
+  max-width: 18ch;
+  margin: 0;
+  font-size: var(--v5-lead);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+}
+.liv__dit { max-width: 54ch; margin-top: 1rem; font-size: var(--v5-texte); line-height: 1.65; color: var(--muted); }
+@media (min-width: 900px) {
+  .liv__tete { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: clamp(2rem, 5vw, 4.5rem); }
+}
+
+.pl-livrable { perspective: 1400px; }
+.pl-onglets { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.4rem; }
+.pl-onglet {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-height: 44px;
+  padding: 0.5rem 1.05rem;
+  border: 1px solid var(--silver);
+  border-radius: 999px;
+  background: transparent;
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--ink);
+  cursor: pointer;
+  transition: border-color 0.25s ease, background-color 0.25s ease;
+}
+.pl-onglet__noeud { width: 9px; height: 9px; border-radius: 50%; background: var(--accent-x, var(--indigo)); }
+.pl-onglet:hover { border-color: var(--ink); }
+.pl-onglet.is-actif { border-color: var(--ink); background: var(--ink); color: var(--cream); }
+.pl-accent--soleil { --accent-x: var(--soleil); --accent-x-pale: var(--soleil-pale); }
+.pl-accent--menthe { --accent-x: var(--menthe); --accent-x-pale: var(--menthe-pale); }
+.pl-accent--ciel { --accent-x: var(--ciel); --accent-x-pale: var(--ciel-pale); }
+
+.pl-panneau { transform-style: preserve-3d; }
+.pl-projet { margin: 0 0 1.4rem; font-size: 1.02rem; color: var(--muted-fort); }
+.pl-projet span { color: var(--ink); font-weight: 600; }
+.pl-grille { display: grid; grid-template-columns: 1fr; gap: clamp(1.6rem, 4vh, 2.6rem); }
+@media (min-width: 980px) {
+  .pl-grille { grid-template-columns: minmax(0, 0.8fr) minmax(0, 2fr); gap: clamp(2rem, 4vw, 3.6rem); align-items: start; }
+  .pl-portrait { position: sticky; top: 16vh; }
+}
+.pl-portrait { margin: 0; }
+.pl-portrait__cadre {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  border-radius: 18px;
+  background: var(--accent-x-pale, var(--cream-shade));
+}
+.pl-portrait__cadre img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.pl-portrait__cadre::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 6px;
+  background: var(--accent-x, var(--indigo));
+}
+.pl-nom { margin: 1rem 0 0; font-size: clamp(1.3rem, 2vw, 1.6rem); font-weight: 600; letter-spacing: -0.025em; }
+.pl-qui { margin: 0.45rem 0 0; font-size: 0.98rem; line-height: 1.55; color: var(--muted-fort); }
+.pl-mention { margin: 0.7rem 0 0; font-size: 0.8rem; color: var(--muted); }
+
+.pl-analyse { display: grid; gap: clamp(1.6rem, 4vh, 2.4rem); min-width: 0; }
+.pl-decide { display: grid; gap: 0.7rem; margin: 0; padding: 0; list-style: none; }
+.pl-decide li { display: flex; gap: 0.75rem; align-items: baseline; font-size: 1.04rem; line-height: 1.5; }
+.pl-decide li .pl-noeud { transform: translateY(1px); }
+.pl-decide strong { font-weight: 600; }
+.pl-bloc__t { margin: 0 0 0.9rem; font-size: 1.02rem; font-weight: 600; letter-spacing: -0.01em; color: var(--ink); }
+
+/* La constellation : les étiquettes sont centrées sur leur nœud, au-dessus
+   dans la moitié haute, en dessous dans la moitié basse, du côté opposé au
+   trait qui arrive du portrait. */
+.pl-const {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  max-width: 100%;
+  margin-block: 1.2rem;
+}
+.pl-const__traits { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.pl-const__trait { stroke-width: 1.5; vector-effect: non-scaling-stroke; opacity: 0.7; }
+.pl-const__centre {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: clamp(4.4rem, 9vw, 6.4rem);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 0 0 5px var(--cream), 0 0 0 7px var(--accent-x, var(--indigo));
+}
+.pl-const__centre img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 22%; }
+.pl-const__liste { position: absolute; inset: 0; margin: 0; padding: 0; list-style: none; }
+.pl-const__point {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  width: max-content;
+  max-width: 10rem;
+  transform: translate(-50%, -0.475rem);
+  font-size: 0.9rem;
+  line-height: 1.25;
+  text-align: center;
+  color: var(--ink);
+}
+.pl-const__point.is-haut { flex-direction: column-reverse; transform: translate(-50%, calc(-100% + 0.475rem)); }
+.pl-const__point .pl-noeud { width: 0.95rem; height: 0.95rem; box-shadow: 0 0 0 4px var(--cream); }
+@media (max-width: 720px) {
+  .pl-const { aspect-ratio: 1 / 1.08; margin-block: 1.6rem; }
+  .pl-const__point { max-width: 7.4rem; font-size: 0.8rem; }
+}
+
+/* La journée : une ligne de vie, verticale sur mobile, horizontale sur
+   grand écran, avec le moment clé en soleil. */
+.pl-jour { position: relative; padding-left: 1.9rem; }
+.pl-jour__fil {
+  position: absolute;
+  left: 0.42rem;
+  top: 0.5rem;
+  bottom: 0.5rem;
+  width: 2px;
+  background: color-mix(in srgb, var(--indigo) 22%, transparent);
+  transform-origin: top left;
+}
+.pl-jour__liste { display: grid; gap: 0.9rem; margin: 0; padding: 0; list-style: none; }
+.pl-jour__moment { position: relative; display: grid; grid-template-columns: 4.6rem 1fr; gap: 0.5rem; align-items: baseline; }
+.pl-jour__moment .pl-noeud { position: absolute; left: -1.9rem; top: 0.3em; width: 0.9rem; height: 0.9rem; box-shadow: 0 0 0 4px var(--cream); }
+.pl-jour__h { font-size: 0.86rem; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--muted-fort); }
+.pl-jour__t { font-size: 0.98rem; line-height: 1.4; color: var(--ink); }
+.pl-jour__moment.is-cle .pl-noeud {
+  left: calc(-1.9rem - 0.15rem);
+  width: 1.2rem;
+  height: 1.2rem;
+  box-shadow: 0 0 0 4px var(--cream), 0 0 0 9px color-mix(in srgb, var(--soleil) 35%, transparent);
+}
+.pl-jour__moment.is-cle .pl-jour__t { font-weight: 600; }
+.pl-jour__cle {
+  display: inline-block;
+  margin-left: 0.5rem;
+  padding: 0.12rem 0.55rem;
+  border-radius: 999px;
+  background: var(--soleil);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+@media (min-width: 1200px) {
+  .pl-jour { padding: 1.7rem 0 0; }
+  .pl-jour__fil { left: 0; right: 0; top: 0.42rem; bottom: auto; width: auto; height: 2px; }
+  .pl-jour__liste { grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 1rem; }
+  .pl-jour__moment { grid-template-columns: 1fr; gap: 0.3rem; align-content: start; }
+  .pl-jour__moment .pl-noeud { left: 0; top: -1.72rem; }
+  .pl-jour__moment.is-cle .pl-noeud { left: -0.15rem; top: calc(-1.72rem - 0.15rem); }
+  .pl-jour__cle { display: block; width: fit-content; margin: 0.45rem 0 0; }
+}
+
+/* Où la trouver, quoi lui dire, sa zone */
+.pl-bas { display: grid; grid-template-columns: 1fr; gap: clamp(1.4rem, 3vh, 2rem); }
+@media (min-width: 760px) { .pl-bas { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
+.pl-canaux { display: grid; gap: 0.65rem; margin: 0; padding: 0; list-style: none; }
+.pl-canaux li { display: flex; gap: 0.65rem; align-items: baseline; font-size: 0.98rem; line-height: 1.45; }
+.pl-message {
+  margin: 0 0 1.4rem;
+  padding-left: 1rem;
+  border-left: 3px solid var(--accent-x, var(--indigo));
+  font-size: clamp(1.12rem, 1.6vw, 1.35rem);
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: -0.015em;
+}
+.pl-zone { display: grid; grid-template-columns: 6.5rem 1fr; gap: 0.9rem; align-items: center; margin: 0; }
+.pl-zone__carte { width: 6.5rem; height: 6.5rem; overflow: visible; }
+.pl-zone__anneau { fill: none; stroke: var(--accent-x, var(--indigo)); stroke-width: 0.8; }
+.pl-zone__anneau--1 { fill: color-mix(in srgb, var(--accent-x, var(--indigo)) 22%, transparent); }
+.pl-zone__anneau--2 { opacity: 0.6; stroke-dasharray: 2 2; }
+.pl-zone__anneau--3 { opacity: 0.35; stroke-dasharray: 1 3; }
+.pl-zone__client { fill: var(--ink); opacity: 0.75; }
+.pl-zone__vous { fill: var(--indigo); stroke: var(--cream); stroke-width: 1.4; }
+.pl-zone figcaption { font-size: 0.92rem; line-height: 1.45; color: var(--muted-fort); }
+.pl-zone figcaption strong { display: block; font-size: 1.05rem; color: var(--ink); }
+.pl-change {
+  margin: 0;
+  padding: 1rem 1.2rem;
+  border-radius: 14px;
+  background: var(--accent-x-pale, var(--cream-light));
+  font-size: 1rem;
+  line-height: 1.55;
+}
+.pl-legende {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.4rem;
+  margin: clamp(1.6rem, 4vh, 2.4rem) 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.86rem;
+  color: var(--muted);
+}
+.pl-legende li { display: inline-flex; align-items: center; gap: 0.45rem; }
+.pl-legende .pl-noeud { width: 0.65rem; height: 0.65rem; }
+
+/* ── Votre business plan, en entier ──────────────────────── */
+/* Étroit : une liste reliée par un fil. Large (la figure, pas l'écran) :
+   une grille, le dossier au centre, et les traits tirés entre les nœuds. */
+.rbp { margin: 0; container-type: inline-size; }
+.rbp__scene { position: relative; display: grid; gap: 1.2rem; }
+.rbp__traits { display: none; }
+.rbp__coeur {
+  position: relative;
+  z-index: 1;
+  justify-self: start;
+  padding: 0.7rem 1.15rem;
+  border-radius: 999px;
+  background: var(--indigo);
+  color: var(--cream);
+  font-size: 0.98rem;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+  box-shadow: 0 18px 40px -20px rgba(28, 12, 179, 0.7);
+}
+.rbp__liste { position: relative; display: grid; gap: 1.2rem; margin: 0; padding: 0; list-style: none; }
+.rbp__liste::before {
+  content: '';
+  position: absolute;
+  left: calc(0.55rem - 1px);
+  top: 0.6rem;
+  bottom: 0.6rem;
+  width: 2px;
+  background: color-mix(in srgb, var(--indigo) 18%, transparent);
+}
+.rbp__partie { position: relative; z-index: 1; display: flex; gap: 0.8rem; align-items: flex-start; }
+.rbp__noeud { flex: none; width: 1.1rem; height: 1.1rem; margin-top: 0.12rem; border-radius: 50%; box-shadow: 0 0 0 4px var(--cream); }
+.rbp__noeud.pl-c--soleil { background: var(--soleil); }
+.rbp__noeud.pl-c--menthe { background: var(--menthe); }
+.rbp__noeud.pl-c--ciel { background: var(--ciel); }
+.rbp__noeud.pl-c--corail { background: var(--corail); }
+.rbp__noeud.pl-c--lilas { background: var(--lilas); }
+.rbp__texte { display: grid; gap: 0.15rem; max-width: 16rem; }
+.rbp__nom { font-size: 0.98rem; font-weight: 600; line-height: 1.25; color: var(--ink); }
+.rbp__dit { font-size: 0.88rem; line-height: 1.4; color: var(--muted-fort); }
+.rbp__mene { font-size: 0.82rem; font-weight: 500; color: var(--indigo); }
+.rbp__rayon { stroke-width: 2; vector-effect: non-scaling-stroke; stroke-dasharray: 1 1; opacity: 0.6; }
+.rbp__dep { stroke: var(--indigo); stroke-width: 1.2; vector-effect: non-scaling-stroke; stroke-dasharray: 4 5; opacity: 0.35; }
+.rbp__influx { stroke: var(--indigo); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 5 95; }
+.rbp__legende { max-width: 60ch; margin-top: 1.4rem; font-size: 0.9rem; line-height: 1.5; color: var(--muted); }
+@media (prefers-reduced-motion: reduce) { .rbp__influx { display: none; } }
+
+@container (min-width: 600px) {
+  .rbp__scene {
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    grid-template-areas:
+      'client  .        offre'
+      '.       coeur    .'
+      'marque  premiers chiffres';
+    column-gap: clamp(1rem, 4cqi, 2.4rem);
+    row-gap: clamp(1rem, 4cqi, 2rem);
+    align-items: start;
+  }
+  .rbp__traits {
+    display: block;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+  }
+  .rbp__liste { display: contents; }
+  .rbp__liste::before { display: none; }
+  .rbp__coeur {
+    grid-area: coeur;
+    align-self: center;
+    justify-self: center;
+    display: grid;
+    place-items: center;
+    width: clamp(6.6rem, 20cqi, 8.8rem);
+    aspect-ratio: 1;
+    padding: 0.8rem;
+    border-radius: 50%;
+  }
+  .rbp__partie--client { grid-area: client; }
+  .rbp__partie--offre { grid-area: offre; }
+  .rbp__partie--marque { grid-area: marque; }
+  .rbp__partie--premiers { grid-area: premiers; }
+  .rbp__partie--chiffres { grid-area: chiffres; }
+  .rbp--gauche { flex-direction: row-reverse; justify-self: end; text-align: right; }
+  .rbp--droite { justify-self: start; }
+  .rbp--bas { flex-direction: column; align-items: center; justify-self: center; text-align: center; }
+  .rbp--bas .rbp__texte { max-width: 13rem; }
+}
+
+/* ── Ce que ça coûte, ce que ça rapporte ─────────────────── */
+.bal { display: grid; grid-template-columns: 1fr; gap: clamp(1.4rem, 3vh, 2rem); margin: 0; align-items: center; }
+@media (min-width: 1100px) { .bal { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); } }
+.bal__svg { display: block; width: 100%; height: auto; overflow: visible; }
+.bal__sol { fill: none; stroke: var(--indigo); stroke-width: 0.06; opacity: 0.35; }
+.bal__bloc--evite .axo-t { fill: color-mix(in srgb, var(--corail) 70%, white); }
+.bal__bloc--evite .axo-r { fill: var(--corail); }
+.bal__bloc--evite .axo-l { fill: color-mix(in srgb, var(--corail) 75%, black); }
+.bal__bloc--rapporte .axo-t { fill: color-mix(in srgb, var(--menthe) 70%, white); }
+.bal__bloc--rapporte .axo-r { fill: var(--menthe); }
+.bal__bloc--rapporte .axo-l { fill: color-mix(in srgb, var(--menthe) 75%, black); }
+.bal__etiquette { font-size: 0.85px; font-weight: 600; fill: var(--ink); }
+.bal__raisons { display: grid; gap: 0.8rem; margin: 0; padding: 0; list-style: none; }
+.bal__raison { display: flex; gap: 0.7rem; align-items: baseline; font-size: 0.98rem; line-height: 1.5; }
+.bal__puce { flex: none; width: 0.85rem; height: 0.85rem; border-radius: 3px; transform: translateY(1px); }
+.bal__raison--evite .bal__puce { background: var(--corail); }
+.bal__raison--rapporte .bal__puce { background: var(--menthe); }
+.bal__raison strong { font-weight: 600; }
+
+/* ── Le pied de page en quatre colonnes ──────────────────── */
+@media (min-width: 900px) {
+  .footer2__grid--quatre { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+.attente-page--dev { display: grid; place-items: center; min-height: 60vh; padding: 8rem var(--gutter) 4rem; text-align: center; color: var(--muted-fort); }
+.attente-page--dev code { font-size: 0.92em; color: var(--indigo); }

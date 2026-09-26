@@ -46,7 +46,7 @@ export default function Deroule({ etapes }) {
           <p className="drl__quoi">{e.quoi}</p>
           <p className={`drl__vous${LIBRE.test(e.vous) ? ' is-libre' : ''}`}>
             <span className="drl__signe" aria-hidden="true" />
-            <span className="sr-only">Ce que ça vous demande : </span>
+            <span className="sr-only">Ce que ça vous demande : </span>
             {e.vous}
           </p>
         </li>

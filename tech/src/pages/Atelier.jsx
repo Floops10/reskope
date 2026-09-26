@@ -90,12 +90,12 @@ const CONTENT = {
     isoles: (n) => `${n} relié${n > 1 ? 's' : ''} à rien`,
     liens: (n) => `${n} liaison${n > 1 ? 's' : ''}`,
     verdicts: {
-      vide: 'Posez un premier bloc : vous verrez le reste venir tout seul.',
+      vide: 'Posez un premier bloc : vous verrez le reste venir tout seul.',
       isoles: 'Des outils qui ne sont reliés à rien, ce sont des informations qu’une personne recopie à la main d’un écran à l’autre. C’est là que part le temps que personne ne compte.',
-      dormants: 'Un outil qu’on paie sans l’ouvrir se remarque rarement tout seul : il passe en prélèvement, tous les mois, pendant des années.',
-      tiedes: 'Des outils utilisés à moitié coûtent le prix plein. C’est rarement l’outil qui est en cause : c’est qu’on ne l’a jamais vraiment installé dans les habitudes de l’équipe.',
+      dormants: 'Un outil qu’on paie sans l’ouvrir se remarque rarement tout seul : il passe en prélèvement, tous les mois, pendant des années.',
+      tiedes: 'Des outils utilisés à moitié coûtent le prix plein. C’est rarement l’outil qui est en cause : c’est qu’on ne l’a jamais vraiment installé dans les habitudes de l’équipe.',
       doublons: 'Deux outils portent le même nom sur votre plan. C’est presque toujours deux abonnements pour un seul besoin, arrivés à deux ans d’écart.',
-      propre: 'Rien d’alarmant sur ce plan : les outils sont reliés et vous les ouvrez tous. Gardez ce dessin, il vaudra le jour où quelqu’un proposera d’en ajouter un.',
+      propre: 'Rien d’alarmant sur ce plan : les outils sont reliés et vous les ouvrez tous. Gardez ce dessin, il vaudra le jour où quelqu’un proposera d’en ajouter un.',
     },
     emporter: 'Emporter le dessin',
     png: 'En image',
@@ -322,7 +322,7 @@ export default function Atelier() {
   };
 
   const envoyer = () => {
-    const detail = blocs.map((b) => `- ${b.nom} : ${nomUsage(b.u, lang).toLowerCase()}`).join('\n');
+    const detail = blocs.map((b) => `- ${b.nom} : ${nomUsage(b.u, lang).toLowerCase()}`).join('\n');
     navigate('/contact', { state: { message: c.message(`${releve.join(' · ')}\n\n${detail}`) } });
   };
 
@@ -332,6 +332,7 @@ export default function Atelier() {
     <Page title={c.metaTitle} description={c.metaDesc}>
       <section className="section atl">
         <div className="container">
+          <p className="eyebrow eyebrow--index">{c.eyebrow}</p>
           <h1 className="h1 atl__titre">{c.titre}</h1>
           <p className="lead atl__lead">{c.lead}</p>
           {c.leadSuite && <p className="atl__lead-suite">{c.leadSuite}</p>}

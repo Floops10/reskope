@@ -21,7 +21,7 @@ export function NotFound() {
             <RevealItem as="h1" className="state-page__title">Cette page n’existe pas.</RevealItem>
             <RevealItem as="p" className="state-page__lead">
               Le lien est peut-être ancien, ou l’adresse comporte une coquille. Vous étiez peut-être dans l’une
-              de ces situations :
+              de ces situations :
             </RevealItem>
             <RevealItem>
               <ul className="state-page__links">

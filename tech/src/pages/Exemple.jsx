@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, AnimatePresence, MotionConfig } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import ReservePme from '../components/ReservePme';
 import Page from '../components/Page';
 import MorphTitle from '../components/MorphTitle';
 import NetWord from '../components/NetWord';
@@ -299,6 +300,7 @@ function BilanHero({ hero }) {
     <header className="bilan-hero" ref={rootRef}>
       <div className="container bilan-hero__grid">
         <div className="bilan-hero__copy">
+          <p className="eyebrow eyebrow--index bilan-hero__reveal">{hero.eyebrow}</p>
           <h1 className="bilan-hero__title bilan-hero__reveal">
             <span className="bilan-hero__word">
               <span className="bilan-hero__ghost">{word}</span>
@@ -330,7 +332,7 @@ function BilanHero({ hero }) {
 
 const TAB_IDS = ['resume', 'finances', 'temps', 'constats', 'carto', 'actions', 'recos'];
 
-export default function ExempleBilan() {
+export default function Exemple() {
   const { lang } = useLang();
   const b = BILAN[lang];
   /* Deep-link : /exemple#carto ouvre directement le volet (partageable) */
@@ -353,8 +355,11 @@ export default function ExempleBilan() {
   }, []);
 
   return (
-    <MotionConfig reducedMotion="user">
     <Page title={b.metaTitle} description={b.metaDesc}>
+      {/* L'exemple de bilan est un audit poste par poste : il ne
+          concerne pas une entreprise de moins de dix personnes. */}
+      <ReservePme pour="pme" />
+
       {/* Hero COMPACT : une phrase, une animation, le bilan juste dessous */}
       <BilanHero key={lang} hero={b.hero} />
 
@@ -499,8 +504,8 @@ export default function ExempleBilan() {
                 <h2 className="direct-band__title">{b.cta.title}</h2>
                 <p>{b.cta.text}</p>
               </div>
-              <Link to="/nos-offres" state={{ offre: 'equipes' }} className="btn btn--primary direct-band__btn" data-cursor-label="Voir">
-                Voir l’offre « Comprendre comment vos équipes travaillent »
+              <Link to="/contact" className="btn btn--primary direct-band__btn" data-cursor-label={b.cta.btn}>
+                {b.cta.btn}
                 <span className="btn__arrow" aria-hidden="true">→</span>
               </Link>
             </div>
@@ -508,6 +513,5 @@ export default function ExempleBilan() {
         </div>
       </section>
     </Page>
-    </MotionConfig>
   );
 }

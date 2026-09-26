@@ -144,17 +144,17 @@ const SHARED = {
 const LangContext = createContext({ lang: 'fr', setLang: () => {}, t: SHARED.fr });
 
 export function LangProvider({ children }) {
+  /* La langue choisie dans l'espace TPE et PME reste rangée : il partage la
+     même adresse. Seules partent les deux clés que l'ancienne entrée
+     écrivait (la taille d'entreprise et « porte déjà vue ») : la version
+     vit désormais dans l'adresse, et la politique de confidentialité ne
+     parle plus que de la langue et de l'atelier. */
   useEffect(() => {
     document.documentElement.lang = 'fr';
-    /* Une préférence laissée par l'ancienne version du site n'a plus de
-       raison de rester dans le navigateur du visiteur. */
     try {
-      localStorage.removeItem('reskope-lang');
       localStorage.removeItem('reskope-profil');
       sessionStorage.removeItem('reskope-porte-vue');
-    } catch {
-      /* navigation privée */
-    }
+    } catch { /* stockage indisponible : rien à effacer */ }
   }, []);
 
   const setLang = useCallback(() => {}, []);
