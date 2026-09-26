@@ -23,8 +23,8 @@ import { POLES } from '../data/offres';
    ════════════════════════════════════════════════════════════ */
 
 const PHOTOS = {
-  thomy: `${import.meta.env.BASE_URL}thomy.jpg`,
-  florian: `${import.meta.env.BASE_URL}florian.jpg`,
+  thomy: `${import.meta.env.BASE_URL}thomy-960.webp`,
+  florian: `${import.meta.env.BASE_URL}florian-960.webp`,
 };
 
 const BIO = [
@@ -173,7 +173,7 @@ export default function QuiOnEst() {
           </div>
         </section>
 
-        <Amorce id="qui-mene" lead="Qui mène quoi, sur votre dossier.">
+        <Amorce id="qui-mene" lead="Qui mène quoi, sur votre dossier." entree="pivot">
           <dl className="lex">
             {Object.values(POLES).map((p) => (
               <div className="lex__ligne" key={p.nom}>
@@ -200,7 +200,7 @@ export default function QuiOnEst() {
           </div>
         </section>
 
-        <Amorce id="franchise" lead="Ce qu’on préfère vous dire tout de suite.">
+        <Amorce id="franchise" lead="Ce qu’on préfère vous dire tout de suite." fond="soleil">
           <Noeuds items={FRANCHISE} etat="creux" />
         </Amorce>
 

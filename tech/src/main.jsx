@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import './index.css';
 import App from './App.jsx';
 import { LangProvider } from './i18n.jsx';
-import { ProfilProvider, useProfil, cheminInterne, BASE } from './profil.jsx';
+import { ProfilProvider, useProfil, BASE } from './profil.jsx';
 
 /* ============================================================
    Le site existe en deux versions, et la version vit dans l'adresse :
@@ -17,52 +17,21 @@ import { ProfilProvider, useProfil, cheminInterne, BASE } from './profil.jsx';
    l'ancien préfixe.
    ============================================================ */
 function Racine() {
-  const { profil, adopter } = useProfil();
+  const { profil } = useProfil();
 
-  /* Pas de version dans l'adresse. En ligne, ça n'arrive pas : toutes les
-     adresses sans /tpe ni /pme sont servies par le site principal, qui
-     pose la question (l'aiguillage) et renvoie les anciens liens profonds
-     vers leur page. Ce cas ne se présente donc qu'en développement, où ce
-     serveur tourne seul :
-     - une adresse profonde sans version (/reskope/offres) est rattachée à
-       la version PME, celle du contenu historique ;
-     - la racine renvoie vers l'aiguillage du site principal, ou, en
-       développement, propose les deux espaces.
-     La réécriture se fait dans un effet, pas pendant le rendu. */
-  const interne = cheminInterne();
-  const aRattacher = !profil && interne !== '/' ? 'pme' : null;
-
+  /* Pas de version dans l'adresse : ces adresses sont servies par le site
+     principal (en ligne comme en développement), qui pose la question à
+     l'entrée. Si l'on arrive quand même ici, on y retourne. */
   useEffect(() => {
-    if (!aRattacher) return;
-    const dest = `${BASE}/${aRattacher}${interne}`;
-    window.history.replaceState({}, '', dest + window.location.search + window.location.hash);
-    adopter(aRattacher);
-  }, [aRattacher, interne, adopter]);
+    if (!profil) window.location.replace(`${BASE}/`);
+  }, [profil]);
 
-  useEffect(() => {
-    if (profil || aRattacher || import.meta.env.DEV) return;
-    window.location.replace(`${BASE}/`);
-  }, [profil, aRattacher]);
-
-  if (!profil) return aRattacher || !import.meta.env.DEV ? null : <ChoixDev />;
+  if (!profil) return null;
 
   return (
     <BrowserRouter key={profil} basename={`${BASE}/${profil}`}>
       <App />
     </BrowserRouter>
-  );
-}
-
-/* En développement seulement : l'aiguillage vit dans le site principal
-   (npm run dev), ce serveur-ci ne sert que les espaces des entreprises. */
-function ChoixDev() {
-  const lien = { display: 'block', margin: '0.6rem 0', color: '#1c0cb3', fontSize: '1.4rem' };
-  return (
-    <main style={{ padding: '18vh 8vw', fontFamily: 'system-ui, sans-serif', color: '#0e0b1f' }}>
-      <p style={{ color: '#5c5951' }}>Espaces des entreprises, en développement. L’aiguillage est servi par le site principal.</p>
-      <a style={lien} href={`${BASE}/tpe/`}>Espace TPE, de 1 à 10 personnes</a>
-      <a style={lien} href={`${BASE}/pme/`}>Espace PME, de 10 à 250 personnes</a>
-    </main>
   );
 }
 

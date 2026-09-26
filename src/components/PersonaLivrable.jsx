@@ -177,7 +177,7 @@ export default function PersonaLivrable({ titre = true }) {
 
         <div className="pl-grille">
           <figure className="pl-portrait">
-            <div className="pl-portrait__cadre">
+            <div className="pl-portrait__cadre" data-incliner>
               <img
                 src={`${BASE}personas/${ex.photo}.webp`}
                 alt={ex.alt}

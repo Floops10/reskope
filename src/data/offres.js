@@ -52,6 +52,8 @@ export const MAILLES = {
 
 const idee = {
   id: 'idee',
+  /* La couleur d'explication de la mission (nœuds, bandes). */
+  couleur: 'soleil',
   slug: '/tester-une-idee',
   pole: 'discovery',
   statut: 'porte',
@@ -106,6 +108,8 @@ const idee = {
 
 const clients = {
   id: 'clients',
+  /* La couleur d'explication de la mission (nœuds, bandes). */
+  couleur: 'menthe',
   slug: '/comprendre-vos-clients',
   pole: 'discovery',
   statut: 'porte',
@@ -160,6 +164,8 @@ const clients = {
 
 const dossier = {
   id: 'dossier',
+  /* La couleur d'explication de la mission (nœuds, bandes). */
+  couleur: 'ciel',
   slug: '/relire-votre-dossier',
   pole: 'bp',
   statut: 'porte',
@@ -209,6 +215,8 @@ const dossier = {
 
 const bp = {
   id: 'bp',
+  /* La couleur d'explication de la mission (nœuds, bandes). */
+  couleur: 'lilas',
   slug: '/construire-votre-business-plan',
   pole: 'bp',
   statut: 'porte',

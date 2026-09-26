@@ -51,7 +51,8 @@ html.lenis body {
 /* Police « réseau » — lettres = graphes de nœuds/liens (signature de marque) */
 @font-face {
   font-family: 'Reskope Network';
-  src: url('/fonts/Reskope-Network.ttf') format('truetype');
+  src: url('/fonts/Reskope-Network.woff2') format('woff2'),
+    url('/fonts/Reskope-Network.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -3228,7 +3229,7 @@ html.eco-theme .scrollnet {
   font-weight: 600;
   color: var(--indigo);
 }
-.jalon-card__body h3 {
+.jalon-card__body h3, .jalon-card__body h2 {
   font-size: var(--fs-h3);
   margin: 0.3rem 0 0.5rem;
 }
@@ -3529,7 +3530,7 @@ html.eco-theme .scrollnet {
   padding: 0.15rem 0.5rem;
   border-radius: 999px;
 }
-.jalon-card__body h3 {
+.jalon-card__body h3, .jalon-card__body h2 {
   font-size: var(--fs-h3);
   margin: 0.45rem 0 0.5rem;
 }
@@ -8965,7 +8966,7 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 .mfl__deliver { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: 0.5rem; margin: 1.2rem 0 0; font-size: 0.95rem; color: var(--ink); }
 .mfl__deliver span { font-size: 0.86rem; color: var(--indigo); border: 1px solid var(--hairline); padding: 0.2rem 0.55rem; border-radius: 999px; }
 .mfl__w {
-  display: inline-block; margin-right: 0.28em;
+  display: inline-block; margin-right: 0;
   opacity: 0; transform: translateY(16px);
   transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   transition-delay: 0s;
@@ -9072,7 +9073,7 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 .cflw__headline { font-size: clamp(1.9rem, 3.4vw, 3.1rem); font-weight: 600; line-height: 1.08; letter-spacing: -0.03em; color: var(--cream); margin: 0 0 0.8rem; }
 .cflw__body { font-size: clamp(1rem, 1.25vw, 1.15rem); line-height: 1.52; color: rgba(240, 238, 232, 0.8); margin: 0; max-width: 34ch; }
 .cflw__w {
-  display: inline-block; margin-right: 0.27em;
+  display: inline-block; margin-right: 0;
   opacity: 0; transform: translateY(16px);
   transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   transition-delay: 0s;
@@ -9250,7 +9251,7 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 .ofs__faits { list-style: none; margin: 0 0 1.3rem; padding: 0; display: flex; flex-direction: column; gap: 0.65rem; max-width: 44ch; }
 .ofs__faits li { display: flex; gap: 0.7rem; font-size: 1.02rem; line-height: 1.5; color: rgba(240, 238, 232, 0.94); }
 .ofs__billing-note { font-size: 0.85rem; color: rgba(240, 238, 232, 0.55); margin: 0; }
-.ofs__w { display: inline-block; margin-right: 0.26em; opacity: 0; transform: translateY(14px); transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1); transition-delay: 0s; }
+.ofs__w { display: inline-block; margin-right: 0; opacity: 0; transform: translateY(14px); transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1); transition-delay: 0s; }
 .ofs__panel.is-active .ofs__w { opacity: 1; transform: none; transition-delay: calc(0.3s + var(--i) * 0.03s); }
 /* frise */
 .ofs__rail { position: absolute; z-index: 5; left: var(--gutter); right: var(--gutter); bottom: clamp(1.4rem, 3.5vh, 2.4rem); display: flex; flex-direction: column; gap: 0.7rem; }
@@ -9283,7 +9284,7 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 .ofs-flat { padding: clamp(3rem, 7vh, 5rem) 0; background: #0b0920; color: var(--cream); }
 .ofs-flat__card { padding: 1.4rem 0; }
 .ofs-flat__top { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
-.ofs-flat__top h3 { margin: 0; font-size: 1.3rem; }
+.ofs-flat__top h3, .ofs-flat__nom { margin: 0; font-size: 1.3rem; }
 .ofs-flat__price { font-weight: 600; color: var(--indigo-nuit); white-space: nowrap; }
 .ofs-flat__tag { color: rgba(240, 238, 232, 0.6); margin: 0.3rem 0 0.6rem; }
 .ofs-flat__card ul { margin: 0 0 0.8rem; padding-left: 1.1rem; color: rgba(240, 238, 232, 0.8); }
@@ -9670,7 +9671,9 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   max-width: 18ch;
 }
 .bilan-hero__word { position: relative; display: inline-block; }
-.bilan-hero__ghost { visibility: hidden; }
+/* Le mot reste du vrai texte (lecteurs d'écran, moteurs), invisible sous son
+   dessin en réseau : il réserve la place du dessin. */
+.bilan-hero__ghost { color: transparent; }
 .bilan-hero__netword { position: absolute; left: 0; bottom: 0.04em; }
 .bilan-hero__netword .nw-node { fill: var(--indigo); }
 .bilan-hero__netword .nw-link { stroke: var(--indigo); }
@@ -12965,3 +12968,117 @@ a.esp__seg:hover { background: color-mix(in srgb, var(--indigo) 8%, transparent)
   .cib__centre span { font-size: 0.76rem; }
   .cib__fin { font-size: 1rem; }
 }
+
+/* ── Le menu tient dans un écran, les espaces en tuiles ─── */
+:root {
+  --soleil-pale: color-mix(in srgb, var(--soleil) 18%, var(--cream));
+  --menthe-pale: color-mix(in srgb, var(--menthe) 16%, var(--cream));
+  --ciel-pale: color-mix(in srgb, var(--ciel) 16%, var(--cream));
+}
+.menu2__panel {
+  justify-content: flex-start;
+  gap: clamp(1.1rem, 2.6vh, 1.9rem);
+  padding-top: clamp(5.4rem, 11vh, 7rem);
+  padding-bottom: clamp(1.4rem, 4vh, 2.4rem);
+  perspective: 900px;
+}
+.menu2__head { margin: 0; }
+.menu2__panel .menu2__row { padding-block: clamp(0.4rem, 1.1vh, 0.65rem); }
+.menu2__panel .menu2__label { font-size: clamp(1.25rem, 2.2vw, 1.8rem); }
+@media (max-width: 880px) {
+  .menu2__panel .menu2__label { font-size: clamp(1.2rem, 5.4vw, 1.6rem); }
+}
+.espt { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.5rem; }
+.espt__tuile {
+  --tuile-acc: var(--indigo);
+  --tuile-pale: var(--cream-light);
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-areas: 'point nom' 'sous sous' 'etat etat';
+  align-content: start;
+  gap: 0.15rem 0.45rem;
+  min-height: 44px;
+  padding: 0.75rem 0.85rem 0.7rem;
+  border: 1.5px solid color-mix(in srgb, var(--ink) 15%, transparent);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--cream) 55%, white);
+  color: var(--ink);
+  text-decoration: none;
+  transform-style: preserve-3d;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.25s ease, background-color 0.25s ease, box-shadow 0.4s ease;
+}
+.espt--soleil { --tuile-acc: var(--soleil); --tuile-pale: var(--soleil-pale); }
+.espt--menthe { --tuile-acc: var(--menthe); --tuile-pale: var(--menthe-pale); }
+.espt--ciel { --tuile-acc: var(--ciel); --tuile-pale: var(--ciel-pale); }
+.espt__tuile .esp__point { grid-area: point; align-self: center; width: 10px; height: 10px; }
+.espt__nom { grid-area: nom; font-size: 1.05rem; font-weight: 600; letter-spacing: -0.015em; line-height: 1.2; }
+.espt__sous { grid-area: sous; font-size: 0.82rem; line-height: 1.3; color: var(--muted-fort); }
+.espt__etat { grid-area: etat; margin-top: 0.35rem; font-size: 0.8rem; font-weight: 600; color: var(--indigo); }
+a.espt__tuile:hover,
+a.espt__tuile:focus-visible {
+  transform: translateY(-3px) rotateX(6deg);
+  border-color: var(--tuile-acc);
+  background: var(--tuile-pale);
+  box-shadow: 0 16px 30px -20px rgba(14, 11, 31, 0.55);
+}
+.espt__tuile.is-actif { border-color: var(--indigo); background: var(--indigo); color: var(--cream); }
+.espt__tuile.is-actif .espt__sous,
+.espt__tuile.is-actif .espt__etat { color: color-mix(in srgb, var(--cream) 82%, transparent); }
+@media (max-width: 420px) {
+  .espt { gap: 0.4rem; }
+  .espt__tuile { padding: 0.6rem 0.6rem; }
+  .espt__nom { font-size: 0.98rem; }
+  .espt__sous, .espt__etat { font-size: 0.74rem; }
+}
+
+/* ── Les tuiles d'espace, version sombre (pied de page) ─── */
+.footer2__espaces { position: relative; z-index: 1; margin-top: clamp(1.6rem, 4vh, 2.6rem); }
+.espt--sombre .espt__tuile {
+  border-color: rgba(240, 238, 232, 0.28);
+  background: rgba(240, 238, 232, 0.06);
+  color: var(--cream);
+}
+.espt--sombre .espt__sous { color: rgba(240, 238, 232, 0.74); }
+.espt--sombre .espt__etat { color: var(--soleil); }
+.espt--sombre a.espt__tuile:hover,
+.espt--sombre a.espt__tuile:focus-visible {
+  border-color: var(--tuile-acc);
+  background: rgba(240, 238, 232, 0.13);
+  box-shadow: 0 18px 34px -22px rgba(0, 0, 0, 0.6);
+}
+.espt--sombre .espt__tuile.is-actif { border-color: var(--cream); background: var(--cream); color: var(--indigo); }
+.espt--sombre .espt__tuile.is-actif .espt__sous,
+.espt--sombre .espt__tuile.is-actif .espt__etat { color: color-mix(in srgb, var(--indigo) 80%, transparent); }
+@media (min-width: 900px) { .footer2__espaces .espt { max-width: 760px; } }
+
+/* L'inclinaison sous la souris (src/animations/inclinaison.js). */
+[data-incliner] {
+  rotate: var(--incl-x, 0) var(--incl-y, 1) 0 var(--incl-a, 0deg);
+  transition: rotate 0.55s cubic-bezier(0.22, 1, 0.36, 1), translate 0.55s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.55s ease;
+}
+[data-incliner].is-incline { translate: 0 -5px; }
+@media (prefers-reduced-motion: reduce) { [data-incliner] { rotate: none; translate: none; } }
+
+/* ── La carte de visite : Florian ou Thomy ───────────────── */
+.bcard-qui { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; margin: 0.4rem 0 1.1rem; }
+.bcard-qui__label { font-size: 0.92rem; color: var(--muted-fort); margin-right: 0.2rem; }
+.bcard-qui__opt {
+  min-height: 44px;
+  padding: 0.45rem 1.1rem;
+  border: 1.5px solid color-mix(in srgb, var(--ink) 16%, transparent);
+  border-radius: 999px;
+  background: transparent;
+  font: inherit;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+}
+.bcard-qui__opt:hover { border-color: var(--indigo); }
+.bcard-qui__opt.is-on { background: var(--indigo); border-color: var(--indigo); color: var(--cream); }
+.bcard-qui__opt:focus-visible { outline: 2px solid var(--indigo); outline-offset: 3px; }
+
+/* L'attente d'une page chargée à la demande : la place est tenue, rien ne saute. */
+.attente-page { display: block; min-height: 100svh; }
+.footer2__espaces { margin-bottom: clamp(1.6rem, 4vh, 2.6rem); }

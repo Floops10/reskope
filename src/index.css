@@ -51,7 +51,8 @@ html.lenis body {
 /* Police « réseau » — lettres = graphes de nœuds/liens (signature de marque) */
 @font-face {
   font-family: 'Reskope Network';
-  src: url('/fonts/Reskope-Network.ttf') format('truetype');
+  src: url('/fonts/Reskope-Network.woff2') format('woff2'),
+    url('/fonts/Reskope-Network.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -2582,7 +2583,7 @@ textarea::selection {
 .mfl__deliver { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: 0.5rem; margin: 1.2rem 0 0; font-size: 0.95rem; color: var(--ink); }
 .mfl__deliver span { font-size: 0.86rem; color: var(--indigo); border: 1px solid var(--hairline); padding: 0.2rem 0.55rem; border-radius: 999px; }
 .mfl__w {
-  display: inline-block; margin-right: 0.28em;
+  display: inline-block; margin-right: 0;
   opacity: 0; transform: translateY(16px);
   transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   transition-delay: 0s;
@@ -2965,7 +2966,9 @@ textarea::selection {
   max-width: 18ch;
 }
 .bilan-hero__word { position: relative; display: inline-block; }
-.bilan-hero__ghost { visibility: hidden; }
+/* Le mot reste du vrai texte (lecteurs d'écran, moteurs), invisible sous son
+   dessin en réseau : il réserve la place du dessin. */
+.bilan-hero__ghost { color: transparent; }
 .bilan-hero__netword { position: absolute; left: 0; bottom: 0.04em; }
 .bilan-hero__netword .nw-node { fill: var(--indigo); }
 .bilan-hero__netword .nw-link { stroke: var(--indigo); }

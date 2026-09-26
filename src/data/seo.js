@@ -1,3 +1,4 @@
+import { ORIGINE, BASE } from '../../site.config.mjs';
 /* ════════════════════════════════════════════════════════════
    LE RÉFÉRENCEMENT — une seule source pour tout ce qui se lit sans JS.
 
@@ -22,8 +23,8 @@
    ════════════════════════════════════════════════════════════ */
 
 export const SITE = {
-  origine: 'https://floops10.github.io',
-  base: '/reskope',
+  origine: ORIGINE,
+  base: BASE,
   marque: 'Reskope',
   image: '/og-image.png',
   villes: ['Valenciennes', 'Lille'],

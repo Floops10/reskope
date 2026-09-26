@@ -38,6 +38,7 @@ const libelle = (m) => {
 export default function Semaine({ minutes = TEMPS_MISSION, legende = true }) {
   const racine = useRef(null);
   const colonnes = useRef([]);
+  const valeurs = useRef([]);
   const semaines = Math.ceil(minutes.length / 5);
 
   const geo = useMemo(() => {
@@ -58,9 +59,12 @@ export default function Semaine({ minutes = TEMPS_MISSION, legende = true }) {
       const [x, y] = PR(k * (L + ECART) + L * 0.55, yFin + P + 0.9, 0);
       return { j, x, y: y + 1.1 };
     });
+    /* Le nom de chaque semaine se pose au bout de sa rangée, après le
+       vendredi : à gauche, les colonnes du lundi des semaines suivantes
+       montaient par-dessus. */
     const rangs = Array.from({ length: semaines }, (_, s) => {
-      const [x, y] = PR(-0.9, s * (P + RANG) + P * 0.5, 0);
-      return { s, x, y: y + 0.45 };
+      const [x, y] = PR(W + 0.7, s * (P + RANG) + P * 0.5, 0);
+      return { s, x, y: y + 0.3 };
     });
     return { W, D, cx, cy, jours, etiquettes, rangs };
   }, [minutes, semaines]);
@@ -74,13 +78,14 @@ export default function Semaine({ minutes = TEMPS_MISSION, legende = true }) {
     const v = projeterPave({ x: j.x + 0.3, y: j.y + 0.3, w: L - 0.6, d: P - 0.6, z0: EP, z1: EP + Math.max(j.h * t, 0.001) }, 0, geo.cx, geo.cy);
     const polys = g.querySelectorAll('polygon');
     v.faces.forEach((f, n) => { if (polys[n]) polys[n].setAttribute('points', f.d); });
-    const val = g.querySelector('text');
+    const val = valeurs.current[k];
     if (val) {
-      /* L'étiquette se pose à droite du sommet de la colonne : c'est le côté
-         que rien ne recouvre, quelle que soit la semaine. */
-      const [tx, ty] = PR(j.x + L - 0.3, j.y + 0.3, EP + j.h * t);
-      val.setAttribute('x', (tx + 0.45).toFixed(2));
-      val.setAttribute('y', (ty + 0.35).toFixed(2));
+      /* La valeur se pose au-dessus du sommet de sa colonne, centrée, dans
+         un calque dessiné après toutes les colonnes : aucune colonne ne la
+         recouvre, et son halo crème la détache du fond. */
+      const [tx, ty] = PR(j.x + L / 2, j.y + P / 2, EP + j.h * t);
+      val.setAttribute('x', tx.toFixed(2));
+      val.setAttribute('y', (ty - 1.05).toFixed(2));
       val.style.opacity = t > 0.85 ? '1' : '0';
     }
   };
@@ -111,15 +116,11 @@ export default function Semaine({ minutes = TEMPS_MISSION, legende = true }) {
     geo.jours.forEach((j) => {
       (j.plaque.faces || []).forEach((f) => f.d.split(' ').forEach((p) => pts.push(p.split(',').map(Number))));
       (j.plaque.lignes || []).forEach((l) => { pts.push([l.x1, l.y1]); pts.push([l.x2, l.y2]); });
-      const [tx, ty] = PR(j.x, j.y, j.h + 1.2);
-      pts.push([tx, ty]);
-      if (j.m) {
-        const [rx, ry] = PR(j.x + L, j.y, j.h);
-        pts.push([rx + 4.2, ry]);
-      }
+      const [tx, ty] = PR(j.x + L / 2, j.y + P / 2, j.h + EP);
+      pts.push([tx - 2, ty - 2.4], [tx + 2, ty - 2.4]);
     });
     geo.etiquettes.forEach((e) => pts.push([e.x - 1.6, e.y + 0.6], [e.x + 1.6, e.y]));
-    geo.rangs.forEach((r) => pts.push([r.x - 9, r.y]));
+    geo.rangs.forEach((r) => pts.push([r.x + 7.5, r.y]));
     const xs = pts.map((p) => p[0]);
     const ys = pts.map((p) => p[1]);
     const x0 = Math.min(...xs) - 1;
@@ -153,13 +154,22 @@ export default function Semaine({ minutes = TEMPS_MISSION, legende = true }) {
             <polygon className="axo-l" />
             <polygon className="axo-r" />
             <polygon className="axo-t" />
-            <text className="sem__valeur">{libelle(j.m)}</text>
           </g>
         ))}
-        {/* Les semaines se nomment par-dessus les colonnes : une colonne
-            haute ne doit jamais cacher la ligne qu'elle occupe. */}
+        {/* Les libellés viennent après toutes les colonnes : ils restent
+            lisibles, quelle que soit la hauteur de ce qui est devant. */}
+        {ordre.map(({ j, k }) => (
+          <text
+            key={`v${j.i}`}
+            className="sem__valeur"
+            textAnchor="middle"
+            ref={(el) => { valeurs.current[k] = el; }}
+          >
+            {libelle(j.m)}
+          </text>
+        ))}
         {geo.rangs.map((r) => (
-          <text key={`r${r.s}`} className="sem__semaine" x={r.x} y={r.y} textAnchor="end">Semaine {r.s + 1}</text>
+          <text key={`r${r.s}`} className="sem__semaine" x={r.x} y={r.y} textAnchor="start">Semaine {r.s + 1}</text>
         ))}
       </svg>
       {legende && (

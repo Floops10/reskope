@@ -113,16 +113,22 @@ export default function NetWord({ children, className = '', dur = 1.25, heightEm
     const [vbMinX, vbMinY] = vb.split(' ').map(Number);
 
     const onPointerMove = (e) => {
+      if (e.pointerType !== 'mouse') return;
       const rect = svg.getBoundingClientRect();
       if (!rect.width || !rect.height) return;
       const vbW = svg.viewBox.baseVal.width;
       const vbH = svg.viewBox.baseVal.height;
       mx = vbMinX + ((e.clientX - rect.left) / rect.width) * vbW;
       my = vbMinY + ((e.clientY - rect.top) / rect.height) * vbH;
+      if (!hoverRaf) hoverRaf = requestAnimationFrame(hoverTick);
     };
     const onPointerLeave = () => { mx = -9999; my = -9999; };
 
+    /* La boucle ne tourne que pendant le survol, et jusqu'à ce que chaque
+       nœud soit revenu à sa place : au repos, elle s'arrête. Elle tournait
+       sans fin, sur chaque mot de la page. */
     const hoverTick = () => {
+      let ecart = 0;
       nodes.forEach((target, i) => {
         const d = Math.hypot(mx - target[0], my - target[1]);
         const proximity = Math.max(0, 1 - d / RADIUS);
@@ -132,16 +138,17 @@ export default function NetWord({ children, className = '', dur = 1.25, heightEm
         const goalY = target[1] + Math.sin(a) * push;
         cur[i][0] += (goalX - cur[i][0]) * 0.22;
         cur[i][1] += (goalY - cur[i][1]) * 0.22;
+        ecart = Math.max(ecart, Math.abs(goalX - cur[i][0]), Math.abs(goalY - cur[i][1]));
         place(i);
       });
       redrawLinks();
-      hoverRaf = requestAnimationFrame(hoverTick);
+      const auRepos = mx < -9000 && ecart < 0.05;
+      hoverRaf = auRepos ? null : requestAnimationFrame(hoverTick);
     };
 
     tl.eventCallback('onComplete', () => {
       svg.addEventListener('pointermove', onPointerMove);
       svg.addEventListener('pointerleave', onPointerLeave);
-      hoverRaf = requestAnimationFrame(hoverTick);
     });
 
     return () => {

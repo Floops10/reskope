@@ -64,7 +64,12 @@ export default function HeroFormation({ c }) {
     const nodeEls = [...svg.querySelectorAll('.hf-node')];
     const linkEls = [...svg.querySelectorAll('.hf-link')];
 
-    const charData = { els: [], vecs: [] };
+    const charData = { els: [], vecs: [], touche: [] };
+    /* Déclarés ici, créés plus bas : render() s'en sert pour laisser le titre
+       au repos avant de le défaire. */
+    let intro = null;
+    let hoverTl = null;
+    let progression = 0;
     /* Les mots de la présentation : ils arrivent de la profondeur quand le
        R a fini de se former, exactement comme la phrase de marque plus bas
        dans la page. Même grammaire de mouvement partout. */
@@ -119,13 +124,30 @@ export default function HeroFormation({ c }) {
         const fondu = 1 - clamp01((p - 0.46) / 0.16);
         gsap.set(actionsRef.current, { autoAlpha: fondu });
         if (ditRef.current) gsap.set(ditRef.current, { autoAlpha: fondu });
-        const { els, vecs } = charData;
+        const { els, vecs, touche } = charData;
         for (let i = 0; i < els.length; i++) {
           const d = easeInOut(clamp01((p - 0.56 - i * 0.0045) / 0.3));
-          if (d <= 0) continue;
+          if (d <= 0) {
+            /* Remonté avant le début du désassemblage : la lettre reprend
+               exactement sa place (une seule fois, pour ne pas lutter avec
+               l'arrivée du titre ni avec le survol). */
+            if (touche[i]) {
+              gsap.set(els[i], { x: 0, y: 0, rotation: 0, scale: 1, opacity: 1 });
+              touche[i] = false;
+            }
+            continue;
+          }
+          /* Le titre doit être entièrement arrivé et au repos avant de se
+             défaire : l'arrivée ou le survol, s'ils finissaient après,
+             remettaient les lettres en place une fois le défilement
+             terminé. C'était le titre qui « revient ». */
+          if (intro && intro.progress() < 1) intro.progress(1);
+          if (hoverTl && hoverTl.progress() > 0) hoverTl.pause(0);
           const v = vecs[i];
-          els[i].style.transform = `translate(${(v[0] * d).toFixed(1)}px, ${(v[1] * d).toFixed(1)}px) rotate(${(v[2] * d).toFixed(1)}deg) scale(${(1 - 0.4 * d).toFixed(3)})`;
-          els[i].style.opacity = (1 - d).toFixed(3);
+          gsap.set(els[i], {
+            x: v[0] * d, y: v[1] * d, rotation: v[2] * d, scale: 1 - 0.4 * d, opacity: 1 - d,
+          });
+          touche[i] = true;
         }
 
         /* PRÉSENTATION : le R vient de se former, le titre s'en va, et
@@ -223,10 +245,11 @@ export default function HeroFormation({ c }) {
         (rnd(i, 8) - 0.5) * 190,
         (rnd(i, 9) - 0.5) * 44,
       ]);
+      charData.touche = split.chars.map(() => false);
     }
     if (netSplit) gsap.set(netSplit.chars, { autoAlpha: 0 });
 
-    const intro = gsap.timeline({ defaults: { ease: 'power4.out' } });
+    intro = gsap.timeline({ defaults: { ease: 'power4.out' } });
     if (split) {
       intro.from(split.chars, { yPercent: 112, autoAlpha: 0, duration: 0.9, stagger: 0.013 }, 0.12);
     }
@@ -236,14 +259,17 @@ export default function HeroFormation({ c }) {
     /* Morph survol : VAGUE de bascule lettre à lettre — la lettre sans
        plonge (rotationX), la lettre réseau se relève à sa place exacte.
        Une seule timeline play/reverse : fluide et interruptible. */
-    let hoverTl = null;
     if (split && netSplit) {
       hoverTl = gsap.timeline({ paused: true });
-      hoverTl.to(split.chars, {
+      /* Des valeurs de départ ÉCRITES, pas relevées : un survol commencé
+         pendant l'arrivée du titre relevait une opacité à mi-chemin, et le
+         retour s'y arrêtait. Le titre restait à moitié effacé. */
+      hoverTl.fromTo(split.chars, { rotationX: 0, autoAlpha: 1 }, {
         rotationX: -92, autoAlpha: 0,
         transformOrigin: '50% 100%',
         duration: 0.32, ease: 'power2.in',
         stagger: { each: 0.011 },
+        immediateRender: false,
       }, 0);
       hoverTl.fromTo(netSplit.chars,
         { rotationX: 92, autoAlpha: 0, transformOrigin: '50% 0%' },
@@ -253,8 +279,14 @@ export default function HeroFormation({ c }) {
           stagger: { each: 0.011 },
         }, 0.14);
     }
-    const onEnter = () => hoverTl && hoverTl.timeScale(1).play();
-    const onLeave = () => hoverTl && hoverTl.timeScale(1.35).reverse();
+    /* Le survol attend que le titre soit posé, et se tait pendant qu'il se
+       défait au défilement. */
+    const onEnter = (e) => {
+      if (!hoverTl || (e && e.pointerType && e.pointerType !== 'mouse')) return;
+      if (intro.progress() < 1 || progression > 0.4) return;
+      hoverTl.timeScale(1).play();
+    };
+    const onLeave = () => hoverTl && hoverTl.progress() > 0 && hoverTl.timeScale(1.35).reverse();
 
     const mm = gsap.matchMedia();
 
@@ -281,11 +313,14 @@ export default function HeroFormation({ c }) {
         invalidateOnRefresh: true,
         onRefresh: computeShift,
         onUpdate: (self) => {
-          render(self.progress);
-          // le morph hover n'a pas sa place pendant le désassemblage
-          if (self.progress > 0.45 && hoverTl && hoverTl.progress() > 0) {
-            hoverTl.timeScale(2).reverse();
+          progression = self.progress;
+          /* Le survol n'a pas sa place pendant le désassemblage : il se
+             replie vite, et render() le remet à zéro avant la première
+             lettre qui s'en va. */
+          if (progression > 0.4 && hoverTl && hoverTl.progress() > 0 && !hoverTl.reversed()) {
+            hoverTl.timeScale(3).reverse();
           }
+          render(progression);
         },
       });
       const wrap = wrapRef.current;
@@ -322,7 +357,7 @@ export default function HeroFormation({ c }) {
         scrub: 0.8,
         invalidateOnRefresh: true,
         onRefresh: mesurer,
-        onUpdate: (self) => render(self.progress),
+        onUpdate: (self) => { progression = self.progress; render(progression); },
       });
       return () => { st.kill(); fxMobile = false; };
     });

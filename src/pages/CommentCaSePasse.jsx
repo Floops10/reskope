@@ -125,7 +125,7 @@ export default function CommentCaSePasse() {
         <MotionSlot id="comment-semaine" />
       </Amorce>
 
-      <Amorce id="vos-clients" lead="Ce qu’on fait des réponses de vos clients.">
+      <Amorce id="vos-clients" lead="Ce qu’on fait des réponses de vos clients." fond="ciel">
         <Noeuds items={CLIENTS} />
         <p className="am__p">
           Pour ces entretiens, on traite des données de vos clients pour votre compte : le cadre est écrit
@@ -134,7 +134,7 @@ export default function CommentCaSePasse() {
         </p>
       </Amorce>
 
-      <Amorce id="chiffres" lead="Sept personnes sur onze, ce n’est pas 64 %.">
+      <Amorce id="chiffres" lead="Sept personnes sur onze, ce n’est pas 64 %." entree="pivot">
         <Compte
           rangs={[
             { sujet: 'Le délai de réponse', n: 7 },
@@ -161,7 +161,7 @@ export default function CommentCaSePasse() {
         </p>
       </Amorce>
 
-      <Amorce id="mots" lead="Les mots de la méthode, si vous les connaissez.">
+      <Amorce id="mots" lead="Les mots de la méthode, si vous les connaissez." entree="bascule">
         <dl className="lex">
           {Object.entries(PERSONA.mots).map(([terme, dit]) => (
             <div className="lex__ligne" key={terme}>

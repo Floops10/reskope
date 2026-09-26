@@ -10,6 +10,7 @@ import { useT, useLang } from '../i18n';
 import { CONTACT, AILLEURS } from '../data/site';
 import { useProfil, BASE } from '../profil';
 import { PAGES_PROFIL } from '../data/profils';
+import { EspacesTuiles } from './Espaces';
 
 /* FOOTER — L'UNIVERS de clôture (plein écran).
    On termine EN IMMERSION dans le réseau de la marque : une poussière
@@ -162,6 +163,11 @@ export default function Footer() {
         </Link>
       </div>
 
+      {/* Les trois espaces, en tuiles : chacun dit à qui il s'adresse. */}
+      <div className="container footer2__espaces">
+        <EspacesTuiles className="espt--sombre" />
+      </div>
+
       <div className="container footer2__grid">
         {/* Le pied de page proposait « Le constat » et « Exemple de
             bilan » en version TPE : deux pages réservées aux PME, qu'on
@@ -183,7 +189,7 @@ export default function Footer() {
           <Link to="/a-propos">{tabs['/a-propos']}</Link>
           {/* Le reste du site : comprendre ses clients vaut pour toutes les
               entreprises, et l'aiguillage ramène aux trois espaces. */}
-          {['clients', 'creation', 'aiguillage'].map((k) => (
+          {['clients'].map((k) => (
             <a key={k} href={`${BASE}/${AILLEURS[k].chemin}`} hrefLang={lang === 'en' ? 'fr' : undefined}>
               {AILLEURS[k][lang] || AILLEURS[k].fr}
             </a>

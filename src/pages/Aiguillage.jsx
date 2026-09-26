@@ -26,15 +26,15 @@ function Choix({ e }) {
       <span className="aig__taille">{e.id === 'creation' ? 'En projet' : e.taille}</span>
       <span className="aig__qui">{e.id === 'creation' ? 'Je crée ou je reprends une entreprise' : `Une ${e.court}`}</span>
       <span className="aig__dit">{e.dit}</span>
-      <span className="aig__fleche" aria-hidden="true">→</span>
+      <span className="aig__entrer" aria-hidden="true">Entrer<span className="aig__fleche">→</span></span>
     </>
   );
   const classe = `aig__carte aig--${e.accent}`;
   /* L'espace « en projet » est dans cette application ; les espaces TPE et
      PME sont servis à part, on y va par un vrai chargement de page. */
   return e.id === 'creation'
-    ? <Link to="/creation" className={classe} data-cursor-label="Entrer">{contenu}</Link>
-    : <a href={adresseEspace(e.id)} className={classe} data-cursor-label="Entrer">{contenu}</a>;
+    ? <Link to="/creation" className={classe} data-cursor-label="Entrer" data-incliner>{contenu}</Link>
+    : <a href={adresseEspace(e.id)} className={classe} data-cursor-label="Entrer" data-incliner>{contenu}</a>;
 }
 
 export default function Aiguillage() {

@@ -1,7 +1,45 @@
-import { copyFileSync, existsSync } from 'node:fs'
-import { resolve } from 'node:path'
+import { copyFileSync, existsSync, readFileSync } from 'node:fs'
+import { dirname, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { BASE, URL_SITE } from './site.config.mjs'
+
+/* Les pages d'entrée (index.html) lisent l'adresse du site ici :
+   %VITE_SITE_URL% y est remplacé à la construction. */
+process.env.VITE_SITE_URL = URL_SITE
+
+const ICI = dirname(fileURLToPath(import.meta.url))
+
+/* UN SEUL SERVEUR DE DÉVELOPPEMENT POUR TOUT LE SITE.
+   En ligne, les deux applications sont réunies dans dist/ : l'espace « en
+   projet » (ici) et l'espace TPE/PME (tech/). En développement, ce serveur
+   sert aussi le second : toute page sous /reskope/tpe ou /reskope/pme reçoit
+   la page d'entrée de tech/, dont le script est lu depuis tech/src. On passe
+   d'un espace à l'autre comme en ligne, sans second serveur ni message
+   d'attente. */
+const entreprisesEnDev = () => ({
+  name: 'reskope-entreprises-en-dev',
+  apply: 'serve',
+  configureServer(server) {
+    server.middlewares.use(async (req, res, next) => {
+      const url = req.url || ''
+      const chemin = url.split('?')[0]
+      if (req.method !== 'GET' && req.method !== 'HEAD') return next()
+      if (!new RegExp(`^${BASE}/(tpe|pme)(/|$)`).test(chemin)) return next()
+      if (/\.[a-z0-9]+$/i.test(chemin)) return next()
+      try {
+        const brut = readFileSync(resolve(ICI, 'tech/index.html'), 'utf8')
+          .replace('src="/src/main.jsx"', 'src="/tech/src/main.jsx"')
+        const html = await server.transformIndexHtml(url, brut)
+        res.setHeader('Content-Type', 'text/html; charset=utf-8')
+        res.end(html)
+      } catch (e) {
+        next(e)
+      }
+    })
+  },
+})
 
 /* GitHub Pages ne route que des fichiers réels : un lien direct, un favori ou
    une actualisation sur /reskope/contact (route gérée côté client par React
@@ -57,8 +95,11 @@ const securityMeta = () => ({
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/reskope/',
-  plugins: [react(), securityMeta(), spaFallback()],
+  base: `${BASE}/`,
+  plugins: [react(), securityMeta(), spaFallback(), entreprisesEnDev()],
+  /* Les dépendances des deux applications sont préparées dès le démarrage :
+     ouvrir l'espace TPE/PME ne provoque pas de rechargement. */
+  optimizeDeps: { entries: ['src/main.jsx', 'tech/src/main.jsx'] },
   build: {
     // Pas de script inline injecté → script-src 'self' reste strict.
     modulePreload: { polyfill: false },

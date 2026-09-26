@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { gsap, SplitText, useGSAP } from '../lib/gsap';
 import { instant } from '../lib/scrub';
 import { buildR3D } from '../lib/net3d';
@@ -9,7 +9,8 @@ import BusinessCard from './BusinessCard';
 import { useT } from '../i18n';
 import { CONTACT } from '../data/site';
 import { PORTES_CREATION } from '../data/offres';
-import { ESPACES, adresseEspace } from '../data/espaces';
+import { fiche } from '../data/seo';
+import { EspacesTuiles } from './Espaces';
 
 /* FOOTER — L'UNIVERS de clôture (plein écran).
    On termine EN IMMERSION dans le réseau de la marque : une poussière
@@ -32,6 +33,9 @@ const DUST = Array.from({ length: 34 }, (_, i) => {
 });
 
 export default function Footer() {
+  const { pathname } = useLocation();
+  const route = pathname !== '/' ? pathname.replace(/\/+$/, '') : '/';
+  const espace = fiche(route)?.espace || null;
   const [cardOpen, setCardOpen] = useState(false);
   const rootRef = useRef(null);
   const stRef = useRef(null);
@@ -158,20 +162,18 @@ export default function Footer() {
         </Link>
       </div>
 
-      <div className="container footer2__grid footer2__grid--quatre">
+      {/* Les trois espaces, en tuiles : on voit où l'on est, et chacun dit
+          à qui il s'adresse. Des liens en texte ne se lisaient pas comme des
+          boutons. */}
+      <div className="container footer2__espaces">
+        <EspacesTuiles actif={espace} className="espt--sombre" label="Les trois espaces du site" />
+      </div>
+
+      <div className="container footer2__grid">
         <nav className="footer2__col" aria-label="Créer ou reprendre une entreprise">
           <span className="footer2__heading">Créer ou reprendre</span>
-          <Link to="/creation">L’espace « en projet »</Link>
+          <Link to="/creation">L’espace « en projet »</Link>
           {PORTES_CREATION.map((p) => <Link key={p.id} to={p.slug}>{p.court}</Link>)}
-        </nav>
-
-        {/* Les deux autres espaces, pour qui dirige déjà une entreprise. */}
-        <nav className="footer2__col" aria-label="Vous dirigez une entreprise">
-          <span className="footer2__heading">Entreprises</span>
-          {ESPACES.filter((e) => e.id !== 'creation').map((e) => (
-            <a key={e.id} href={adresseEspace(e.id)}>{e.court}, {e.taille}</a>
-          ))}
-          <Link to="/exemple">Un exemple complet</Link>
         </nav>
 
         <nav className="footer2__col" aria-label="Le site">
@@ -179,6 +181,7 @@ export default function Footer() {
           <Link to="/">Changer d’espace</Link>
           <Link to="/nos-offres">Nos offres</Link>
           <Link to="/comment-ca-se-passe">Comment ça se passe</Link>
+          <Link to="/exemple">Un exemple complet</Link>
           <Link to="/qui-on-est">Qui on est</Link>
         </nav>
 

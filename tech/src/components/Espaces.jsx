@@ -51,3 +51,47 @@ export default function Espaces({ className = '' }) {
     </nav>
   );
 }
+
+/* ════════════════════════════════════════════════════════════
+   LES TUILES D'ESPACE — le même choix, en grand, en tête du menu et dans le
+   pied de page : le point de couleur, le nom, la taille d'entreprise, et
+   une flèche. On voit que c'est un bouton, et à quoi il mène.
+   ════════════════════════════════════════════════════════════ */
+
+export function EspacesTuiles({ className = '' }) {
+  const { lang } = useLang();
+  const { profil, setProfil } = useProfil();
+  const interne = cheminInterne();
+  const en = lang === 'en';
+
+  return (
+    <nav className={`espt ${className}`} aria-label={en ? 'Choose your space' : 'Choisir votre espace'}>
+      {ESPACES.map((e) => {
+        const m = e[lang] || e.fr;
+        const ici = e.id === profil;
+        const classe = `espt__tuile espt--${e.accent}${ici ? ' is-actif' : ''}`;
+        const contenu = (
+          <>
+            <i className={`esp__point esp--${e.accent}`} aria-hidden="true" />
+            <span className="espt__nom">{m.court}</span>
+            <span className="espt__sous">{m.sous}</span>
+            <span className="espt__etat" aria-hidden="true">
+              {ici ? (en ? 'You are here' : 'Vous êtes ici') : (en ? 'Enter →' : 'Entrer →')}
+            </span>
+          </>
+        );
+        if (ici) return <span key={e.id} className={classe} aria-current="true">{contenu}</span>;
+        if (e.id === 'creation') {
+          return <a key={e.id} href={`${BASE}/creation/`} className={classe} hrefLang={en ? 'fr' : undefined}>{contenu}</a>;
+        }
+        const href = `${BASE}/${e.id}${interne === '/' ? '/' : `${interne}/`}`;
+        const basculer = (ev) => {
+          if (ev.defaultPrevented || ev.button !== 0 || ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.altKey) return;
+          ev.preventDefault();
+          setProfil(e.id);
+        };
+        return <a key={e.id} href={href} className={classe} onClick={basculer}>{contenu}</a>;
+      })}
+    </nav>
+  );
+}

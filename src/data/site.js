@@ -3,6 +3,10 @@
    coordonnées, sources. Les composants lisent STATS[lang], etc.
    ============================================================ */
 
+/* L'adresse du site telle qu'on l'imprime (cartes de visite) : elle suit
+   la configuration (site.config.mjs). */
+export { ADRESSE_AFFICHEE } from '../../site.config.mjs';
+
 export const CONTACT = {
   email: 'hello@reskope.fr',
   /* La boîte n'est pas ouverte : le nom de domaine n'est pas encore déposé.

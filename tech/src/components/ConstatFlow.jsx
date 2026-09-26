@@ -1,4 +1,4 @@
-import { useRef, useMemo, useState } from 'react';
+import { useRef, useMemo, useState, Fragment } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { ScrollTrigger, useGSAP } from '../lib/gsap';
@@ -224,15 +224,18 @@ function CamRig({ progress, mouse }) {
   return null;
 }
 
+/* Chaque mot dans son propre bloc (pour arriver l'un après l'autre), séparés
+   par de vrais espaces : le texte se lit une seule fois, et en entier, par un
+   lecteur d'écran comme par un moteur. (Une copie cachée plus une copie en
+   mots collés donnait « Onconstruit,vous... » dans le titre de la page.) */
 function splitWords(text) {
-  return (
-    <>
-      <span className="sr-only">{text}</span>
-      <span aria-hidden="true">
-        {text.split(' ').map((w, i) => <span className="cflw__w" key={i} style={{ '--i': i }}>{w}</span>)}
-      </span>
-    </>
-  );
+  const mots = text.split(' ');
+  return mots.map((w, i) => (
+    <Fragment key={i}>
+      <span className="cflw__w" style={{ '--i': i }}>{w}</span>
+      {i < mots.length - 1 ? ' ' : ''}
+    </Fragment>
+  ));
 }
 
 export default function ConstatFlow({ cards, film, sourceLabel, calcLabel, locale }) {
@@ -305,7 +308,7 @@ export default function ConstatFlow({ cards, film, sourceLabel, calcLabel, local
             </p>
           </div>
           <div className="cfilm__flat-why">
-            <h3 className="cfilm__why-title">{film.whyTitle}</h3>
+            <h2 className="cfilm__why-title">{film.whyTitle}</h2>
             <div className="cfy-flat">
               {whyCards.map((c) => (
                 <div className="cfy-flat-item" key={c.id}>

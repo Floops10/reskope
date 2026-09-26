@@ -70,7 +70,7 @@ export default function Chemins({
             {portes.map((p, i) => (
               <li className="ch__item" key={p.id}>
                 {i > 0 && <span className="ch__et" aria-hidden="true">et / ou</span>}
-                <Link to={p.slug} className="ch__corps" data-cursor-label="Voir">
+                <Link to={p.slug} className={`ch__corps acc--${p.couleur || 'indigo'}`} data-cursor-label="Voir">
                   <span className="ch__noeud" aria-hidden="true" />
                   <span className="ch__voix">« {p.amorce} »</span>
                   <span className="ch__nom">

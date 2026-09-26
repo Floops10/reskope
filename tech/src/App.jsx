@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { MotionConfig } from 'framer-motion';
 import { ScrollTrigger } from './lib/gsap';
@@ -13,16 +13,25 @@ import Nav from './components/Nav';
 import Breadcrumb from './components/Breadcrumb';
 import Footer from './components/Footer';
 import Home from './pages/Home';
-import Pourquoi from './pages/Pourquoi';
-import Methode from './pages/Methode';
-import Offres from './pages/Offres';
-import Exemple from './pages/Exemple';
-import Atelier from './pages/Atelier';
-import Ecologie from './pages/Ecologie';
-import APropos from './pages/APropos';
-import Contact from './pages/Contact';
-import { MentionsLegales, Confidentialite, CGU, CGV } from './pages/Legales';
-import { NotFound, Merci } from './pages/Etats';
+
+/* L'accueil part avec le paquet principal ; les autres pages ne sont
+   demandées qu'à la visite. Elles tiraient toutes avec elles le moteur 3D
+   (la vitrine des offres, l'atelier, le constat) : l'accueil d'une TPE
+   téléchargeait près d'un mégaoctet de code qu'il n'utilisait pas. */
+const Pourquoi = lazy(() => import('./pages/Pourquoi'));
+const Methode = lazy(() => import('./pages/Methode'));
+const Offres = lazy(() => import('./pages/Offres'));
+const Exemple = lazy(() => import('./pages/Exemple'));
+const Atelier = lazy(() => import('./pages/Atelier'));
+const Ecologie = lazy(() => import('./pages/Ecologie'));
+const APropos = lazy(() => import('./pages/APropos'));
+const Contact = lazy(() => import('./pages/Contact'));
+const MentionsLegales = lazy(() => import('./pages/Legales').then((m) => ({ default: m.MentionsLegales })));
+const Confidentialite = lazy(() => import('./pages/Legales').then((m) => ({ default: m.Confidentialite })));
+const CGU = lazy(() => import('./pages/Legales').then((m) => ({ default: m.CGU })));
+const CGV = lazy(() => import('./pages/Legales').then((m) => ({ default: m.CGV })));
+const NotFound = lazy(() => import('./pages/Etats').then((m) => ({ default: m.NotFound })));
+const Merci = lazy(() => import('./pages/Etats').then((m) => ({ default: m.Merci })));
 
 export default function App() {
   useEffect(() => {
@@ -53,6 +62,7 @@ export default function App() {
       <PageTransition />
       <Interactions />
       <Nav />
+      <Suspense fallback={<main id="contenu" className="attente-page" />}>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/pourquoi" element={<Pourquoi />} />
@@ -72,6 +82,7 @@ export default function App() {
             silencieusement — mauvais pour l'utilisateur comme pour le SEO). */}
         <Route path="*" element={<NotFound />} />
       </Routes>
+      </Suspense>
       {/* Fil d'Ariane en fin de page : la nav est fixe et transparente au-dessus
           de héros plein écran, un bandeau en haut passerait sous le logo. */}
       <Breadcrumb />

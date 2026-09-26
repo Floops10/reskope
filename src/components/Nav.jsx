@@ -8,17 +8,17 @@ import Net3D from './Net3D';
 import SwapLabel from './SwapLabel';
 import { PORTES_CREATION } from '../data/offres';
 import { fiche } from '../data/seo';
-import { ESPACES, adresseEspace } from '../data/espaces';
-import Espaces from './Espaces';
+import Espaces, { EspacesTuiles } from './Espaces';
 import { openCalModal, isCalConfigured } from '../lib/cal';
 
-/* NAV — un en-tête minimal, et un menu qui commence par le visiteur.
+/* NAV — un en-tête minimal, et un menu qui tient dans un écran.
 
-   Le menu ne s'ouvre plus sur une liste de pages : il s'ouvre sur les trois
-   situations qui amènent un dirigeant chez nous, dans ses mots, et chacune
-   mène à la page qui lui répond. Les pages du site viennent ensuite, plus
-   petites. Quelqu'un qui ne sait pas encore ce qu'il cherche se reconnaît
-   dans une phrase ; il ne se reconnaît pas dans « Nos offres ».
+   En tête du menu, les trois espaces en tuiles (on voit où l'on est, et
+   chacune dit à qui elle s'adresse) ; puis les missions, en grand ; puis
+   les pages du site, en petit, sur deux colonnes ; puis les deux boutons.
+   Plus de phrases dans le menu : elles le faisaient déborder de l'écran,
+   sur téléphone comme sur ordinateur. Les situations, dans les mots du
+   visiteur, restent sur les pages.
 
    La chorégraphie reste celle de la marque : le voile s'assombrit, une lame
    indigo glisse, le panneau crème la suit avec un léger retard, puis les
@@ -137,7 +137,7 @@ export default function Nav() {
   useGSAP(() => {
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const rows = menuRef.current.querySelectorAll('.menu2__row');
-    const voix = menuRef.current.querySelectorAll('.menu2__voix');
+    const tuiles = menuRef.current.querySelectorAll('.espt__tuile');
     const foot = menuRef.current.querySelector('.menu2__foot');
     const decor = menuRef.current.querySelector('.menu2__decor');
 
@@ -151,7 +151,7 @@ export default function Nav() {
         .fromTo(layerRef.current, { xPercent: 101 }, { xPercent: 0, duration: 0.6, ease: 'power4.inOut' }, 0)
         .fromTo(panelRef.current, { xPercent: 103 }, { xPercent: 0, duration: 0.72, ease: 'power4.inOut' }, 0.1)
         .fromTo(rows, { yPercent: 130 }, { yPercent: 0, duration: 0.75, stagger: 0.05 }, 0.42)
-        .fromTo(voix, { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.5, stagger: 0.05 }, 0.5)
+        .fromTo(tuiles, { autoAlpha: 0, y: 18, rotateX: -24 }, { autoAlpha: 1, y: 0, rotateX: 0, duration: 0.6, stagger: 0.06 }, 0.38)
         .fromTo(foot, { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.55 }, 0.72)
         .fromTo(decor, { autoAlpha: 0, scale: 0.7 }, { autoAlpha: 0.55, scale: 1, duration: 0.7, ease: 'power2.out' }, 0.6);
     }
@@ -236,14 +236,15 @@ export default function Nav() {
         <div className="menu2__layer" aria-hidden="true" ref={layerRef} />
         <div className="menu2__panel" ref={panelRef} aria-hidden={!open}>
 
-          {/* Les trois situations d'abord : chacune dit, dans les mots du
-              dirigeant, ce qui l'amène. */}
-          <nav className="menu2__links menu2__links--portes" aria-label="Vous créez ou reprenez une entreprise">
+          <EspacesTuiles actif={espace} className="menu2__tuiles" />
+
+          {/* Les missions de l'espace « en projet », en grand. */}
+          <nav className="menu2__links menu2__links--missions" aria-label="Nos missions pour créer ou reprendre">
             {PORTES_CREATION.map((p) => (
               <NavLink
                 key={p.id}
                 to={p.slug}
-                className={({ isActive }) => `menu2__link menu2__porte${isActive ? ' is-current' : ''}`}
+                className={({ isActive }) => `menu2__link menu2__mission acc--${p.couleur || 'indigo'}${isActive ? ' is-current' : ''}`}
               >
                 <span className="menu2__mask">
                   <span className="menu2__row">
@@ -252,36 +253,22 @@ export default function Nav() {
                     <span className="menu2__arrow" aria-hidden="true">→</span>
                   </span>
                 </span>
-                <span className="menu2__voix">« {p.amorce} »</span>
               </NavLink>
             ))}
           </nav>
 
-          <nav className="menu2__links menu2__links--pages" aria-label="Pages">
+          {/* Les pages du site, en petit, sur deux colonnes. */}
+          <nav className="menu2__pages" aria-label="Le site">
             {PAGES.map((l) => (
               <NavLink
                 key={l.to}
                 to={l.to}
-                className={({ isActive }) => `menu2__link menu2__page${isActive ? ' is-current' : ''}`}
+                className={({ isActive }) => `menu2__page${isActive ? ' is-current' : ''}`}
               >
                 <span className="menu2__mask">
-                  <span className="menu2__row">
-                    <span className="menu2__label">{l.label}</span>
-                  </span>
+                  <span className="menu2__row">{l.label}</span>
                 </span>
               </NavLink>
-            ))}
-          </nav>
-
-          {/* Les deux autres espaces, pour qui dirige déjà une entreprise. */}
-          <nav className="menu2__entreprises" aria-label="Vous dirigez une entreprise">
-            {ESPACES.filter((e) => e.id !== 'creation').map((e) => (
-              <a key={e.id} href={adresseEspace(e.id)} className={`menu2__espace esp--${e.accent}`}>
-                <i className="esp__point" aria-hidden="true" />
-                <span className="menu2__espace-t">{e.court}</span>
-                <span className="menu2__espace-d">{e.taille}</span>
-                <span aria-hidden="true">→</span>
-              </a>
             ))}
           </nav>
 

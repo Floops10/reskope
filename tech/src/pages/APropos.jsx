@@ -27,8 +27,8 @@ import { APROPOS_TPE } from '../data/profils';
    dépendance sur laquelle on n'a aucune main, et un seul visage alors
    qu'ils sont deux. */
 const PHOTOS = {
-  thomy: `${import.meta.env.BASE_URL}thomy.jpg`,
-  florian: `${import.meta.env.BASE_URL}florian.jpg`,
+  thomy: `${import.meta.env.BASE_URL}thomy-960.webp`,
+  florian: `${import.meta.env.BASE_URL}florian-960.webp`,
 };
 
 const reduced = () =>

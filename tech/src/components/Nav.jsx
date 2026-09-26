@@ -8,7 +8,7 @@ import Net3D from './Net3D';
 import SwapLabel from './SwapLabel';
 import { useT, useLang, LangToggle } from '../i18n';
 import { useProfil, BASE } from '../profil';
-import Espaces from './Espaces';
+import Espaces, { EspacesTuiles } from './Espaces';
 import { PAGES_PROFIL } from '../data/profils';
 import { CONTACT } from '../data/site';
 import { openCalModal, isCalConfigured } from '../lib/cal';
@@ -233,7 +233,7 @@ export default function Nav() {
               sur téléphone, c'est là que la plupart des visiteurs les
               découvrent. */}
           <div className="menu2__head">
-            <Espaces className="menu2__espaces" />
+            <EspacesTuiles className="menu2__tuiles" />
           </div>
 
           <nav className="menu2__links" aria-label="Pages">

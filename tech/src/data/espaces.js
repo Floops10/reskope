@@ -12,19 +12,19 @@ export const ESPACES = [
   {
     id: 'creation',
     accent: 'soleil',
-    fr: { court: 'En projet', titre: 'Vous créez ou reprenez une entreprise' },
-    en: { court: 'Starting out', titre: 'You are starting or taking over a business (pages in French)' },
+    fr: { court: 'En projet', sous: 'Créer ou reprendre', titre: 'Vous créez ou reprenez une entreprise' },
+    en: { court: 'Starting out', sous: 'Start or take over (in French)', titre: 'You are starting or taking over a business (pages in French)' },
   },
   {
     id: 'tpe',
     accent: 'menthe',
-    fr: { court: 'TPE', titre: 'Entreprise de 1 à 10 personnes' },
-    en: { court: 'SMB', titre: 'A business of 1 to 10 people' },
+    fr: { court: 'TPE', sous: '1 à 10 personnes', titre: 'Entreprise de 1 à 10 personnes' },
+    en: { court: 'SMB', sous: '1 to 10 people', titre: 'A business of 1 to 10 people' },
   },
   {
     id: 'pme',
     accent: 'ciel',
-    fr: { court: 'PME', titre: 'Entreprise de 10 à 250 personnes' },
-    en: { court: 'SME', titre: 'A business of 10 to 250 people' },
+    fr: { court: 'PME', sous: '10 à 250 personnes', titre: 'Entreprise de 10 à 250 personnes' },
+    en: { court: 'SME', sous: '10 to 250 people', titre: 'A business of 10 to 250 people' },
   },
 ];

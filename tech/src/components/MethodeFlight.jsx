@@ -1,4 +1,4 @@
-import { useRef, useMemo, useState, useLayoutEffect } from 'react';
+import { useRef, useMemo, useState, useLayoutEffect, Fragment } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { ScrollTrigger, useGSAP } from '../lib/gsap';
@@ -159,15 +159,18 @@ function Rig({ progress, mouse }) {
   return null;
 }
 
+/* Chaque mot dans son propre bloc (pour arriver l'un après l'autre), séparés
+   par de vrais espaces : le texte se lit une seule fois, et en entier, par un
+   lecteur d'écran comme par un moteur. (Une copie cachée plus une copie en
+   mots collés donnait « Onconstruit,vous... » dans le titre de la page.) */
 function splitWords(text) {
-  return (
-    <>
-      <span className="sr-only">{text}</span>
-      <span aria-hidden="true">
-        {text.split(' ').map((w, i) => <span className="mfl__w" key={i} style={{ '--i': i }}>{w}</span>)}
-      </span>
-    </>
-  );
+  const mots = text.split(' ');
+  return mots.map((w, i) => (
+    <Fragment key={i}>
+      <span className="mfl__w" style={{ '--i': i }}>{w}</span>
+      {i < mots.length - 1 ? ' ' : ''}
+    </Fragment>
+  ));
 }
 
 export default function MethodeFlight({ jalons, film, labels }) {
@@ -237,7 +240,7 @@ export default function MethodeFlight({ jalons, film, labels }) {
               <div className={`jalon-card${j.here ? ' is-here' : ''}`} key={j.n}>
                 <span className="jalon-card__body">
                   <span className="jalon-card__label">{j.label}{j.here && <span className="jalon-card__here">{labels.here}</span>}</span>
-                  <h3>{j.title}</h3>
+                  <h2 className="jalon-card__titre">{j.title}</h2>
                   <p>{j.text}</p>
                   <p className="jalon-card__deliver"><strong>{labels.youGet} :</strong> {j.deliver}</p>
                 </span>

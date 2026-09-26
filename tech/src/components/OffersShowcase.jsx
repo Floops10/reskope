@@ -1,4 +1,4 @@
-import { useRef, useMemo, useState } from 'react';
+import { useRef, useMemo, useState, Fragment } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Link } from 'react-router-dom';
 import * as THREE from 'three';
@@ -172,15 +172,18 @@ function CamRig({ progress, mouse }) {
   return null;
 }
 
+/* Chaque mot dans son propre bloc (pour arriver l'un après l'autre), séparés
+   par de vrais espaces : le texte se lit une seule fois, et en entier, par un
+   lecteur d'écran comme par un moteur. (Une copie cachée plus une copie en
+   mots collés donnait « Onconstruit,vous... » dans le titre de la page.) */
 function splitWords(text) {
-  return (
-    <>
-      <span className="sr-only">{text}</span>
-      <span aria-hidden="true">
-        {text.split(' ').map((w, i) => <span className="ofs__w" key={i} style={{ '--i': i }}>{w}</span>)}
-      </span>
-    </>
-  );
+  const mots = text.split(' ');
+  return mots.map((w, i) => (
+    <Fragment key={i}>
+      <span className="ofs__w" style={{ '--i': i }}>{w}</span>
+      {i < mots.length - 1 ? ' ' : ''}
+    </Fragment>
+  ));
 }
 
 export default function OffersShowcase({ offers, prices, billing, badge, labels, intro, locale }) {
@@ -245,7 +248,7 @@ export default function OffersShowcase({ offers, prices, billing, badge, labels,
             return (
               <div className={`ofs-flat__card${o.featured ? ' is-featured' : ''}`} key={o.id}>
                 <div className="ofs-flat__top">
-                  <h3>{o.name}</h3>
+                  <h2 className="ofs-flat__nom">{o.name}</h2>
                   <span className="ofs-flat__price">{pr.amount}</span>
                 </div>
                 <p className="ofs-flat__tag">{o.tagline}</p>
@@ -330,11 +333,12 @@ export default function OffersShowcase({ offers, prices, billing, badge, labels,
               return (
                 <article className={`ofs__panel ofs__panel--intro${shown ? ' is-active' : ''}`} key="intro">
                   <p className="ofs__kicker">{intro.eyebrow}</p>
+                  {/* Le titre se lit une fois, en entier : le premier mot en
+                      texte (pour les lecteurs et les moteurs) sous son dessin
+                      en réseau, puis la suite en texte. */}
                   <h1 className="ofs__intro-title">
-                    <span className="sr-only">{intro.title}</span>
-                    <span aria-hidden="true">
-                      <NetWord className="ofs__netword">{introWord}</NetWord>{introRest ? ` ${introRest}` : ''}
-                    </span>
+                    <span className="sr-only">{introWord}</span>
+                    <NetWord className="ofs__netword">{introWord}</NetWord>{introRest ? ` ${introRest}` : ''}
                   </h1>
                   <p className="ofs__intro-lead">{intro.lead}</p>
                   <a href="#qcm" className="btn btn--on-dark ofs__intro-cta" onClick={toQuiz} data-cursor-label={intro.action}>

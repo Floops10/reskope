@@ -31,3 +31,35 @@ export default function Espaces({ actif, className = '' }) {
     </nav>
   );
 }
+
+/* ════════════════════════════════════════════════════════════
+   LES TUILES D'ESPACE — le même choix, en grand, en tête du menu et dans le
+   pied de page.
+
+   Chaque espace est une vraie tuile : son point de couleur, son nom, la
+   taille d'entreprise qu'il concerne, et une flèche. On voit tout de suite
+   que c'est un bouton, et à quoi il mène. Celle où l'on est est pleine.
+   ════════════════════════════════════════════════════════════ */
+
+export function EspacesTuiles({ actif, className = '', label = 'Choisir votre espace' }) {
+  return (
+    <nav className={`espt ${className}`} aria-label={label}>
+      {ESPACES.map((e) => {
+        const ici = e.id === actif;
+        const classe = `espt__tuile espt--${e.accent}${ici ? ' is-actif' : ''}`;
+        const contenu = (
+          <>
+            <i className={`esp__point esp--${e.accent}`} aria-hidden="true" />
+            <span className="espt__nom">{e.court}</span>
+            <span className="espt__sous">{e.sous}</span>
+            <span className="espt__etat" aria-hidden="true">{ici ? 'Vous êtes ici' : 'Entrer →'}</span>
+          </>
+        );
+        if (ici) return <span key={e.id} className={classe} aria-current="true">{contenu}</span>;
+        return e.id === 'creation'
+          ? <Link key={e.id} to="/creation" className={classe}>{contenu}</Link>
+          : <a key={e.id} href={adresseEspace(e.id)} className={classe}>{contenu}</a>;
+      })}
+    </nav>
+  );
+}

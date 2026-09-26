@@ -33,8 +33,8 @@ const Merci = lazy(() => import('./pages/Etats').then((m) => ({ default: m.Merci
 
 /* Une adresse qui vit dans l'espace des entreprises (TPE et PME), servi par
    l'autre application du site : on y va par un vrai chargement de page, sans
-   laisser d'entrée dans l'historique. En développement, cet espace tourne à
-   part (npm run dev:tech) : on le dit plutôt que de boucler. */
+   laisser d'entrée dans l'historique. En développement comme en ligne, le
+   même serveur sert les deux espaces (voir vite.config.js). */
 function VersEntreprises() {
   const { pathname } = useLocation();
   const cible = versEntreprises(pathname);
@@ -42,18 +42,10 @@ function VersEntreprises() {
      ici indéfiniment. Dans ce cas, on s'arrête sur l'accueil de l'espace. */
   const ici = (p) => p.replace(/\/+$/, '');
   const vers = cible && ici(`/${cible}`) === ici(pathname) ? `${cible.split('/')[0]}/` : cible;
-  const dev = import.meta.env.DEV;
   useEffect(() => {
-    if (vers && !dev) window.location.replace(`${import.meta.env.BASE_URL}${vers}`);
-  }, [vers, dev]);
+    if (vers) window.location.replace(`${import.meta.env.BASE_URL}${vers}`);
+  }, [vers]);
   if (!vers) return <Navigate to="/" replace />;
-  if (dev) {
-    return (
-      <main id="contenu" className="attente-page attente-page--dev">
-        <p>En développement, l’espace des entreprises tourne à part : <code>npm run dev:tech</code>, puis <code>localhost:5186{import.meta.env.BASE_URL}{vers}</code>.</p>
-      </main>
-    );
-  }
   return <main id="contenu" className="attente-page" />;
 }
 

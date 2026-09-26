@@ -484,7 +484,7 @@
 @media (max-width: 720px) {
   .sem__jour { font-size: 1.05px; }
   .sem__semaine { font-size: 1.1px; }
-  .sem__valeur { font-size: 1.3px; }
+  .sem__valeur { font-size: 1.12px; }
 }
 .sem__legende {
   max-width: 52ch;
@@ -1180,28 +1180,88 @@
 }
 .ahero__pf-role { text-transform: none; letter-spacing: normal; }
 
-/* ── Le menu : les situations d'abord ────────────────────── */
-.menu2__links--portes { gap: clamp(0.4rem, 1.2vh, 0.8rem); }
-.menu2__porte { display: block; }
-.menu2__voix {
+/* ── Le menu : il tient dans un écran ────────────────────── */
+/* Le panneau commence en haut (sous l'en-tête) et défile s'il le faut,
+   plutôt que de se centrer et de couper le haut et le bas. */
+.menu2__panel {
+  justify-content: flex-start;
+  gap: clamp(1.1rem, 2.6vh, 1.9rem);
+  padding-top: clamp(5.4rem, 11vh, 7rem);
+  padding-bottom: clamp(1.4rem, 4vh, 2.4rem);
+  perspective: 900px;
+}
+.menu2__links--missions .menu2__row { padding-block: clamp(0.4rem, 1.15vh, 0.7rem); }
+.menu2__mission .menu2__label { font-size: clamp(1.3rem, 2.3vw, 1.9rem); }
+.menu2__mission .menu2__node { border-color: var(--soleil); }
+.menu2__mission:hover .menu2__node,
+.menu2__mission:focus-visible .menu2__node,
+.menu2__mission.is-current .menu2__node { background: var(--soleil); border-color: var(--soleil); }
+.menu2__pages {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 1.4rem;
+}
+.menu2__page {
   display: block;
-  max-width: 40ch;
-  margin: -0.4rem 0 0.2rem calc(9px + clamp(0.9rem, 2vw, 1.5rem) + 0.3rem);
-  font-size: 0.92rem;
-  line-height: 1.4;
-  color: var(--muted);
-}
-.menu2__links--pages {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.2rem 1.6rem;
-  margin-top: clamp(0.8rem, 2vh, 1.4rem);
-}
-.menu2__page .menu2__row { padding-block: 0.3rem; }
-.menu2__page .menu2__label {
-  font-size: clamp(1rem, 1.4vw, 1.2rem);
+  color: var(--muted-fort);
+  font-size: 1.02rem;
   font-weight: 500;
-  letter-spacing: -0.01em;
+  text-decoration: none;
+}
+.menu2__page .menu2__row {
+  display: inline-block;
+  padding: 0.45rem 0;
+  background: linear-gradient(currentColor, currentColor) 0 calc(100% - 0.3rem) / 0 1.5px no-repeat;
+  transition: color 0.25s ease, background-size 0.35s var(--v5-ease);
+}
+.menu2__page:hover .menu2__row,
+.menu2__page:focus-visible .menu2__row { color: var(--indigo); background-size: 100% 1.5px; }
+.menu2__page.is-current .menu2__row { color: var(--indigo); font-weight: 600; }
+.menu2__foot { padding-top: clamp(0.8rem, 2vh, 1.2rem); }
+
+/* ── Les tuiles d'espace (menu, pied de page) ────────────── */
+.espt { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.5rem; }
+.espt__tuile {
+  --tuile-acc: var(--indigo);
+  --tuile-pale: var(--cream-light);
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-areas: 'point nom' 'sous sous' 'etat etat';
+  align-content: start;
+  gap: 0.15rem 0.45rem;
+  min-height: 44px;
+  padding: 0.75rem 0.85rem 0.7rem;
+  border: 1.5px solid color-mix(in srgb, var(--ink) 15%, transparent);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--cream) 55%, white);
+  color: var(--ink);
+  text-decoration: none;
+  transform-style: preserve-3d;
+  transition: transform 0.4s var(--v5-ease), border-color 0.25s ease, background-color 0.25s ease, box-shadow 0.4s ease;
+}
+.espt--soleil { --tuile-acc: var(--soleil); --tuile-pale: var(--soleil-pale); }
+.espt--menthe { --tuile-acc: var(--menthe); --tuile-pale: var(--menthe-pale); }
+.espt--ciel { --tuile-acc: var(--ciel); --tuile-pale: var(--ciel-pale); }
+.espt__tuile .esp__point { grid-area: point; align-self: center; width: 10px; height: 10px; }
+.espt__nom { grid-area: nom; font-size: 1.05rem; font-weight: 600; letter-spacing: -0.015em; line-height: 1.2; }
+.espt__sous { grid-area: sous; font-size: 0.82rem; line-height: 1.3; color: var(--muted-fort); }
+.espt__etat { grid-area: etat; margin-top: 0.35rem; font-size: 0.8rem; font-weight: 600; color: var(--indigo); }
+a.espt__tuile:hover,
+a.espt__tuile:focus-visible {
+  transform: translateY(-3px) rotateX(6deg);
+  border-color: var(--tuile-acc);
+  background: var(--tuile-pale);
+  box-shadow: 0 16px 30px -20px rgba(14, 11, 31, 0.55);
+}
+.espt__tuile.is-actif { border-color: var(--indigo); background: var(--indigo); color: var(--cream); }
+.espt__tuile.is-actif .espt__sous,
+.espt__tuile.is-actif .espt__etat { color: color-mix(in srgb, var(--cream) 82%, transparent); }
+@media (max-width: 420px) {
+  .espt { gap: 0.4rem; }
+  .espt__tuile { padding: 0.6rem 0.6rem; }
+  .espt__nom { font-size: 0.98rem; }
+  .espt__sous, .espt__etat { font-size: 0.74rem; }
 }
 
 /* ── Le fil d'Ariane ─────────────────────────────────────── */
@@ -1453,9 +1513,7 @@ a.esp__seg:hover { background: color-mix(in srgb, var(--indigo) 8%, transparent)
 .aig__taille { grid-area: taille; font-size: clamp(1.3rem, 3.2vw, 2.4rem); font-weight: 600; letter-spacing: -0.03em; line-height: 1.1; }
 .aig__qui { grid-area: qui; margin-top: 0.15rem; font-size: 0.95rem; font-weight: 500; color: var(--ink); }
 .aig__dit { grid-area: dit; margin-top: 0.25rem; font-size: 0.9rem; line-height: 1.4; color: var(--muted); }
-.aig__fleche { grid-area: fleche; font-size: 1.4rem; color: var(--indigo); transition: transform 0.4s var(--v5-ease); }
 .aig__carte:hover, .aig__carte:focus-visible { background: var(--cible-pale, var(--cream-light)); }
-.aig__carte:hover .aig__fleche, .aig__carte:focus-visible .aig__fleche { transform: translateX(6px); }
 .aig--soleil { --cible: var(--soleil); --cible-pale: var(--soleil-pale); }
 .aig--menthe { --cible: var(--menthe); --cible-pale: var(--menthe-pale); }
 .aig--ciel { --cible: var(--ciel); --cible-pale: var(--ciel-pale); }
@@ -1472,7 +1530,6 @@ a.esp__seg:hover { background: color-mix(in srgb, var(--indigo) 8%, transparent)
   .aig__reseau { width: clamp(8rem, 13vw, 11rem); height: clamp(8rem, 13vw, 11rem); margin-bottom: 1rem; }
   /* Une ligne pour chaque taille : les trois cartes restent alignées. */
   .aig__taille { font-size: clamp(1.4rem, 2.15vw, 2rem); white-space: nowrap; }
-  .aig__fleche { margin-top: auto; padding-top: 1.2rem; }
 }
 
 /* Le réseau d'une taille d'entreprise */
@@ -1483,26 +1540,6 @@ a.esp__seg:hover { background: color-mix(in srgb, var(--indigo) 8%, transparent)
 .rt__n--coeur { fill: var(--indigo); }
 .rt__n--futur { fill: var(--cream); stroke: var(--cible, var(--indigo)); stroke-width: 1.1; stroke-dasharray: 2 1.6; }
 .aig__carte:hover .rt__n { transform: scale(1.15); }
-
-/* ── Le menu : les espaces des entreprises ───────────────── */
-.menu2__entreprises {
-  display: grid;
-  gap: 0.4rem;
-  padding-top: clamp(0.8rem, 2vh, 1.2rem);
-}
-.menu2__espace {
-  display: grid;
-  grid-template-columns: auto auto 1fr auto;
-  align-items: center;
-  gap: 0.7rem;
-  min-height: 44px;
-  padding: 0.4rem 0.2rem;
-  color: var(--ink);
-}
-.menu2__espace .esp__point { width: 9px; height: 9px; }
-.menu2__espace-t { font-weight: 600; }
-.menu2__espace-d { color: var(--muted); font-size: 0.92rem; }
-.menu2__espace:hover { color: var(--indigo); }
 
 /* ── Le livrable : votre client idéal ────────────────────── */
 .liv { position: relative; padding-block: var(--v5-section); }
@@ -1836,5 +1873,239 @@ a.esp__seg:hover { background: color-mix(in srgb, var(--indigo) 8%, transparent)
   .footer2__grid--quatre { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
 
-.attente-page--dev { display: grid; place-items: center; min-height: 60vh; padding: 8rem var(--gutter) 4rem; text-align: center; color: var(--muted-fort); }
-.attente-page--dev code { font-size: 0.92em; color: var(--indigo); }
+
+/* ════════════════════════════════════════════════════════════
+   AFFORDANCES — ce qui se clique se voit, et répond au survol.
+   ════════════════════════════════════════════════════════════ */
+
+/* Les liens dans le texte : soulignés au repos, surlignés au survol. */
+.lien-souligne,
+.duo__lien {
+  color: var(--indigo);
+  text-decoration: none;
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--indigo) 13%, transparent), color-mix(in srgb, var(--indigo) 13%, transparent)),
+    linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%, 0 100%;
+  background-size: 100% 0%, 100% 1px;
+  border-radius: 2px;
+  transition: background-size 0.35s var(--v5-ease), color 0.25s ease;
+}
+.lien-souligne:hover, .lien-souligne:focus-visible,
+.duo__lien:hover, .duo__lien:focus-visible { background-size: 100% 100%, 100% 2px; }
+
+/* Les liens à flèche : la flèche avance, un trait se dessine sous le texte. */
+.lien-fleche {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 calc(50% + 0.78em);
+  background-size: 0% 1.5px;
+  transition: background-size 0.4s var(--v5-ease), color 0.25s ease;
+}
+.lien-fleche:hover, .lien-fleche:focus-visible { background-size: 100% 1.5px; }
+
+/* Le pied de page et le fil d'Ariane : même trait au survol. */
+.footer2__col a { width: fit-content; }
+.footer2__col a,
+.crumb a {
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0% 1px no-repeat;
+  transition: color 0.25s ease, background-size 0.35s var(--v5-ease);
+}
+.footer2__col a:hover, .footer2__col a:focus-visible,
+.crumb a:hover, .crumb a:focus-visible { background-size: 100% 1px; }
+
+/* L'inclinaison sous la souris (src/animations/inclinaison.js). */
+[data-incliner] {
+  rotate: var(--incl-x, 0) var(--incl-y, 1) 0 var(--incl-a, 0deg);
+  transition: rotate 0.55s var(--v5-ease), translate 0.55s var(--v5-ease), box-shadow 0.55s ease;
+}
+[data-incliner].is-incline { translate: 0 -5px; }
+.duo__cadre.is-incline,
+.pl-portrait__cadre.is-incline { box-shadow: 0 30px 60px -34px rgba(14, 11, 31, 0.6); }
+@media (prefers-reduced-motion: reduce) { [data-incliner] { rotate: none; translate: none; } }
+
+/* ── L'aiguillage : trois vraies cartes, avec leur bouton ─── */
+.aig__choix { perspective: 1100px; }
+.aig__carte {
+  border: 1.5px solid color-mix(in srgb, var(--ink) 12%, transparent);
+  background: color-mix(in srgb, var(--cream) 45%, white);
+  transition: background-color 0.35s ease, border-color 0.35s ease, box-shadow 0.55s ease,
+    rotate 0.55s var(--v5-ease), translate 0.55s var(--v5-ease);
+}
+.aig__carte:hover,
+.aig__carte:focus-visible {
+  border-color: var(--cible, var(--indigo));
+  background: var(--cible-pale, var(--cream-light));
+  box-shadow: 0 30px 56px -34px rgba(14, 11, 31, 0.5);
+}
+.aig__entrer {
+  grid-area: fleche;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: fit-content;
+  min-height: 44px;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  background: var(--indigo);
+  color: var(--cream);
+  font-size: 0.92rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background-color 0.3s ease, gap 0.4s var(--v5-ease);
+}
+.aig__entrer .aig__fleche { font-size: 1rem; color: inherit; transition: transform 0.4s var(--v5-ease); }
+.aig__carte:hover .aig__entrer,
+.aig__carte:focus-visible .aig__entrer { background: var(--ink); gap: 0.8rem; }
+.aig__carte:hover .aig__fleche,
+.aig__carte:focus-visible .aig__fleche { transform: none; }
+@media (max-width: 959px) {
+  /* Sur téléphone, le bouton devient un rond, la flèche seule. */
+  .aig__entrer { width: 44px; height: 44px; padding: 0; font-size: 0; gap: 0; }
+  .aig__entrer .aig__fleche { font-size: 1.15rem; }
+  .aig__carte:hover .aig__entrer { gap: 0; }
+}
+@media (min-width: 960px) {
+  .aig__entrer { margin-top: auto; }
+  .aig__carte { padding-bottom: 1.4rem; }
+}
+
+/* ── Les deux visages, au centre ─────────────────────────── */
+.duo__in { text-align: center; }
+.duo__titre { margin-inline: auto; }
+.duo__gens { margin-inline: auto; }
+.duo__cap { justify-items: center; }
+.duo__franchise { margin-inline: auto; }
+.duo__fil { left: 25%; right: 25%; }
+
+/* ════════════════════════════════════════════════════════════
+   LES BANDES DE COULEUR — des fonds, avec la trame du réseau en filigrane.
+   Une page en compte deux ou trois au plus : un fond teinté pour ce qu'on
+   reçoit ou ce que ça coûte, une bande indigo pour le moment fort.
+   ════════════════════════════════════════════════════════════ */
+.am--fond,
+.liv {
+  margin-inline: clamp(0.5rem, 1.5vw, 1.25rem);
+  border-radius: clamp(22px, 3vw, 40px);
+  isolation: isolate;
+}
+.am--fond { background: var(--am-fond); }
+.am--fond-soleil, .liv { --am-fond: var(--soleil-pale); }
+.am--fond-menthe { --am-fond: var(--menthe-pale); }
+.am--fond-ciel { --am-fond: var(--ciel-pale); }
+.am--fond-indigo { --am-fond: var(--indigo); }
+.liv { background: var(--soleil-pale); }
+.am--fond::before,
+.liv::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='460' height='460' viewBox='0 0 460 460'%3E%3Cg fill='none' stroke='%231c0cb3' stroke-opacity='0.09' stroke-width='1'%3E%3Cpath d='M40 60L150 110L120 220L40 60M150 110L290 70L380 150L300 240L150 110M300 240L420 330L330 420L200 360L120 220M200 360L300 240M380 150L420 330'/%3E%3C/g%3E%3Cg fill='%231c0cb3' fill-opacity='0.14'%3E%3Ccircle cx='40' cy='60' r='3'/%3E%3Ccircle cx='150' cy='110' r='3.5'/%3E%3Ccircle cx='120' cy='220' r='3'/%3E%3Ccircle cx='290' cy='70' r='3'/%3E%3Ccircle cx='380' cy='150' r='3.5'/%3E%3Ccircle cx='300' cy='240' r='4'/%3E%3Ccircle cx='420' cy='330' r='3'/%3E%3Ccircle cx='330' cy='420' r='3'/%3E%3Ccircle cx='200' cy='360' r='3.5'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 460px 460px;
+}
+
+/* La bande indigo : le texte passe en crème, les liens au soleil. */
+.am--sombre { color: var(--cream); }
+.am--sombre::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='460' height='460' viewBox='0 0 460 460'%3E%3Cg fill='none' stroke='%23f0eee8' stroke-opacity='0.12' stroke-width='1'%3E%3Cpath d='M40 60L150 110L120 220L40 60M150 110L290 70L380 150L300 240L150 110M300 240L420 330L330 420L200 360L120 220M200 360L300 240M380 150L420 330'/%3E%3C/g%3E%3Cg fill='%23f0eee8' fill-opacity='0.2'%3E%3Ccircle cx='40' cy='60' r='3'/%3E%3Ccircle cx='150' cy='110' r='3.5'/%3E%3Ccircle cx='120' cy='220' r='3'/%3E%3Ccircle cx='290' cy='70' r='3'/%3E%3Ccircle cx='380' cy='150' r='3.5'/%3E%3Ccircle cx='300' cy='240' r='4'/%3E%3Ccircle cx='420' cy='330' r='3'/%3E%3Ccircle cx='330' cy='420' r='3'/%3E%3Ccircle cx='200' cy='360' r='3.5'/%3E%3C/g%3E%3C/svg%3E");
+}
+.am--sombre .am__lead { color: var(--cream); }
+.am--sombre .am__sous,
+.am--sombre .am__p,
+.am--sombre .am__micro { color: color-mix(in srgb, var(--cream) 80%, transparent); }
+.am--sombre .lien-fleche { color: var(--soleil); }
+.am--sombre .nds__fil { background: color-mix(in srgb, var(--cream) 30%, transparent); }
+.am--sombre .nds__noeud { background: var(--soleil); border-color: var(--soleil); }
+.am--sombre .nds--creux .nds__noeud { background: var(--indigo); border-color: var(--cream); }
+.am--sombre .nds__t { color: var(--cream); }
+.am--sombre .nds__suite { color: color-mix(in srgb, var(--cream) 72%, transparent); }
+.am--sombre .rbp__coeur { background: var(--cream); color: var(--indigo); box-shadow: 0 18px 44px -20px rgba(0, 0, 0, 0.55); }
+.am--sombre .rbp__noeud { box-shadow: 0 0 0 4px var(--indigo); }
+.am--sombre .rbp__nom { color: var(--cream); }
+.am--sombre .rbp__dit { color: color-mix(in srgb, var(--cream) 74%, transparent); }
+.am--sombre .rbp__mene { color: var(--soleil); }
+.am--sombre .rbp__dep { stroke: var(--cream); opacity: 0.32; }
+.am--sombre .rbp__influx { stroke: var(--soleil); }
+.am--sombre .rbp__rayon { opacity: 0.85; }
+.am--sombre .rbp__liste::before { background: color-mix(in srgb, var(--cream) 25%, transparent); }
+.am--sombre .rbp__legende { color: color-mix(in srgb, var(--cream) 66%, transparent); }
+
+/* ── Les tuiles d'espace, version sombre (pied de page) ─── */
+.footer2__espaces { position: relative; z-index: 1; margin-top: clamp(1.6rem, 4vh, 2.6rem); }
+.espt--sombre .espt__tuile {
+  border-color: rgba(240, 238, 232, 0.28);
+  background: rgba(240, 238, 232, 0.06);
+  color: var(--cream);
+}
+.espt--sombre .espt__sous { color: rgba(240, 238, 232, 0.74); }
+.espt--sombre .espt__etat { color: var(--soleil); }
+.espt--sombre a.espt__tuile:hover,
+.espt--sombre a.espt__tuile:focus-visible {
+  border-color: var(--tuile-acc);
+  background: rgba(240, 238, 232, 0.13);
+  box-shadow: 0 18px 34px -22px rgba(0, 0, 0, 0.6);
+}
+.espt--sombre .espt__tuile.is-actif { border-color: var(--cream); background: var(--cream); color: var(--indigo); }
+.espt--sombre .espt__tuile.is-actif .espt__sous,
+.espt--sombre .espt__tuile.is-actif .espt__etat { color: color-mix(in srgb, var(--indigo) 80%, transparent); }
+@media (min-width: 900px) {
+  .footer2__espaces .espt { max-width: 760px; }
+}
+
+/* ── La carte de visite : Florian ou Thomy ───────────────── */
+.bcard-qui { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; margin: 0.4rem 0 1.1rem; }
+.bcard-qui__label { font-size: 0.92rem; color: var(--muted-fort); margin-right: 0.2rem; }
+.bcard-qui__opt {
+  min-height: 44px;
+  padding: 0.45rem 1.1rem;
+  border: 1.5px solid color-mix(in srgb, var(--ink) 16%, transparent);
+  border-radius: 999px;
+  background: transparent;
+  font: inherit;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+}
+.bcard-qui__opt:hover { border-color: var(--indigo); }
+.bcard-qui__opt.is-on { background: var(--indigo); border-color: var(--indigo); color: var(--cream); }
+.bcard-qui__opt:focus-visible { outline: 2px solid var(--indigo); outline-offset: 3px; }
+
+/* ── Une couleur par mission ─────────────────────────────── */
+/* Le client idéal au soleil, le business plan au lilas, le dossier au ciel,
+   les clients à la menthe : la même couleur pour la même mission, dans les
+   situations, dans le menu et dans les bandes. */
+:root { --lilas-pale: color-mix(in srgb, var(--lilas) 16%, var(--cream)); }
+.acc--indigo { --acc: var(--indigo); --acc-pale: var(--cream-light); }
+.acc--soleil { --acc: var(--soleil); --acc-pale: var(--soleil-pale); }
+.acc--menthe { --acc: var(--menthe); --acc-pale: var(--menthe-pale); }
+.acc--ciel { --acc: var(--ciel); --acc-pale: var(--ciel-pale); }
+.acc--lilas { --acc: var(--lilas); --acc-pale: var(--lilas-pale); }
+.acc--corail { --acc: var(--corail); --acc-pale: var(--corail-pale); }
+
+.ch__corps {
+  margin-inline: -1rem;
+  padding-inline: 1rem;
+  border-radius: 20px;
+  transition: background-color 0.35s ease;
+}
+.ch__corps:hover,
+.ch__corps:focus-visible { background: var(--acc-pale, var(--cream-light)); }
+.ch__noeud { border: 2px solid var(--acc, var(--indigo)); }
+.ch__corps:hover .ch__noeud,
+.ch__corps:focus-visible .ch__noeud { background: var(--acc, var(--indigo)); }
+
+.menu2__mission .menu2__node { border-color: var(--acc, var(--soleil)); }
+.menu2__mission:hover .menu2__node,
+.menu2__mission:focus-visible .menu2__node,
+.menu2__mission.is-current .menu2__node { background: var(--acc, var(--soleil)); border-color: var(--acc, var(--soleil)); }
+
+/* Sur les bandes teintées, le gris courant descendait sous 4,5:1 de
+   contraste : le texte secondaire y prend le gris plus soutenu. */
+.am--fond:not(.am--sombre), .liv { --muted: var(--muted-fort); }
+.footer2__espaces { margin-bottom: clamp(1.6rem, 4vh, 2.6rem); }

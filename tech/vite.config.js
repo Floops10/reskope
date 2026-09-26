@@ -10,6 +10,9 @@ import { fileURLToPath } from 'node:url'
 const ICI = dirname(fileURLToPath(import.meta.url))
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { BASE, URL_SITE } from '../site.config.mjs'
+
+process.env.VITE_SITE_URL = URL_SITE
 
 /* GitHub Pages ne route que des fichiers réels : un lien direct, un favori ou
    une actualisation sur /reskope/contact (route gérée côté client par React
@@ -68,7 +71,7 @@ export default defineConfig({
   root: ICI,
   /* Les polices, les portraits et le logo sont ceux du site entier. */
   publicDir: resolve(ICI, '../public'),
-  base: '/reskope/',
+  base: `${BASE}/`,
   plugins: [react(), securityMeta(), spaFallback()],
   build: {
     outDir: resolve(ICI, '../dist-tech'),

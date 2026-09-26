@@ -35,11 +35,16 @@ export default function Cursor() {
       // Burger menu
       if (target.closest('.nav__menu-btn')) return null;
 
+      /* Un choix, un onglet, une question qui se déplie, une fermeture :
+         ce ne sont pas des destinations, « Y aller » n'y a pas de sens. */
+      if (
+        target.matches('[role="radio"], [role="tab"], [aria-pressed], [aria-expanded], [aria-label="Fermer"], [aria-label="Close"]')
+      ) return null;
+
       // Boutons d'action → intention générique
       if (
         target.classList.contains('btn--primary') ||
-        target.classList.contains('btn--ghost') ||
-        target.tagName === 'BUTTON'
+        target.classList.contains('btn--ghost')
       ) return 'Y aller';
 
       // Liens de nav menu → nom de la page

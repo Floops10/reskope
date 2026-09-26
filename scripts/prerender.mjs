@@ -2,6 +2,7 @@ import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { SITE, PAGES, url, fiche, VERS_ENTREPRISES } from '../src/data/seo.js';
 import { OFFRES, OFFRE } from '../src/data/offres.js';
+import { DOMAINE, BASE, URL_SITE } from '../site.config.mjs';
 
 /* ════════════════════════════════════════════════════════════
    LE PRÉ-RENDU — écrire un vrai fichier par adresse.
@@ -239,6 +240,16 @@ for (const [ancienne, vers] of Object.entries(VERS_ENTREPRISES)) {
 }
 
 const jour = new Date().toISOString().slice(0, 10);
+/* robots.txt suit l'adresse du site (site.config.mjs) : le fichier de public/
+   est écrit pour /reskope/, on le réécrit ici pour l'adresse réelle. Et le
+   jour où un nom de domaine est branché, CNAME le garde à chaque
+   publication. */
+const robots = readFileSync(resolve(DIST, 'robots.txt'), 'utf8')
+  .replaceAll('https://floops10.github.io/reskope/', URL_SITE)
+  .replaceAll('/reskope/', `${BASE}/`);
+ecrire('robots.txt', robots);
+if (DOMAINE) ecrire('CNAME', `${DOMAINE}\n`);
+
 ecrire('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${PAGES.map((p) => `  <url><loc>${url(p.route)}</loc><lastmod>${jour}</lastmod><changefreq>${p.freq}</changefreq><priority>${p.priorite}</priority></url>`).join('\n')}

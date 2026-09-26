@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Florian Bouchart — Reskope</title>
+  <title>Carte de visite · Reskope</title>
   <style>
     @font-face {
       font-family: 'Neue Einstellung';
@@ -240,6 +240,17 @@
       transition: color 0.15s, border-color 0.15s;
     }
     .card-screen-copy:hover { color: #f0eee8; border-color: rgba(240,238,232,0.35); opacity: 1; }
+    .qui { display: flex; gap: 0.5rem; margin: -0.4rem 0 1.3rem; }
+    .qui__opt {
+      font-family: inherit; font-size: 0.95rem; font-weight: 500;
+      min-height: 44px; padding: 0.45rem 1.2rem;
+      border-radius: 999px; border: 1px solid rgba(240,238,232,0.22);
+      background: none; color: #f0eee8; cursor: pointer;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+    }
+    .qui__opt:hover { border-color: rgba(240,238,232,0.5); }
+    .qui__opt.is-on { background: #f0eee8; border-color: #f0eee8; color: #1c0cb3; }
+    .qui__opt:focus-visible { outline: 2px solid #f0eee8; outline-offset: 3px; }
   </style>
 </head>
 <body>
@@ -250,20 +261,20 @@
   <div class="card-screen-card" id="cardScreenCard"></div>
   <div class="card-screen-info">
     <div class="card-screen-row">
-      <span>Florian Bouchart</span>
-      <button class="card-screen-copy" onclick="copyInfo(this,'Florian Bouchart')">Copier</button>
+      <span data-champ="nom"></span>
+      <button class="card-screen-copy" data-copier="nom">Copier</button>
     </div>
     <div class="card-screen-row">
-      <span>+33 6 20 23 55 22</span>
-      <button class="card-screen-copy" onclick="copyInfo(this,'+33620235522')">Copier</button>
+      <span data-champ="tel"></span>
+      <button class="card-screen-copy" data-copier="telBrut">Copier</button>
     </div>
     <div class="card-screen-row">
-      <span>florian.bouchart@hotmail.fr</span>
-      <button class="card-screen-copy" onclick="copyInfo(this,'florian.bouchart@hotmail.fr')">Copier</button>
+      <span data-champ="mail"></span>
+      <button class="card-screen-copy" data-copier="mail">Copier</button>
     </div>
     <div class="card-screen-row">
-      <span>reskope.fr</span>
-      <button class="card-screen-copy" onclick="copyInfo(this,'https://reskope.fr')">Copier</button>
+      <span data-champ="site"></span>
+      <button class="card-screen-copy" data-copier="siteUrl">Copier</button>
     </div>
   </div>
 </div>
@@ -273,14 +284,20 @@
   <button class="qr-screen-back" onclick="document.getElementById('qrScreen').classList.remove('active')">← Fermer</button>
   <div class="qr-screen-box" id="qrFull"></div>
   <div class="qr-screen-info">
-    <p class="qr-screen-name">Florian Bouchart</p>
+    <p class="qr-screen-name" data-champ="nom"></p>
     <p class="qr-screen-hint">Scanner pour enregistrer mes coordonnées</p>
   </div>
 </div>
 
 <main class="panel">
   <p class="eyebrow">Carte de visite digitale</p>
-  <h1>Enregistrez mes coordonnées.</h1>
+  <h1>Enregistrez nos coordonnées.</h1>
+
+  <!-- La carte de qui ? Le lien peut la choisir d'avance : ?qui=thomy -->
+  <div class="qui" role="radiogroup" aria-label="La carte de">
+    <button type="button" role="radio" class="qui__opt" data-qui="florian">Florian</button>
+    <button type="button" role="radio" class="qui__opt" data-qui="thomy">Thomy</button>
+  </div>
 
   <div class="flip-wrap">
     <div class="flip-inner" id="flipInner">
@@ -375,26 +392,26 @@
 
             <!-- Filet + tagline -->
             <line x1="58" y1="112" x2="300" y2="112" stroke="#F0EEE8" stroke-width="1" opacity="0.15"/>
-            <text x="58" y="140" fill="#F0EEE8" font-size="15" letter-spacing="0.04em" opacity="0.48" font-family="'Neue Einstellung','Helvetica Neue',system-ui,sans-serif">Audit &amp; cartographie numérique</text>
+            <text x="58" y="140" fill="#F0EEE8" font-size="15" letter-spacing="0.04em" opacity="0.52" font-family="'Neue Einstellung','Helvetica Neue',system-ui,sans-serif">Valenciennes · Lille</text>
 
             <!-- Pour [prénom] — masqué par défaut -->
             <text id="pourText" x="58" y="168" fill="#F0EEE8" font-size="16" opacity="0.65" visibility="hidden" font-family="'Neue Einstellung','Helvetica Neue',system-ui,sans-serif">Pour —</text>
 
             <!-- Nom -->
-            <text x="58" y="292" fill="#F0EEE8" font-size="52" font-weight="600" letter-spacing="-0.025em" font-family="'Neue Einstellung','Helvetica Neue',system-ui,sans-serif">Florian Bouchart</text>
+            <text data-champ="nom" x="58" y="292" fill="#F0EEE8" font-size="52" font-weight="600" letter-spacing="-0.025em" font-family="'Neue Einstellung','Helvetica Neue',system-ui,sans-serif"></text>
             <line x1="58" y1="314" x2="390" y2="314" stroke="#F0EEE8" stroke-width="1.5" opacity="0.22"/>
 
             <!-- Rôle -->
-            <text x="58" y="348" fill="#F0EEE8" font-size="18" opacity="0.72" font-family="'Neue Einstellung','Helvetica Neue',system-ui,sans-serif">Conseil &amp; ingénierie numérique</text>
-            <text x="58" y="374" fill="#F0EEE8" font-size="16.5" opacity="0.55" font-family="'Neue Einstellung','Helvetica Neue',system-ui,sans-serif">Développement web · automatisation</text>
+            <text data-champ="role" x="58" y="348" fill="#F0EEE8" font-size="18" opacity="0.78" font-family="'Neue Einstellung','Helvetica Neue',system-ui,sans-serif"></text>
+            <text x="58" y="374" fill="#F0EEE8" font-size="16" opacity="0.55" font-family="'Neue Einstellung','Helvetica Neue',system-ui,sans-serif">On vous aide à décider, et on construit la suite.</text>
 
             <!-- Contact -->
             <line x1="58" y1="414" x2="310" y2="414" stroke="#F0EEE8" stroke-width="1" opacity="0.10"/>
-            <text x="58" y="454" fill="#F0EEE8" font-size="18" opacity="0.88" font-family="'Neue Einstellung','Helvetica Neue',system-ui,sans-serif">+33 6 20 23 55 22</text>
-            <text x="58" y="482" fill="#F0EEE8" font-size="17" opacity="0.82" font-family="'Neue Einstellung','Helvetica Neue',system-ui,sans-serif">florian.bouchart@hotmail.fr</text>
+            <text data-champ="tel" x="58" y="454" fill="#F0EEE8" font-size="18" opacity="0.9" font-family="'Neue Einstellung','Helvetica Neue',system-ui,sans-serif"></text>
+            <text data-champ="mail" x="58" y="482" fill="#F0EEE8" font-size="17" opacity="0.84" font-family="'Neue Einstellung','Helvetica Neue',system-ui,sans-serif"></text>
 
             <!-- URL -->
-            <text x="806" y="514" text-anchor="end" fill="#F0EEE8" font-size="15" letter-spacing="0.06em" opacity="0.38" font-family="'Neue Einstellung','Helvetica Neue',system-ui,sans-serif">reskope.fr</text>
+            <text data-champ="site" x="806" y="514" text-anchor="end" fill="#F0EEE8" font-size="15" letter-spacing="0.06em" opacity="0.4" font-family="'Neue Einstellung','Helvetica Neue',system-ui,sans-serif"></text>
           </g>
         </svg>
       </div>
@@ -462,9 +479,8 @@
             <!-- Reskope + rôles -->
             <text x="425" y="378" text-anchor="middle" fill="#1c0cb3" font-size="52" font-weight="600" letter-spacing="-0.02em" font-family="'Neue Einstellung','Helvetica Neue',system-ui,sans-serif">Reskope</text>
             <line x1="220" y1="402" x2="630" y2="402" stroke="#1c0cb3" stroke-width="1" opacity="0.18"/>
-            <text x="425" y="430" text-anchor="middle" fill="#1c0cb3" font-size="19" opacity="0.66" font-family="'Neue Einstellung','Helvetica Neue',system-ui,sans-serif">Conseil &amp; ingénierie numérique</text>
-            <text x="425" y="456" text-anchor="middle" fill="#1c0cb3" font-size="17" opacity="0.50" font-family="'Neue Einstellung','Helvetica Neue',system-ui,sans-serif">Développement web · automatisation</text>
-            <text x="425" y="504" text-anchor="middle" fill="#1c0cb3" font-size="15" letter-spacing="0.06em" opacity="0.38" font-family="'Neue Einstellung','Helvetica Neue',system-ui,sans-serif">reskope.fr</text>
+            <text x="425" y="440" text-anchor="middle" fill="#1c0cb3" font-size="19" opacity="0.66" font-family="'Neue Einstellung','Helvetica Neue',system-ui,sans-serif">On vous aide à décider, et on construit la suite.</text>
+            <text data-champ="site" x="425" y="504" text-anchor="middle" fill="#1c0cb3" font-size="15" letter-spacing="0.06em" opacity="0.4" font-family="'Neue Einstellung','Helvetica Neue',system-ui,sans-serif"></text>
           </g>
         </svg>
       </div>
@@ -502,12 +518,77 @@
 
 <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 <script>
-  var side     = 'front';
+  /* ── Les deux cartes ───────────────────────────────────────
+     Le lien choisit la personne : ?qui=thomy (Florian par défaut).
+     SITE : l'adresse imprimée, à changer quand le nom de domaine est branché. */
+  var SITE = 'floops10.github.io/reskope';
+  var PERSONNES = {
+    florian: {
+      prenom: 'Florian', nomFamille: 'Bouchart', nom: 'Florian Bouchart',
+      role: 'Cofondateur · discovery, sites et outils',
+      tel: '+33 6 20 23 55 22', telBrut: '+33620235522', mail: 'florian.bouchart@hotmail.fr'
+    },
+    thomy: {
+      prenom: 'Thomy', nomFamille: 'Delzenne', nom: 'Thomy Delzenne',
+      role: 'Cofondatrice · business plan, marque et financement',
+      tel: '+33 7 61 25 44 65', telBrut: '+33761254465', mail: 'thomyphanzu@icloud.com'
+    }
+  };
+
+  var side      = 'front';
   var flipInner = document.getElementById('flipInner');
   var pourInput = document.getElementById('pourInput');
   var pourText  = document.getElementById('pourText');
   var btnFlip   = document.getElementById('btnFlip');
   var btnVcf    = document.getElementById('btnVcf');
+  var qrScreen  = document.getElementById('qrScreen');
+  var baseUrl   = window.location.href.split('?')[0].split('#')[0];
+  var params    = new URLSearchParams(window.location.search);
+  var qui       = PERSONNES[params.get('qui')] ? params.get('qui') : 'florian';
+
+  function personne() {
+    var p = PERSONNES[qui];
+    p.site = SITE;
+    p.siteUrl = 'https://' + SITE;
+    return p;
+  }
+
+  function dessinerQR() {
+    var lien = baseUrl + '?qui=' + qui;
+    ['qrBox', 'qrFull'].forEach(function (id, i) {
+      var box = document.getElementById(id);
+      box.innerHTML = '';
+      if (typeof QRCode === 'undefined') return;
+      new QRCode(box, {
+        text: lien, width: i ? 260 : 76, height: i ? 260 : 76,
+        colorDark: '#1c0cb3', colorLight: '#f0eee8', correctLevel: QRCode.CorrectLevel.M
+      });
+    });
+  }
+
+  function appliquer() {
+    var p = personne();
+    document.querySelectorAll('[data-champ]').forEach(function (el) {
+      el.textContent = p[el.getAttribute('data-champ')] || '';
+    });
+    document.querySelectorAll('.qui__opt').forEach(function (b) {
+      var on = b.getAttribute('data-qui') === qui;
+      b.classList.toggle('is-on', on);
+      b.setAttribute('aria-checked', on ? 'true' : 'false');
+    });
+    document.title = p.nom + ' · Reskope';
+    dessinerQR();
+  }
+
+  document.querySelectorAll('.qui__opt').forEach(function (b) {
+    b.addEventListener('click', function () {
+      qui = b.getAttribute('data-qui');
+      var url = new URL(window.location.href);
+      url.searchParams.set('qui', qui);
+      window.history.replaceState({}, '', url);
+      appliquer();
+    });
+  });
 
   pourInput.addEventListener('input', function () {
     var val = this.value.trim();
@@ -525,35 +606,15 @@
     btnFlip.textContent = side === 'front' ? 'Voir le verso ↺' : 'Voir le recto ↺';
   });
 
-  var baseUrl = window.location.href.split('?')[0];
-  var qrScreen = document.getElementById('qrScreen');
-
-  new QRCode(document.getElementById('qrBox'), {
-    text: baseUrl,
-    width: 76,
-    height: 76,
-    colorDark: '#1c0cb3',
-    colorLight: '#f0eee8',
-    correctLevel: QRCode.CorrectLevel.M
-  });
-
-  new QRCode(document.getElementById('qrFull'), {
-    text: baseUrl,
-    width: 260,
-    height: 260,
-    colorDark: '#1c0cb3',
-    colorLight: '#f0eee8',
-    correctLevel: QRCode.CorrectLevel.M
-  });
-
-  if (window.location.search === '?qr') qrScreen.classList.add('active');
+  if (params.has('qr')) qrScreen.classList.add('active');
 
   document.querySelector('.qr-section').addEventListener('click', function () {
     qrScreen.classList.add('active');
   });
 
   document.querySelector('.flip-wrap').addEventListener('click', function () {
-    var svgEl = document.getElementById(side === 'front' ? 'svgFront' : 'svgBack');
+    var svgEl = document.getElementById(side === 'front' ? 'svgFront' : 'svgBack')
+      || flipInner.querySelectorAll('svg')[side === 'front' ? 0 : 1];
     var clone = svgEl.cloneNode(true);
     clone.removeAttribute('id');
     clone.querySelectorAll('[id]').forEach(function (el) { el.removeAttribute('id'); });
@@ -563,25 +624,30 @@
     document.getElementById('cardScreen').classList.add('active');
   });
 
-  function copyInfo(btn, text) {
-    navigator.clipboard.writeText(text).then(function () {
-      btn.textContent = 'Copié ✓';
-      setTimeout(function () { btn.textContent = 'Copier'; }, 1800);
+  document.querySelectorAll('[data-copier]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var texte = personne()[btn.getAttribute('data-copier')];
+      var fait = function () {
+        btn.textContent = 'Copié ✓';
+        setTimeout(function () { btn.textContent = 'Copier'; }, 1800);
+      };
+      if (navigator.clipboard) navigator.clipboard.writeText(texte).then(fait, function () {});
     });
-  }
+  });
 
   btnVcf.addEventListener('click', function () {
+    var p = personne();
     var prenom = pourInput.value.trim();
     var lines = [
       'BEGIN:VCARD',
       'VERSION:3.0',
-      'FN:Florian Bouchart',
-      'N:Bouchart;Florian;;;',
+      'FN:' + p.nom,
+      'N:' + p.nomFamille + ';' + p.prenom + ';;;',
       'ORG:Reskope',
-      'TITLE:Conseil & ingénierie numérique',
-      'TEL;TYPE=CELL,VOICE:+33620235522',
-      'EMAIL;TYPE=INTERNET:florian.bouchart@hotmail.fr',
-      'URL:https://reskope.fr'
+      'TITLE:' + p.role,
+      'TEL;TYPE=CELL,VOICE:' + p.telBrut,
+      'EMAIL;TYPE=INTERNET:' + p.mail,
+      'URL:' + p.siteUrl
     ];
     if (prenom) lines.push('NOTE:Pour ' + prenom);
     lines.push('END:VCARD');
@@ -590,7 +656,7 @@
     var url  = URL.createObjectURL(blob);
     var a    = document.createElement('a');
     a.href   = url;
-    a.download = 'florian-bouchart-reskope.vcf';
+    a.download = p.prenom.toLowerCase() + '-' + p.nomFamille.toLowerCase() + '-reskope.vcf';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -603,6 +669,8 @@
       btnVcf.classList.remove('done');
     }, 2500);
   });
+
+  appliquer();
 </script>
 </body>
 </html>

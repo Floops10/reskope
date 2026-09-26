@@ -160,7 +160,7 @@ export default function Exemple() {
         />
       </Amorce>
 
-      <Amorce id="qui" lead="Onze personnes, choisies pour se contredire.">
+      <Amorce id="qui" lead="Onze personnes, choisies pour se contredire." entree="pivot">
         <Noeuds items={INTERROGES} />
         <p className="am__p">
           Le dirigeant a prévenu chacune par un message qu’on avait écrit ensemble. Deux ont refusé : on en a
@@ -174,7 +174,7 @@ export default function Exemple() {
         />
       </Amorce>
 
-      <Amorce id="questions" lead="On ne demande jamais « pourquoi vous n’avez pas signé ? ».">
+      <Amorce id="questions" lead="On ne demande jamais « pourquoi vous n’avez pas signé ? »." entree="bascule">
         <p className="am__p">
           Une question directe appelle une réponse polie, et souvent : « c’était trop cher ». On fait plutôt
           raconter un moment précis, dans l’ordre, et les vraies raisons sortent d’elles-mêmes. Voici le fil
@@ -200,7 +200,7 @@ export default function Exemple() {
         </div>
       </section>
 
-      <Amorce id="chiffres" lead="Comment on lit ces chiffres.">
+      <Amorce id="chiffres" lead="Comment on lit ces chiffres." fond="ciel">
         <Compte
           rangs={[
             { sujet: 'Le délai de réponse', n: 7 },
@@ -244,7 +244,7 @@ export default function Exemple() {
         </div>
       </Amorce>
 
-      <Amorce id="test" lead="Un essai de quatre semaines, qui ne coûte presque rien.">
+      <Amorce id="test" lead="Un essai de quatre semaines, qui ne coûte presque rien." entree="pivot">
         <p className="am__p am__p--fort">
           Rappeler chaque demande sous quarante-huit heures, et envoyer un devis d’une page, prix pièce par
           pièce, avec le détail en annexe.
@@ -268,7 +268,7 @@ export default function Exemple() {
         </p>
       </Amorce>
 
-      <Amorce id="remis" lead="Ce que le dirigeant a eu entre les mains.">
+      <Amorce id="remis" lead="Ce que le dirigeant a eu entre les mains." fond="soleil">
         <Noeuds items={REMIS} />
         <Planche
           scene="decision"
@@ -281,7 +281,7 @@ export default function Exemple() {
         </p>
       </Amorce>
 
-      <Amorce id="temps" lead="Ce que ça lui a demandé : trois heures, sur trois semaines.">
+      <Amorce id="temps" lead="Ce que ça lui a demandé : trois heures, sur trois semaines." entree="bascule">
         <Semaine />
       </Amorce>
 

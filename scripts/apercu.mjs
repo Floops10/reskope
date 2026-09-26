@@ -13,9 +13,9 @@ import { createServer } from 'node:http';
 import { readFile, stat } from 'node:fs/promises';
 import { extname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { BASE } from '../site.config.mjs';
 
 const DIST = resolve(fileURLToPath(new URL('../dist', import.meta.url)));
-const BASE = '/reskope';
 const PORT = Number(process.env.PORT) || 5190;
 const TYPES = {
   '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css',
@@ -28,7 +28,7 @@ const TYPES = {
 createServer(async (req, res) => {
   const url = new URL(req.url, 'http://localhost');
   const chemin = decodeURIComponent(url.pathname);
-  if (!chemin.startsWith(BASE)) {
+  if (BASE && !chemin.startsWith(BASE)) {
     res.writeHead(302, { Location: `${BASE}/` });
     res.end();
     return;

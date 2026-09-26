@@ -98,7 +98,7 @@ export default function Creation() {
 
       <Frise />
 
-      <Amorce id="bp" lead="Votre business plan, en entier." large>
+      <Amorce id="bp" lead="Votre business plan, en entier." large fond="indigo">
         <ReseauBP />
         <p className="am__p">
           On fait ce que vous n’avez pas envie de faire : l’étude de vos clients, les chiffres, le dossier, et la
@@ -112,7 +112,7 @@ export default function Creation() {
         </p>
       </Amorce>
 
-      <Amorce id="rentable" lead="Un investissement léger, et des gains qui se voient." large>
+      <Amorce id="rentable" lead="Un investissement léger, et des gains qui se voient." large entree="pivot">
         <Balance />
         <p className="am__p">
           Ce qui coûte cher dans un projet, ce n’est presque jamais l’étude : ce sont les décisions prises sans elle.
@@ -120,7 +120,7 @@ export default function Creation() {
         </p>
       </Amorce>
 
-      <Amorce id="temps" lead="Une heure et demie de votre temps par semaine, pas plus.">
+      <Amorce id="temps" lead="Une heure et demie de votre temps par semaine, pas plus." entree="bascule">
         <Semaine legende={false} />
         <p className="am__p">
           Une heure le premier lundi pour écrire ce que vous croyez, trente minutes chaque vendredi pour voir ce qui
@@ -129,7 +129,7 @@ export default function Creation() {
         </p>
       </Amorce>
 
-      <Amorce id="prix" lead={PRIX.titre}>
+      <Amorce id="prix" lead={PRIX.titre} fond="menthe">
         <Debut />
         <p className="am__micro">{PRIX.micro}</p>
         <div className="am__actions">

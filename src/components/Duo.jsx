@@ -55,15 +55,17 @@ export default function Duo({
           <span className="duo__fil" aria-hidden="true" />
           {DUO.map((p) => (
             <figure className="duo__p" key={p.id}>
-              <div className="duo__cadre">
+              <div className="duo__cadre" data-incliner>
                 <img
                   className="duo__img"
-                  src={`${BASE}${p.id}.jpg`}
+                  src={`${BASE}${p.id}-960.webp`}
+                  srcSet={`${BASE}${p.id}-480.webp 480w, ${BASE}${p.id}-960.webp 960w`}
+                  sizes="(max-width: 760px) 46vw, 460px"
                   alt={p.alt}
                   loading="lazy"
                   decoding="async"
-                  width="1200"
-                  height="1440"
+                  width="960"
+                  height="1152"
                 />
               </div>
               <figcaption className="duo__cap">

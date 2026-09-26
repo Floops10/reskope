@@ -114,10 +114,11 @@ export default function NosOffres() {
         </div>
       </section>
 
-      {Object.entries(ORDRE).map(([pole, ids]) => (
+      {Object.entries(ORDRE).map(([pole, ids], i) => (
         <Amorce
           key={pole}
           id={`pole-${pole}`}
+          entree={['profondeur', 'pivot', 'bascule'][i % 3]}
           lead={`${POLES[pole].nom} : ${POLES[pole].ligne.charAt(0).toLowerCase()}${POLES[pole].ligne.slice(1)}`}
           sous={POLES[pole].mene}
         >
@@ -125,7 +126,7 @@ export default function NosOffres() {
         </Amorce>
       ))}
 
-      <Amorce id="prix" lead={PRIX.titre}>
+      <Amorce id="prix" lead={PRIX.titre} fond="menthe" entree="bascule">
         <Debut />
         <p className="am__micro">{PRIX.micro}</p>
         <div className="am__actions">

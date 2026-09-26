@@ -42,7 +42,7 @@ export function cheminInterne(pathname = window.location.pathname) {
   return p ? `/${p}` : '/';
 }
 
-const ProfilContext = createContext({ profil: null, setProfil: () => {}, adopter: () => {} });
+const ProfilContext = createContext({ profil: null, setProfil: () => {} });
 
 export function ProfilProvider({ children }) {
   const [profil, setProfilState] = useState(() => profilDeLUrl());
@@ -67,13 +67,6 @@ export function ProfilProvider({ children }) {
     setProfilState(p);
   }, [profil]);
 
-  /* Adopter une version sans toucher à l'historique : sert quand
-     l'adresse vient d'être réécrite (lien ancien sans version, ou retour
-     d'un visiteur qui avait déjà choisi). */
-  const adopter = useCallback((p) => {
-    if (!PROFILS.includes(p)) return;
-    setProfilState(p);
-  }, []);
 
   /* Les boutons précédent et suivant du navigateur doivent pouvoir
      ramener sur l'autre version : on relit l'adresse à chaque retour. */
@@ -84,7 +77,7 @@ export function ProfilProvider({ children }) {
   }, []);
 
   return (
-    <ProfilContext.Provider value={{ profil, setProfil, adopter }}>
+    <ProfilContext.Provider value={{ profil, setProfil }}>
       {children}
     </ProfilContext.Provider>
   );

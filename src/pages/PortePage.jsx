@@ -137,6 +137,11 @@ function Suite({ ids }) {
   );
 }
 
+/* La bande de couleur de « ce que vous recevez » : la couleur de la partie
+   du business plan que la mission nourrit (le client idéal au soleil, les
+   clients à la menthe, les chiffres au ciel, le dossier entier à l'indigo). */
+const FOND_PORTE = { idee: 'soleil', clients: 'menthe', dossier: 'ciel', bp: 'indigo' };
+
 export default function PortePage({ id }) {
   const p = OFFRE[id];
   const [ouverte, setOuverte] = useState(false);
@@ -145,7 +150,7 @@ export default function PortePage({ id }) {
     <Page>
       <Tete p={p} onVoir={() => setOuverte(true)} />
 
-      <Amorce id="pour-vous" lead="C’est pour vous si vous vous reconnaissez ici.">
+      <Amorce id="pour-vous" lead="C’est pour vous si vous vous reconnaissez ici." entree="pivot">
         <Noeuds items={p.pourVous} grand />
       </Amorce>
 
@@ -154,7 +159,7 @@ export default function PortePage({ id }) {
         <Semaine minutes={MINUTES[id]} />
       </Amorce>
 
-      <Amorce id="recevez" lead="Ce que vous avez entre les mains à la fin.">
+      <Amorce id="recevez" lead="Ce que vous avez entre les mains à la fin." fond={FOND_PORTE[id]}>
         <Noeuds items={p.recevez} />
         <p className="am__suite">
           <Link to="/exemple" className="lien-fleche">
@@ -164,7 +169,7 @@ export default function PortePage({ id }) {
         </p>
       </Amorce>
 
-      <Amorce id="demande" lead="Ce qu’on vous demande, et ce qu’on ne fait pas.">
+      <Amorce id="demande" lead="Ce qu’on vous demande, et ce qu’on ne fait pas." entree="bascule">
         <p className="am__p am__p--fort">{p.demande}</p>
         <Noeuds items={p.pas} etat="creux" />
       </Amorce>
