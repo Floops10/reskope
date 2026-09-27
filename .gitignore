@@ -37,3 +37,6 @@ motion/v2/rendus/
 motion/v2/.cache/
 motion/v2/son/sortie/*.wav
 motion/v2/son/__pycache__/
+
+# Livrets : les pages HTML intermédiaires (régénérées par livrets.mjs)
+Impression/Livrets/html/
