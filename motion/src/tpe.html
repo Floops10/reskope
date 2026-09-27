@@ -1,0 +1,494 @@
+<!doctype html>
+<html lang="fr" style="overflow:hidden; margin:0">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1920, height=1080" />
+<title>Reskope, TPE</title>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+{{POLICES}}
+{{COMMUN_CSS}}
+/* ── Film 2 · TPE : le fil de l'histoire est menthe ── */
+:root { --accent: var(--menthe); }
+.telephone { position: absolute; left: 0; top: 0; width: 250px; height: 480px; border-radius: 46px; border: 5px solid var(--creme); background: #1A1633; transform-style: preserve-3d; }
+.telephone::before { content: ''; position: absolute; left: 50%; top: 16px; width: 70px; height: 12px; margin-left: -35px; border-radius: 6px; background: var(--creme); opacity: 0.5; }
+.telephone .coin { position: absolute; width: 18px; height: 18px; border-radius: 50%; background: var(--creme); }
+.telephone .notif { position: absolute; left: 22px; right: 22px; height: 64px; border-radius: 16px; background: rgba(240, 238, 232, 0.12); display: flex; align-items: center; gap: 14px; padding: 0 16px; }
+.telephone .notif i { width: 26px; height: 26px; border-radius: 50%; background: var(--menthe); flex: none; }
+.telephone .notif b { display: block; height: 10px; border-radius: 5px; background: rgba(240, 238, 232, 0.45); flex: 1; }
+.telephone.jour { border-color: var(--indigo); background: #FBFAF6; }
+.telephone.jour::before { background: var(--indigo); opacity: 0.35; }
+.telephone.jour .coin { background: var(--indigo); }
+.coche { position: absolute; left: 50%; top: 50%; width: 130px; height: 130px; margin: -65px 0 0 -65px; border-radius: 50%; background: var(--menthe); display: grid; place-items: center; }
+.coche svg { width: 70px; height: 70px; }
+.onde { width: 250px; height: 250px; border-color: var(--menthe); }
+.carte { position: absolute; left: 0; top: 0; width: 1240px; min-height: 196px; padding: 40px 64px 40px 104px; border-radius: 32px; background: var(--creme); color: var(--encre); font-size: 58px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.1; box-shadow: 0 40px 80px -40px rgba(0, 0, 0, 0.6); display: flex; align-items: center; }
+.carte::before { content: ''; position: absolute; left: 50px; top: 50%; width: 26px; height: 26px; margin-top: -13px; border-radius: 50%; background: var(--menthe); }
+.noeud-menthe { width: 60px; height: 60px; background: var(--menthe); }
+.creneau { position: absolute; left: 0; top: 0; width: 212px; height: 86px; border-radius: 16px; background: rgba(28, 12, 179, 0.07); display: grid; place-items: center; }
+.creneau .rempli { position: absolute; inset: 0; border-radius: 16px; background: var(--menthe); display: grid; place-items: center; }
+.creneau svg { width: 38px; height: 38px; }
+.jour-nom { position: absolute; left: 0; top: 0; font-size: 32px; color: var(--gris); white-space: nowrap; }
+.navigateur { position: absolute; left: 0; top: 0; width: 640px; height: 450px; border-radius: 26px; background: #FBFAF6; box-shadow: 0 50px 90px -50px rgba(14, 11, 31, 0.5), 0 0 0 3px rgba(28, 12, 179, 0.14); overflow: hidden; transform-style: preserve-3d; }
+.navigateur .barre { position: absolute; left: 0; right: 0; top: 0; height: 52px; background: rgba(28, 12, 179, 0.08); }
+.navigateur .barre i { position: absolute; top: 20px; width: 12px; height: 12px; border-radius: 50%; background: rgba(28, 12, 179, 0.3); }
+.navigateur .morceau { position: absolute; border-radius: 12px; background: var(--indigo); }
+.chiffre { position: absolute; left: 0; top: 0; font-size: 440px; font-weight: 600; letter-spacing: -0.06em; line-height: 0.8; color: var(--indigo); font-variant-numeric: tabular-nums; }
+.sous { position: absolute; left: 0; top: 0; font-size: 34px; color: var(--gris); white-space: nowrap; }
+.pilule b { background: var(--menthe); color: var(--indigo); }
+#s5-bat .f-avant span { font-size: 38px; }
+#s9-d0 .sous, #s9-d1 .sous, #s9-d2 .sous { display: block; width: 400px; white-space: normal; text-align: center; font-size: 30px; line-height: 1.25; }
+</style>
+</head>
+<body>
+<div id="main" data-composition-id="main" data-width="1920" data-height="1080" data-start="0" data-duration="51">
+
+  <!-- S1 · 0 à 4 s · Le soir, le téléphone -->
+  <div class="scene clip fond-encre" id="s1" data-start="0" data-duration="4" data-track-index="0">
+    <div class="scene-content">
+      <div class="trame" id="s1-trame" style="opacity:0.1"><svg id="s1-trame-svg" viewBox="0 0 2160 1320"></svg></div>
+      <div class="camera" id="s1-cam">
+        <div class="onde" id="s1-o1"></div><div class="onde" id="s1-o2"></div><div class="onde" id="s1-o3"></div>
+        <div class="telephone" id="s1-tel">
+          <span class="coin" style="left:-11px;top:-11px"></span><span class="coin" style="right:-11px;top:-11px"></span>
+          <span class="coin" style="left:-11px;bottom:-11px"></span><span class="coin" style="right:-11px;bottom:-11px"></span>
+          <div class="notif" style="top:86px"><i></i><b></b></div>
+          <div class="notif" style="top:166px"><i></i><b></b></div>
+          <div class="notif" style="top:246px"><i></i><b></b></div>
+        </div>
+      </div>
+      <p class="bloc-texte titre decoupe" id="s1-t" data-layout-allow-overlap style="left:220px;right:220px;top:812px;text-align:center;font-size:70px">«&nbsp;Je rappelle mes clients le soir pour caler des rendez-vous.&nbsp;»</p>
+    </div>
+  </div>
+
+  <!-- S2 · 4 à 10 s · Les situations -->
+  <div class="scene clip fond-encre" id="s2" data-start="4" data-duration="6" data-track-index="0" style="visibility:hidden;">
+    <div class="scene-content">
+      <div class="trame" id="s2-trame" style="opacity:0.1"><svg id="s2-trame-svg" viewBox="0 0 2160 1320"></svg></div>
+      <div class="camera" id="s2-cam">
+        <div class="carte" id="s2-k1" data-layout-allow-overlap>Vous n’avez pas de site, ou il date.</div>
+        <div class="carte" id="s2-k2" data-layout-allow-overlap>Vos rendez-vous se prennent encore au téléphone.</div>
+        <div class="carte" id="s2-k3" data-layout-allow-overlap>Votre image ne vous ressemble plus.</div>
+        <div class="carte" id="s2-k4" data-layout-allow-overlap>Ce que vous vendez ne se trouve pas en ligne.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S3 · 10 à 12 s · Une seule suffit -->
+  <div class="scene clip fond-encre" id="s3" data-start="10" data-duration="2" data-track-index="0" style="visibility:hidden;">
+    <div class="scene-content">
+      <div class="trame" id="s3-trame" style="opacity:0.1"><svg id="s3-trame-svg" viewBox="0 0 2160 1320"></svg></div>
+      <div class="camera" id="s3-cam">
+        <div class="carte" id="s3-k" data-layout-allow-overlap>Ce que vous vendez ne se trouve pas en ligne.</div>
+        <div class="noeud noeud-menthe" id="s3-n"></div>
+      </div>
+      <p class="bloc-texte titre titre--geant decoupe" id="s3-t" style="left:0;right:0;top:620px;text-align:center">Une seule suffit.</p>
+      <div class="iris fond-indigo" id="s3-iris" style="clip-path:circle(0px at 960px 400px)"></div>
+    </div>
+  </div>
+
+  <!-- S4 · 12 à 16 s · Reskope : on construit ce qui vous manque -->
+  <div class="scene clip fond-indigo" id="s4" data-start="12" data-duration="4" data-track-index="0" style="visibility:hidden;">
+    <div class="scene-content">
+      <div class="trame" id="s4-trame" style="opacity:0.16"><svg id="s4-trame-svg" viewBox="0 0 2160 1320"></svg></div>
+      <svg class="plein" id="s4-svg" viewBox="0 0 1920 1080" style="color:#F0EEE8"></svg>
+      <svg class="plein" viewBox="0 0 1920 1080"><g id="s4-motpos"><g id="s4-mot"><path d="{{MOT_LOGO}}" fill="#F0EEE8"/></g></g></svg>
+      <p class="bloc-texte titre decoupe" id="s4-t" data-layout-allow-overlap style="left:150px;right:150px;top:470px;text-align:center">On construit ce qui vous manque<span class="point"></span></p>
+    </div>
+  </div>
+
+  <!-- S5 · 16 à 22 s · Ce qu'on construit -->
+  <div class="scene clip fond-creme" id="s5" data-start="16" data-duration="6" data-track-index="0" style="visibility:hidden;">
+    <div class="scene-content">
+      <div class="trame" id="s5-trame" style="opacity:0.08"><svg id="s5-trame-svg" viewBox="0 0 2160 1320"></svg></div>
+      <div class="camera" id="s5-cam">
+        <div class="porte" id="s5-bat">
+          <div class="porte" id="s5-c1"><div class="cube" data-l="300" data-h="170" data-p="250" data-texte="Site et boutique"></div></div>
+          <div class="porte" id="s5-c2"><div class="cube" data-l="300" data-h="170" data-p="250" data-texte="Prise de rendez-vous"></div></div>
+          <div class="porte" id="s5-c3"><div class="cube" data-l="300" data-h="170" data-p="250" data-texte="Identité de marque"></div></div>
+          <div class="porte" id="s5-c4"><div class="cube" data-l="300" data-h="170" data-p="250" data-texte="Aide au lancement"></div></div>
+        </div>
+      </div>
+      <p class="bloc-texte titre titre--moyen decoupe" id="s5-t" data-layout-allow-overlap style="left:0;right:0;top:92px;text-align:center">Ce qu’on construit, concrètement.</p>
+    </div>
+  </div>
+
+  <!-- S6 · 22 à 26 s · Les rendez-vous se prennent seuls -->
+  <div class="scene clip fond-creme" id="s6" data-start="22" data-duration="4" data-track-index="0" style="visibility:hidden;">
+    <div class="scene-content">
+      <div class="trame" id="s6-trame" style="opacity:0.08"><svg id="s6-trame-svg" viewBox="0 0 2160 1320"></svg></div>
+      <div class="camera" id="s6-cam"><div class="porte" id="s6-agenda"></div></div>
+      <p class="bloc-texte titre titre--moyen decoupe" id="s6-t" data-layout-allow-overlap style="left:160px;right:160px;top:80px;text-align:center">Créneaux en ligne, confirmation, rappel la veille.</p>
+    </div>
+  </div>
+
+  <!-- S7 · 26 à 29 s · Le téléphone se tait -->
+  <div class="scene clip fond-creme" id="s7" data-start="26" data-duration="3" data-track-index="0" style="visibility:hidden;">
+    <div class="scene-content">
+      <div class="trame" id="s7-trame" style="opacity:0.08"><svg id="s7-trame-svg" viewBox="0 0 2160 1320"></svg></div>
+      <div class="camera" id="s7-cam">
+        <div class="telephone jour" id="s7-tel">
+          <span class="coin" style="left:-11px;top:-11px"></span><span class="coin" style="right:-11px;top:-11px"></span>
+          <span class="coin" style="left:-11px;bottom:-11px"></span><span class="coin" style="right:-11px;bottom:-11px"></span>
+          <div class="coche" id="s7-coche"><svg viewBox="0 0 24 24"><path d="M5 12.5 L10 17 L19 7.5" fill="none" stroke="#F0EEE8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+      </div>
+      <p class="bloc-texte titre decoupe" id="s7-t" data-layout-allow-overlap style="left:0;right:0;top:820px;text-align:center">Vous ne rappelez plus personne.</p>
+    </div>
+  </div>
+
+  <!-- S8 · 29 à 33 s · Cinq jours -->
+  <div class="scene clip fond-creme" id="s8" data-start="29" data-duration="4" data-track-index="0" style="visibility:hidden;">
+    <div class="scene-content">
+      <div class="trame" id="s8-trame" style="opacity:0.08"><svg id="s8-trame-svg" viewBox="0 0 2160 1320"></svg></div>
+      <div class="camera" id="s8-cam">
+        <div class="navigateur" id="s8-site">
+          <div class="barre"><i style="left:22px"></i><i style="left:44px"></i><i style="left:66px"></i></div>
+          <div class="morceau" id="s8-m1" style="left:40px;top:84px;width:230px;height:22px;opacity:0.9"></div>
+          <div class="morceau" id="s8-m2" style="left:40px;top:134px;width:400px;height:52px;background:#5B4BE6"></div>
+          <div class="morceau" id="s8-m3" style="left:40px;top:212px;width:560px;height:118px;background:rgba(47,174,142,0.85)"></div>
+          <div class="morceau" id="s8-m4" style="left:40px;top:352px;width:172px;height:62px;opacity:0.85"></div>
+          <div class="morceau" id="s8-m5" style="left:234px;top:352px;width:172px;height:62px;opacity:0.85"></div>
+        </div>
+        <div class="chiffre" id="s8-n">0</div>
+      </div>
+      <p class="bloc-texte dit decoupe" id="s8-t" data-layout-allow-overlap style="left:170px;width:760px;top:760px;text-align:center;font-size:48px">jours pour un site vitrine sobre, mis en ligne et vérifié.</p>
+    </div>
+  </div>
+
+  <!-- S9 · 33 à 38 s · Trois étapes -->
+  <div class="scene clip fond-creme" id="s9" data-start="33" data-duration="5" data-track-index="0" style="visibility:hidden;">
+    <div class="scene-content">
+      <div class="trame" id="s9-trame" style="opacity:0.08"><svg id="s9-trame-svg" viewBox="0 0 2160 1320"></svg></div>
+      <svg class="plein" id="s9-svg" viewBox="0 0 1920 1080"></svg>
+      <div class="suit" id="s9-e0"><span class="etiquette" style="--accent:var(--menthe)"><i></i>Cadrage</span></div>
+      <div class="suit" id="s9-e1"><span class="etiquette" style="--accent:var(--menthe)"><i></i>Construction</span></div>
+      <div class="suit" id="s9-e2"><span class="etiquette" style="--accent:var(--menthe)"><i></i>Les clés</span></div>
+      <div class="suit" id="s9-d0"><span class="sous" style="position:relative">une demi-journée</span></div>
+      <div class="suit" id="s9-d1"><span class="sous" style="position:relative">par petites étapes, facturées à la journée</span></div>
+      <div class="suit" id="s9-d2"><span class="sous" style="position:relative">le code et les accès à votre nom</span></div>
+      <p class="bloc-texte titre titre--moyen decoupe" id="s9-t" data-layout-allow-overlap style="left:0;right:0;top:92px;text-align:center">Trois étapes, zéro surprise.</p>
+    </div>
+  </div>
+
+  <!-- S10 · 38 à 42 s · Les clés -->
+  <div class="scene clip fond-indigo" id="s10" data-start="38" data-duration="4" data-track-index="0" style="visibility:hidden;">
+    <div class="scene-content">
+      <div class="trame" id="s10-trame" style="opacity:0.14"><svg id="s10-trame-svg" viewBox="0 0 2160 1320"></svg></div>
+      <svg class="plein" id="s10-svg" viewBox="0 0 1920 1080"></svg>
+      <p class="bloc-texte titre decoupe" id="s10-a" data-layout-allow-overlap style="left:240px;right:240px;top:700px;text-align:center;font-size:60px">Le code, les fichiers sources et les accès à votre nom.</p>
+      <p class="bloc-texte titre titre--moyen decoupe" id="s10-b" data-layout-allow-overlap style="left:0;right:0;top:872px;text-align:center">Ensuite, vous êtes libre<span class="point"></span></p>
+    </div>
+  </div>
+
+  <!-- S11 · 42 à 46 s · Thomy et Florian -->
+  <div class="scene clip fond-indigo" id="s11" data-start="42" data-duration="4" data-track-index="0" style="visibility:hidden;">
+    <div class="scene-content">
+      <div class="trame" id="s11-trame" style="opacity:0.14"><svg id="s11-trame-svg" viewBox="0 0 2160 1320"></svg></div>
+      <div class="camera" id="s11-cam">
+        <svg class="plein" id="s11-svg" viewBox="0 0 1920 1080"></svg>
+        <div class="visage" id="s11-thomy"><img src="{{PHOTO_THOMY}}" alt="Thomy Phanzu"></div>
+        <div class="visage" id="s11-florian"><img src="{{PHOTO_FLORIAN}}" alt="Florian Bouchart"></div>
+        <span class="prenom" id="s11-n1">Thomy</span><span class="prenom" id="s11-n2">Florian</span>
+      </div>
+      <p class="bloc-texte titre titre--moyen decoupe" id="s11-a" data-layout-allow-overlap style="left:0;right:0;top:770px;text-align:center">Deux personnes sur votre projet.</p>
+      <p class="bloc-texte titre titre--moyen decoupe attenue" id="s11-b" data-layout-allow-overlap style="left:0;right:0;top:866px;text-align:center">Et les clés à la fin.</p>
+    </div>
+  </div>
+
+  <!-- S12 · 46 à 51 s · La signature -->
+  <div class="scene clip fond-indigo" id="s12" data-start="46" data-duration="5" data-track-index="0" style="visibility:hidden;">
+    <div class="scene-content">
+      <div class="trame" id="s12-trame" style="opacity:0.16"><svg id="s12-trame-svg" viewBox="0 0 2160 1320"></svg></div>
+      <svg class="plein" id="s12-svg" viewBox="0 0 1920 1080" style="color:#F0EEE8"></svg>
+      <svg class="plein" viewBox="0 0 1920 1080"><g id="s12-motpos"><g id="s12-mot"><path d="{{MOT_LOGO}}" fill="#F0EEE8"/></g></g></svg>
+      <p class="bloc-texte dit decoupe" id="s12-s" data-layout-allow-overlap style="left:0;right:0;top:486px;text-align:center;font-size:58px">On vous aide à décider, et on construit la suite.</p>
+      <p class="bloc-texte dit decoupe" id="s12-e" data-layout-allow-overlap style="left:0;right:0;top:584px;text-align:center;font-size:40px;opacity:0.78">Un premier échange de 30 minutes, sans engagement.</p>
+      <div class="bloc-texte" id="s12-p" style="left:0;right:0;top:686px;text-align:center"><span class="pilule"><b>→</b>Parlons de votre projet</span></div>
+      <p class="bloc-texte dit" id="s12-u" style="left:0;right:0;top:856px;text-align:center;font-size:42px;opacity:0.72">reskope.fr</p>
+    </div>
+  </div>
+
+</div>
+
+<script>{{COMMUN_JS}}</script>
+<script>
+(function () {
+  var tl = gsap.timeline({ paused: true });
+  var T = {
+    s1: [0, 4], s2: [4, 10], s3: [10, 12], s4: [12, 16], s5: [16, 22], s6: [22, 26],
+    s7: [26, 29], s8: [29, 33], s9: [33, 38], s10: [38, 42], s11: [42, 46], s12: [46, 51]
+  };
+  var CREME = '#F0EEE8', INDIGO = '#1C0CB3', MENTHE = '#2FAE8E';
+  var SOMBRES = ['s1', 's2', 's3', 's4', 's10', 's11', 's12'];
+  RK.decouper(document);
+  RK.cubes(document);
+  Object.keys(T).forEach(function (s, i) {
+    RK.trame(document.getElementById(s + '-trame-svg'), 21 + i * 5, SOMBRES.indexOf(s) >= 0 ? CREME : INDIGO, 2160, 1320);
+    tl.fromTo('#' + s + '-trame', { x: 0, y: 0 }, { x: (i % 2 ? 80 : -80), y: (i % 3 ? -28 : 28), duration: T[s][1] - T[s][0], ease: 'none' }, T[s][0]);
+    RK.voir(tl, s, T[s][0], T[s][1], s === 's12');
+  });
+
+  /* ════ S1 · Le soir, le téléphone ════ */
+  (function () {
+    var a = T.s1[0], b = T.s1[1];
+    gsap.set('#s1-tel', { x: 960, y: 390, xPercent: -50, yPercent: -50, rotationY: -16, rotationX: 8 });
+    gsap.set('#s1-o1, #s1-o2, #s1-o3', { x: 960, y: 390, xPercent: -50, yPercent: -50, autoAlpha: 0 });
+    RK.camera(tl, '#s1-cam', a, b, { scale: 0.96 }, { scale: 1.06 });
+    tl.from('#s1-tel', { z: -1600, autoAlpha: 0, rotationY: -60, duration: 1.1, ease: 'expo.out' }, a + 0.05);
+    tl.from('#s1-tel .notif', { autoAlpha: 0, x: -30, duration: 0.4, ease: 'power3.out', stagger: 0.18 }, a + 0.6);
+    /* Il vibre par salves : c'est l'urgence du soir. */
+    [0.9, 1.9, 2.9].forEach(function (t0, i) {
+      tl.to('#s1-tel', { x: '+=8', rotation: 1.6, duration: 0.05, ease: 'none', yoyo: true, repeat: 7 }, a + t0);
+      tl.fromTo(['#s1-o1', '#s1-o2', '#s1-o3'][i], { scale: 1, autoAlpha: 0.7 }, { scale: 2.6, autoAlpha: 0, duration: 1.0, ease: 'power2.out', immediateRender: false }, a + t0);
+    });
+    RK.mots(tl, '#s1-t', a + 0.7, { pas: 0.045 });
+  })();
+
+  /* ════ S2 · Les situations, au rythme ════ */
+  (function () {
+    var a = T.s2[0], b = T.s2[1];
+    var cartes = ['#s2-k1', '#s2-k2', '#s2-k3', '#s2-k4'];
+    cartes.forEach(function (c, i) { gsap.set(c, { x: 960, y: 470, xPercent: -50, yPercent: -50, transformOrigin: '50% 0%' }); });
+    RK.camera(tl, '#s2-cam', a, b, { rotationX: 6, rotationY: -4 }, { rotationX: 2, rotationY: 4 });
+    cartes.forEach(function (c, i) {
+      var t0 = a + 0.1 + i * 1.5;
+      tl.from(c, { rotationX: -100, z: 300, autoAlpha: 0, duration: 0.6, ease: 'back.out(1.4)' }, t0);
+      /* La carte d'avant recule : elles s'empilent. */
+      for (var k = 0; k < i; k++) {
+        tl.to(cartes[k], { y: '-=' + 58, z: '-=' + 90, scale: '-=' + 0.035, opacity: 1 - 0.18 * (i - k), duration: 0.5, ease: 'power3.out' }, t0);
+      }
+    });
+    RK.flotte(tl, '#s2-k4', a + 4.8, b, { y: -6, cycle: 1.0 });
+  })();
+
+  /* ════ S3 · Une seule suffit ════ */
+  (function () {
+    var a = T.s3[0], b = T.s3[1];
+    gsap.set('#s3-k', { x: 960, y: 400, xPercent: -50, yPercent: -50 });
+    gsap.set('#s3-n', { x: 960, y: 400, xPercent: -50, yPercent: -50 });
+    tl.to('#s3-k', { scaleX: 0.02, scaleY: 0.1, autoAlpha: 0, duration: 0.45, ease: 'power3.in' }, a + 0.05);
+    tl.from('#s3-n', { scale: 0, duration: 0.5, ease: 'back.out(3)' }, a + 0.4);
+    RK.mots(tl, '#s3-t', a + 0.45, { pas: 0.07 });
+    RK.iris(tl, '#s3-iris', 960, 400, b - 0.55, 0.55);
+  })();
+
+  /* ════ S4 · Le R se construit, la promesse ════ */
+  (function () {
+    var a = T.s4[0], b = T.s4[1];
+    var r = RK.r3d(16), rnd = RK.prng(1204);
+    r.depart = r.noeuds.map(function () { return [(rnd() - 0.5) * 700, (rnd() - 0.5) * 420, -700 + rnd() * 1100]; });
+    r.cible = r.noeuds.map(function (p) { return [p[0], p[1], 0]; });
+    r.trait = 3; r.traitFixe = true; r.couleur = CREME; r.couleurLien = CREME;
+    var res = new RK.Reseau(document.getElementById('s4-svg'), r);
+    Object.assign(res.etat, { zoom: 2.6, cx: 960, cy: 470, ax: 0.4, ay: -1.2, trace: 0, apparition: 0 });
+    var motpos = document.getElementById('s4-motpos');
+    r.surRendu = function (pts, e) {
+      motpos.setAttribute('transform', 'translate(' + (e.cx - 70 * e.zoom).toFixed(2) + ',' + (e.cy - 76 * e.zoom).toFixed(2) + ') scale(' + e.zoom.toFixed(4) + ')');
+    };
+    res.rendre();
+    RK.anime(tl, res, { apparition: 1, duration: 0.6, ease: 'power2.out' }, a);
+    RK.anime(tl, res, { assemblage: 1, duration: 1.2, ease: 'power3.inOut' }, a + 0.05);
+    RK.anime(tl, res, { trace: 1, duration: 0.8, ease: 'power2.inOut' }, a + 0.6);
+    RK.anime(tl, res, { ay: 0, ax: 0, duration: 1.5, ease: 'power2.inOut' }, a);
+    RK.anime(tl, res, { morph: 1, duration: 0.45, ease: 'power2.inOut' }, a + 1.3);
+    RK.anime(tl, res, { zoom: 0.72, cx: 960 - 233.45 * 0.72, cy: 196, duration: 0.8, ease: 'power3.inOut' }, a + 1.55);
+    tl.from('#s4-mot', { opacity: 0, duration: 0.5, ease: 'power2.out' }, a + 1.95);
+    RK.mots(tl, '#s4-t', a + 2.0, { pas: 0.06 });
+    tl.from('#s4-t .point', { scale: 0, duration: 0.6, ease: 'back.out(3)' }, a + 2.7);
+    tl.to('#s4-t .point', { scale: 1.35, duration: 0.25, ease: 'sine.inOut', yoyo: true, repeat: 1 }, a + 3.35);
+  })();
+
+  /* ════ S5 · Quatre volumes, un chantier ════ */
+  (function () {
+    var a = T.s5[0], b = T.s5[1];
+    gsap.set('#s5-bat', { x: 960, y: 620, rotationX: -16, rotationY: 14 });
+    var places = [['#s5-c1', -165, 0], ['#s5-c2', 165, 0], ['#s5-c3', -165, -186], ['#s5-c4', 165, -186]];
+    places.forEach(function (p) { gsap.set(p[0], { x: p[1], y: p[2] }); });
+    RK.camera(tl, '#s5-bat', a, b, { rotationY: 12, rotationX: -18 }, { rotationY: 27, rotationX: -13 });
+    places.forEach(function (p, i) {
+      var t0 = a + 0.45 + i * 1.0;
+      tl.from(p[0], { y: '-=900', duration: 0.62, ease: 'power3.in' }, t0);
+      tl.to(p[0], { y: '-=26', duration: 0.16, ease: 'power2.out', yoyo: true, repeat: 1 }, t0 + 0.62);
+    });
+    RK.mots(tl, '#s5-t', a + 0.15);
+  })();
+
+  /* ════ S6 · L'agenda se remplit seul ════ */
+  (function () {
+    var a = T.s6[0], b = T.s6[1];
+    var ag = document.getElementById('s6-agenda');
+    gsap.set(ag, { x: 960, y: 610, rotationX: 22 });
+    var jours = ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi'], cases = [];
+    var coche = '<svg viewBox="0 0 24 24"><path d="M5 12.5 L10 17 L19 7.5" fill="none" stroke="#F0EEE8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    for (var j = 0; j < 5; j++) {
+      var nom = document.createElement('span');
+      nom.className = 'jour-nom'; nom.textContent = jours[j];
+      ag.appendChild(nom);
+      gsap.set(nom, { x: (j - 2) * 236, y: -248, xPercent: -50 });
+      for (var r = 0; r < 4; r++) {
+        var c = document.createElement('div');
+        c.className = 'creneau';
+        c.innerHTML = '<div class="rempli">' + coche + '</div>';
+        ag.appendChild(c);
+        gsap.set(c, { x: (j - 2) * 236, y: -160 + r * 104, xPercent: -50 });
+        cases.push(c);
+      }
+    }
+    RK.camera(tl, '#s6-cam', a, b, { rotationY: -8, scale: 0.97 }, { rotationY: 6, scale: 1.02 });
+    tl.from(cases, { z: -500, autoAlpha: 0, duration: 0.6, ease: 'expo.out', stagger: { each: 0.025, from: 'start' } }, a + 0.1);
+    var ordre = [2, 9, 13, 4, 18, 7, 11, 16, 1, 14, 6, 19], rnd = RK.prng(606);
+    ordre.forEach(function (k, i) {
+      var p = cases[k].firstChild;
+      gsap.set(p, { autoAlpha: 0, scale: 0.4 });
+      tl.to(p, { autoAlpha: 1, scale: 1, duration: 0.4, ease: 'back.out(2.4)' }, a + 0.9 + i * 0.2 + rnd() * 0.06);
+    });
+    RK.mots(tl, '#s6-t', a + 0.15, { pas: 0.05 });
+  })();
+
+  /* ════ S7 · Le téléphone se tait ════ */
+  (function () {
+    var a = T.s7[0], b = T.s7[1];
+    gsap.set('#s7-tel', { x: 960, y: 400, xPercent: -50, yPercent: -50, rotationY: -12, rotationX: 6 });
+    RK.camera(tl, '#s7-cam', a, b, { scale: 1.04 }, { scale: 1 });
+    tl.from('#s7-tel', { z: -900, autoAlpha: 0, duration: 0.9, ease: 'expo.out' }, a + 0.05);
+    tl.from('#s7-coche', { scale: 0, duration: 0.6, ease: 'back.out(2.6)' }, a + 0.7);
+    RK.flotte(tl, '#s7-tel', a + 1.0, b, { y: -12, cycle: 2.0 });
+    tl.to('#s7-tel', { rotationY: 10, duration: b - a - 0.9, ease: 'sine.inOut' }, a + 0.9);
+    RK.mots(tl, '#s7-t', a + 0.5);
+  })();
+
+  /* ════ S8 · Cinq jours, et le site se monte ════ */
+  (function () {
+    var a = T.s8[0], b = T.s8[1];
+    gsap.set('#s8-site', { x: 1310, y: 520, xPercent: -50, yPercent: -50, rotationY: -18, rotationX: 6 });
+    gsap.set('#s8-n', { x: 550, y: 250, xPercent: -50 });
+    RK.camera(tl, '#s8-cam', a, b, { rotationY: 3 }, { rotationY: -3 });
+    tl.from('#s8-site', { z: -800, autoAlpha: 0, duration: 0.8, ease: 'expo.out' }, a + 0.05);
+    tl.from('#s8-n', { z: -600, autoAlpha: 0, duration: 0.7, ease: 'expo.out' }, a + 0.1);
+    /* Un chiffre qui avance par jours entiers, et un morceau du site par jour. */
+    var n = document.getElementById('s8-n'), o = { v: 0 };
+    tl.to(o, { v: 5, duration: 1.6, ease: 'none', onUpdate: function () { n.textContent = String(Math.floor(o.v + 0.0001)); } }, a + 0.55);
+    ['#s8-m1', '#s8-m2', '#s8-m3', '#s8-m4', '#s8-m5'].forEach(function (m, i) {
+      tl.from(m, { scaleX: 0, transformOrigin: '0% 50%', duration: 0.35, ease: 'power3.out' }, a + 0.55 + i * 0.32);
+    });
+    RK.mots(tl, '#s8-t', a + 1.0, { pas: 0.045 });
+    RK.flotte(tl, '#s8-site', a + 2.3, b, { y: -10, cycle: 1.6 });
+  })();
+
+  /* ════ S9 · Trois étapes, un influx ════ */
+  (function () {
+    var a = T.s9[0], b = T.s9[1];
+    var et = [0, 1, 2].map(function (i) { return { el: document.getElementById('s9-e' + i), dy: -60, ay: '-100%' }; });
+    var ds = [0, 1, 2].map(function (i) { return document.getElementById('s9-d' + i); });
+    var noeuds = [[-560, 0, 0], [0, 0, 60], [560, 0, 0]];
+    var base = new RK.Reseau(document.getElementById('s9-svg'), {
+      noeuds: noeuds, liens: [[0, 1], [1, 2]], couleur: '#C9C5EC', couleurLien: '#C9C5EC', rayons: [22, 22, 22], trait: 3, traitFixe: true, fenetre: 1
+    });
+    var vif = new RK.Reseau(document.getElementById('s9-svg'), {
+      noeuds: noeuds, liens: [], couleur: MENTHE, rayons: [0, 0, 0], halos: { 0: true, 1: true, 2: true },
+      etiquettes: et, surRendu: function (pts) {
+        ds.forEach(function (d, i) { d.style.transform = 'translate(' + pts[i].x.toFixed(1) + 'px,' + (pts[i].y + 58 * pts[i].s).toFixed(1) + 'px) translate(-50%, 0)'; });
+      }
+    });
+    [base, vif].forEach(function (r) { Object.assign(r.etat, { cx: 960, cy: 560, ax: 0.18, ay: -0.2, trace: 0 }); });
+    Object.assign(vif.etat, { halo: 0.8 });
+    base.rendre(); vif.rendre();
+    [base, vif].forEach(function (r) { RK.anime(tl, r, { ay: 0.2, duration: b - a, ease: 'none' }, a); });
+    RK.anime(tl, base, { trace: 1, duration: 1.2, ease: 'power2.inOut' }, a + 0.4);
+    var imp = base.impulsion(0, MENTHE, 8), imp2 = base.impulsion(1, MENTHE, 8);
+    RK.influx(tl, base, imp, a + 1.3, 0.9, 'power1.inOut');
+    RK.influx(tl, base, imp2, a + 2.25, 0.9, 'power1.inOut');
+    /* Chaque étape s'allume quand l'influx l'atteint. */
+    [1.0, 2.15, 3.1].forEach(function (t0, i) {
+      var o = { r: 0 };
+      tl.to(o, { r: 22, duration: 0.45, ease: 'back.out(3)', onUpdate: function () { vif.def.rayons[i] = o.r; vif.rendre(); } }, a + t0);
+    });
+    [0, 1, 2].forEach(function (i) {
+      tl.from(et[i].el.firstElementChild, { autoAlpha: 0, y: 20, duration: 0.5, ease: 'power3.out' }, a + [1.0, 2.15, 3.1][i]);
+      tl.from(ds[i].firstElementChild, { autoAlpha: 0, duration: 0.5, ease: 'power2.out' }, a + [1.2, 2.35, 3.3][i]);
+    });
+    RK.mots(tl, '#s9-t', a + 0.15);
+  })();
+
+  /* ════ S10 · Les clés ════ */
+  (function () {
+    var a = T.s10[0], b = T.s10[1];
+    var noeuds = [], liens = [];
+    for (var k = 0; k < 8; k++) {
+      var ang = (k / 8) * Math.PI * 2;
+      noeuds.push([-250 + Math.cos(ang) * 95, Math.sin(ang) * 95, (k % 2 ? 14 : -14)]);
+      liens.push([k, (k + 1) % 8]);
+    }
+    /* La tige, puis le panneton : deux dents reliées par le bas. */
+    noeuds.push([-20, 0, 12], [120, 0, -10], [260, 0, 0], [205, 66, 0], [260, 74, 0], [140, 54, 10]);
+    liens.push([0, 8], [8, 9], [9, 10], [10, 12], [9, 13], [13, 11], [11, 12]);
+    var vifs = [0, 10];
+    var couleurs = noeuds.map(function (_, i) { return vifs.indexOf(i) >= 0 ? MENTHE : CREME; });
+    var res = new RK.Reseau(document.getElementById('s10-svg'), {
+      noeuds: noeuds, liens: liens, couleurs: couleurs, couleurLien: CREME, rayons: noeuds.map(function (_, i) { return vifs.indexOf(i) >= 0 ? 11 : 7.5; }), trait: 3.2, traitFixe: true, fenetre: 3
+    });
+    Object.assign(res.etat, { cx: 960, cy: 400, zoom: 1.35, ax: 0.2, ay: -0.9, trace: 0, apparition: 0 });
+    res.rendre();
+    RK.anime(tl, res, { ay: 0.9, ax: -0.1, duration: b - a, ease: 'none' }, a);
+    RK.anime(tl, res, { apparition: 1, duration: 1.0, ease: 'power2.out' }, a + 0.05);
+    RK.anime(tl, res, { trace: 1, duration: 1.1, ease: 'power2.inOut' }, a + 0.25);
+    RK.mots(tl, '#s10-a', a + 0.6, { pas: 0.045 });
+    RK.mots(tl, '#s10-b', a + 1.9, { pas: 0.07 });
+    tl.from('#s10-b .point', { scale: 0, duration: 0.5, ease: 'back.out(3)' }, a + 2.6);
+  })();
+
+  /* ════ S11 · Thomy et Florian ════ */
+  (function () {
+    var a = T.s11[0], b = T.s11[1];
+    gsap.set('#s11-thomy', { x: 700, y: 400, xPercent: -50, yPercent: -50 });
+    gsap.set('#s11-florian', { x: 1220, y: 400, xPercent: -50, yPercent: -50 });
+    gsap.set('#s11-n1', { x: 700, y: 586, xPercent: -50 });
+    gsap.set('#s11-n2', { x: 1220, y: 586, xPercent: -50 });
+    var res = new RK.Reseau(document.getElementById('s11-svg'), { noeuds: [[-110, 0, 0], [110, 0, 0]], liens: [[0, 1]], couleur: CREME, couleurLien: CREME, rayons: [9, 9], trait: 3, traitFixe: true });
+    Object.assign(res.etat, { cx: 960, cy: 400, trace: 0, apparition: 0 });
+    res.rendre();
+    RK.camera(tl, '#s11-cam', a, b, { scale: 1.04 }, { scale: 1 });
+    tl.from('#s11-thomy', { z: -900, autoAlpha: 0, duration: 0.9, ease: 'expo.out' }, a + 0.05);
+    tl.from('#s11-florian', { z: -900, autoAlpha: 0, duration: 0.9, ease: 'expo.out' }, a + 0.25);
+    tl.from('#s11-n1, #s11-n2', { autoAlpha: 0, y: '+=18', duration: 0.5, ease: 'power2.out', stagger: 0.2 }, a + 0.6);
+    RK.anime(tl, res, { apparition: 1, duration: 0.4, ease: 'power2.out' }, a + 0.7);
+    RK.anime(tl, res, { trace: 1, duration: 0.5, ease: 'power2.inOut' }, a + 0.85);
+    var imp = res.impulsion(0, MENTHE, 7);
+    RK.influx(tl, res, imp, a + 1.4, 0.8);
+    RK.flotte(tl, '#s11-thomy', a + 1.0, b, { y: -8, cycle: 2.0 });
+    RK.flotte(tl, '#s11-florian', a + 1.2, b, { y: 8, cycle: 1.8 });
+    RK.mots(tl, '#s11-a', a + 0.4);
+    RK.mots(tl, '#s11-b', a + 1.6, { pas: 0.07 });
+  })();
+
+  /* ════ S12 · La signature ════ */
+  (function () {
+    var a = T.s12[0], b = T.s12[1];
+    var noeuds = RK.R_NOEUDS.map(function (n) { return [n[0] - 70, n[1] - 76, 0]; });
+    var rnd = RK.prng(1212), z = 1.5, cx = 960 - 233.45 * z, cy = 330;
+    document.getElementById('s12-motpos').setAttribute('transform', 'translate(' + (cx - 70 * z).toFixed(2) + ',' + (cy - 76 * z).toFixed(2) + ') scale(' + z + ')');
+    var res = new RK.Reseau(document.getElementById('s12-svg'), {
+      noeuds: noeuds, liens: RK.R_LIENS, rayons: [5.5, 5.5, 5.5, 7, 5.5, 5.5], couleur: CREME, couleurLien: CREME, trait: 3, traitFixe: true,
+      depart: noeuds.map(function () { return [(rnd() - 0.5) * 1100, (rnd() - 0.5) * 700, -700 + rnd() * 900]; })
+    });
+    Object.assign(res.etat, { zoom: z, cx: cx, cy: cy, trace: 0, apparition: 0 });
+    res.rendre();
+    RK.anime(tl, res, { apparition: 1, duration: 0.5, ease: 'power2.out' }, a + 0.05);
+    RK.anime(tl, res, { assemblage: 1, duration: 1.1, ease: 'power3.inOut' }, a + 0.1);
+    RK.anime(tl, res, { trace: 1, duration: 0.7, ease: 'power2.inOut' }, a + 0.7);
+    tl.from('#s12-mot', { opacity: 0, y: 22, duration: 0.6, ease: 'expo.out' }, a + 1.1);
+    RK.mots(tl, '#s12-s', a + 1.45, { pas: 0.045 });
+    RK.mots(tl, '#s12-e', a + 2.05, { pas: 0.04 });
+    tl.from('#s12-p .pilule', { scale: 0.6, autoAlpha: 0, duration: 0.6, ease: 'back.out(2)' }, a + 2.55);
+    tl.from('#s12-u', { autoAlpha: 0, y: 16, duration: 0.5, ease: 'power2.out' }, a + 2.95);
+    RK.flotte(tl, '#s12-p .pilule', a + 3.2, b, { y: -6, cycle: 1.0 });
+    tl.to('#s12-p .pilule b', { x: 6, duration: 0.25, ease: 'sine.inOut', yoyo: true, repeat: 3 }, a + 3.4);
+  })();
+
+  window.__timelines = window.__timelines || {};
+  window.__timelines['main'] = tl;
+})();
+</script>
+</body>
+</html>

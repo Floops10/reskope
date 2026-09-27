@@ -28,3 +28,6 @@ dist-ssr
 *.sln
 *.sw?
 dist-tech
+
+# Rendus vidéo des films (lourds, régénérables)
+motion/rendus/
