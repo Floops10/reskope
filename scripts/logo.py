@@ -6,8 +6,8 @@ On ne change jamais ces rapports : un R aux traits épaissis n'est plus le logo.
 
 Le logo horizontal reprend l'en-tête du site : le R mesure 1,2 fois la hauteur
 des capitales du mot, il est centré sur elles, et le mot commence à une
-hauteur de capitale des nœuds de droite du R. Le mot est vectorisé (Neue
-Einstellung SemiBold, approche de -0,02 em, crénage du navigateur) : aucun
+hauteur de capitale des nœuds de droite du R. Le mot est vectorisé (Reskope
+Sans SemiBold, approche de -0,02 em, crénage du navigateur) : aucun
 fichier ne dépend d'une police installée.
 
 Sorties :
@@ -26,7 +26,8 @@ from fontTools.pens.boundsPen import BoundsPen
 from playwright.async_api import async_playwright
 
 DEPOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-POLICE = os.path.join(DEPOT, 'public/fonts/NeueEinstellung-SemiBold.woff2')
+POLICE = os.path.join(DEPOT, 'public/fonts/ReskopeSans-SemiBold.woff2')
+UPM = TTFont(POLICE)['head'].unitsPerEm   # le navigateur mesure en unités de police si la taille = UPM
 EXE = os.path.expanduser('~/Library/Caches/ms-playwright/chromium_headless_shell-1223/chrome-headless-shell-mac-arm64/chrome-headless-shell')
 
 MOT = 'Reskope'
@@ -52,8 +53,8 @@ def nombre(v):
 async def positions_navigateur():
     """Abscisses de chaque lettre, crénage et approche compris (unités de la police)."""
     b64 = base64.b64encode(open(POLICE, 'rb').read()).decode()
-    html = (f"<style>@font-face{{font-family:NE;src:url(data:font/woff2;base64,{b64}) format('woff2');font-weight:600}}</style>"
-            f"<svg width='20000' height='3000'><text id='t' x='0' y='2500' font-family='NE' font-weight='600' font-size='2048' "
+    html = (f"<style>@font-face{{font-family:RS;src:url(data:font/woff2;base64,{b64}) format('woff2');font-weight:600}}</style>"
+            f"<svg width='20000' height='3000'><text id='t' x='0' y='2500' font-family='RS' font-weight='600' font-size='{UPM}' "
             f"style='letter-spacing:-0.02em;font-kerning:normal'>{MOT}</text></svg>")
     async with async_playwright() as p:
         b = await p.chromium.launch(executable_path=EXE)

@@ -22,9 +22,9 @@ def b64(chemin):
 
 def polices():
     regles = []
-    for fichier, poids in [('NeueEinstellung-Regular.woff2', 400), ('NeueEinstellung-Medium.woff2', 500), ('NeueEinstellung-SemiBold.woff2', 600)]:
+    for fichier, poids in [('ReskopeSans-Regular.woff2', 400), ('ReskopeSans-Medium.woff2', 500), ('ReskopeSans-SemiBold.woff2', 600)]:
         regles.append(
-            "@font-face { font-family: 'Neue Einstellung'; font-weight: %d; font-style: normal; font-display: block;"
+            "@font-face { font-family: 'Reskope Sans'; font-weight: %d; font-style: normal; font-display: block;"
             " src: url(data:font/woff2;base64,%s) format('woff2'); }" % (poids, b64('public/fonts/' + fichier)))
     return '\n'.join(regles)
 

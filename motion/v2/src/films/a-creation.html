@@ -620,7 +620,7 @@ window.addEventListener('hf-seek', (e) => rendre(e.detail.time));
 window.__hf = window.__hf || {};
 window.__hf.buildReady = window.__hf.buildReady || {};
 window.__hf.buildReady['reskope-monde'] = (async function () {
-  await document.fonts.load("600 100px 'Neue Einstellung'");
+  await document.fonts.load("600 100px 'Reskope Sans'");
   const photo = new Image();
   photo.src = '{{PORTRAIT_CLAIRE}}';
   await photo.decode();

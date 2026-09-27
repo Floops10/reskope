@@ -14,11 +14,11 @@ m = re.search(r"^export const ADRESSE_AFFICHEE = '([^']+)'", conf, re.M)
 ADRESSE = m.group(1) if m else 'reskope.fr'
 
 b64 = lambda p: base64.b64encode(open(p, 'rb').read()).decode()
-POLICE_R = b64(os.path.join(DEPOT, 'public/fonts/NeueEinstellung-Regular.woff2'))
-POLICE_S = b64(os.path.join(DEPOT, 'public/fonts/NeueEinstellung-SemiBold.woff2'))
+POLICE_R = b64(os.path.join(DEPOT, 'public/fonts/ReskopeSans-Regular.woff2'))
+POLICE_S = b64(os.path.join(DEPOT, 'public/fonts/ReskopeSans-SemiBold.woff2'))
 
 INDIGO, CREME = '#1c0cb3', '#F0EEE8'
-FONT = "'Neue Einstellung', sans-serif"
+FONT = "'Reskope Sans', sans-serif"
 # Le logo : la géométrie de scripts/logo.py (R officiel et mot vectorisé).
 GEO = json.load(open(os.path.join(DEPOT, 'logo', 'geometrie.json'), encoding='utf-8'))
 R_NODES = GEO['r_noeuds']
@@ -101,8 +101,8 @@ def svg(fond, corps, recadrer=False):
             f'<rect x="0" y="0" width="910" height="610" fill="{fond}"/><g transform="translate(30,35)">{corps}</g></svg>')
 
 STYLE = f"""<style>
-@font-face {{ font-family: 'Neue Einstellung'; src: url(data:font/woff2;base64,{POLICE_R}) format('woff2'); font-weight: 400; }}
-@font-face {{ font-family: 'Neue Einstellung'; src: url(data:font/woff2;base64,{POLICE_S}) format('woff2'); font-weight: 600; }}
+@font-face {{ font-family: 'Reskope Sans'; src: url(data:font/woff2;base64,{POLICE_R}) format('woff2'); font-weight: 400; }}
+@font-face {{ font-family: 'Reskope Sans'; src: url(data:font/woff2;base64,{POLICE_S}) format('woff2'); font-weight: 600; }}
 @page {{ size: 91mm 61mm; margin: 0; }}
 html, body {{ margin: 0; padding: 0; }}
 .page {{ width: 91mm; height: 61mm; overflow: hidden; page-break-after: always; break-after: page; }}

@@ -1,0 +1,58 @@
+RESKOPE SANS — la police de texte de la marque
+==============================================
+
+Deux polices, une famille :
+  • Reskope Network (dossier « Typographie Reseau ») : les titres, en réseau.
+  • Reskope Sans (ce dossier) : tout le reste, textes, boutons, chiffres.
+
+Reskope Sans est dessinée par le code de ce dossier (construire.py) : elle
+appartient à Reskope, sans licence à payer. Elle remplace Neue Einstellung
+(Hanken Design, sous licence) partout : site, espace TPE et PME, films,
+logo, image de partage, cartes de visite, carte virtuelle.
+
+Son caractère, « Tendue » : des courbes tendues entre le cercle et le carré,
+des coupes horizontales nettes, un t coupé à 45 degrés, des points
+légèrement carrés, des jonctions affinées avec une petite encoche, des
+chiffres de largeur fixe (les tableaux et les montants s'alignent).
+
+
+Fichiers
+--------
+• polices/ReskopeSans-Light.ttf     (300)
+• polices/ReskopeSans-Regular.ttf   (400)
+• polices/ReskopeSans-Medium.ttf    (500)
+• polices/ReskopeSans-SemiBold.ttf  (600)
+• polices/ReskopeSans-Bold.ttf      (700)
+• ../public/fonts/ReskopeSans-*.woff2  → les mêmes, pour le site
+• construire.py                     → le code qui dessine et génère tout
+• planche.html                      → toutes les lettres, dans les cinq graisses
+
+Contenu : a à z, A à Z, le français complet (é è ê ë à â ä î ï ô ö ù û ü ÿ
+ç œ et leurs capitales), 0 à 9, la ponctuation (« » ’ “ ” … – —), € £ % @ &,
+les signes (+ − × ÷ = ≈ < >), les flèches (→ ← ↑ ↓ ↗ ↘ ↔) et ✓.
+
+
+Installer sur Mac
+-----------------
+1. Double-cliquer sur chaque fichier .ttf du dossier « polices »
+2. Cliquer « Installer la police »
+→ « Reskope Sans » apparaît dans Word, Pages, Keynote, Illustrator, etc.
+
+
+Utiliser dans Canva
+-------------------
+Avec un compte Canva Pro : « Marque » (Brand Kit) → « Polices » →
+« Importer une police », puis les fichiers .ttf du dossier « polices ».
+
+
+Régénérer / modifier la police
+------------------------------
+Il faut Python avec skia-pathops, fontTools et brotli :
+    python3 -m venv .venv
+    .venv/bin/pip install skia-pathops fonttools brotli
+    .venv/bin/python construire.py            (polices + fichiers du site)
+    .venv/bin/python construire.py --planche  (planche de contrôle)
+
+Après une modification, relancer aussi ce qui dessine avec la police :
+    scripts/logo.py, scripts/image-partage.py, scripts/cartes-impression.py
+    motion/v2/construire.py (puis le rendu des films)

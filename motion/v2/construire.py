@@ -35,9 +35,9 @@ def b64(chemin):
 
 def polices():
     regles = []
-    for fichier, poids in [('NeueEinstellung-Regular.woff2', 400), ('NeueEinstellung-Medium.woff2', 500), ('NeueEinstellung-SemiBold.woff2', 600)]:
+    for fichier, poids in [('ReskopeSans-Regular.woff2', 400), ('ReskopeSans-Medium.woff2', 500), ('ReskopeSans-SemiBold.woff2', 600)]:
         regles.append(
-            "@font-face { font-family: 'Neue Einstellung'; font-weight: %d; font-style: normal; font-display: block;"
+            "@font-face { font-family: 'Reskope Sans'; font-weight: %d; font-style: normal; font-display: block;"
             " src: url(data:font/woff2;base64,%s) format('woff2'); }" % (poids, b64('public/fonts/' + fichier)))
     return '\n'.join(regles)
 
@@ -108,6 +108,9 @@ def construire(film):
     for cle, valeur in remplacements.items():
         source = source.replace(cle, valeur)
     source = source.replace('{{MOT_LOGO}}', geo['mot_d'])
+    # boîte du logo et largeur du dévoilement du mot : lues dans la géométrie (scripts/logo.py)
+    source = source.replace('{{LOGO_BOITE}}', json.dumps(geo['logo_boite']))
+    source = source.replace('{{COUPE_MOT}}', f"{geo['mot_boite'][2] - 150 + 12:.1f}")
     verifier_scripts(film, source)
     dossier = os.path.join(ICI, 'films', DOSSIERS[film])
     os.makedirs(os.path.join(dossier, 'assets'), exist_ok=True)

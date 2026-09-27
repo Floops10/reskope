@@ -21,7 +21,7 @@ site ; aucun chiffre n'est inventé, chaque chiffre porte sa source.
 - **Couleurs** : l'indigo et le crème font la marque ; la couleur de l'espace
   (soleil, menthe ou ciel) porte le fil de l'histoire ; corail pour ce qui
   coûte ou ce qui est perdu, lilas pour le business plan.
-- **Police** : Neue Einstellung, très peu de mots par plan, en grand.
+- **Police** : Reskope Sans, très peu de mots par plan, en grand.
 - **Mouvement** : tout arrive de la profondeur et flotte ; rien n'entre à
   plat. Les réseaux sont de vrais objets 3D qui tournent, les liens se
   tracent, des influx les parcourent.

@@ -33,7 +33,7 @@ et en boucle, s'arrête hors de vue, et laisse l'affiche en place avec un bouton
 
 - La charte : indigo `#1C0CB3`, crème `#F0EEE8`, encre `#0E0B1F`, les trois faces
   des volumes (`#5B4BE6` dessus, `#1C0CB3` droite, `#130982` gauche), la police
-  Neue Einstellung.
+  Reskope Sans (police maison, `Typographie Sans/`).
 - La même géométrie que le site : les scènes de `src/lib/scenes.js` (plein = vérifié,
   fil de fer = pas encore vérifié, clair = ce que la mission apporte).
 - Tout arrive de la profondeur et flotte ; jamais d'entrée à plat par un simple

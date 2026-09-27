@@ -1,7 +1,7 @@
 /* ════════════════════════════════════════════════════════════
    RESKOPE · MOTION : la base commune aux trois films.
    La charte du site, en 1920 × 1080 : indigo et crème font la marque,
-   les couleurs d'explication portent le sens, Neue Einstellung partout.
+   les couleurs d'explication portent le sens, Reskope Sans partout.
    ════════════════════════════════════════════════════════════ */
 :root {
   --indigo: #1C0CB3;
@@ -16,7 +16,7 @@
   --droite: #1C0CB3;
   --gauche: #130982;
   --gris: #6B6878;
-  --police: 'Neue Einstellung', system-ui, sans-serif;
+  --police: 'Reskope Sans', system-ui, sans-serif;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }

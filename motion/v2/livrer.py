@@ -7,7 +7,7 @@ Pour chaque film :
     LinkedIn (tout le texte a été placé dans cette zone dès le départ) ;
   - <film>-couverture.jpg : l'image de couverture (la signature finale).
 
-Lancer : ~/.claude/skills/seo/.venv/bin/python motion/v2/livrer.py
+Lancer : ~/.claude/skills/seo/.venv/bin/python motion/v2/livrer.py [en-projet|TPE|PME ...]
 """
 import os, subprocess, sys
 
@@ -26,6 +26,8 @@ def ff(*args):
 
 os.makedirs(SORTIE, exist_ok=True)
 for film, t_couv in FILMS.items():
+    if len(sys.argv) > 1 and not any(a in film for a in sys.argv[1:]):
+        continue
     src = os.path.join(RENDUS, film + '.mp4')
     if not os.path.exists(src):
         print(f'{film} : pas de rendu')

@@ -6,13 +6,23 @@
   <title>Carte de visite · Reskope</title>
   <style>
     @font-face {
-      font-family: 'Neue Einstellung';
-      src: url('./NeueEinstellung-Medium.ttf') format('truetype');
-      font-weight: 100 900; font-style: normal; font-display: swap;
+      font-family: 'Reskope Sans';
+      src: url('./ReskopeSans-Regular.ttf') format('truetype');
+      font-weight: 400; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'Reskope Sans';
+      src: url('./ReskopeSans-Medium.ttf') format('truetype');
+      font-weight: 500; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'Reskope Sans';
+      src: url('./ReskopeSans-SemiBold.ttf') format('truetype');
+      font-weight: 600; font-style: normal; font-display: swap;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: 'Neue Einstellung', 'Helvetica Neue', system-ui, sans-serif;
+      font-family: 'Reskope Sans', 'Helvetica Neue', system-ui, sans-serif;
       background: #0e0b1f;
       min-height: 100svh;
       display: flex;
@@ -391,24 +401,24 @@
             </g>
 
             <!-- Villes -->
-            <text x="58" y="140" fill="#F0EEE8" font-size="15" letter-spacing="0.04em" opacity="0.52" font-family="'Neue Einstellung','Helvetica Neue',system-ui,sans-serif">Valenciennes · Lille</text>
+            <text x="58" y="140" fill="#F0EEE8" font-size="15" letter-spacing="0.04em" opacity="0.52" font-family="'Reskope Sans','Helvetica Neue',system-ui,sans-serif">Valenciennes · Lille</text>
 
             <!-- Pour [prénom] — masqué par défaut -->
-            <text id="pourText" x="58" y="168" fill="#F0EEE8" font-size="16" opacity="0.65" visibility="hidden" font-family="'Neue Einstellung','Helvetica Neue',system-ui,sans-serif">Pour —</text>
+            <text id="pourText" x="58" y="168" fill="#F0EEE8" font-size="16" opacity="0.65" visibility="hidden" font-family="'Reskope Sans','Helvetica Neue',system-ui,sans-serif">Pour —</text>
 
             <!-- Nom -->
-            <text data-champ="nom" x="58" y="292" fill="#F0EEE8" font-size="52" font-weight="600" letter-spacing="-0.025em" font-family="'Neue Einstellung','Helvetica Neue',system-ui,sans-serif"></text>
+            <text data-champ="nom" x="58" y="292" fill="#F0EEE8" font-size="52" font-weight="600" letter-spacing="-0.025em" font-family="'Reskope Sans','Helvetica Neue',system-ui,sans-serif"></text>
 
             <!-- Rôle -->
-            <text data-champ="role" x="58" y="348" fill="#F0EEE8" font-size="18" opacity="0.78" font-family="'Neue Einstellung','Helvetica Neue',system-ui,sans-serif"></text>
-            <text x="58" y="374" fill="#F0EEE8" font-size="16" opacity="0.55" font-family="'Neue Einstellung','Helvetica Neue',system-ui,sans-serif">On vous aide à décider, et on construit la suite.</text>
+            <text data-champ="role" x="58" y="348" fill="#F0EEE8" font-size="18" opacity="0.78" font-family="'Reskope Sans','Helvetica Neue',system-ui,sans-serif"></text>
+            <text x="58" y="374" fill="#F0EEE8" font-size="16" opacity="0.55" font-family="'Reskope Sans','Helvetica Neue',system-ui,sans-serif">On vous aide à décider, et on construit la suite.</text>
 
             <!-- Contact -->
-            <text data-champ="tel" x="58" y="454" fill="#F0EEE8" font-size="18" opacity="0.9" font-family="'Neue Einstellung','Helvetica Neue',system-ui,sans-serif"></text>
-            <text data-champ="mail" x="58" y="482" fill="#F0EEE8" font-size="17" opacity="0.84" font-family="'Neue Einstellung','Helvetica Neue',system-ui,sans-serif"></text>
+            <text data-champ="tel" x="58" y="454" fill="#F0EEE8" font-size="18" opacity="0.9" font-family="'Reskope Sans','Helvetica Neue',system-ui,sans-serif"></text>
+            <text data-champ="mail" x="58" y="482" fill="#F0EEE8" font-size="17" opacity="0.84" font-family="'Reskope Sans','Helvetica Neue',system-ui,sans-serif"></text>
 
             <!-- URL -->
-            <text data-champ="site" x="806" y="514" text-anchor="end" fill="#F0EEE8" font-size="15" letter-spacing="0.06em" opacity="0.4" font-family="'Neue Einstellung','Helvetica Neue',system-ui,sans-serif"></text>
+            <text data-champ="site" x="806" y="514" text-anchor="end" fill="#F0EEE8" font-size="15" letter-spacing="0.06em" opacity="0.4" font-family="'Reskope Sans','Helvetica Neue',system-ui,sans-serif"></text>
           </g>
         </svg>
       </div>
@@ -475,8 +485,8 @@
 
             <!-- Le mot du logo, le slogan, l'adresse -->
             <path fill="#1c0cb3" d="M182.78 114.34V37.66H211.81Q223.15 37.66 229.3 43.65Q235.45 49.64 235.45 60.01Q235.45 77.28 218.39 80.49L241.38 114.34H225.82L204.38 81.61H195.61V114.34ZM195.61 70.76H210.15Q216.2 70.76 219.43 68.35Q222.67 65.95 222.67 60.12Q222.67 54.34 219.4 51.88Q216.14 49.42 210.15 49.42H195.61Z M270.74 115.3Q262.45 115.3 256.11 111.75Q249.78 108.19 246.52 102.23Q243.25 96.27 243.25 88.83Q243.25 83.27 245.26 78.38Q247.26 73.49 250.82 69.93Q254.38 66.38 259.46 64.29Q264.54 62.2 270.42 62.2Q281.65 62.2 288.97 69.53Q296.3 76.86 296.46 88.41L296.35 91.03H255.61Q256.25 97.07 260.45 100.89Q264.64 104.71 270.42 104.71Q274.59 104.71 278.12 102.71Q281.65 100.7 283.68 97.12L294.05 101.29Q290.9 107.76 284.67 111.53Q278.44 115.3 270.74 115.3ZM256.73 82.04H283.09Q281.49 77.55 278.23 75.09Q274.96 72.63 270.2 72.63Q265.39 72.63 261.86 75.17Q258.33 77.71 256.73 82.04Z M322.66 115.3Q316.73 115.3 311.17 112.9Q305.61 110.49 302.5 106.59L310.69 99.21Q312.88 101.88 316.19 103.51Q319.51 105.14 322.66 105.14Q325.66 105.14 327.32 103.75Q328.97 102.36 328.97 100.01Q328.97 99.26 328.73 98.62Q328.49 97.98 327.9 97.42Q327.32 96.85 326.73 96.45Q326.14 96.05 325.02 95.54Q323.89 95.04 323.09 94.72Q322.29 94.39 320.71 93.78Q319.13 93.16 318.17 92.79Q311.43 90.22 308.01 86.77Q304.59 83.33 304.59 77.34Q304.59 70.6 309.54 66.4Q314.48 62.2 322.4 62.2Q333.52 62.2 340.04 69.53L332.82 77.12Q331 74.98 327.98 73.51Q324.96 72.04 322.18 72.04Q319.78 72.04 318.36 73.25Q316.94 74.45 316.94 76.8Q316.94 78.46 318.28 79.72Q319.62 80.97 320.95 81.53Q322.29 82.1 325.93 83.38Q326.51 83.59 326.78 83.7Q329.83 84.82 332.07 85.95Q334.32 87.07 336.62 88.89Q338.92 90.7 340.15 93.33Q341.38 95.95 341.38 99.21Q341.38 106.48 336.46 110.89Q331.54 115.3 322.66 115.3Z M383.25 114.34 363.09 89.9V114.34H350.63V37.66H363.09V82.26L381.75 63.22H397.63L374.64 86.21L399.72 114.34Z M399.99 88.83Q399.99 77.66 407.98 69.93Q415.98 62.2 427.47 62.2Q438.97 62.2 446.96 69.93Q454.96 77.66 454.96 88.83Q454.96 99.9 446.96 107.6Q438.97 115.3 427.47 115.3Q415.98 115.3 407.98 107.6Q399.99 99.9 399.99 88.83ZM427.47 103.91Q433.73 103.91 438.17 99.53Q442.61 95.14 442.61 88.83Q442.61 82.52 438.17 78.11Q433.73 73.7 427.47 73.7Q421.11 73.7 416.67 78.11Q412.23 82.52 412.23 88.83Q412.23 95.14 416.67 99.53Q421.11 103.91 427.47 103.91Z M493.57 115.3Q482.66 115.3 476.35 108.3V139.85H463.89V63.22H476.35V69.32Q482.76 62.2 493.57 62.2Q500.2 62.2 505.84 65.6Q511.48 69 514.85 75.14Q518.22 81.29 518.22 88.83Q518.22 96.27 514.74 102.42Q511.27 108.56 505.65 111.93Q500.04 115.3 493.57 115.3ZM475.6 88.83Q475.6 95.25 479.93 99.58Q484.26 103.91 490.73 103.91Q497.2 103.91 501.56 99.58Q505.92 95.25 505.92 88.83Q505.92 82.36 501.59 78.03Q497.26 73.7 490.73 73.7Q484.26 73.7 479.93 78.03Q475.6 82.36 475.6 88.83Z M552.23 115.3Q543.94 115.3 537.6 111.75Q531.27 108.19 528 102.23Q524.74 96.27 524.74 88.83Q524.74 83.27 526.75 78.38Q528.75 73.49 532.31 69.93Q535.87 66.38 540.95 64.29Q546.03 62.2 551.91 62.2Q563.14 62.2 570.46 69.53Q577.79 76.86 577.95 88.41L577.84 91.03H537.1Q537.74 97.07 541.93 100.89Q546.13 104.71 551.91 104.71Q556.08 104.71 559.61 102.71Q563.14 100.7 565.17 97.12L575.54 101.29Q572.39 107.76 566.16 111.53Q559.93 115.3 552.23 115.3ZM538.22 82.04H564.58Q562.98 77.55 559.71 75.09Q556.45 72.63 551.69 72.63Q546.88 72.63 543.35 75.17Q539.82 77.71 538.22 82.04Z" transform="translate(244.39, 323.71) scale(0.47484)"/>
-            <text x="425" y="440" text-anchor="middle" fill="#1c0cb3" font-size="19" opacity="0.66" font-family="'Neue Einstellung','Helvetica Neue',system-ui,sans-serif">On vous aide à décider, et on construit la suite.</text>
-            <text data-champ="site" x="425" y="504" text-anchor="middle" fill="#1c0cb3" font-size="15" letter-spacing="0.06em" opacity="0.4" font-family="'Neue Einstellung','Helvetica Neue',system-ui,sans-serif"></text>
+            <text x="425" y="440" text-anchor="middle" fill="#1c0cb3" font-size="19" opacity="0.66" font-family="'Reskope Sans','Helvetica Neue',system-ui,sans-serif">On vous aide à décider, et on construit la suite.</text>
+            <text data-champ="site" x="425" y="504" text-anchor="middle" fill="#1c0cb3" font-size="15" letter-spacing="0.06em" opacity="0.4" font-family="'Reskope Sans','Helvetica Neue',system-ui,sans-serif"></text>
           </g>
         </svg>
       </div>

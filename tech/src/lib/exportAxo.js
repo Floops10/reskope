@@ -30,7 +30,7 @@ const ech = (v) => Number(v).toFixed(2);
 let policePromesse = null;
 export function chargerPolice(base = '') {
   if (!policePromesse) {
-    policePromesse = fetch(`${base}fonts/NeueEinstellung-Regular.woff`)
+    policePromesse = fetch(`${base}fonts/ReskopeSans-Regular.woff2`)
       .then((r) => (r.ok ? r.arrayBuffer() : Promise.reject(new Error('police'))))
       .then((buf) => {
         let s = '';
@@ -175,7 +175,7 @@ export function svgSchema({ blocs, liens, sol, titre, note, police }) {
   }).join('');
 
   const fonte = police
-    ? `@font-face{font-family:'Neue Einstellung';src:url(data:font/woff;base64,${police}) format('woff');font-weight:400;}`
+    ? `@font-face{font-family:'Reskope Sans';src:url(data:font/woff2;base64,${police}) format('woff2');font-weight:400;}`
     : '';
 
   const pied = titre
@@ -185,7 +185,7 @@ export function svgSchema({ blocs, liens, sol, titre, note, police }) {
 
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${larg}" height="${haut}" `
     + `viewBox="${ech(vb[0])} ${ech(vb[1])} ${ech(vb[2])} ${ech(vb[3])}">`
-    + `<style>${fonte}text{font-family:'Neue Einstellung',system-ui,-apple-system,'Segoe UI',sans-serif;}</style>`
+    + `<style>${fonte}text{font-family:'Reskope Sans',system-ui,-apple-system,'Segoe UI',sans-serif;}</style>`
     + `<rect x="${ech(vb[0])}" y="${ech(vb[1])}" width="${ech(vb[2])}" height="${ech(vb[3])}" fill="${CREME}"/>`
     + `<g stroke="${DROITE}" stroke-width="0.06" opacity="0.28">`
     + quadrillage.lignes.map((l) => `<line x1="${ech(l.x1)}" y1="${ech(l.y1)}" x2="${ech(l.x2)}" y2="${ech(l.y2)}"/>`).join('')

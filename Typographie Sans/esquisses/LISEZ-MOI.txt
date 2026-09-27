@@ -1,0 +1,15 @@
+RESKOPE SANS — esquisses (deuxième proposition, 27/09/2026)
+===========================================================
+
+sans.py   → dessine les lettres en vrais contours (fûts, bols en super-ellipse,
+            diagonales) combinés par opérations booléennes. Deux caractères :
+            TENDUE (courbes tendues, coupes horizontales) et ELAN (courbes
+            rondes, coupes obliques). Graisse réglée par l'épaisseur du fût.
+page2.py  → génère la page de proposition (spécimens, paragraphes).
+
+Il faut Python avec skia-pathops et fontTools :
+    python3 -m venv .venv && .venv/bin/pip install skia-pathops fonttools
+    .venv/bin/python sans.py
+
+Rien n'est encore une police installable : ce sont des esquisses, en attendant
+le choix entre Tendue et Élan.

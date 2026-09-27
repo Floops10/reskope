@@ -349,7 +349,7 @@ class Panneau {
   constructor(monde, lignes, { corps = 150, graisse = 600, couleur = C.creme, largeur = 1800, interligne = 0.95, approche = -0.04, fond = null, bord = null, epBord = 3, rayon = 0, marge = 0, echelle = 0.01 } = {}) {
     const toile = document.createElement('canvas');
     const ctx = toile.getContext('2d');
-    const police = `${graisse} ${corps}px 'Neue Einstellung'`;
+    const police = `${graisse} ${corps}px 'Reskope Sans'`;
     ctx.font = police;
     const hLigne = corps * interligne;
     const hauteur = Math.ceil(hLigne * lignes.length + corps * 0.35 + marge * 2);

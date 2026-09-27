@@ -1,6 +1,6 @@
 /* ============================================================
    Reskope — Design system v2
-   Police : Neue Einstellung (auto-hébergée)
+   Police : Reskope Sans (maison, auto-hébergée)
    ============================================================ */
 
 /* Lenis (scroll lissé) — CSS recommandé */
@@ -21,30 +21,39 @@ html.lenis body {
   pointer-events: none;
 }
 
+/* Police de texte maison (Typographie Sans/construire.py) */
 @font-face {
-  font-family: 'Neue Einstellung';
-  src:
-    url('/fonts/NeueEinstellung-Regular.woff2') format('woff2'),
-    url('/fonts/NeueEinstellung-Regular.woff') format('woff');
+  font-family: 'Reskope Sans';
+  src: url('/fonts/ReskopeSans-Light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Reskope Sans';
+  src: url('/fonts/ReskopeSans-Regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'Neue Einstellung';
-  src:
-    url('/fonts/NeueEinstellung-Medium.woff2') format('woff2'),
-    url('/fonts/NeueEinstellung-Medium.woff') format('woff');
+  font-family: 'Reskope Sans';
+  src: url('/fonts/ReskopeSans-Medium.woff2') format('woff2');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'Neue Einstellung';
-  src:
-    url('/fonts/NeueEinstellung-SemiBold.woff2') format('woff2'),
-    url('/fonts/NeueEinstellung-SemiBold.woff') format('woff');
+  font-family: 'Reskope Sans';
+  src: url('/fonts/ReskopeSans-SemiBold.woff2') format('woff2');
   font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Reskope Sans';
+  src: url('/fonts/ReskopeSans-Bold.woff2') format('woff2');
+  font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
@@ -79,7 +88,7 @@ html.lenis body {
   --muted-fort: #5c5951;
   --hairline: #d8d5cb;
 
-  --font: 'Neue Einstellung', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font: 'Reskope Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
   --maxw: 1240px;
   --gutter: clamp(1.25rem, 4vw, 4rem);

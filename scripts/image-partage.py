@@ -44,10 +44,10 @@ def trame():
 def html():
     espaces = ''.join(f'<li><i style="background:{c}"></i>{t}</li>' for t, c in ESPACES)
     return f"""<!doctype html><html><head><meta charset="utf-8"><style>
-@font-face {{ font-family: 'NE'; src: url(data:font/woff2;base64,{b64('public/fonts/NeueEinstellung-Regular.woff2')}) format('woff2'); font-weight: 400; }}
-@font-face {{ font-family: 'NE'; src: url(data:font/woff2;base64,{b64('public/fonts/NeueEinstellung-SemiBold.woff2')}) format('woff2'); font-weight: 600; }}
+@font-face {{ font-family: 'Reskope Sans'; src: url(data:font/woff2;base64,{b64('public/fonts/ReskopeSans-Regular.woff2')}) format('woff2'); font-weight: 400; }}
+@font-face {{ font-family: 'Reskope Sans'; src: url(data:font/woff2;base64,{b64('public/fonts/ReskopeSans-SemiBold.woff2')}) format('woff2'); font-weight: 600; }}
 html, body {{ margin: 0; }}
-.og {{ position: relative; width: 1200px; height: 630px; overflow: hidden; background: {INDIGO}; color: {CREME}; font-family: 'NE', sans-serif; }}
+.og {{ position: relative; width: 1200px; height: 630px; overflow: hidden; background: {INDIGO}; color: {CREME}; font-family: 'Reskope Sans', sans-serif; }}
 .og svg {{ position: absolute; inset: 0; }}
 .og h1 {{ position: absolute; left: 80px; top: 196px; margin: 0; width: 820px; font-size: 76px; line-height: 1.04; font-weight: 600; letter-spacing: -0.03em; }}
 .og ul {{ position: absolute; left: 80px; bottom: 72px; margin: 0; padding: 0; list-style: none; display: flex; gap: 14px; }}

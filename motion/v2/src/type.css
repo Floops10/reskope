@@ -6,7 +6,7 @@
 :root {
   --indigo: #1C0CB3; --creme: #F0EEE8; --encre: #0E0B1F; --dessus: #5B4BE6;
   --soleil: #F2A93B; --menthe: #2FAE8E; --ciel: #3B9DE8; --corail: #EF6F5E; --lilas: #8B7FF0;
-  --police: 'Neue Einstellung', system-ui, sans-serif;
+  --police: 'Reskope Sans', system-ui, sans-serif;
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html, body { width: 1080px; height: 1920px; overflow: hidden; background: #06041A; }

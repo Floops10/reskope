@@ -365,7 +365,7 @@ function dessinTel(etat) {
   g.strokeStyle = 'rgba(240,238,232,0.2)'; g.lineWidth = 4; g.stroke();
   g.fillStyle = '#0B0920'; g.beginPath(); g.roundRect(22, 22, L - 44, Ht - 44, 76); g.fill();
   g.fillStyle = '#17132F'; g.beginPath(); g.roundRect(L / 2 - 90, 44, 180, 46, 23); g.fill();
-  const police = (p, t) => `${p} ${t}px 'Neue Einstellung'`;
+  const police = (p, t) => `${p} ${t}px 'Reskope Sans'`;
   const carte = (y, titre, sous, c) => {
     g.fillStyle = 'rgba(240,238,232,0.1)'; g.beginPath(); g.roundRect(52, y, L - 104, 190, 44); g.fill();
     g.fillStyle = c; g.beginPath(); g.arc(110, y + 95, 16, 0, 7); g.fill();
@@ -618,7 +618,7 @@ window.addEventListener('hf-seek', (e) => rendre(e.detail.time));
 window.__hf = window.__hf || {};
 window.__hf.buildReady = window.__hf.buildReady || {};
 window.__hf.buildReady['reskope-monde'] = (async function () {
-  await Promise.all([document.fonts.load("600 100px 'Neue Einstellung'"), document.fonts.load("500 50px 'Neue Einstellung'"), document.fonts.load("400 40px 'Neue Einstellung'")]);
+  await Promise.all([document.fonts.load("600 100px 'Reskope Sans'"), document.fonts.load("500 50px 'Reskope Sans'"), document.fonts.load("400 40px 'Reskope Sans'")]);
   construire();
   pret = true;
   rendre(window.__hfThreeTime || 0);

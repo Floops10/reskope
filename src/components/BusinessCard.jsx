@@ -23,14 +23,14 @@ import { ADRESSE_AFFICHEE } from '../data/site';
 
 const W = 850;
 const H = 540;
-const FONT = "'Neue Einstellung', 'Helvetica Neue', system-ui, sans-serif";
+const FONT = "'Reskope Sans', 'Helvetica Neue', system-ui, sans-serif";
 const CREAM = '#F0EEE8';
 const INDIGO = '#1c0cb3';
 
 const dec = (s) => (typeof atob !== 'undefined' ? atob(s) : '');
 
 /* La police de la marque, embarquée dans le fichier téléchargé. */
-const POLICES = [['NeueEinstellung-Regular.woff2', 400], ['NeueEinstellung-SemiBold.woff2', 600]];
+const POLICES = [['ReskopeSans-Regular.woff2', 400], ['ReskopeSans-SemiBold.woff2', 600]];
 const enBase64 = (buf) => {
   const octets = new Uint8Array(buf);
   let bin = '';
@@ -42,7 +42,7 @@ async function policesEmbarquees() {
     const rep = await fetch(`${import.meta.env.BASE_URL}fonts/${fichier}`);
     if (!rep.ok) throw new Error(fichier);
     const b64 = enBase64(await rep.arrayBuffer());
-    return `@font-face{font-family:'Neue Einstellung';src:url(data:font/woff2;base64,${b64}) format('woff2');font-weight:${poids};}`;
+    return `@font-face{font-family:'Reskope Sans';src:url(data:font/woff2;base64,${b64}) format('woff2');font-weight:${poids};}`;
   }));
   return regles.join('');
 }

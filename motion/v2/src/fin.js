@@ -9,7 +9,7 @@
 var FIN = (function () {
   /* s0 : échelle du grand R (px par unité du logo), c0 : son centre à l'écran.
      s1 : échelle du logo complet, c1 : le centre du logo complet. */
-  var LOGO = { s0: 4.348, c0: [540, 740], s1: 1.4938, boite: [29, 24.5, 577.95, 139.85], c1: [540, 760] };
+  var LOGO = { s0: 4.348, c0: [540, 740], s1: 1.4938, boite: {{LOGO_BOITE}}, c1: [540, 760] };
   LOGO.r1 = [LOGO.c1[0] + (70 - (LOGO.boite[0] + LOGO.boite[2]) / 2) * LOGO.s1, LOGO.c1[1] + (76 - (LOGO.boite[1] + LOGO.boite[3]) / 2) * LOGO.s1];
   /* Les six nœuds du R à l'écran, en grand (pour y poser le R 3D). */
   var R_NOEUDS_LOGO = [[36, 30], [92, 30], [104, 62], [36, 80], [36, 122], [104, 122]];
@@ -20,7 +20,7 @@ var FIN = (function () {
     var p = etat.p, s = LOGO.s0 + (LOGO.s1 - LOGO.s0) * p;
     var cx = LOGO.c0[0] + (LOGO.r1[0] - LOGO.c0[0]) * p, cy = LOGO.c0[1] + (LOGO.r1[1] - LOGO.c0[1]) * p;
     document.getElementById('logo-groupe').setAttribute('transform', 'translate(' + (cx - 70 * s).toFixed(2) + ' ' + (cy - 76 * s).toFixed(2) + ') scale(' + s.toFixed(4) + ')');
-    document.getElementById('coupe-rect').setAttribute('width', (440 * etat.mot).toFixed(2));
+    document.getElementById('coupe-rect').setAttribute('width', ({{COUPE_MOT}} * etat.mot).toFixed(2));
     document.getElementById('logo-mot').setAttribute('transform', 'translate(' + (-26 * (1 - etat.mot)).toFixed(2) + ' 0)');
   }
   /* t0 : le R HTML remplace le R 3D. La suite se cale dessus. */

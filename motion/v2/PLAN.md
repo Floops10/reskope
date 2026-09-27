@@ -22,7 +22,7 @@ personnes.
 - **Deux matières** : le réseau (nœuds et liens de lumière) et les blocs aux
   trois teintes cuites des planches de la marque (le dessus, le côté,
   l'ombre, un filet sur les arêtes).
-- **Typographie** : Neue Einstellung, énorme, peu de mots, des phrases avec
+- **Typographie** : Reskope Sans, énorme, peu de mots, des phrases avec
   un verbe. Mots qui montent de derrière leur ligne, qui claquent en place,
   qui sortent en accélérant.
 - **La signature** (`src/fin.js`, `src/fin.html`) : chaque film forme le R en
