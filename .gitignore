@@ -31,3 +31,9 @@ dist-tech
 
 # Rendus vidéo des films (lourds, régénérables)
 motion/rendus/
+
+# Motion v2 : rendus, caches et fichiers de travail (tout se régénère)
+motion/v2/rendus/
+motion/v2/.cache/
+motion/v2/son/sortie/*.wav
+motion/v2/son/__pycache__/

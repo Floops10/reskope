@@ -1,0 +1,634 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1080, height=1920">
+<title>Reskope, en projet</title>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+{{POLICES}}
+{{TYPE_CSS}}
+/* ── Film A · en projet : chaleureux, la couleur du fil est le soleil ── */
+:root { --accent: var(--soleil); }
+#t1 { top: 1180px; font-size: 168px; }
+#t2 { top: 1200px; }
+#t3 { top: 1130px; }
+#t3 .ligne.grosse { font-size: 176px; line-height: 0.9; letter-spacing: -0.055em; }
+#t3 .lead { margin-bottom: 26px; }
+#t4 { top: 318px; }
+#t4 .chiffre { font-size: 300px; }
+#t4 .sous { margin-top: 18px; font-size: 58px; }
+#t6 { top: 1300px; }
+#t7 { top: 300px; }
+#t8 { top: 1180px; }
+#t8 .sous { margin-top: 30px; font-size: 58px; color: rgba(240, 238, 232, 0.86); }
+</style>
+</head>
+<body>
+<div id="main" data-composition-id="main" data-width="1080" data-height="1920" data-start="0" data-duration="24" data-fps="30">
+  <canvas id="monde" width="1080" height="1920"></canvas>
+
+  <!-- 1 · L'idée, seule -->
+  <div class="plan" id="p1">
+    <div class="bloc grand" id="t1">
+      <div class="ligne" data-mots>Vous avez</div>
+      <div class="ligne" data-mots>une <span class="accent">idée.</span></div>
+    </div>
+  </div>
+
+  <!-- 2 · Personne ne l'a vérifiée -->
+  <div class="plan" id="p2">
+    <div class="bloc moyen" id="t2">
+      <div class="ligne" data-mots>Personne ne l'a</div>
+      <div class="ligne" data-mots>encore vérifiée.</div>
+    </div>
+  </div>
+
+  <!-- 3 · On va rencontrer vos futurs clients -->
+  <div class="plan" id="p3">
+    <div class="bloc" id="t3">
+      <div class="ligne lead" data-mots>On va rencontrer</div>
+      <div class="ligne grosse" id="t3b" data-mots>vos futurs</div>
+      <div class="ligne grosse accent" id="t3c" data-mots>clients.</div>
+    </div>
+  </div>
+
+  <!-- 4 · Dix à douze personnes -->
+  <div class="plan" id="p4">
+    <div class="bloc" id="t4">
+      <div class="ligne chiffre" id="t4n">10 à 12</div>
+      <div class="ligne sous" data-mots>personnes de votre cible.</div>
+    </div>
+  </div>
+
+  <!-- 6 · Votre client idéal -->
+  <div class="plan" id="p6">
+    <div class="ancre gauche" id="a-qui"><div class="tag" style="--c: var(--ciel)"><i></i>Qui elle est</div></div>
+    <div class="ancre droite" id="a-decide"><div class="tag" style="--c: var(--corail)"><i></i>Ce qui la décide</div></div>
+    <div class="ancre gauche" id="a-ou"><div class="tag" style="--c: var(--menthe)"><i></i>Où la trouver</div></div>
+    <div class="ancre droite" id="a-quoi"><div class="tag" style="--c: var(--soleil)"><i></i>Quoi lui dire</div></div>
+    <div class="bloc grand" id="t6">
+      <div class="ligne" data-mots>Votre client</div>
+      <div class="ligne accent" data-mots>idéal.</div>
+    </div>
+  </div>
+
+  <!-- 7 · Le business plan -->
+  <div class="plan" id="p7">
+    <div class="bloc moyen" id="t7">
+      <div class="ligne" data-mots>Leurs réponses</div>
+      <div class="ligne" data-mots>nourrissent votre</div>
+      <div class="ligne" data-mots>business plan.</div>
+    </div>
+    <div class="ancre centre" id="a-offre"><div class="tag" style="--c: var(--menthe)"><i></i>Votre offre</div></div>
+    <div class="ancre centre" id="a-chiffres"><div class="tag" style="--c: var(--ciel)"><i></i>Vos chiffres</div></div>
+    <div class="ancre droite" id="a-marque"><div class="tag" style="--c: var(--corail)"><i></i>Votre marque</div></div>
+    <div class="ancre gauche" id="a-premiers"><div class="tag" style="--c: var(--lilas)"><i></i>Vos premiers clients</div></div>
+  </div>
+
+  <!-- 8 · Vous décidez -->
+  <div class="plan" id="p8">
+    <div class="bloc" id="t8">
+      <div class="ligne grand" data-mots>Vous décidez</div>
+      <div class="ligne sous" data-mots>avant d'engager vos économies.</div>
+    </div>
+  </div>
+
+{{FIN_HTML}}
+  <div class="flash" id="flash"></div>
+  {{AUDIO}}
+</div>
+
+<script>{{TROIS}}</script>
+<script>{{TYPE_JS}}</script>
+<script>{{MONDE_JS}}</script>
+<script>{{FIN_JS}}</script>
+<script>
+/* ════════════════════════════════════════════════════════════
+   FILM A · EN PROJET (Inès). 24 s, 120 battements par minute : un temps
+   = 0,5 s, une mesure = 2 s. Chaque coupe tombe sur un temps.
+
+   L'histoire : une idée seule (un nœud soleil) ; personne ne l'a vérifiée
+   (un champ de places vides) ; on va rencontrer ses futurs clients (douze
+   nœuds s'allument, reliés à l'idée) ; leurs réponses reviennent et
+   forment un portrait : votre client idéal ; ses réponses nourrissent
+   votre business plan (la constellation) ; vous décidez avant d'engager vos
+   économies (le saut) ; la marque.
+   ════════════════════════════════════════════════════════════ */
+const DUREE = 24;
+const tl = gsap.timeline({ paused: true });
+window.__timelines = window.__timelines || {};
+window.__timelines.main = tl;
+TY.decouper();
+
+/* ── Le texte, calé sur les temps ─────────────────────────── */
+TY.voir(tl, 'p1', 0.5, 1.95);
+TY.monteFlou(tl, '#t1 .ligne:nth-child(1)', 0.55, { duree: 0.7 });
+TY.monteFlou(tl, '#t1 .ligne:nth-child(2)', 0.8, { duree: 0.75 });
+TY.sortie(tl, '#t1', 1.74, { y: -40 });
+
+TY.voir(tl, 'p2', 2.05, 3.9);
+TY.monte(tl, '#t2 .ligne:nth-child(1)', 2.1, { duree: 0.55 });
+TY.monte(tl, '#t2 .ligne:nth-child(2)', 2.35, { duree: 0.6 });
+TY.sortie(tl, '#t2', 3.62, { y: 60, scale: 0.96 });
+
+TY.voir(tl, 'p3', 4.02, 5.95);
+TY.monte(tl, '#t3 .lead', 4.05, { duree: 0.5, pas: 0.05 });
+TY.slam(tl, '#t3b', 4.28, { de: 1.7, force: 1.2 });
+TY.slam(tl, '#t3c', 4.52, { de: 1.9, force: 1.4 });
+TY.sortie(tl, '#t3', 5.74, { y: -80 });
+
+TY.voir(tl, 'p4', 6.0, 7.95);
+TY.slam(tl, '#t4n', 6.0, { de: 2.1, force: 1.6, duree: 0.34 });
+TY.monte(tl, '#t4 .sous', 6.3, { duree: 0.55, pas: 0.035 });
+TY.sortie(tl, '#t4', 7.74, { y: -60 });
+
+TY.voir(tl, 'p6', 9.95, 11.95);
+TY.slam(tl, '#t6 .ligne:nth-child(1)', 10.0, { de: 1.5 });
+TY.slam(tl, '#t6 .ligne:nth-child(2)', 10.22, { de: 1.8, force: 1.3 });
+['#a-qui', '#a-decide', '#a-ou', '#a-quoi'].forEach(function (s, i) {
+  tl.fromTo(s + ' .tag', { scale: 0.4, opacity: 0, filter: 'blur(10px)' }, { scale: 1, opacity: 1, filter: 'blur(0px)', duration: 0.4, ease: 'back.out(2.2)' }, 10.25 + i * 0.2);
+});
+TY.sortie(tl, '#t6', 11.76, { y: 60 });
+tl.to('#p6 .tag', { opacity: 0, scale: 0.7, filter: 'blur(8px)', duration: 0.22, ease: 'power2.in', stagger: 0.03 }, 11.72);
+
+TY.voir(tl, 'p7', 12.05, 14.95);
+TY.monte(tl, '#t7 .ligne:nth-child(1)', 12.1, { duree: 0.55 });
+TY.monte(tl, '#t7 .ligne:nth-child(2)', 12.3, { duree: 0.55 });
+TY.monte(tl, '#t7 .ligne:nth-child(3)', 12.5, { duree: 0.6 });
+['#a-offre', '#a-chiffres', '#a-marque', '#a-premiers'].forEach(function (s, i) {
+  tl.fromTo(s + ' .tag', { scale: 0.4, opacity: 0, filter: 'blur(10px)' }, { scale: 1, opacity: 1, filter: 'blur(0px)', duration: 0.4, ease: 'back.out(2.2)' }, 13.25 + i * 0.25);
+});
+TY.sortie(tl, '#t7', 14.72, { y: -70 });
+tl.to('#p7 .tag', { opacity: 0, scale: 0.75, filter: 'blur(10px)', duration: 0.22, ease: 'power2.in' }, 14.72);
+
+TY.voir(tl, 'p8', 15.2, 17.7);
+TY.slam(tl, '#t8 .grand', 15.25, { de: 1.6, force: 1.2 });
+TY.monte(tl, '#t8 .sous', 15.75, { duree: 0.6, pas: 0.05 });
+TY.sortie(tl, '#t8', 17.42, { y: 0, scale: 1.25 });
+
+/* La marque. */
+FIN.installer(tl, 19.4, DUREE);
+const LOGO = FIN.LOGO;
+
+/* Les éclairs. */
+TY.eclair(tl, '#flash', 4.0, { max: 0.42, fondu: 0.32 });
+TY.eclair(tl, '#flash', 9.97, { max: 0.3, fondu: 0.4 });
+TY.eclair(tl, '#flash', 18.0, { max: 0.95, fondu: 0.5 });
+tl.set({}, {}, DUREE);
+
+/* ════════════════════════════════════════════════════════════
+   LE MONDE
+   La nuit d'abord (l'idée seule, ce qu'on ne sait pas), puis l'indigo de
+   la marque qui monte à mesure que le réseau se construit.
+   ════════════════════════════════════════════════════════════ */
+const monde = new Monde(document.getElementById('monde'), { brume: 0.02, bloom: [0.75, 0.55, 0.78] });
+const hasard = prng(20260927);
+const SOLEIL = C.soleil, CREME = C.creme;
+const T = { eclosion: 0.5, recul: 2.0, drop: 4.0, clients: 4.0, pas: 0.25, reseau: 6.0, retours: 7.5, carte: 8.5, pose: 9.75, bp: 12.0, saut: 15.0, marque: 18.0 };
+
+/* Le fond : nuit, puis l'indigo qui monte. [t, centre, bord] */
+const FONDS = [
+  [0, '#0A0822', '#030210'], [T.drop - 0.05, '#0C0928', '#040212'], [T.drop + 0.6, '#1A1170', '#070420'],
+  [T.carte, '#1B1178', '#080524'], [T.pose, '#24168F', '#0A0630'], [T.bp, '#22158A', '#0A062E'],
+  [13.3, '#1E128A', '#090530'], [T.saut + 0.4, '#10094A', '#030110'], [T.marque - 0.02, '#0A0632', '#020108'],
+  [T.marque, '#2616C4', '#130982'],
+];
+function fondA(t) {
+  let i = 0; while (i < FONDS.length - 1 && FONDS[i + 1][0] <= t) i++;
+  if (i === FONDS.length - 1) return [FONDS[i][1], FONDS[i][2]];
+  const a = FONDS[i], b = FONDS[i + 1], p = fen(t, a[0], b[0], 'sine.inOut');
+  return [Fond.melange(a[1], b[1], p), Fond.melange(a[2], b[2], p)];
+}
+
+/* La poussière : proche, elle devient bokeh. */
+const NP = 2400;
+const pous = new Nuee(monde, NP);
+const POUS = [];
+for (let i = 0; i < NP; i++) POUS.push({
+  p: [(hasard() - 0.5) * 44, (hasard() - 0.5) * 70, 24 - hasard() * 66],
+  v: [(hasard() - 0.5) * 0.14, 0.03 + hasard() * 0.09, (hasard() - 0.5) * 0.14],
+  k: 0.3 + hasard() * 0.5, tai: 0.012 + hasard() * 0.026, ph: hasard() * 6.28, chaud: hasard() < 0.2,
+});
+/* Tout près de l'objectif, pendant le gros plan : de grands disques flous. */
+const NPR = 36;
+const proches = new Nuee(monde, NPR);
+const PROCHES = [];
+for (let i = 0; i < NPR; i++) PROCHES.push({ p: [(hasard() - 0.5) * 1.6, (hasard() - 0.5) * 2.6, 0.7 + hasard() * 1.4], v: [(hasard() - 0.5) * 0.05, 0.02 + hasard() * 0.04, 0], k: 0.4 + hasard() * 0.8, chaud: hasard() < 0.5 });
+/* Les étoiles, très loin. */
+const NE = 1500;
+const etoiles = new Nuee(monde, NE);
+for (let i = 0; i < NE; i++) {
+  const u = hasard() * 2 - 1, a = hasard() * 6.2832, r = 38 + hasard() * 20, q = Math.sqrt(1 - u * u);
+  etoiles.poser(i, [Math.cos(a) * q * r, u * r, Math.sin(a) * q * r], coul(hasard() < 0.25 ? C.lilas : CREME, 0.5 + hasard() * 0.6), 0.03 + hasard() * 0.04, 0.5 + hasard() * 0.5, 0);
+}
+/* Les places vides : les personnes qu'on n'a jamais rencontrées. */
+const NV = 420;
+const vides = new Nuee(monde, NV);
+const VIDES = [];
+for (let i = 0; i < NV; i++) {
+  const u = hasard() * 2 - 1, a = hasard() * 6.2832, r = 6.5 + Math.pow(hasard(), 0.85) * 26, q = Math.sqrt(1 - u * u);
+  VIDES.push({ p: [Math.cos(a) * q * r, u * r * 1.35, Math.sin(a) * q * r], ph: hasard() * 6.28, tai: 0.2 + hasard() * 0.16, k: 0.55 + hasard() * 0.45 });
+}
+/* Les étincelles de l'éclosion. */
+const NS = 90;
+const etinc = new Nuee(monde, NS);
+const ETINC = [];
+for (let i = 0; i < NS; i++) { const d = fibonacci(NS, 1)[i]; ETINC.push({ d: mul3(d, 0.6 + hasard() * 1.6), dur: 0.7 + hasard() * 0.9, tai: 0.006 + hasard() * 0.012 }); }
+
+/* Les douze futurs clients, autour de l'idée (un ellipsoïde : le cadre est vertical). */
+const CLIENTS = fibonacci(12, 1).map((p) => [p[0] * 2.7, p[1] * 4.2, p[2] * 2.7]);
+const ORDRE = [4, 9, 1, 7, 11, 2, 6, 0, 10, 5, 3, 8];
+const allumage = (i) => T.clients + ORDRE.indexOf(i) * T.pas;
+const clients = new Nuee(monde, 24);
+const idee = new Nuee(monde, 4);
+const ondes = new Nuee(monde, 16);
+const VOISINS = [];
+CLIENTS.forEach((a, i) => {
+  const d = CLIENTS.map((b, j) => [j, len3(add3(b, mul3(a, -1)))]).filter((x) => x[0] !== i).sort((x, y) => x[1] - y[1]);
+  for (const [j] of d.slice(0, 3)) if (!VOISINS.some((v) => (v[0] === j && v[1] === i))) VOISINS.push([i, j]);
+});
+const liens = new Liens(monde, 160, { largeur: 2.6 });
+const impulsions = new Liens(monde, 60, { largeur: 4 });
+
+/* La carte : le portrait qui se forme. */
+const CARTE = { l: 1.9, h: 2.375, z: 0 };
+const GX = 60, GY = 75;
+const NG = GX * GY;
+const grains = new Nuee(monde, NG);
+const GRAINS = [];
+let carte = null;
+
+/* Le business plan : le client idéal au centre, quatre parties autour. */
+const BP = [
+  { p: [1.45, 1.3, -0.5], c: C.menthe, tag: 'a-offre' },
+  { p: [-1.6, 0.5, 0.7], c: C.ciel, tag: 'a-chiffres' },
+  { p: [1.55, -0.75, 0.9], c: C.corail, tag: 'a-marque' },
+  { p: [-0.85, -1.5, -0.6], c: C.lilas, tag: 'a-premiers' },
+];
+const SAT = [];
+BP.forEach((b, i) => { for (let k = 0; k < 5; k++) { const a = hasard() * 6.28, e = (hasard() - 0.5) * 1.6; SAT.push({ i, p: add3(b.p, [Math.cos(a) * 0.62, e * 0.5, Math.sin(a) * 0.62]), d: hasard() * 0.3 }); } });
+const bp = new Nuee(monde, 8 + SAT.length);
+
+/* Le saut : un tunnel de lumière dans l'axe du regard. */
+const NT = 1400;
+const tunnel = new Nuee(monde, NT);
+const traits = new Liens(monde, NT, { largeur: 1.8, brume: false });
+const TUNNEL = [];
+
+/* Le R. */
+const rN = new Nuee(monde, 6);
+const rL = new Liens(monde, 6, { largeur: 13, brume: false });
+let R_MONDE = null;
+const finPous = new Nuee(monde, 600);
+const FIN_POUS = [];
+
+/* ── La caméra ─────────────────────────────────────────────── */
+function orbite(az, el, r, c) { return [c[0] + r * Math.cos(el) * Math.sin(az), c[1] + r * Math.sin(el), c[2] + r * Math.cos(el) * Math.cos(az)]; }
+const TOUR = Math.PI * 2;
+const azP = piste([[T.drop, 0.12], [6.0, 2.25, 'expo.out'], [8.0, 2.85, 'sine.inOut'], [T.pose, TOUR, 'power3.inOut'], [T.bp, TOUR + 0.1, 'sine.inOut'], [13.3, TOUR + 0.5, 'expo.inOut'], [T.saut, TOUR + 0.72, 'sine.inOut']]);
+const rP = piste([[T.drop, 24], [6.0, 15.5, 'expo.out'], [8.0, 13.5, 'sine.inOut'], [T.pose, 8.4, 'power3.inOut'], [T.bp, 7.9, 'sine.inOut'], [13.3, 12.0, 'expo.inOut'], [T.saut, 11.2, 'sine.inOut']]);
+const elP = piste([[T.drop, 0.05], [6.0, 0.2, 'expo.out'], [8.0, 0.12, 'sine.inOut'], [T.pose, 0.0, 'power3.inOut'], [T.bp, 0.02, 'sine.inOut'], [13.3, 0.24, 'expo.inOut'], [T.saut, 0.2, 'sine.inOut']]);
+const cyP = piste([[T.carte, 0], [T.pose, -0.4, 'power3.inOut'], [T.bp, -0.4], [13.3, 0.5, 'expo.inOut'], [T.saut, 0.46]]);
+function saut(u) { return 0.5 - 0.5 * Math.cos(Math.PI * Math.pow(u, 1.55)); }
+let P15 = null, D15 = null;
+function pose(t) {
+  if (t < T.recul) {
+    const p = fen(t, 0, T.recul, 'sine.inOut');
+    return { pos: [0.16 - 0.03 * p + 0.01 * houle(t, 1), 0.1 + 0.01 * houle(t, 2), 2.75 - 0.35 * p], cible: [0, 0, 0], roulis: 0.01 * houle(t, 3), fov: 32 };
+  }
+  if (t < T.drop) {
+    const p = fen(t, T.recul, 3.1, 'expo.inOut'), q = fen(t, 3.1, T.drop, 'sine.inOut');
+    const r = Math.exp(lerp(Math.log(2.4), Math.log(28), p)) - 4 * q;
+    const az = lerp(0.066, 0.08, p) + 0.04 * q;
+    return { pos: orbite(az, 0.04 + 0.01 * p, r, [0, 0, 0]), cible: [0, 0, 0], roulis: -0.06 * p + 0.03 * q, fov: 32 + 2 * p };
+  }
+  if (t < T.saut) {
+    const az = azP(t) + (t > T.pose && t < T.bp ? 0.08 * Math.sin((t - T.pose) * 1.4) : 0);
+    const c = [0, cyP(t), 0];
+    return { pos: orbite(az, elP(t), rP(t), c), cible: c, roulis: 0.04 * Math.sin(t * 0.6), fov: 34 };
+  }
+  if (!P15) { const q = pose(T.saut - 1e-4); P15 = q.pos; D15 = add3(q.cible, mul3(q.pos, -1)); D15 = mul3(D15, 1 / len3(D15)); }
+  const u = clamp01((t - T.saut) / (T.marque - T.saut));
+  const s = 320 * saut(u);
+  const pos = add3(P15, mul3(D15, s));
+  const vite = bosse(Math.pow(u, 1.3), 0, 1);
+  if (t >= T.marque) return { pos, cible: add3(pos, D15), roulis: 0, fov: 34, fixe: true };
+  return { pos, cible: add3(pos, D15), roulis: 0.5 * vite * vite, fov: 34 + 24 * vite };
+}
+/* Vitesse apparente (pixels par image) pour doser le flou de mouvement. */
+function vitessePx(t) {
+  const a = pose(t), b = pose(Math.max(0, t - 1 / FPS));
+  const da = add3(a.cible, mul3(a.pos, -1)), db = add3(b.cible, mul3(b.pos, -1));
+  const ang = Math.acos(Math.min(1, (da[0] * db[0] + da[1] * db[1] + da[2] * db[2]) / (len3(da) * len3(db))));
+  const dep = len3(add3(a.pos, mul3(b.pos, -1)));
+  return ang * 3350 + (dep / Math.max(4, len3(da))) * 900;
+}
+
+/* ── Construction (après la police et l'image) ─────────────── */
+function construire(photo) {
+  /* La photo, en carte aux coins arrondis, avec un reflet qui passe. */
+  const toile = document.createElement('canvas');
+  toile.width = 720; toile.height = 900;
+  toile.getContext('2d').drawImage(photo, 0, 0, 720, 900);
+  const tex = new THREE.CanvasTexture(toile);
+  tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = 8;
+  const mat = new THREE.ShaderMaterial({
+    uniforms: { tPhoto: { value: tex }, uOpacite: { value: 0 }, uBalayage: { value: -1 }, uTaille: { value: new THREE.Vector2(CARTE.l, CARTE.h) }, uRayon: { value: 0.1 } },
+    vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+    fragmentShader: `
+      uniform sampler2D tPhoto; uniform float uOpacite; uniform float uBalayage; uniform vec2 uTaille; uniform float uRayon;
+      varying vec2 vUv;
+      float boite(vec2 p, vec2 b, float r){ vec2 q = abs(p) - b + r; return length(max(q, 0.0)) + min(max(q.x, q.y), 0.0) - r; }
+      void main(){
+        vec2 p = (vUv - 0.5) * uTaille;
+        float d = boite(p, uTaille * 0.5, uRayon);
+        float aa = fwidth(d) * 1.2;
+        float masque = 1.0 - smoothstep(-aa, aa, d);
+        vec3 col = texture2D(tPhoto, vUv).rgb;
+        col = mix(col, col * vec3(0.92, 0.9, 1.06), 0.4);
+        float bande = exp(-pow((vUv.x * 0.8 + vUv.y * 0.45 - uBalayage) * 6.0, 2.0));
+        col += vec3(1.0, 0.93, 0.82) * bande * 0.22;
+        float bord = 1.0 - smoothstep(0.0, aa * 2.5, abs(d + aa * 1.5));
+        col += vec3(1.0, 0.88, 0.7) * bord * 0.35;
+        gl_FragColor = vec4(col * uOpacite * masque, uOpacite * masque);
+      }`,
+    transparent: true, depthWrite: false, blending: THREE.CustomBlending,
+    blendSrc: THREE.OneFactor, blendDst: THREE.OneMinusSrcAlphaFactor,
+  });
+  carte = new THREE.Mesh(new THREE.PlaneGeometry(CARTE.l, CARTE.h), mat);
+  carte.frustumCulled = false;
+  carte.renderOrder = 10;
+  monde.scene.add(carte);
+  /* Les grains : chacun part d'un client et prend la couleur de la photo. */
+  const petite = document.createElement('canvas');
+  petite.width = GX; petite.height = GY;
+  const pg = petite.getContext('2d');
+  pg.drawImage(photo, 0, 0, GX, GY);
+  const px = pg.getImageData(0, 0, GX, GY).data;
+  const lin = (v) => { v /= 255; return v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); };
+  for (let y = 0; y < GY; y++) for (let x = 0; x < GX; x++) {
+    const k = (y * GX + x) * 4;
+    const cible = [(x + 0.5) / GX * CARTE.l - CARTE.l / 2, CARTE.h / 2 - (y + 0.5) / GY * CARTE.h, CARTE.z];
+    const src = hasard() * 12 | 0;
+    const dep = T.carte + hasard() * 0.4 + (ORDRE.indexOf(src) / 12) * 0.2;
+    GRAINS.push({ cible, src, dep, arr: dep + 0.6 + hasard() * 0.3, tour: (hasard() - 0.5) * 3.2, haut: (hasard() - 0.5) * 2.2,
+      c: [lin(px[k]) * 1.2, lin(px[k + 1]) * 1.15, lin(px[k + 2]) * 1.1] });
+  }
+  /* Le tunnel du saut, dans l'axe du regard à 15 s. */
+  pose(T.saut + 0.01);
+  const e1 = new THREE.Vector3(D15[0], D15[1], D15[2]).cross(new THREE.Vector3(0, 1, 0)).normalize();
+  const e2 = new THREE.Vector3(D15[0], D15[1], D15[2]).cross(e1).normalize();
+  for (let i = 0; i < NT; i++) {
+    const u = 8 + hasard() * 330, a = hasard() * 6.2832, r = 1.4 + Math.pow(hasard(), 0.6) * 14;
+    const off = [e1.x * Math.cos(a) * r + e2.x * Math.sin(a) * r, e1.y * Math.cos(a) * r + e2.y * Math.sin(a) * r, e1.z * Math.cos(a) * r + e2.z * Math.sin(a) * r];
+    TUNNEL.push({ p: add3(add3(P15, mul3(D15, u)), off), c: hasard() < 0.28 ? SOLEIL : hasard() < 0.35 ? C.lilas : CREME, k: 0.55 + hasard() * 0.9 });
+  }
+  /* Le R, exactement là où le logo HTML le dessine (14 unités devant). */
+  const fin = pose(T.marque + 0.01);
+  monde.viser(fin.pos, fin.cible, 0, 34);
+  R_MONDE = R_NOEUDS.map((n) => depuisEcran(monde, LOGO.c0[0] + (n[0] - 70) * LOGO.s0, LOGO.c0[1] + (n[1] - 76) * LOGO.s0, 14));
+  R_MONDE.centre = depuisEcran(monde, LOGO.c0[0], LOGO.c0[1], 14);
+  R_MONDE.pxParUnite = monde.echelle / 14;
+  for (let i = 0; i < 600; i++) {
+    const d = 3 + Math.pow(hasard(), 0.8) * 30;
+    FIN_POUS.push({ p: depuisEcran(monde, hasard() * 1500 - 210, hasard() * 2500 - 290, d), v: [(hasard() - 0.5) * 0.1, 0.05 + hasard() * 0.08, 0], k: 0.25 + hasard() * 0.55, tai: 0.012 + hasard() * 0.03, ph: hasard() * 6.28 });
+  }
+}
+
+/* ── Les étiquettes suivent leurs points ───────────────────── */
+function ancrer(id, p, dx, dy) {
+  /* Une étiquette suit son point 3D, sans jamais sortir du cadre. */
+  const e = versEcran(monde, p);
+  const el = document.getElementById(id), tag = el.firstElementChild;
+  let x = e.x + (dx || 0);
+  const marge = 44;
+  if (tag && el.classList.contains('centre')) { const w = tag.offsetWidth / 2 + marge; x = Math.max(w, Math.min(W - w, x)); }
+  else if (tag && el.classList.contains('gauche')) x = Math.max(tag.offsetWidth + marge, x);
+  else if (tag && el.classList.contains('droite')) x = Math.min(W - tag.offsetWidth - marge, x);
+  el.style.transform = 'translate(' + x.toFixed(1) + 'px,' + (e.y + (dy || 0)).toFixed(1) + 'px)';
+}
+
+/* ── L'état du monde à l'instant t ─────────────────────────── */
+function rotY(p, a, c) { const x = p[0] - c[0], z = p[2] - c[2]; return [c[0] + x * Math.cos(a) + z * Math.sin(a), p[1], c[2] - x * Math.sin(a) + z * Math.cos(a)]; }
+monde.poser = function (t) {
+  const cam = pose(t);
+  monde.viser(cam.pos, cam.cible, cam.roulis, cam.fov);
+  const dCible = len3(add3(cam.cible, mul3(cam.pos, -1)));
+  let foyer = dCible, ouverture = t < T.recul ? 0.065 : 0.2;
+  if (t >= T.saut && t < T.marque) { foyer = 20; ouverture = 0.12; }
+  if (t >= T.marque) { foyer = 14; ouverture = 0.4; }
+  monde.netete(foyer, ouverture);
+  monde.brume = t < T.saut ? 0.02 : 0.006;
+  const f = fondA(t);
+  const eIdee = versEcran(monde, [0, 0, 0]);
+  const centreFond = t < T.saut ? [eIdee.x / W, 1 - eIdee.y / H] : [0.5, 0.52];
+  monde.fond.poser(f[0], f[1], [clamp01(centreFond[0]), clamp01(centreFond[1])], t >= T.marque ? 1.05 : 0.78);
+  const avantMarque = t < T.marque;
+  const px = vitessePx(t);
+  let flou = clamp01((px - 6) / 30) * 1.3;
+
+  /* Poussière, gros plan, étoiles. */
+  for (let i = 0; i < NP; i++) {
+    const d = POUS[i];
+    if (!avantMarque) { pous.cacher(i); continue; }
+    const sc = 0.75 + 0.25 * Math.sin(t * 1.7 + d.ph);
+    pous.poser(i, add3(d.p, mul3(d.v, t)), coul(d.chaud ? SOLEIL : CREME, d.k * sc), d.tai, 0.75, 0);
+  }
+  const aProche = 1 - fen(t, T.recul, T.recul + 0.5);
+  for (let i = 0; i < NPR; i++) {
+    const d = PROCHES[i];
+    proches.poser(i, add3(d.p, mul3(d.v, t)), coul(d.chaud ? SOLEIL : CREME, d.k), 0.02, aProche * 0.9, 0);
+  }
+  etoiles.obj.visible = avantMarque;
+
+  /* L'idée. */
+  const arrivee = fen(t, 0.0, T.eclosion, 'expo.out');
+  const pIdee = [0, 0, lerp(-60, 0, arrivee)];
+  let tIdee = 0.07 + 0.08 * fen(t, T.recul, T.drop) + 0.02 * bosse(t, T.eclosion, 0.9);
+  let aIdee = 1;
+  if (t >= T.carte) aIdee = 1 - fen(t, T.carte + 0.6, T.pose);
+  if (t >= T.bp) { aIdee = fen(t, T.bp + 0.25, T.bp + 0.5); tIdee = 0.24; }
+  if (!avantMarque) aIdee = 0;
+  const vif = 2.6 + 2.2 * bosse(t, T.eclosion, 1.1) + 1.2 * bosse(t, T.retours + 0.4, T.carte + 0.3);
+  idee.poser(0, pIdee, mix3(coul(SOLEIL, vif), coul(CREME, vif), 0.35), tIdee, aIdee, 2);
+  idee.poser(1, pIdee, coul(SOLEIL, 1.1), tIdee * 5, aIdee * 0.3, 0);
+  idee.poser(2, pIdee, coul(SOLEIL, 0.5), tIdee * 9, aIdee * 0.1 * (1 - fen(t, T.recul, T.drop)), 0);
+  if (t < T.eclosion + 0.05) idee.poser(3, [0, 0, pIdee[2] - 7 * (1 - arrivee)], coul(SOLEIL, 1.6), 0.05, (1 - arrivee) * 0.8, 0); else idee.cacher(3);
+  for (let i = 0; i < NS; i++) {
+    const e = ETINC[i];
+    const q = clamp01((t - T.eclosion) / e.dur);
+    if (q <= 0 || q >= 1) { etinc.cacher(i); continue; }
+    const v = 1 - Math.pow(1 - q, 3);
+    etinc.poser(i, mul3(e.d, v), coul(SOLEIL, 2.4 * (1 - q)), e.tai, 1 - q * q, 0);
+  }
+
+  /* Les ondes : l'éclosion, et chaque client qui s'allume. */
+  for (let k = 0; k < 16; k++) ondes.cacher(k);
+  const onde = (k, p, t0, c, taille, k2 = 1.6) => { const q = fen(t, t0, t0 + 0.7, 'expo.out'); if (t > t0 && t < t0 + 0.7) ondes.poser(k, p, coul(c, k2), 0.05 + taille * q, (1 - q) * 0.85, 1); };
+  onde(0, pIdee, T.eclosion, SOLEIL, 1.2);
+  onde(1, pIdee, T.drop, SOLEIL, 5.0, 2.2);
+
+  /* Les places vides. */
+  const aVides = avantMarque ? fen(t, 1.0, 2.5) * (1 - fen(t, T.carte, T.pose)) : 0;
+  for (let i = 0; i < NV; i++) {
+    const v = VIDES[i];
+    const a = aVides * (0.42 + 0.18 * Math.sin(t * 2.1 + v.ph)) + (avantMarque ? 0.12 * fen(t, T.bp, 13.5) * (1 - fen(t, T.saut, 16)) : 0);
+    vides.poser(i, v.p, coul(CREME, v.k), v.tai, a, 1);
+  }
+
+  /* Les clients, les liens, les impulsions. */
+  liens.vider(); impulsions.vider();
+  for (let i = 0; i < 12; i++) {
+    const t0 = allumage(i);
+    const p = CLIENTS[i];
+    let a = t < t0 ? fen(t, 1.0, 2.5) * 0.6 : 1;
+    a *= 1 - fen(t, T.carte, T.carte + 0.9);
+    if (t > T.pose || !avantMarque) a = 0;
+    const flash = bosse(t, t0 + 0.12, t0 + 0.55);
+    const allume = t >= t0 + 0.14;
+    clients.poser(i, p, allume ? mix3(coul(CREME, 1.5), coul(SOLEIL, 4.5), flash) : coul(CREME, 1.0), allume ? 0.21 + 0.07 * flash : 0.3, a, allume ? 2 : 1);
+    clients.poser(12 + i, p, coul(SOLEIL, 1.0), 0.75, allume ? a * 0.28 : 0, 0);
+    if (t > t0 && t < t0 + 0.8) onde(2 + i, p, t0 + 0.12, SOLEIL, 1.3);
+    const trace = fen(t, t0 - 0.02, t0 + 0.16, 'expo.out');
+    const aL = (1 - fen(t, T.carte + 0.1, T.carte + 0.8)) * (t < T.pose ? 1 : 0);
+    if (trace > 0 && aL > 0) liens.ajouter(pIdee, p, coul(SOLEIL, 1.7 * aL), coul(CREME, 0.85 * aL), trace);
+    for (let w = 0; w < 3; w++) {
+      const d0 = T.retours + w * 0.36 + (i % 4) * 0.035;
+      const q = fen(t, d0, d0 + 0.5, 'power2.in');
+      if (q > 0 && q < 1) { const pos = 1 - q; impulsions.ajouter(pIdee, p, coul(SOLEIL, 3.5 * aL), coul(SOLEIL, 3.5 * aL), Math.min(1, pos + 0.07), Math.max(0, pos - 0.07)); }
+    }
+  }
+  for (const [i, j] of VOISINS) {
+    const t0 = Math.max(T.reseau, Math.max(allumage(i), allumage(j)) + 0.2);
+    const q = fen(t, t0, t0 + 0.5, 'power3.out');
+    const aL = (1 - fen(t, T.carte, T.carte + 0.6)) * (t < T.pose ? 1 : 0);
+    if (q > 0 && aL > 0) liens.ajouter(CLIENTS[i], CLIENTS[j], coul(CREME, 0.55 * aL), coul(CREME, 0.55 * aL), q);
+  }
+
+  /* Le portrait : les grains volent des clients vers la carte. */
+  const aCarte = t >= T.pose - 0.05 && t < T.bp + 0.5 ? fen(t, T.pose - 0.05, T.pose + 0.25) : 0;
+  let echelleCarte = 1;
+  if (t >= T.bp) echelleCarte = lerp(1, 0.04, fen(t, T.bp, T.bp + 0.45, 'expo.in'));
+  let enVol = 0;
+  for (let i = 0; i < NG; i++) {
+    const g = GRAINS[i];
+    if (t < g.dep || t > T.pose + 0.45 || !avantMarque) { grains.cacher(i); continue; }
+    const q = fen(t, g.dep, g.arr, 'power3.inOut');
+    if (q < 1) enVol++;
+    const a = CLIENTS[g.src];
+    const mil = add3(mix3(a, g.cible, 0.5), [g.tour, g.haut, 1.6]);
+    const u = 1 - q;
+    const p = [u * u * a[0] + 2 * u * q * mil[0] + q * q * g.cible[0], u * u * a[1] + 2 * u * q * mil[1] + q * q * g.cible[1], u * u * a[2] + 2 * u * q * mil[2] + q * q * g.cible[2]];
+    grains.poser(i, p, mix3(coul(SOLEIL, 2.6), g.c, fen(q, 0.55, 1)), lerp(0.02, CARTE.l / GX * 1.05, fen(q, 0.6, 1)), (1 - fen(t, T.pose + 0.05, T.pose + 0.45)) * 0.95, 0);
+  }
+  if (enVol > 0) flou = Math.max(flou, 0.7);
+  if (carte) {
+    carte.visible = aCarte > 0.002;
+    carte.material.uniforms.uOpacite.value = aCarte * (t < T.bp ? 1 : 1 - fen(t, T.bp + 0.2, T.bp + 0.45));
+    carte.material.uniforms.uBalayage.value = lerp(-0.6, 1.9, fen(t, T.pose + 0.25, T.pose + 1.0, 'power2.inOut'));
+    const flotte = t - T.pose;
+    carte.position.set(0, 0.02 * Math.sin(flotte * 1.3), 0);
+    carte.rotation.set(0.04 * Math.sin(flotte * 0.9), 0.07 * Math.sin(flotte * 0.7 + 0.5), 0);
+    carte.scale.setScalar(echelleCarte);
+  }
+  if (t > 10.1 && t < 12.1) {
+    ancrer('a-qui', [-CARTE.l * 0.16, CARTE.h * 0.37, 0.12], 0);
+    ancrer('a-decide', [CARTE.l * 0.16, CARTE.h * 0.15, 0.12], 0);
+    ancrer('a-ou', [-CARTE.l * 0.16, -CARTE.h * 0.07, 0.12], 0);
+    ancrer('a-quoi', [CARTE.l * 0.16, -CARTE.h * 0.3, 0.12], 0);
+  }
+
+  /* Le business plan. */
+  const aBP = avantMarque && t >= T.bp ? 1 : 0;
+  idee.poser(1, pIdee, coul(SOLEIL, 1.1), (t >= T.bp ? 0.24 : tIdee) * 5, aIdee * 0.3, 0);
+  for (let i = 0; i < 4; i++) {
+    const b = BP[i];
+    const t0 = T.bp + 0.25 + i * 0.25;
+    const q = fen(t, t0, t0 + 0.5, 'expo.out');
+    const p = mix3([0, 0, 0], b.p, q);
+    const flash = bosse(t, t0 + 0.2, t0 + 0.7);
+    bp.poser(i, p, mix3(coul(b.c, 2.2), coul(CREME, 3.5), flash * 0.6), 0.2 + 0.06 * flash, aBP * fen(t, t0, t0 + 0.1), 2);
+    bp.poser(4 + i, p, coul(b.c, 1.0), 0.8, aBP * fen(t, t0, t0 + 0.2) * 0.3, 0);
+    if (q > 0 && aBP) liens.ajouter([0, 0, 0], p, coul(SOLEIL, 1.7), coul(b.c, 1.5), 1);
+    if (t > 13.1 && t < 15.1) ancrer(b.tag, p, b.tag === 'a-marque' ? 30 : b.tag === 'a-premiers' ? -30 : 0);
+  }
+  SAT.forEach((s, k) => {
+    const b = BP[s.i];
+    const t0 = T.bp + 0.55 + s.i * 0.25 + s.d;
+    const q = fen(t, t0, t0 + 0.45, 'expo.out');
+    bp.poser(8 + k, mix3(b.p, s.p, q), coul(b.c, 1.6), 0.075, aBP * (q > 0 ? 1 : 0), 2);
+    if (q > 0 && aBP) liens.ajouter(b.p, mix3(b.p, s.p, q), coul(b.c, 0.9), coul(b.c, 0.6), 1);
+  });
+  if (aBP) {
+    [[0, 2, 13.2], [1, 3, 13.4], [0, 1, 13.6], [2, 3, 13.8]].forEach(([a, b, t0]) => liens.ajouter(BP[a].p, BP[b].p, coul(CREME, 0.3), coul(CREME, 0.3), fen(t, t0, t0 + 0.6)));
+  }
+
+  /* Le saut : chaque point s'étire dans l'axe de la course. */
+  traits.vider();
+  let vitesse = 0;
+  if (t >= T.saut - 0.5 && t < T.marque + 0.2 && D15) {
+    const a = pose(t), b = pose(t - 1 / FPS);
+    vitesse = len3(add3(a.pos, mul3(b.pos, -1))) * FPS;
+    const long = Math.min(18, vitesse * 0.05);
+    const aT = fen(t, T.saut - 0.4, T.saut + 0.3) * (1 - fen(t, T.marque - 0.12, T.marque + 0.1));
+    for (let i = 0; i < NT; i++) {
+      const d = TUNNEL[i];
+      tunnel.poser(i, d.p, coul(d.c, d.k * 1.5), 0.03, aT, 0);
+      if (long > 0.3) traits.ajouter(d.p, add3(d.p, mul3(D15, long)), coul(d.c, d.k * 1.2 * aT), coul(d.c, 0), 1);
+    }
+  } else tunnel.toutCacher();
+  flou = Math.max(flou, Math.min(1.4, vitesse / 90));
+
+  /* La marque : le R aux proportions exactes (traits 3, nœuds 5,5, jonction 7). */
+  rL.vider();
+  if (t >= T.marque && R_MONDE) {
+    const aR = 1 - fen(t, 19.45, 19.72);
+    const ang = 1.25 * (1 - fen(t, T.marque, 19.35, 'expo.out'));
+    const px = R_MONDE.pxParUnite;
+    for (let i = 0; i < 6; i++) {
+      const t0 = T.marque + i * 0.045;
+      const q = fen(t, t0, t0 + 0.42, 'expo.out');
+      const final = rotY(R_MONDE[i], ang, R_MONDE.centre);
+      const p = mix3(add3(final, mul3(D15, 70)), final, q);
+      const diam = (i === 3 ? 14 : 11) * LOGO.s0;
+      const eclat = 1 + 0.5 * bosse(t, t0 + 0.25, t0 + 0.7);
+      rN.poser(i, p, coul(CREME, 0.98 * eclat), diam / px, aR * (q > 0 ? 1 : 0), 2);
+    }
+    R_LIENS.forEach(([a, b], k) => {
+      const q = fen(t, 18.42 + k * 0.1, 18.62 + k * 0.1, 'power3.out');
+      rL.ajouter(rotY(R_MONDE[a], ang, R_MONDE.centre), rotY(R_MONDE[b], ang, R_MONDE.centre), coul(CREME, 0.98 * aR), coul(CREME, 0.98 * aR), q);
+    });
+    rL.mat.linewidth = 3 * LOGO.s0;
+    for (let i = 0; i < 600; i++) {
+      const d = FIN_POUS[i];
+      finPous.poser(i, add3(d.p, mul3(d.v, t - T.marque)), coul(i % 5 === 0 ? SOLEIL : C.lilas, d.k * (0.7 + 0.3 * Math.sin(t * 1.5 + d.ph))), d.tai, fen(t, T.marque, 18.6), 0);
+    }
+    flou = Math.max(flou, 0.9 * (1 - fen(t, 18.1, 18.6)));
+  } else { rN.toutCacher(); finPous.toutCacher(); }
+
+  monde.bloom.strength = t >= T.marque ? 0.35 : 0.75 - 0.2 * (t >= T.pose && t < T.bp ? 1 : 0);
+  const aberration = 0.002 + Math.min(0.012, vitesse / 12000) + 0.004 * bosse(t, T.drop, T.drop + 0.4);
+  return { flou: t >= 19.2 ? 0 : flou, aberration, expo: 1 };
+};
+
+/* ── Branchement sur HyperFrames ───────────────────────────── */
+let pret = false;
+function rendre(t) { if (pret) monde.image(Math.max(0, Math.min(DUREE - 1e-4, t))); }
+window.__rendre = rendre;
+window.addEventListener('hf-seek', (e) => rendre(e.detail.time));
+window.__hf = window.__hf || {};
+window.__hf.buildReady = window.__hf.buildReady || {};
+window.__hf.buildReady['reskope-monde'] = (async function () {
+  await document.fonts.load("600 100px 'Neue Einstellung'");
+  const photo = new Image();
+  photo.src = '{{PORTRAIT_CLAIRE}}';
+  await photo.decode();
+  construire(photo);
+  pret = true;
+  rendre(window.__hfThreeTime || 0);
+  window.__pret = true;
+})();
+</script>
+</body>
+</html>

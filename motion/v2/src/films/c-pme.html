@@ -1,0 +1,529 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1080, height=1920">
+<title>Reskope, PME</title>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+{{POLICES}}
+{{TYPE_CSS}}
+/* ── Film C · PME : posé et chiffré, la couleur du fil est le ciel ── */
+:root { --accent: var(--ciel); }
+#t1 { top: 1330px; }
+#t1 .ligne { font-size: 168px; line-height: 0.92; }
+#t2 { top: 300px; }
+#t3 { top: 300px; }
+#t3x { top: 1400px; font-size: 176px; line-height: 0.9; font-weight: 600; letter-spacing: -0.055em; color: var(--corail); }
+#t4 { top: 300px; }
+#t4 .chiffre { font-size: 330px; color: var(--corail); }
+#t4 .sous { margin-top: 10px; font-size: 54px; }
+#t4 .source { margin-top: 26px; font-size: 32px; color: rgba(240, 238, 232, 0.55); }
+#t5 { top: 300px; }
+#t5 .lead { margin-bottom: 18px; }
+#t6 { top: 300px; }
+#t6 .sous { margin-top: 24px; font-size: 64px; color: var(--ciel); font-weight: 500; }
+#t7 { top: 1300px; }
+#t8 { top: 1330px; }
+.tag.pme { font-size: 40px; padding: 14px 28px 14px 20px; }
+</style>
+</head>
+<body>
+<div id="main" data-composition-id="main" data-width="1080" data-height="1920" data-start="0" data-duration="24" data-fps="30">
+  <canvas id="monde" width="1080" height="1920"></canvas>
+  <div class="flash" id="flash"></div>
+
+  <!-- 1 · Où part le temps ? -->
+  <div class="plan" id="p1">
+    <div class="bloc" id="t1">
+      <div class="ligne" data-mots>Où part</div>
+      <div class="ligne" data-mots>le <span class="accent">temps ?</span></div>
+    </div>
+  </div>
+
+  <!-- 2 · Vos outils ne se parlent pas -->
+  <div class="plan" id="p2">
+    <div class="bloc moyen" id="t2">
+      <div class="ligne" data-mots>Vos outils</div>
+      <div class="ligne" data-mots>ne se parlent pas.</div>
+    </div>
+    <div class="ancre centre" id="a-devis"><div class="tag pme" style="--c: var(--dessus)"><i></i>Devis</div></div>
+    <div class="ancre centre" id="a-planning"><div class="tag pme" style="--c: var(--dessus)"><i></i>Planning</div></div>
+    <div class="ancre centre" id="a-compta"><div class="tag pme" style="--c: var(--dessus)"><i></i>Comptabilité</div></div>
+    <div class="ancre centre" id="a-stock"><div class="tag pme" style="--c: var(--dessus)"><i></i>Stock</div></div>
+    <div class="ancre centre" id="a-mails"><div class="tag pme" style="--c: var(--dessus)"><i></i>E-mails</div></div>
+  </div>
+
+  <!-- 3 · Saisie trois fois -->
+  <div class="plan" id="p3">
+    <div class="bloc moyen" id="t3">
+      <div class="ligne" data-mots>La même information</div>
+      <div class="ligne" data-mots>est saisie</div>
+    </div>
+    <div class="bloc" id="t3x">trois fois.</div>
+  </div>
+
+  <!-- 4 · 209 h -->
+  <div class="plan" id="p4">
+    <div class="bloc" id="t4">
+      <div class="ligne chiffre" id="t4n">209 h</div>
+      <div class="ligne sous" data-mots>par an et par personne,</div>
+      <div class="ligne sous" data-mots>perdues à refaire un travail déjà fait.</div>
+      <div class="ligne source">Asana, Anatomy of Work Global Index 2023</div>
+    </div>
+  </div>
+
+  <!-- 5 · La cartographie -->
+  <div class="plan" id="p5">
+    <div class="bloc moyen" id="t5">
+      <div class="ligne lead" data-mots>En 2 à 5 jours sur place,</div>
+      <div class="ligne" data-mots>on cartographie</div>
+      <div class="ligne accent" data-mots>vos outils.</div>
+    </div>
+  </div>
+
+  <!-- 6 · On relie -->
+  <div class="plan" id="p6">
+    <div class="bloc moyen" id="t6">
+      <div class="ligne" data-mots>On relie ce que</div>
+      <div class="ligne" data-mots>vous avez déjà.</div>
+      <div class="ligne sous" id="t6s" data-mots>Rien à racheter.</div>
+    </div>
+  </div>
+
+  <!-- 7 · Les heures reviennent -->
+  <div class="plan" id="p7">
+    <div class="bloc moyen" id="t7">
+      <div class="ligne" data-mots>Vos équipes</div>
+      <div class="ligne" data-mots>récupèrent</div>
+      <div class="ligne accent" data-mots>leurs heures.</div>
+    </div>
+  </div>
+
+  <!-- 8 · Chaque étape -->
+  <div class="plan" id="p8">
+    <div class="bloc grand" id="t8">
+      <div class="ligne" data-mots>Vous validez</div>
+      <div class="ligne accent" data-mots>chaque étape.</div>
+    </div>
+  </div>
+
+{{FIN_HTML}}
+  {{AUDIO}}
+</div>
+
+<script>{{TROIS}}</script>
+<script>{{TYPE_JS}}</script>
+<script>{{MONDE_JS}}</script>
+<script>{{FIN_JS}}</script>
+<script>
+/* ════════════════════════════════════════════════════════════
+   FILM C · PME (Nathalie, menuiserie-agencement, 24 personnes). 24 s,
+   100 battements par minute : un temps = 0,6 s, une mesure = 2,4 s.
+
+   L'histoire : l'année de travail (47 semaines) ; les outils en îlots
+   qui ne se parlent pas ; la même information saisie trois fois ; ce que
+   ça coûte (209 h par an et par personne, source citée) ; au temps fort,
+   un relevé laser cartographie les îlots ; on les relie, l'information ne
+   passe plus qu'une fois ; les semaines perdues reviennent ; cinq étapes
+   que vous validez ; les îlots deviennent les six nœuds du R.
+   ════════════════════════════════════════════════════════════ */
+const DUREE = 24;
+const TP = 0.6, MES = 2.4;
+const tl = gsap.timeline({ paused: true });
+window.__timelines = window.__timelines || {};
+window.__timelines.main = tl;
+TY.decouper();
+
+TY.voir(tl, 'p1', 0.3, MES - 0.02);
+TY.monteFlou(tl, '#t1 .ligne:nth-child(1)', 0.35, { duree: 0.8 });
+TY.monteFlou(tl, '#t1 .ligne:nth-child(2)', 0.35 + TP, { duree: 0.8 });
+TY.sortie(tl, '#t1', MES - 0.25, { y: 60 });
+
+TY.voir(tl, 'p2', MES + 0.05, 2 * MES - 0.02);
+TY.monte(tl, '#t2 .ligne:nth-child(1)', MES + 0.1, { duree: 0.6 });
+TY.monte(tl, '#t2 .ligne:nth-child(2)', MES + 0.1 + TP * 0.5, { duree: 0.6 });
+['#a-devis', '#a-planning', '#a-compta', '#a-stock', '#a-mails'].forEach(function (s, i) {
+  tl.fromTo(s + ' .tag', { scale: 0.4, opacity: 0, filter: 'blur(10px)' }, { scale: 1, opacity: 1, filter: 'blur(0px)', duration: 0.4, ease: 'back.out(2)' }, MES + 0.9 + i * 0.15);
+});
+TY.sortie(tl, '#t2', 2 * MES - 0.25, { y: -60 });
+tl.to('#p2 .tag', { opacity: 0, scale: 0.8, filter: 'blur(8px)', duration: 0.22, ease: 'power2.in' }, 2 * MES - 0.25);
+
+TY.voir(tl, 'p3', 2 * MES + 0.05, 3 * MES - 0.02);
+TY.monte(tl, '#t3 .ligne:nth-child(1)', 2 * MES + 0.08, { duree: 0.55 });
+TY.monte(tl, '#t3 .ligne:nth-child(2)', 2 * MES + 0.08 + TP * 0.5, { duree: 0.55 });
+TY.slam(tl, '#t3x', 2 * MES + 3 * TP, { de: 1.9, force: 1.6, duree: 0.32 });
+TY.sortie(tl, '#t3', 3 * MES - 0.25, { y: -60 });
+TY.sortie(tl, '#t3x', 3 * MES - 0.25, { y: 60 });
+
+TY.voir(tl, 'p4', 3 * MES + 0.02, 4 * MES - 0.02);
+TY.slam(tl, '#t4n', 3 * MES + 0.04, { de: 2.0, force: 1.5, duree: 0.34 });
+TY.monte(tl, '#t4 .sous:nth-of-type(2)', 3 * MES + 0.35, { duree: 0.55, pas: 0.04 });
+TY.monte(tl, '#t4 .sous:nth-of-type(3)', 3 * MES + 0.5, { duree: 0.55, pas: 0.04 });
+tl.fromTo('#t4 .source', { opacity: 0 }, { opacity: 1, duration: 0.5, ease: 'none' }, 3 * MES + 0.9);
+TY.sortie(tl, '#t4', 4 * MES - 0.25, { y: -60 });
+
+TY.voir(tl, 'p5', 4 * MES + 0.05, 5 * MES - 0.02);
+TY.monte(tl, '#t5 .lead', 4 * MES + 0.08, { duree: 0.55, pas: 0.04 });
+TY.slam(tl, '#t5 .ligne:nth-child(2)', 4 * MES + 0.08 + TP, { de: 1.6, force: 1.2 });
+TY.slam(tl, '#t5 .ligne:nth-child(3)', 4 * MES + 0.08 + TP * 1.5, { de: 1.8, force: 1.3 });
+TY.sortie(tl, '#t5', 5 * MES - 0.25, { y: -60 });
+
+TY.voir(tl, 'p6', 5 * MES + 0.05, 6 * MES - 0.02);
+TY.monte(tl, '#t6 .ligne:nth-child(1)', 5 * MES + 0.08, { duree: 0.55 });
+TY.monte(tl, '#t6 .ligne:nth-child(2)', 5 * MES + 0.08 + TP * 0.5, { duree: 0.55 });
+TY.monteFlou(tl, '#t6s', 5 * MES + 0.08 + TP * 2, { duree: 0.6, pas: 0.06 });
+TY.sortie(tl, '#t6', 6 * MES - 0.25, { y: -60 });
+
+TY.voir(tl, 'p7', 6 * MES + 0.05, 7 * MES - 0.02);
+TY.monte(tl, '#t7 .ligne:nth-child(1)', 6 * MES + 0.08, { duree: 0.55 });
+TY.monte(tl, '#t7 .ligne:nth-child(2)', 6 * MES + 0.08 + TP * 0.5, { duree: 0.55 });
+TY.slam(tl, '#t7 .ligne:nth-child(3)', 6 * MES + 0.08 + TP * 1.5, { de: 1.7, force: 1.2 });
+TY.sortie(tl, '#t7', 7 * MES - 0.25, { y: 60 });
+
+TY.voir(tl, 'p8', 7 * MES + 0.05, 8 * MES - 0.02);
+TY.slam(tl, '#t8 .ligne:nth-child(1)', 7 * MES + 0.08, { de: 1.5, force: 1.1 });
+TY.slam(tl, '#t8 .ligne:nth-child(2)', 7 * MES + 0.08 + TP, { de: 1.7, force: 1.3 });
+TY.sortie(tl, '#t8', 8 * MES - 0.25, { y: 60 });
+
+const T_R = 8 * MES + 1.3;
+FIN.installer(tl, T_R, DUREE);
+const LOGO = FIN.LOGO;
+TY.eclair(tl, '#flash', 4 * MES, { max: 0.55, fondu: 0.45 });
+TY.eclair(tl, '#flash', 8 * MES + 0.3, { max: 0.8, fondu: 0.5 });
+tl.set({}, {}, DUREE);
+
+/* ════════════════════════════════════════════════════════════
+   LE MONDE : un plan technique, la nuit. Des îlots d'outils en blocs,
+   filets clairs sur fond indigo, et l'information qui circule.
+   ════════════════════════════════════════════════════════════ */
+const monde = new Monde(document.getElementById('monde'), { brume: 0.02, bloom: [0.65, 0.45, 0.8] });
+const hasard = prng(100100);
+const CIEL = C.ciel, CORAIL = C.corail, CREME = C.creme;
+const TOUR = Math.PI * 2;
+const T = { annee: 0, ilots: MES, saisie: 2 * MES, cout: 3 * MES, releve: 4 * MES, relie: 5 * MES, heures: 6 * MES, etapes: 7 * MES, marque: 8 * MES };
+T.flashR = T.marque + 0.3;
+
+/* L'année : 47 semaines de travail, en grille face à la caméra. */
+const ANNEE_O = [0, 0.6, 4.0];
+/* (la caméra regarde sous la grille pour la placer haut dans le cadre, ou au-dessus pour la placer bas) */
+const SEMAINES = [];
+for (let i = 0; i < 47; i++) { const c = i % 6, r = Math.floor(i / 6); SEMAINES.push([(c - 2.5) * 0.34, (3.5 - r) * 0.34, 0]); }
+/* Les six semaines perdues (≈ 209 h ÷ 35 h). */
+const PERDUES = [7, 14, 22, 29, 35, 41];
+
+/* Les îlots : cinq outils, en zigzag dans le cadre vertical. */
+const B_ = (p, t, c, extra) => Object.assign({ p, t, c }, extra || {});
+const ILOTS = [
+  { nom: 'devis', tag: 'a-devis', o: [-1.2, 3.1, -0.8], blocs: [
+    B_([-0.15, 0.12, 0.02], [1.1, 0.03, 1.3], 'papier', { rot: [0, 0.18, 0] }), B_([0.05, 0.16, -0.04], [1.1, 0.03, 1.3], 'papier', { rot: [0, -0.1, 0] }),
+    B_([0.22, 0.2, 0.06], [1.1, 0.03, 1.3], 'creme', { rot: [0, 0.26, 0] }), B_([0.2, 0.225, -0.3], [0.62, 0.02, 0.09], 'plein', { rot: [0, 0.26, 0] }), B_([0.16, 0.225, -0.1], [0.5, 0.02, 0.07], 'neuf', { rot: [0, 0.26, 0] }) ] },
+  { nom: 'planning', tag: 'a-planning', o: [1.25, 1.5, 0.4], blocs: [] },
+  { nom: 'compta', tag: 'a-compta', o: [-1.3, -0.1, 0.6], blocs: [] },
+  { nom: 'stock', tag: 'a-stock', o: [1.2, -1.8, -0.6], blocs: [
+    B_([-0.45, 0.3, -0.2], [0.44, 0.4, 0.44], 'papier'), B_([0.02, 0.3, -0.2], [0.44, 0.4, 0.44], 'papier'), B_([0.49, 0.3, -0.2], [0.44, 0.4, 0.44], 'papier'),
+    B_([-0.22, 0.72, -0.2], [0.44, 0.4, 0.44], 'creme'), B_([0.25, 0.72, -0.2], [0.44, 0.4, 0.44], 'creme'), B_([0.1, 0.25, 0.42], [0.6, 0.3, 0.4], 'neuf') ] },
+  { nom: 'mails', tag: 'a-mails', o: [-1.0, -3.4, 0.3], blocs: [
+    B_([0, 0.14, 0], [1.2, 0.06, 0.75], 'creme'), B_([0.1, 0.21, -0.06], [1.2, 0.06, 0.75], 'papier'), B_([0.2, 0.28, -0.12], [1.2, 0.06, 0.75], 'neuf'), B_([0.62, 0.33, -0.3], [0.14, 0.04, 0.14], 'ciel') ] },
+];
+for (let r = 0; r < 3; r++) for (let c = 0; c < 3; c++) ILOTS[1].blocs.push(B_([(c - 1) * 0.44, 0.14, (r - 1) * 0.4], [0.32, 0.1, 0.28], (r * 3 + c) % 4 === 1 ? 'ciel' : 'neuf'));
+[0.35, 0.6, 0.45, 0.8].forEach((h, i) => ILOTS[2].blocs.push(B_([-0.55 + 0.37 * i, 0.08 + h / 2, 0], [0.26, h, 0.5], i === 3 ? 'ciel' : 'neuf')));
+ILOTS.forEach((il, k) => {
+  il.blocs.unshift(B_([0, 0, 0], [2.1, 0.14, 1.6], 'plein'));
+  il.arr = T.ilots + 0.15 + k * 0.14;
+  il.cote = il.o[0] < 0 ? -1 : 1;
+});
+/* Le paquet d'information : saisi dans trois outils, à la main. */
+const SAISIES = [[0, T.saisie + 0.15], [2, T.saisie + TP + 0.15], [3, T.saisie + 2 * TP + 0.15]];
+/* Le trajet unique, une fois les outils reliés. */
+const TRAJET = [0, 1, 2, 3, 4];
+const LIENS_ILOTS = [[0, 1], [1, 2], [2, 3], [3, 4], [0, 2], [1, 3], [2, 4]];
+/* Les cinq étapes. */
+const ETAPES = [0, 1, 2, 3, 4].map((i) => ({ x: -1.0 + 0.5 * i, h: 0.3 + 0.28 * i }));
+const SOL_ETAPES = -1.25;
+
+const blocs = new Blocs(monde, 260, { arete: 0.016, areteCouleur: '#9FD3FF' });
+const grille = new Nuee(monde, 1300, { additif: true });
+const GRILLE = [];
+for (let x = -12; x <= 12; x++) for (let z = -16; z <= 10; z++) GRILLE.push([x * 0.8, -5.2, z * 0.8]);
+const pous = new Nuee(monde, 1100);
+const POUS = [];
+for (let i = 0; i < 1100; i++) POUS.push({ p: [(hasard() - 0.5) * 22, (hasard() - 0.5) * 26, 8 - hasard() * 30], k: 0.3 + hasard() * 0.5, tai: 0.012 + hasard() * 0.02, ph: hasard() * 6.28, c: hasard() < 0.3 });
+const carte = new Liens(monde, 40, { largeur: 2.2, pointille: [0.14, 0.1] });
+const liens = new Liens(monde, 60, { largeur: 3.2 });
+const paquet = new Nuee(monde, 12);
+const trainee = new Liens(monde, 30, { largeur: 5 });
+let nappe = null;
+const rN = new Nuee(monde, 6);
+const rL = new Liens(monde, 6, { largeur: 13, brume: false });
+const finPous = new Nuee(monde, 500);
+const FIN_POUS = [];
+let R_MONDE = null;
+
+/* ── La caméra : posée, des mouvements amples et précis ── */
+function orbite(az, el, r, c) { return [c[0] + r * Math.cos(el) * Math.sin(az), c[1] + r * Math.sin(el), c[2] + r * Math.cos(el) * Math.cos(az)]; }
+const PLANS = [
+  [0, [0, 0.05, 4.0], 0.0, 0.04, 9.6, null],
+  [T.ilots - 0.05, [0, 0.05, 4.0], 0.05, 0.06, 9.0, 'sine.inOut'],
+  [T.ilots + 1.0, [0, 1.6, 0], 0.3, 0.24, 22.5, 'expo.inOut'],
+  [T.saisie - 0.05, [0, 1.6, 0], 0.36, 0.26, 22.0, 'sine.inOut'],
+  [T.saisie + 0.35, [0, 0.95, 0], 0.42, 0.28, 20.0, 'power2.inOut'],
+  [T.cout - 0.05, [0, 0.95, 0], 0.48, 0.28, 19.5, 'sine.inOut'],
+  [T.cout + 0.5, [0, 1.65, 4.0], 0.14, 0.06, 11.2, 'expo.inOut'],
+  [T.releve - 0.05, [0, 1.65, 4.0], 0.08, 0.06, 10.8, 'sine.inOut'],
+  [T.releve + 0.6, [0, -0.2, 0], 0.62, 0.5, 21.0, 'expo.inOut'],
+  [T.relie - 0.05, [0, -0.2, 0], 0.72, 0.46, 20.5, 'sine.inOut'],
+  [T.relie + 0.5, [0, 0.2, 0], 0.9, 0.3, 19.5, 'expo.inOut'],
+  [T.heures - 0.05, [0, 0.2, 0], 1.0, 0.28, 19.0, 'sine.inOut'],
+  [T.heures + 0.5, [0, -0.1, 4.0], 0.1, 0.05, 10.0, 'expo.inOut'],
+  [T.etapes - 0.05, [0, -0.1, 4.0], 0.05, 0.05, 9.6, 'sine.inOut'],
+  [T.etapes + 0.5, [0.1, -1.0, 3.4], -0.3, 0.3, 8.6, 'expo.inOut'],
+  [T.marque - 0.02, [0.1, -1.0, 3.4], -0.38, 0.3, 8.2, 'sine.inOut'],
+];
+const pCible = piste(PLANS.map((k) => [k[0], k[1], k[5]]));
+const pAz = piste(PLANS.map((k) => [k[0], k[2], k[5]]));
+const pEl = piste(PLANS.map((k) => [k[0], k[3], k[5]]));
+const pR = piste(PLANS.map((k) => [k[0], k[4], k[5]]));
+const R_POINT = [0, 1.2, 0];
+let P_R = null;
+function pose(t) {
+  if (t < T.marque) {
+    const c = pCible(t);
+    return { pos: orbite(pAz(t), pEl(t), pR(t), c), cible: c, roulis: 0.02 * Math.sin(t * 0.5), fov: 34 };
+  }
+  const depart = pose(T.marque - 1e-3);
+  if (!P_R) P_R = orbite(0.0, 0.0, 15, R_POINT);
+  const q = fen(t, T.marque, T.flashR + 0.4, 'expo.inOut');
+  return { pos: mix3(depart.pos, P_R, q), cible: mix3(depart.cible, R_POINT, q), roulis: 0, fov: 34 };
+}
+function vitessePx(t) {
+  const a = pose(t), b = pose(Math.max(0, t - 1 / FPS));
+  const da = add3(a.cible, mul3(a.pos, -1)), db = add3(b.cible, mul3(b.pos, -1));
+  const ang = Math.acos(Math.min(1, (da[0] * db[0] + da[1] * db[1] + da[2] * db[2]) / (len3(da) * len3(db))));
+  const dep = len3(add3(a.pos, mul3(b.pos, -1)));
+  return ang * 3150 + (dep / Math.max(3, len3(da))) * 900;
+}
+
+function construire() {
+  /* La nappe du relevé : une feuille de lumière horizontale. */
+  const mat = new THREE.ShaderMaterial({
+    uniforms: { uA: { value: 0 }, uC: { value: new THREE.Color(CIEL) } },
+    vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+    fragmentShader: `uniform float uA; uniform vec3 uC; varying vec2 vUv;
+      void main(){ vec2 d = vUv - 0.5; float r = length(d) * 2.0; float a = (1.0 - smoothstep(0.55, 1.0, r)) * uA;
+        float bord = smoothstep(0.03, 0.0, abs(r - 0.98)) * uA * 1.5; gl_FragColor = vec4(uC * (a * 0.35 + bord), 1.0); }`,
+    transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide,
+  });
+  nappe = new THREE.Mesh(new THREE.PlaneGeometry(9, 9), mat);
+  nappe.rotation.x = -Math.PI / 2;
+  nappe.frustumCulled = false;
+  monde.scene.add(nappe);
+  const fin = pose(T.flashR + 0.6);
+  monde.viser(fin.pos, fin.cible, 0, 34);
+  R_MONDE = LOGO.ecran.map((e) => depuisEcran(monde, e[0], e[1], 15));
+  R_MONDE.pxParUnite = monde.echelle / 15;
+  for (let i = 0; i < 500; i++) {
+    const d = 3 + Math.pow(hasard(), 0.8) * 30;
+    FIN_POUS.push({ p: depuisEcran(monde, hasard() * 1500 - 210, hasard() * 2500 - 290, d), v: [(hasard() - 0.5) * 0.1, 0.05 + hasard() * 0.08, 0], k: 0.25 + hasard() * 0.55, tai: 0.012 + hasard() * 0.03, ph: hasard() * 6.28 });
+  }
+}
+
+function ancrer(id, p, dx, dy) {
+  /* Une étiquette suit son point 3D, sans jamais sortir du cadre. */
+  const e = versEcran(monde, p);
+  const el = document.getElementById(id), tag = el.firstElementChild;
+  let x = e.x + (dx || 0);
+  const marge = 44;
+  if (tag && el.classList.contains('centre')) { const w = tag.offsetWidth / 2 + marge; x = Math.max(w, Math.min(W - w, x)); }
+  else if (tag && el.classList.contains('gauche')) x = Math.max(tag.offsetWidth + marge, x);
+  else if (tag && el.classList.contains('droite')) x = Math.min(W - tag.offsetWidth - marge, x);
+  el.style.transform = 'translate(' + x.toFixed(1) + 'px,' + (e.y + (dy || 0)).toFixed(1) + 'px)';
+}
+const FONDS = [
+  [0, '#0D0B34', '#040313'], [T.releve - 0.02, '#100C3E', '#050316'], [T.releve + 0.6, '#16106A', '#070422'],
+  [T.heures, '#1A127A', '#080526'], [T.marque + 0.25, '#150F62', '#06031C'], [T.flashR, '#2616C4', '#130982'],
+];
+function fondC(t) {
+  let i = 0; while (i < FONDS.length - 1 && FONDS[i + 1][0] <= t) i++;
+  if (i === FONDS.length - 1) return [FONDS[i][1], FONDS[i][2]];
+  const a = FONDS[i], b = FONDS[i + 1], p = fen(t, a[0], b[0], 'sine.inOut');
+  return [Fond.melange(a[1], b[1], p), Fond.melange(a[2], b[2], p)];
+}
+/* Un point sur un arc entre deux îlots (le paquet voyage en cloche). */
+function arc(a, b, q, h) { const p = mix3(a, b, q); p[1] += h * 4 * q * (1 - q); return p; }
+const dessus = (k) => add3(ILOTS[k].o, [0, 0.55, 0]);
+
+/* ── L'état du monde à l'instant t ─────────────────────────── */
+monde.poser = function (t) {
+  const cam = pose(t);
+  monde.viser(cam.pos, cam.cible, cam.roulis, cam.fov);
+  const f = fondC(t);
+  monde.fond.poser(f[0], f[1], [0.5, 0.55], 0.9);
+  monde.brume = 0.022;
+  const dCible = len3(add3(cam.cible, mul3(cam.pos, -1)));
+  monde.netete(dCible, 0.18);
+  blocs.mat.uniforms.uFond.value.set(f[1]);
+  let flou = clamp01((vitessePx(t) - 6) / 30) * 1.3;
+  const avant = t < T.flashR;
+
+  /* La grille du plan, au sol, et la poussière. */
+  const aG = avant ? fen(t, 0.3, 1.5) : 0;
+  GRILLE.forEach((p, i) => grille.poser(i, p, coul(CIEL, 0.9), 0.022, aG * 0.55, 2));
+  for (let i = 0; i < 1100; i++) {
+    const d = POUS[i];
+    if (!avant) { pous.cacher(i); continue; }
+    pous.poser(i, add3(d.p, [0, 0.04 * t, 0]), coul(d.c ? CIEL : CREME, d.k * (0.75 + 0.25 * Math.sin(t * 1.6 + d.ph))), d.tai, 0.7, 0);
+  }
+
+  blocs.vider();
+  /* L'année : 47 semaines ; six partent au corail, puis reviennent. */
+  const aAnnee = t < T.ilots + 0.8 ? 1 : (t < T.cout - 0.2 ? 0 : (t < T.releve ? 1 : (t < T.heures - 0.3 ? 0 : (t < T.etapes ? 1 : 0))));
+  const apparition = (t0) => fen(t, t0, t0 + 0.5, 'expo.out');
+  SEMAINES.forEach((s, i) => {
+    let entree = 0, sortie = 0;
+    if (t < T.ilots + 0.8) { entree = fen(t, 0.05 + i * 0.012, 0.5 + i * 0.012, 'expo.out'); sortie = fen(t, T.ilots + 0.1, T.ilots + 0.8, 'power2.in'); }
+    else if (t < T.releve) { entree = apparition(T.cout - 0.2 + (i % 6) * 0.02); sortie = fen(t, T.releve - 0.35, T.releve, 'power2.in'); }
+    else if (t < T.etapes) { entree = apparition(T.heures - 0.3 + (i % 6) * 0.02); sortie = fen(t, T.etapes - 0.3, T.etapes, 'power2.in'); }
+    if (!aAnnee && entree === 0) return;
+    const vis = entree * (1 - sortie);
+    if (vis <= 0.001) return;
+    const perdue = PERDUES.indexOf(i);
+    let p = add3(ANNEE_O, s), teinte = 'ciel', eclat = 0;
+    if (perdue >= 0) {
+      const tp = T.cout + 0.45 + perdue * 0.1, tr = T.heures + 0.35 + perdue * 0.1;
+      if (t >= tp && t < T.releve) { const q = fen(t, tp, tp + 0.9, 'power2.in'); teinte = 'corail'; eclat = 0.3; p = add3(p, [0, -5 * q * q, 1.5 * q]); }
+      if (t >= T.heures - 0.3 && t < tr + 0.6) { const q = fen(t, tr, tr + 0.6, 'expo.out'); p = add3(p, [0, -5 * (1 - q), 1.5 * (1 - q)]); teinte = q < 1 ? 'corail' : 'ciel'; eclat = 0.6 * bosse(t, tr + 0.35, tr + 0.9); }
+      if (t >= T.releve && t < T.heures - 0.3) return;
+    }
+    blocs.ajouter(add3(p, [0, 0, -3 * (1 - vis)]), [0.27 * vis, 0.1, 0.27 * vis], [Math.PI / 2, 0, 0], teinte, eclat);
+  });
+
+  /* Les îlots. */
+  const releve = fen(t, T.releve + 0.1, T.releve + 1.3, 'power1.inOut');
+  const yNappe = lerp(5.2, -5.2, releve);
+  const versR = t >= T.marque ? fen(t, T.marque, T.flashR + 0.4, 'expo.inOut') : 0;
+  ILOTS.forEach((il, k) => {
+    const q = fen(t, il.arr, il.arr + 0.7, 'expo.out');
+    if (q <= 0 || versR >= 1) return;
+    /* Les îlots reculent dans la brume quand on parle d'autre chose (le coût, les heures, les étapes). */
+    const recul = Math.max(
+      fen(t, T.cout - 0.25, T.cout + 0.4, 'power3.inOut') * (1 - fen(t, T.releve - 0.2, T.releve + 0.3, 'power3.inOut')),
+      fen(t, T.heures - 0.35, T.heures + 0.4, 'power3.inOut') * (1 - fen(t, T.marque - 0.1, T.marque + 0.4, 'power3.inOut')));
+    const o = add3(il.o, [0, -6 * (1 - q) + 0.06 * Math.sin(t * 1.1 + k), -9 * recul]);
+    const s = 1 - versR;
+    il.blocs.forEach((b, i) => {
+      let eclat = 0;
+      if (t >= T.releve && t < T.relie) eclat = Math.max(0, 1 - Math.abs(o[1] + b.p[1] - yNappe) * 2.2) * 1.3;
+      if (t >= T.relie && t < T.heures) eclat = Math.max(eclat, 0.25 * bosse(t, T.relie + 0.2 + k * 0.1, T.relie + 0.9 + k * 0.1));
+      const p = add3(o, mul3(b.p, s));
+      blocs.ajouter(mix3(p, R_MONDE ? R_MONDE[k] : p, versR), [b.t[0] * s, b.t[1] * s, b.t[2] * s], b.rot || [0, 0, 0], b.c, eclat);
+    });
+  });
+  /* Les étapes. */
+  if (t >= T.etapes - 0.3 && t < T.flashR) ETAPES.forEach((e, i) => {
+    const q = fen(t, T.etapes - 0.3 + i * 0.06, T.etapes + 0.25 + i * 0.06, 'expo.out');
+    const ti = T.etapes + 0.5 + i * TP * 0.5, on = t >= ti;
+    const s = 1 - versR;
+    const h = e.h * q;
+    blocs.ajouter([e.x, SOL_ETAPES + h / 2 - 2 * (1 - q), 3.4], [0.5 * s, h * s, 0.8 * s], [0, 0, 0], on ? 'ciel' : 'plein', on ? 0.6 * bosse(t, ti, ti + 0.45) : 0);
+  });
+
+  /* Les étiquettes des outils. */
+  if (t > T.ilots + 0.6 && t < T.saisie) ILOTS.forEach((il) => ancrer(il.tag, add3(il.o, [0, 0.35, 0]), 0, -150));
+
+  /* La nappe du relevé. */
+  if (nappe) {
+    nappe.visible = t > T.releve && t < T.releve + 1.6;
+    nappe.position.set(0, yNappe, 0);
+    nappe.material.uniforms.uA.value = bosse(t, T.releve, T.releve + 1.5);
+  }
+  /* La carte : des pointillés entre les îlots, tracés après le relevé. */
+  carte.vider();
+  if (t >= T.releve + 0.6 && t < T.marque) LIENS_ILOTS.forEach(([a, b], k) => {
+    const q = fen(t, T.releve + 0.6 + k * 0.1, T.releve + 1.1 + k * 0.1, 'power2.out');
+    const aC = 1 - fen(t, T.relie, T.relie + 0.5);
+    if (aC > 0) carte.ajouter(ILOTS[a].o, ILOTS[b].o, coul(CIEL, 1.4 * aC), coul(CIEL, 1.4 * aC), q);
+  });
+  /* Les liens : on relie ce qui existe. */
+  liens.vider();
+  if (t >= T.relie && t < T.flashR) LIENS_ILOTS.forEach(([a, b], k) => {
+    const q = fen(t, T.relie + k * 0.07, T.relie + 0.4 + k * 0.07, 'expo.out');
+    liens.ajouter(ILOTS[a].o, ILOTS[b].o, coul(CIEL, 1.6 * (1 - versR)), coul(CIEL, 1.6 * (1 - versR)), q);
+    for (let w = 0; w < 2; w++) {
+      const d0 = T.relie + 0.7 + w * 0.6 + k * 0.05;
+      const u = fen(t, d0, d0 + 0.5, 'power1.inOut');
+      if (u > 0 && u < 1) liens.ajouter(ILOTS[a].o, ILOTS[b].o, coul(CREME, 3), coul(CREME, 3), Math.min(1, u + 0.06), Math.max(0, u - 0.06));
+    }
+  });
+
+  /* Le paquet d'information. */
+  paquet.toutCacher(); trainee.vider();
+  if (t >= T.saisie && t < T.cout) {
+    /* Saisi trois fois : trois paquets, un par outil, chacun tapé à la main. */
+    SAISIES.forEach(([k, t0], i) => {
+      if (t < t0) return;
+      const p = dessus(k);
+      const tape = fen(t, t0, t0 + 0.25, 'steps(4)');
+      paquet.poser(i, p, coul(CORAIL, 3.2 * tape + 2.5 * bosse(t, t0, t0 + 0.3)), 0.2, 1, 2);
+      paquet.poser(3 + i, p, coul(CORAIL, 1.2), 0.9, 0.35 * tape, 0);
+      if (i > 0) { const [kp] = SAISIES[i - 1]; trainee.ajouter(dessus(kp), p, coul(CORAIL, 0.7), coul(CORAIL, 0.7), fen(t, t0 - 0.2, t0, 'power2.in')); }
+    });
+  }
+  if (t >= T.relie + 0.9 && t < T.heures) {
+    /* Une seule fois, d'un bout à l'autre : l'information circule seule. */
+    const u = fen(t, T.relie + 0.9, T.relie + 2.1, 'power2.inOut') * (TRAJET.length - 1);
+    const i = Math.min(TRAJET.length - 2, Math.floor(u)), q = u - i;
+    const p = arc(dessus(TRAJET[i]), dessus(TRAJET[i + 1]), q, 0.6);
+    paquet.poser(0, p, coul(CIEL, 4), 0.2, 1, 2);
+    paquet.poser(1, p, coul(CIEL, 1.4), 1.0, 0.4, 0);
+    for (let k = 1; k <= 8; k++) {
+      const u2 = Math.max(0, u - k * 0.05), i2 = Math.min(TRAJET.length - 2, Math.floor(u2));
+      const u3 = Math.max(0, u - (k - 1) * 0.05), i3 = Math.min(TRAJET.length - 2, Math.floor(u3));
+      trainee.ajouter(arc(dessus(TRAJET[i2]), dessus(TRAJET[i2 + 1]), u2 - i2, 0.6), arc(dessus(TRAJET[i3]), dessus(TRAJET[i3 + 1]), u3 - i3, 0.6), coul(CIEL, 2.5 * (1 - k / 9)), coul(CIEL, 2.5 * (1 - (k - 1) / 9)), 1);
+    }
+    flou = Math.max(flou, 0.5);
+  }
+
+  /* La marque : les cinq îlots et le paquet deviennent les six nœuds du R. */
+  rL.vider();
+  if (t >= T.marque && R_MONDE) {
+    const aR = 1 - fen(t, T_R + 0.05, T_R + 0.32);
+    const px = R_MONDE.pxParUnite;
+    for (let i = 0; i < 6; i++) {
+      const depart = i < 5 ? ILOTS[i].o : dessus(4);
+      const q = fen(t, T.marque + i * 0.04, T.flashR + 0.4 + i * 0.04, 'expo.inOut');
+      rN.poser(i, mix3(depart, R_MONDE[i], q), coul(CREME, 0.98 + 0.4 * bosse(t, T.flashR, T.flashR + 0.7)), (i === 3 ? 14 : 11) * LOGO.s0 / px, aR * fen(t, T.marque + 0.3, T.marque + 0.5), 2);
+    }
+    R_LIENS.forEach(([a, b], k) => {
+      const q = fen(t, T.flashR + 0.2 + k * 0.06, T.flashR + 0.4 + k * 0.06, 'power3.out');
+      rL.ajouter(R_MONDE[a], R_MONDE[b], coul(CREME, 0.98 * aR), coul(CREME, 0.98 * aR), q);
+    });
+    rL.mat.linewidth = 3 * LOGO.s0;
+    for (let i = 0; i < 500; i++) {
+      const d = FIN_POUS[i];
+      finPous.poser(i, add3(d.p, mul3(d.v, t - T.flashR)), coul(i % 5 === 0 ? CIEL : C.lilas, d.k * (0.7 + 0.3 * Math.sin(t * 1.5 + d.ph))), d.tai, fen(t, T.flashR, T.flashR + 0.6), 0);
+    }
+    flou = Math.max(flou, 0.7 * bosse(t, T.marque, T.flashR + 0.5));
+  } else { rN.toutCacher(); finPous.toutCacher(); }
+
+  monde.bloom.strength = t >= T.flashR ? 0.35 : 0.65;
+  return { flou: t >= T_R - 0.2 ? 0 : flou, aberration: 0.0018 + 0.004 * bosse(t, T.releve, T.releve + 0.5), expo: 1 };
+};
+
+/* ── Branchement sur HyperFrames ───────────────────────────── */
+let pret = false;
+function rendre(t) { if (pret) monde.image(Math.max(0, Math.min(DUREE - 1e-4, t))); }
+window.__rendre = rendre;
+window.addEventListener('hf-seek', (e) => rendre(e.detail.time));
+window.__hf = window.__hf || {};
+window.__hf.buildReady = window.__hf.buildReady || {};
+window.__hf.buildReady['reskope-monde'] = (async function () {
+  await document.fonts.load("600 100px 'Neue Einstellung'");
+  construire();
+  pret = true;
+  rendre(window.__hfThreeTime || 0);
+  window.__pret = true;
+})();
+</script>
+</body>
+</html>

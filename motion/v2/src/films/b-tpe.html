@@ -1,0 +1,629 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1080, height=1920">
+<title>Reskope, TPE</title>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+{{POLICES}}
+{{TYPE_CSS}}
+/* ── Film B · TPE : direct et pratique, la couleur du fil est la menthe ── */
+:root { --accent: var(--menthe); }
+#t1 { top: 1300px; font-size: 104px; }
+.legende { top: 1262px; }
+#t2 { top: 1320px; }
+#t3 { top: 286px; }
+#t3 .ligne { font-size: 150px; line-height: 0.93; }
+#t6 { top: 1240px; }
+#t6 .ligne { font-size: 132px; line-height: 0.93; }
+#t7 { top: 300px; }
+#t7 .ligne { font-size: 132px; line-height: 0.93; }
+#t8 { top: 290px; }
+#t8 .chiffre { font-size: 300px; }
+#t8 .sous { margin-top: 14px; font-size: 58px; }
+#t9 { top: 1270px; }
+</style>
+</head>
+<body>
+<div id="main" data-composition-id="main" data-width="1080" data-height="1920" data-start="0" data-duration="26.25" data-fps="30">
+  <canvas id="monde" width="1080" height="1920"></canvas>
+  <div class="flash" id="flash"></div>
+
+  <!-- 1 · Le soir -->
+  <div class="plan" id="p1">
+    <div class="bloc moyen" id="t1">
+      <div class="ligne" data-mots>Le soir,</div>
+      <div class="ligne" data-mots>vous rappelez</div>
+      <div class="ligne" data-mots>vos clients</div>
+    </div>
+  </div>
+  <div class="plan" id="p2">
+    <div class="bloc moyen" id="t2">
+      <div class="ligne" data-mots>pour caler</div>
+      <div class="ligne" data-mots>des rendez-vous.</div>
+    </div>
+  </div>
+
+  <!-- 3 · On construit ce qui vous manque -->
+  <div class="plan" id="p3">
+    <div class="bloc sombre" id="t3">
+      <div class="ligne" data-mots>On construit</div>
+      <div class="ligne" data-mots>ce qui vous</div>
+      <div class="ligne accent" data-mots>manque.</div>
+    </div>
+  </div>
+
+  <!-- 4 · Les quatre offres : une légende par temps, puis la vue d'ensemble -->
+  <div class="plan" id="p4a">
+    <div class="bloc moyen sombre legende" id="l1"><div class="ligne" data-mots>Site et boutique</div></div>
+    <div class="bloc moyen sombre legende" id="l2"><div class="ligne" data-mots>Prise de</div><div class="ligne" data-mots>rendez-vous</div></div>
+    <div class="bloc moyen sombre legende" id="l3"><div class="ligne" data-mots>Identité</div><div class="ligne" data-mots>de marque</div></div>
+    <div class="bloc moyen sombre legende" id="l4"><div class="ligne" data-mots>Aide au</div><div class="ligne" data-mots>lancement</div></div>
+  </div>
+  <div class="plan" id="p4">
+    <div class="ancre droite" id="a-site"><div class="tag clair"><i></i>Site et boutique</div></div>
+    <div class="ancre droite" id="a-rdv"><div class="tag clair"><i></i>Rendez-vous</div></div>
+    <div class="ancre droite" id="a-marque"><div class="tag clair" style="--c: var(--dessus)"><i></i>Identité</div></div>
+    <div class="ancre droite" id="a-lancement"><div class="tag clair" style="--c: var(--soleil)"><i></i>Lancement</div></div>
+  </div>
+
+  <!-- 6 · Vos clients réservent en ligne -->
+  <div class="plan" id="p6">
+    <div class="bloc sombre" id="t6">
+      <div class="ligne" data-mots>Vos clients</div>
+      <div class="ligne" data-mots>réservent</div>
+      <div class="ligne accent" data-mots>en ligne.</div>
+    </div>
+  </div>
+
+  <!-- 7 · Vous ne rappelez plus personne -->
+  <div class="plan" id="p7">
+    <div class="bloc sombre" id="t7">
+      <div class="ligne" data-mots>Et vous ne</div>
+      <div class="ligne" data-mots>rappelez plus</div>
+      <div class="ligne accent" data-mots>personne.</div>
+    </div>
+  </div>
+
+  <!-- 8 · 5 jours -->
+  <div class="plan" id="p8">
+    <div class="bloc sombre" id="t8">
+      <div class="ligne chiffre" id="t8n">5 jours</div>
+      <div class="ligne sous" data-mots>pour un site vitrine,</div>
+      <div class="ligne sous" data-mots>mis en ligne et vérifié.</div>
+    </div>
+  </div>
+
+  <!-- 9 · Les clés -->
+  <div class="plan" id="p9">
+    <div class="bloc moyen sombre" id="t9">
+      <div class="ligne" data-mots>Le code et</div>
+      <div class="ligne" data-mots>les accès sont</div>
+      <div class="ligne accent" data-mots>à votre nom.</div>
+    </div>
+  </div>
+
+{{FIN_HTML}}
+  {{AUDIO}}
+</div>
+
+<script>{{TROIS}}</script>
+<script>{{TYPE_JS}}</script>
+<script>{{MONDE_JS}}</script>
+<script>{{FIN_JS}}</script>
+<script>
+/* ════════════════════════════════════════════════════════════
+   FILM B · TPE (Karim, chauffagiste, trois salariés). 26,25 s, 128
+   battements par minute : un temps = 0,46875 s, une mesure = 1,875 s.
+
+   L'histoire : le soir, le téléphone (il rappelle ses clients) ; quatre
+   situations traversées à toute vitesse ; au temps fort, le jour se lève
+   et les blocs tombent : on construit ce qui vous manque (le site,
+   l'agenda, l'identité, le lancement) ; les clients réservent seuls ; le
+   téléphone se tait ; cinq jours pour un site ; les clés à votre nom ; la
+   marque.
+   ════════════════════════════════════════════════════════════ */
+const DUREE = 26.25;
+const TP = 60 / 128, MES = TP * 4;
+const tl = gsap.timeline({ paused: true });
+window.__timelines = window.__timelines || {};
+window.__timelines.main = tl;
+TY.decouper();
+
+/* ── Le texte ─────────────────────────────────────────────── */
+TY.voir(tl, 'p1', 0.08, MES - 0.02);
+TY.monte(tl, '#t1 .ligne:nth-child(1)', 0.1, { duree: 0.5 });
+TY.monte(tl, '#t1 .ligne:nth-child(2)', 0.1 + TP, { duree: 0.5 });
+TY.monte(tl, '#t1 .ligne:nth-child(3)', 0.1 + TP * 2, { duree: 0.5 });
+TY.sortie(tl, '#t1', MES - 0.22, { y: -50 });
+TY.voir(tl, 'p2', MES + 0.02, 2 * MES - 0.12);
+TY.monte(tl, '#t2 .ligne:nth-child(1)', MES + 0.05, { duree: 0.5 });
+TY.monte(tl, '#t2 .ligne:nth-child(2)', MES + 0.05 + TP, { duree: 0.55 });
+TY.sortie(tl, '#t2', 2 * MES - 0.34, { y: 0, scale: 1.3 });
+
+TY.voir(tl, 'p3', 4 * MES + 0.02, 5 * MES - 0.02);
+TY.slam(tl, '#t3 .ligne:nth-child(1)', 4 * MES + 0.04, { de: 1.6, force: 1.2 });
+TY.slam(tl, '#t3 .ligne:nth-child(2)', 4 * MES + 0.04 + TP, { de: 1.6, force: 1.2 });
+TY.slam(tl, '#t3 .ligne:nth-child(3)', 4 * MES + 0.04 + TP * 2, { de: 1.9, force: 1.5 });
+TY.sortie(tl, '#t3', 5 * MES - 0.24, { y: -70 });
+
+TY.voir(tl, 'p4a', 5 * MES, 6 * MES + 0.12);
+['#l1', '#l2', '#l3', '#l4'].forEach(function (s, i) {
+  const t0 = 5 * MES + 0.1 + i * TP;
+  TY.voir(tl, s.slice(1), t0 - 0.02, t0 + TP - 0.04);
+  TY.monte(tl, s, t0, { duree: 0.34, pas: 0.04 });
+});
+TY.voir(tl, 'p4', 6 * MES, 7 * MES);
+['#a-site', '#a-rdv', '#a-marque', '#a-lancement'].forEach(function (s, i) {
+  tl.fromTo(s + ' .tag', { scale: 0.4, opacity: 0, filter: 'blur(10px)' }, { scale: 1, opacity: 1, filter: 'blur(0px)', duration: 0.38, ease: 'back.out(2.2)' }, 6 * MES + 0.3 + i * 0.12);
+});
+tl.to('#p4 .tag', { opacity: 0, scale: 0.8, filter: 'blur(8px)', duration: 0.22, ease: 'power2.in' }, 7 * MES - 0.25);
+
+TY.voir(tl, 'p6', 7 * MES + 0.1, 8 * MES - 0.02);
+TY.monte(tl, '#t6 .ligne:nth-child(1)', 7 * MES + 0.12, { duree: 0.5 });
+TY.monte(tl, '#t6 .ligne:nth-child(2)', 7 * MES + 0.12 + TP * 0.5, { duree: 0.5 });
+TY.slam(tl, '#t6 .ligne:nth-child(3)', 7 * MES + 0.12 + TP * 1.5, { de: 1.7, force: 1.2 });
+TY.sortie(tl, '#t6', 8 * MES - 0.22, { y: 60 });
+
+TY.voir(tl, 'p7', 8 * MES + 0.08, 9 * MES - 0.02);
+TY.monte(tl, '#t7 .ligne:nth-child(1)', 8 * MES + 0.1, { duree: 0.5 });
+TY.monte(tl, '#t7 .ligne:nth-child(2)', 8 * MES + 0.1 + TP * 0.5, { duree: 0.5 });
+TY.slam(tl, '#t7 .ligne:nth-child(3)', 8 * MES + 0.1 + TP * 1.5, { de: 1.8, force: 1.3 });
+TY.sortie(tl, '#t7', 9 * MES - 0.22, { y: -60 });
+
+TY.voir(tl, 'p8', 9 * MES + 0.02, 10 * MES - 0.02);
+TY.slam(tl, '#t8n', 9 * MES + 0.04, { de: 2.0, force: 1.5, duree: 0.34 });
+TY.monte(tl, '#t8 .sous:nth-of-type(2)', 9 * MES + 0.3, { duree: 0.5, pas: 0.04 });
+TY.monte(tl, '#t8 .sous:nth-of-type(3)', 9 * MES + 0.45, { duree: 0.5, pas: 0.04 });
+TY.sortie(tl, '#t8', 10 * MES - 0.22, { y: -60 });
+
+TY.voir(tl, 'p9', 10 * MES + 0.06, 11 * MES - 0.02);
+TY.monte(tl, '#t9 .ligne:nth-child(1)', 10 * MES + 0.08, { duree: 0.5 });
+TY.monte(tl, '#t9 .ligne:nth-child(2)', 10 * MES + 0.08 + TP * 0.5, { duree: 0.5 });
+TY.slam(tl, '#t9 .ligne:nth-child(3)', 10 * MES + 0.08 + TP * 1.5, { de: 1.7, force: 1.2 });
+TY.sortie(tl, '#t9', 11 * MES - 0.22, { y: 60 });
+
+/* La marque (le R 3D se pose sur le R HTML à T_R). */
+const T_R = 11 * MES + 1.3;
+FIN.installer(tl, T_R, DUREE);
+const LOGO = FIN.LOGO;
+
+TY.eclair(tl, '#flash', 2 * MES, { max: 0.55, fondu: 0.3 });
+TY.eclair(tl, '#flash', 4 * MES, { max: 0.95, fondu: 0.6 });
+TY.eclair(tl, '#flash', 11 * MES + 0.375, { max: 0.9, fondu: 0.5 });
+tl.set({}, {}, DUREE);
+
+/* ════════════════════════════════════════════════════════════
+   LE MONDE
+   Le soir (la nuit, le téléphone, les situations), puis le jour : un monde
+   clair où la marque construit en blocs, vu d'en haut comme sur ses
+   planches. Les quatre constructions sont posées en colonne : le cadre est
+   vertical, la caméra descend la colonne comme on fait défiler une page.
+   ════════════════════════════════════════════════════════════ */
+const monde = new Monde(document.getElementById('monde'), { brume: 0.02, bloom: [0.7, 0.5, 0.8] });
+const hasard = prng(128128);
+const MENTHE = C.menthe, CREME = C.creme;
+const TOUR = Math.PI * 2;
+const T = { tel: 0, couloir: 2 * MES, panneaux: 2 * MES, jour: 4 * MES, tour: 5 * MES, vue: 6 * MES, agenda: 7 * MES, calme: 8 * MES, jours: 9 * MES, cles: 10 * MES, marque: 11 * MES };
+T.flashR = T.marque + TP * 0.8;
+
+/* ── Les quatre constructions ── */
+const G = [0, -6, -34];
+const B_ = (p, t, c, extra) => Object.assign({ p, t, c }, extra || {});
+const SITE = [
+  B_([0, 0.06, 0], [3.0, 0.12, 2.1], 'papier'),
+  B_([0, 0.15, -0.9], [3.0, 0.06, 0.3], 'plein'),
+  B_([-1.3, 0.2, -0.9], [0.1, 0.06, 0.1], 'corail'), B_([-1.12, 0.2, -0.9], [0.1, 0.06, 0.1], 'soleil'), B_([-0.94, 0.2, -0.9], [0.1, 0.06, 0.1], 'menthe'),
+  B_([0.25, 0.2, -0.9], [1.6, 0.04, 0.14], 'papier'),
+  B_([-0.55, 0.16, -0.18], [1.6, 0.08, 0.95], 'menthe'),
+  B_([0.85, 0.15, -0.5], [0.9, 0.05, 0.12], 'plein'), B_([0.75, 0.15, -0.3], [0.7, 0.05, 0.1], 'neuf'),
+  B_([0.8, 0.14, -0.08], [0.8, 0.03, 0.07], 'neuf'), B_([0.8, 0.14, 0.06], [0.8, 0.03, 0.07], 'neuf'),
+  B_([0.72, 0.17, 0.32], [0.64, 0.1, 0.2], 'menthe'),
+  B_([-1.0, 0.16, 0.72], [0.8, 0.1, 0.5], 'creme'), B_([0, 0.16, 0.72], [0.8, 0.1, 0.5], 'creme'), B_([1.0, 0.16, 0.72], [0.8, 0.1, 0.5], 'creme'),
+  B_([-1.0, 0.24, 0.68], [0.6, 0.06, 0.28], 'lilas'), B_([0, 0.24, 0.68], [0.6, 0.06, 0.28], 'ciel'), B_([1.0, 0.24, 0.68], [0.6, 0.06, 0.28], 'soleil'),
+];
+const AGENDA = [B_([0, 0.06, 0], [2.6, 0.12, 2.3], 'papier'), B_([0, 0.15, -0.95], [2.6, 0.06, 0.34], 'plein')];
+for (let c = 0; c < 5; c++) AGENDA.push(B_([-1.0 + 0.5 * c, 0.14, -0.62], [0.3, 0.04, 0.08], 'neuf'));
+const CRENEAUX = [];
+for (let r = 0; r < 4; r++) for (let c = 0; c < 5; c++) { CRENEAUX.push(AGENDA.length); AGENDA.push(B_([-1.0 + 0.5 * c, 0.15, -0.33 + 0.36 * r], [0.4, 0.06, 0.26], 'neuf', { creneau: true })); }
+/* L'ordre dans lequel les créneaux se prennent tout seuls (un par demi-temps). */
+const RESERVES = [6, 13, 2, 17, 9, 0, 15, 11];
+const MARQUE = [
+  B_([0, 0.05, 0], [2.6, 0.1, 2.0], 'papier'),
+  B_([-0.45, 0.14, -0.15], [1.5, 0.08, 0.9], 'creme', { rot: [0, 0.12, 0] }),
+  B_([-0.9, 0.2, -0.3], [0.18, 0.05, 0.18], 'plein', { rot: [0, 0.12, 0] }), B_([-0.68, 0.2, -0.33], [0.1, 0.05, 0.1], 'menthe', { rot: [0, 0.12, 0] }),
+  B_([-0.35, 0.19, 0.0], [0.8, 0.03, 0.08], 'plein', { rot: [0, 0.12, 0] }), B_([-0.42, 0.19, 0.14], [0.55, 0.03, 0.06], 'neuf', { rot: [0, 0.12, 0] }),
+  B_([0.85, 0.3, -0.55], [0.42, 0.5, 0.42], 'plein'), B_([0.85, 0.3, -0.02], [0.42, 0.5, 0.42], 'menthe'), B_([0.85, 0.3, 0.51], [0.42, 0.5, 0.42], 'papier'),
+];
+const LANCEMENT = [B_([0, 0.05, 0], [2.4, 0.1, 1.8], 'papier')];
+[0.3, 0.5, 0.75, 1.05, 1.4].forEach((h, i) => LANCEMENT.push(B_([-0.8 + 0.4 * i, 0.1 + h / 2, 0.1], [0.26, h, 0.26], i === 4 ? 'menthe' : 'plein', { barre: i })));
+/* En colonne, du plus proche (en bas de l'image) au plus lointain (en haut). */
+const CONSTR = [
+  { nom: 'site', o: add3(G, [0, 0, 4.7]), blocs: SITE, tag: 'a-site', cote: -1 },
+  { nom: 'rdv', o: add3(G, [0, 0, 1.55]), blocs: AGENDA, tag: 'a-rdv', cote: 1 },
+  { nom: 'marque', o: add3(G, [0, 0, -1.6]), blocs: MARQUE, tag: 'a-marque', cote: -1 },
+  { nom: 'lancement', o: add3(G, [0, 0, -4.7]), blocs: LANCEMENT, tag: 'a-lancement', cote: 1 },
+];
+CONSTR.forEach((c, ci) => c.blocs.forEach((b, i) => {
+  b.arr = T.jour + 0.12 + ci * 0.15 + i * 0.026 + hasard() * 0.05;
+  b.haut = 5 + hasard() * 4; b.derive = [(hasard() - 0.5) * 1.2, (hasard() - 0.5) * 1.2]; b.tourne = (hasard() - 0.5) * 2.4;
+  b.envol = 0.6 + hasard() * 0.8;
+}));
+const JOURS = [0, 1, 2, 3, 4].map((i) => add3(CONSTR[0].o, [-1.0 + 0.5 * i, 0.08, 1.55]));
+/* La clé : un anneau, une tige, trois dents ; elle tourne sur elle-même. */
+const CLE = [];
+for (let k = 0; k < 14; k++) { const a = (k / 14) * TOUR; CLE.push(B_([-0.7 + Math.cos(a) * 0.36, Math.sin(a) * 0.36, 0], [0.17, 0.12, 0.12], 'menthe', { rot: [0, 0, a + Math.PI / 2] })); }
+CLE.push(B_([0.33, 0, 0], [1.22, 0.13, 0.13], 'papier'));
+CLE.push(B_([0.58, -0.16, 0], [0.1, 0.2, 0.13], 'papier'), B_([0.76, -0.18, 0], [0.1, 0.25, 0.13], 'papier'), B_([0.92, -0.14, 0], [0.1, 0.17, 0.13], 'papier'));
+const CLE_O = add3(CONSTR[1].o, [0, 1.9, 0]);
+
+/* Le téléphone. */
+let telSoir = null, telCalme = null;
+const TEL_POSE = add3(CONSTR[1].o, [2.75, 0.03, 0.2]);
+/* Les panneaux des situations. */
+const SITUATIONS = [['Votre site', 'date.'], ['Tout passe par', 'le téléphone.'], ['Votre image ne', 'vous ressemble', 'plus.'], ['On ne vous trouve', 'pas en ligne.']];
+const PANNEAUX = [];
+const PZ = [-5, -12, -19, -26], PX = [0.1, -0.1, 0.08, -0.08], PY = [0, 0, 0, 0], PR = [-0.1, 0.1, -0.08, 0.08];
+const LECT = 3.45;
+const eclats = new Blocs(monde, 64, { arete: 0.004 });
+const ECLATS = [];
+for (let i = 0; i < 64; i++) ECLATS.push({ o: [(i % 8 - 3.5) * 0.14, (Math.floor(i / 8) - 3.5) * 0.06, 0], v: [(hasard() - 0.5) * 6, (hasard() - 0.5) * 4, 2.5 + hasard() * 6], rv: [hasard() * 8, hasard() * 8, hasard() * 8] });
+
+const blocs = new Blocs(monde, 260);
+const ombres = new Ombres(monde, 200, { couleur: '#1C0CB3' });
+const pous = new Nuee(monde, 1600);
+const POUS = [];
+for (let i = 0; i < 1600; i++) POUS.push({ p: [(hasard() - 0.5) * 12, (hasard() - 0.5) * 18, 7 - hasard() * 40], k: 0.3 + hasard() * 0.6, tai: 0.01 + hasard() * 0.02, ph: hasard() * 6.28, m: hasard() < 0.35 });
+const traits = new Liens(monde, 1600, { largeur: 1.5, brume: false });
+const ondes = new Nuee(monde, 24);
+const rN = new Nuee(monde, 6);
+const rL = new Liens(monde, 6, { largeur: 13, brume: false });
+const finPous = new Nuee(monde, 500);
+const FIN_POUS = [];
+let R_MONDE = null;
+
+/* ── La caméra ─────────────────────────────────────────────── */
+function orbite(az, el, r, c) { return [c[0] + r * Math.cos(el) * Math.sin(az), c[1] + r * Math.sin(el), c[2] + r * Math.cos(el) * Math.cos(az)]; }
+const cz = piste([[T.panneaux - 0.01, PZ[0] + LECT + 6], [T.panneaux + 0.24, PZ[0] + LECT, 'expo.out'], [T.panneaux + TP * 1.9, PZ[0] + LECT - 0.3, 'sine.inOut'],
+  [T.panneaux + TP * 2.55, PZ[1] + LECT, 'expo.inOut'], [T.panneaux + TP * 3.9, PZ[1] + LECT - 0.3, 'sine.inOut'],
+  [T.panneaux + TP * 4.55, PZ[2] + LECT, 'expo.inOut'], [T.panneaux + TP * 5.9, PZ[2] + LECT - 0.3, 'sine.inOut'],
+  [T.panneaux + TP * 6.55, PZ[3] + LECT, 'expo.inOut'], [T.jour, PZ[3] + LECT - 0.35, 'sine.inOut']]);
+const cx = piste([[T.panneaux, PX[0]], [T.panneaux + TP * 1.9, PX[0]], [T.panneaux + TP * 2.55, PX[1], 'expo.inOut'], [T.panneaux + TP * 3.9, PX[1]], [T.panneaux + TP * 4.55, PX[2], 'expo.inOut'], [T.panneaux + TP * 5.9, PX[2]], [T.panneaux + TP * 6.55, PX[3], 'expo.inOut']]);
+const [k0, k1, k2, k3] = CONSTR.map((c) => c.o);
+/* Les plans du jour : [t, cible, azimut, élévation, distance, courbe]. */
+const JOUR = [
+  [T.jour + 1.2, add3(G, [0, 0, -2.8]), 0.3, 0.8, 28, 'expo.out'],
+  [T.tour - 0.12, add3(G, [0, 0, -2.6]), 0.34, 0.8, 27, 'sine.inOut'],
+  [T.tour + 0.12, add3(k0, [0, 0.2, 0.75]), 0.4, 1.02, 8.0, 'expo.inOut'],
+  [T.tour + TP - 0.03, add3(k0, [0.05, 0.2, 0.75]), 0.42, 1.02, 7.7, 'sine.inOut'],
+  [T.tour + TP + 0.16, add3(k1, [0, 0.2, 0.75]), 0.44, 1.02, 8.0, 'expo.inOut'],
+  [T.tour + 2 * TP - 0.03, add3(k1, [0.05, 0.2, 0.75]), 0.46, 1.02, 7.7, 'sine.inOut'],
+  [T.tour + 2 * TP + 0.16, add3(k2, [0, 0.2, 0.75]), 0.48, 1.02, 8.0, 'expo.inOut'],
+  [T.tour + 3 * TP - 0.03, add3(k2, [0.05, 0.2, 0.75]), 0.5, 1.02, 7.7, 'sine.inOut'],
+  [T.tour + 3 * TP + 0.16, add3(k3, [0, 0.35, 0.75]), 0.52, 1.02, 8.0, 'expo.inOut'],
+  [T.vue - 0.03, add3(k3, [0.05, 0.35, 0.75]), 0.54, 1.02, 7.7, 'sine.inOut'],
+  [T.vue + 0.42, add3(G, [1.9, 0, 0.3]), 0.12, 0.92, 24, 'expo.inOut'],
+  [T.agenda - 0.05, add3(G, [1.9, 0, 0.3]), 0.08, 0.92, 23, 'sine.inOut'],
+  [T.agenda + 0.3, add3(k1, [0, 0.1, 1.75]), 0.14, 1.1, 7.2, 'expo.inOut'],
+  [T.calme - 0.05, add3(k1, [0.05, 0.1, 1.75]), 0.1, 1.12, 6.8, 'sine.inOut'],
+  [T.calme + 0.3, add3(TEL_POSE, [0, 0, -1.0]), 0.1, 1.3, 4.8, 'expo.inOut'],
+  [T.jours - 0.05, add3(TEL_POSE, [0, 0, -1.0]), 0.06, 1.32, 4.5, 'sine.inOut'],
+  [T.jours + 0.28, add3(k0, [0, 0.1, -1.7]), 0.2, 1.0, 9.6, 'expo.inOut'],
+  [T.cles - 0.05, add3(k0, [0.05, 0.1, -1.7]), 0.24, 1.0, 9.2, 'sine.inOut'],
+  [T.cles + 0.3, add3(CLE_O, [0, -1.0, 0]), 0.5, 0.18, 8.6, 'expo.inOut'],
+  [T.marque - 0.02, add3(CLE_O, [0, -1.0, 0]), 0.62, 0.16, 8.2, 'sine.inOut'],
+];
+const jourCible = piste(JOUR.map((k) => [k[0], k[1], k[5]]));
+const jourAz = piste(JOUR.map((k) => [k[0], k[2], k[5]]));
+const jourEl = piste(JOUR.map((k) => [k[0], k[3], k[5]]));
+const jourR = piste(JOUR.map((k) => [k[0], k[4], k[5]]));
+const R_POINT = add3(CLE_O, [0, 5.5, 0]);
+let P_R = null, D_R = null;
+function pose(t) {
+  if (t < T.panneaux) {
+    /* On plonge dans le bouton « Rappeler » (en bas de l'écran du téléphone). */
+    const p = fen(t, 0, T.panneaux, 'sine.inOut'), dive = fen(t, T.panneaux - 0.55, T.panneaux, 'power3.in');
+    const y = lerp(-0.44, -0.66, dive);
+    return { pos: [0.04 * (1 - dive) + 0.015 * houle(t, 1), y + 0.02 + 0.015 * houle(t, 2), 5.6 - 0.5 * p - 4.85 * dive], cible: [0, y, 0], roulis: 0.01 * houle(t, 3), fov: 34 };
+  }
+  if (t < T.jour) {
+    const z = cz(t), x = cx(t);
+    return { pos: [x * 0.4, 0, z], cible: [x * 0.8, 0, z - 5], roulis: 0.035 * Math.sin(t * 2.3), fov: 34 };
+  }
+  if (t < T.jour + 1.2) {
+    /* La grue : du couloir jusqu'au-dessus du monde clair. */
+    const q = fen(t, T.jour, T.jour + 1.2, 'expo.out');
+    const debut = { pos: [PX[3] * 0.4, 0, PZ[3] + LECT - 0.35], cible: [PX[3] * 0.8, 0, PZ[3] + LECT - 5.35] };
+    const c = add3(G, [0, 0, -2.8]);
+    return { pos: mix3(debut.pos, orbite(0.3, 0.8, 28, c), q), cible: mix3(debut.cible, c, Math.pow(q, 0.6)), roulis: 0.25 * (1 - q) * Math.sin(q * 3), fov: 34 };
+  }
+  if (t < T.marque) {
+    const c = jourCible(t);
+    return { pos: orbite(jourAz(t), jourEl(t), jourR(t), c), cible: c, roulis: 0, fov: 34 };
+  }
+  /* La marque : la caméra suit les blocs qui s'envolent, puis regarde le R en face. */
+  const depart = pose(T.marque - 1e-3);
+  if (!P_R) { P_R = orbite(0.62, 0.02, 15, R_POINT); D_R = mul3(add3(R_POINT, mul3(P_R, -1)), 1 / 15); }
+  const q = fen(t, T.marque, T.flashR + 0.3, 'expo.inOut');
+  return { pos: mix3(depart.pos, P_R, q), cible: mix3(depart.cible, R_POINT, q), roulis: 0, fov: 34 };
+}
+function vitessePx(t) {
+  const a = pose(t), b = pose(Math.max(0, t - 1 / FPS));
+  const da = add3(a.cible, mul3(a.pos, -1)), db = add3(b.cible, mul3(b.pos, -1));
+  const ang = Math.acos(Math.min(1, (da[0] * db[0] + da[1] * db[1] + da[2] * db[2]) / (len3(da) * len3(db))));
+  const dep = len3(add3(a.pos, mul3(b.pos, -1)));
+  return ang * 3150 + (dep / Math.max(3, len3(da))) * 900;
+}
+
+/* ── Le téléphone : dessiné une fois, en deux états ── */
+function dessinTel(etat) {
+  const L = 720, Ht = 1480, toile = document.createElement('canvas');
+  toile.width = L; toile.height = Ht;
+  const g = toile.getContext('2d');
+  g.fillStyle = '#17132F'; g.beginPath(); g.roundRect(0, 0, L, Ht, 96); g.fill();
+  g.strokeStyle = 'rgba(240,238,232,0.2)'; g.lineWidth = 4; g.stroke();
+  g.fillStyle = '#0B0920'; g.beginPath(); g.roundRect(22, 22, L - 44, Ht - 44, 76); g.fill();
+  g.fillStyle = '#17132F'; g.beginPath(); g.roundRect(L / 2 - 90, 44, 180, 46, 23); g.fill();
+  const police = (p, t) => `${p} ${t}px 'Neue Einstellung'`;
+  const carte = (y, titre, sous, c) => {
+    g.fillStyle = 'rgba(240,238,232,0.1)'; g.beginPath(); g.roundRect(52, y, L - 104, 190, 44); g.fill();
+    g.fillStyle = c; g.beginPath(); g.arc(110, y + 95, 16, 0, 7); g.fill();
+    g.textAlign = 'left'; g.fillStyle = '#F0EEE8'; g.font = police(500, 46); g.fillText(titre, 158, y + 86);
+    g.fillStyle = 'rgba(240,238,232,0.62)'; g.font = police(400, 38); g.fillText(sous, 158, y + 138); g.textAlign = 'center';
+  };
+  g.textAlign = 'center'; g.fillStyle = '#F0EEE8';
+  if (etat === 'soir') {
+    g.font = police(600, 190); g.fillText('21:47', L / 2, 370);
+    carte(470, '4 appels manqués', 'À rappeler ce soir', '#EF6F5E');
+    carte(684, '2 messages vocaux', 'Un devis, un rendez-vous', '#EF6F5E');
+    g.fillStyle = '#2FAE8E'; g.beginPath(); g.roundRect(150, 1180, L - 300, 120, 60); g.fill();
+    g.fillStyle = '#0B0920'; g.font = police(600, 52); g.fillText('Rappeler', L / 2, 1258);
+  } else {
+    g.font = police(600, 170); g.fillText('9:12', L / 2, 340);
+    carte(440, 'Rendez-vous confirmé', 'Réservé en ligne', '#2FAE8E');
+    carte(654, 'Rappel envoyé', 'La veille, au client', '#2FAE8E');
+    carte(868, 'Rendez-vous confirmé', 'Réservé en ligne', '#2FAE8E');
+    g.fillStyle = 'rgba(240,238,232,0.55)'; g.font = police(400, 46); g.fillText('Aucun appel à passer', L / 2, 1250);
+  }
+  const tex = new THREE.CanvasTexture(toile);
+  tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = 8;
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(0.95, 0.95 * Ht / L), new THREE.MeshBasicMaterial({ map: tex, transparent: true, toneMapped: false, depthWrite: false }));
+  m.frustumCulled = false;
+  m.rotation.order = 'YXZ';
+  monde.scene.add(m);
+  return m;
+}
+
+function construire() {
+  telSoir = dessinTel('soir');
+  telCalme = dessinTel('calme');
+  SITUATIONS.forEach((l) => PANNEAUX.push(new Panneau(monde, l, { corps: 110, largeur: 1000, marge: 64, fond: 'rgba(12,9,38,0.66)', bord: 'rgba(240,238,232,0.3)', epBord: 4, rayon: 58, echelle: 0.00104, interligne: 1.0 })));
+  /* Le R, là où le logo HTML le dessine, 15 unités devant la caméra finale. */
+  const fin = pose(T.flashR + 0.5);
+  monde.viser(fin.pos, fin.cible, 0, 34);
+  R_MONDE = LOGO.ecran.map((e) => depuisEcran(monde, e[0], e[1], 15));
+  R_MONDE.pxParUnite = monde.echelle / 15;
+  for (let i = 0; i < 500; i++) {
+    const d = 3 + Math.pow(hasard(), 0.8) * 30;
+    FIN_POUS.push({ p: depuisEcran(monde, hasard() * 1500 - 210, hasard() * 2500 - 290, d), v: [(hasard() - 0.5) * 0.1, 0.05 + hasard() * 0.08, 0], k: 0.25 + hasard() * 0.55, tai: 0.012 + hasard() * 0.03, ph: hasard() * 6.28 });
+  }
+}
+
+function ancrer(id, p, dx, dy) {
+  /* Une étiquette suit son point 3D, sans jamais sortir du cadre. */
+  const e = versEcran(monde, p);
+  const el = document.getElementById(id), tag = el.firstElementChild;
+  let x = e.x + (dx || 0);
+  const marge = 44;
+  if (tag && el.classList.contains('centre')) { const w = tag.offsetWidth / 2 + marge; x = Math.max(w, Math.min(W - w, x)); }
+  else if (tag && el.classList.contains('gauche')) x = Math.max(tag.offsetWidth + marge, x);
+  else if (tag && el.classList.contains('droite')) x = Math.min(W - tag.offsetWidth - marge, x);
+  el.style.transform = 'translate(' + x.toFixed(1) + 'px,' + (e.y + (dy || 0)).toFixed(1) + 'px)';
+}
+const FONDS = [
+  [0, '#0E0B2E', '#040212'], [T.panneaux, '#150B38', '#050215'], [T.jour - 0.02, '#170C3A', '#060216'],
+  [T.jour, '#FBFAF7', '#E2DEEC'], [T.flashR - 0.02, '#FBFAF7', '#E2DEEC'], [T.flashR, '#2616C4', '#130982'],
+];
+function fondB(t) {
+  let i = 0; while (i < FONDS.length - 1 && FONDS[i + 1][0] <= t) i++;
+  if (i === FONDS.length - 1) return [FONDS[i][1], FONDS[i][2]];
+  const a = FONDS[i], b = FONDS[i + 1], p = fen(t, a[0], b[0], 'sine.inOut');
+  return [Fond.melange(a[1], b[1], p), Fond.melange(a[2], b[2], p)];
+}
+function rotY(p, a, c) { const x = p[0] - c[0], z = p[2] - c[2]; return [c[0] + x * Math.cos(a) + z * Math.sin(a), p[1], c[2] - x * Math.sin(a) + z * Math.cos(a)]; }
+
+/* ── L'état du monde à l'instant t ─────────────────────────── */
+monde.poser = function (t) {
+  const cam = pose(t);
+  monde.viser(cam.pos, cam.cible, cam.roulis, cam.fov);
+  ombres.vider();
+  const jour = t >= T.jour && t < T.flashR;
+  const f = fondB(t);
+  const eTel = versEcran(monde, [0, 0, 0]);
+  monde.fond.poser(f[0], f[1], t < T.panneaux ? [eTel.x / W, 1 - eTel.y / H] : [0.5, 0.55], jour ? 1.1 : 0.85);
+  monde.brume = jour ? 0.006 : (t >= T.flashR ? 0.006 : 0.03);
+  const dCible = len3(add3(cam.cible, mul3(cam.pos, -1)));
+  monde.netete(t < T.jour ? dCible : 15, t < T.jour ? 0.12 : 0.35);
+  blocs.mat.uniforms.uFond.value.set(f[1]);
+  let flou = clamp01((vitessePx(t) - 6) / 30) * 1.3;
+
+  /* La poussière de la nuit ; pendant les situations, elle file en traits. */
+  traits.vider();
+  const vz = t >= T.panneaux && t < T.jour ? Math.abs(cz(t) - cz(t - 1 / FPS)) * FPS : 0;
+  const long = Math.min(3.5, vz * 0.05);
+  for (let i = 0; i < 1600; i++) {
+    const d = POUS[i];
+    if (jour || t >= T.flashR) { pous.cacher(i); continue; }
+    const p = add3(d.p, [0, 0.05 * t, 0]);
+    const c = coul(d.m ? MENTHE : CREME, d.k * (0.75 + 0.25 * Math.sin(t * 2 + d.ph)));
+    pous.poser(i, p, c, d.tai, 0.8, 0);
+    if (long > 0.15 && i % 2 === 0) traits.ajouter(p, add3(p, [0, 0, -long]), mul3(c, 0.8), [0, 0, 0], 1);
+  }
+  flou = Math.max(flou, Math.min(1.2, vz / 12));
+  if (t > T.panneaux - 0.6 && t < T.panneaux) flou = Math.min(flou, 0.3);
+
+  /* Le téléphone du soir : il vibre par deux, sur les temps. */
+  for (let k = 0; k < 24; k++) ondes.cacher(k);
+  if (telSoir) {
+    let vib = 0;
+    [0, 1, 4, 5].forEach((b) => { const t0 = b * TP; vib = Math.max(vib, bosse(t, t0, t0 + 0.26)); });
+    const v = Math.sin(t * 2 * Math.PI * 15) * vib;
+    telSoir.visible = t < T.panneaux;
+    telSoir.position.set(0.012 * v, 0, 0);
+    telSoir.rotation.set(0, -0.08 + 0.05 * Math.sin(t * 0.8), 0.03 * v);
+    [0, 1, 4, 5].forEach((b, k) => {
+      const t0 = b * TP, q = fen(t, t0, t0 + 0.9, 'expo.out');
+      if (t > t0 && t < t0 + 0.9) ondes.poser(k, [0, 0, -0.05], coul(MENTHE, 1.6), 0.4 + 2.6 * q, (1 - q) * 0.75, 1);
+    });
+  }
+  /* Le téléphone posé, calme, écran lisible depuis la caméra. */
+  if (telCalme) {
+    telCalme.visible = t > T.agenda + 0.4 && t < T.marque + 0.3;
+    telCalme.position.set(TEL_POSE[0], TEL_POSE[1] + 0.02, TEL_POSE[2]);
+    telCalme.rotation.set(-Math.PI / 2, jourAz(Math.min(t, T.marque - 0.01)), 0);
+    telCalme.material.opacity = fen(t, T.agenda + 0.4, T.agenda + 0.7) * (1 - fen(t, T.marque, T.marque + 0.3));
+    if (telCalme.visible) ombres.ajouter([TEL_POSE[0] + 0.06, TEL_POSE[1] + 0.004, TEL_POSE[2] + 0.1], 1.05, 2.1, 0.22 * telCalme.material.opacity, 0.35, jourAz(Math.min(t, T.marque - 0.01)));
+  }
+
+  /* Les panneaux : un seul à la fois, il apparaît quand la caméra fonce vers lui. */
+  const arrivees = [T.panneaux, T.panneaux + TP * 1.9, T.panneaux + TP * 3.9, T.panneaux + TP * 5.9];
+  PANNEAUX.forEach((pn, i) => {
+    const a = fen(t, arrivees[i] - 0.02, arrivees[i] + 0.2);
+    const passe = cz(t) < PZ[i] + 0.05;
+    const vis = t >= T.panneaux && t < T.jour && !passe;
+    pn.poser([PX[i], PY[i], PZ[i]], [0, PR[i], 0], vis ? a : 0, 1, 1);
+  });
+  /* Le dernier panneau éclate au temps fort. */
+  eclats.vider();
+  if (t >= T.jour && t < T.jour + 0.9) {
+    const q = t - T.jour;
+    ECLATS.forEach((e) => {
+      const p = add3([PX[3], PY[3], PZ[3]], add3(e.o, [e.v[0] * q, e.v[1] * q - 4 * q * q, e.v[2] * q]));
+      const s = 1 - fen(t, T.jour + 0.3, T.jour + 0.9);
+      eclats.ajouter(p, [0.13 * s, 0.055 * s, 0.02 * s], [e.rv[0] * q, e.rv[1] * q, e.rv[2] * q], 'encre', 0.3);
+    });
+    flou = Math.max(flou, 0.9);
+  }
+
+  /* Les constructions : les blocs tombent du ciel et se posent. */
+  blocs.vider();
+  let enChute = 0;
+  const envol = t >= T.marque ? fen(t, T.marque, T.flashR, 'power2.in') : 0;
+  const visites = [T.tour + 0.12, T.tour + TP + 0.16, T.tour + 2 * TP + 0.16, T.tour + 3 * TP + 0.16];
+  /* Dans les gros plans, les constructions voisines se replient sur leur socle. */
+  const repli = (ci) => {
+    const plis = [];
+    if (ci !== 1) plis.push([T.agenda, T.jours]);
+    if (ci !== 0) plis.push([T.jours, T.cles]);
+    plis.push([T.cles, T.marque]);
+    let r = 0;
+    for (const [a, b] of plis) r = Math.max(r, fen(t, a - 0.05, a + 0.3, 'power3.inOut') * (1 - fen(t, b - 0.05, b + 0.3, 'power3.inOut')));
+    return 1 - r;
+  };
+  if (t >= T.jour && t < T.flashR) CONSTR.forEach((c, ci) => {
+    const presence = repli(ci);
+    c.blocs.forEach((b, i) => {
+      const q = fen(t, b.arr, b.arr + 0.34, 'power2.in');
+      if (q <= 0) return;
+      if (q < 1) enChute++;
+      let pl = add3(c.o, b.p);
+      const taille = b.t.slice();
+      let teinte = b.c, eclat = 0;
+      if (b.creneau) {
+        const k = RESERVES.indexOf(CRENEAUX.indexOf(i));
+        const tk = k >= 0 ? T.agenda + 0.3 + k * TP * 0.4 : 99;
+        const pris = fen(t, tk, tk + 0.18, 'back.out(2)');
+        if (t >= tk) { teinte = 'menthe'; taille[1] = 0.06 + 0.07 * pris; pl = add3(pl, [0, 0.035 * pris, 0]); eclat = 0.3 * bosse(t, tk, tk + 0.4); }
+      }
+      if (b.barre !== undefined) {
+        const v = visites[ci];
+        const g = 0.35 + 0.65 * fen(t, v + 0.05 + b.barre * 0.05, v + 0.45 + b.barre * 0.05, 'expo.out');
+        taille[1] = b.t[1] * (t >= v ? g : 0.35);
+        pl = add3(c.o, [b.p[0], 0.1 + taille[1] / 2, b.p[2]]);
+      }
+      if (c.nom === 'site' && t >= T.jours + TP * 3.5) eclat = Math.max(eclat, 0.22 * bosse(t, T.jours + TP * 3.5, T.jours + TP * 3.5 + 0.6));
+      const chute = 1 - q;
+      const p = [pl[0] + b.derive[0] * chute, pl[1] + b.haut * chute * chute + 14 * envol * b.envol, pl[2] + b.derive[1] * chute];
+      const rot = b.rot ? b.rot.slice() : [0, 0, 0];
+      rot[1] += b.tourne * (chute + envol);
+      const ecrase = 1 - 0.25 * bosse(t, b.arr + 0.34, b.arr + 0.5);
+      if (presence < 1) { const r = add3(c.o, mul3(add3(p, mul3(c.o, -1)), presence)); p[0] = r[0]; p[1] = r[1]; p[2] = r[2]; taille[0] *= presence; taille[1] *= presence; taille[2] *= presence; }
+      blocs.ajouter(p, [taille[0], taille[1] * ecrase, taille[2]], rot, teinte, eclat);
+      /* Les ombres : sous le socle, et sous chaque bloc qui descend. */
+      const pose = 1 - envol;
+      if (i === 0) ombres.ajouter([c.o[0] + 0.14 * presence, c.o[1] + 0.002, c.o[2] + 0.2 * presence], taille[0] * 1.2, taille[2] * 1.28, 0.2 * q * pose, 0.5);
+      else if (q < 1) ombres.ajouter([p[0], c.o[1] + 0.126, p[2]], taille[0] * (1 + 1.5 * chute), taille[2] * (1 + 1.5 * chute), 0.22 * q * q, 0.7, rot[1]);
+    });
+  });
+  if (enChute > 0) flou = Math.max(flou, 0.6);
+  if (envol > 0) flou = Math.max(flou, 1.1 * envol);
+  /* Les cinq jours. */
+  if (t >= T.jour && t < T.flashR) JOURS.forEach((p, i) => {
+    const q = fen(t, T.jour + 0.9 + i * 0.03, T.jour + 1.24 + i * 0.03, 'power2.in');
+    if (q <= 0) return;
+    const tj = T.jours + TP * 0.5 + i * TP * 0.75, on = t >= tj;
+    blocs.ajouter([p[0], p[1] + 4 * (1 - q) * (1 - q) + (on ? 0.06 * fen(t, tj, tj + 0.2, 'back.out(2)') : 0) + 14 * envol, p[2]], [0.36, on ? 0.2 : 0.12, 0.36], [0, 0, 0], on ? 'menthe' : 'neuf', on ? 0.35 * bosse(t, tj, tj + 0.35) : 0);
+    ombres.ajouter([p[0] + 0.05, p[1] - 0.075, p[2] + 0.07], 0.5, 0.5, 0.2 * q * (1 - envol), 0.6);
+  });
+  /* La clé. */
+  if (t >= T.cles - 0.1 && t < T.flashR) {
+    const q = fen(t, T.cles - 0.1, T.cles + 0.45, 'expo.out');
+    const tour = (t - T.cles) * 2.0 + 0.5;
+    CLE.forEach((b) => {
+      const loc = rotY(b.p, tour, [0, 0, 0]);
+      const p = add3(add3(CLE_O, [0, -3 * (1 - q) + 14 * envol, 0]), loc);
+      blocs.ajouter(p, [b.t[0] * q, b.t[1] * q, b.t[2] * q], [b.rot ? b.rot[0] : 0, tour, b.rot ? b.rot[2] : 0], b.c, 0.08 * bosse(t, T.cles + 0.2, T.cles + 0.8));
+    });
+    ombres.ajouter([CLE_O[0] + 0.1, CONSTR[1].o[1] + 0.126, CLE_O[2] + 0.15], 2.0 * q, 0.6 * q, 0.12 * q * (1 - envol), 0.9, tour);
+  }
+  /* Les étiquettes de la vue d'ensemble, de part et d'autre de la colonne. */
+  if (t > T.vue && t < T.agenda) CONSTR.forEach((c) => ancrer(c.tag, add3(c.o, [1.45, 0.2, 0]), 14, 0));
+
+  /* La marque : le R aux proportions exactes, qui monte avec les blocs. */
+  rL.vider();
+  if (t >= T.flashR - 0.1 && R_MONDE) {
+    const aR = 1 - fen(t, T_R + 0.05, T_R + 0.32);
+    const px = R_MONDE.pxParUnite;
+    for (let i = 0; i < 6; i++) {
+      const t0 = T.flashR - 0.1 + i * 0.05;
+      const q = fen(t, t0, t0 + 0.45, 'expo.out');
+      const final = R_MONDE[i];
+      rN.poser(i, mix3(add3(final, [0, -9, 0]), final, q), coul(CREME, 0.98 + 0.35 * bosse(t, t0 + 0.25, t0 + 0.65)), (i === 3 ? 14 : 11) * LOGO.s0 / px, aR * (q > 0 ? 1 : 0), 2);
+    }
+    R_LIENS.forEach(([a, b], k) => {
+      const q = fen(t, T.flashR + 0.3 + k * 0.08, T.flashR + 0.5 + k * 0.08, 'power3.out');
+      rL.ajouter(R_MONDE[a], R_MONDE[b], coul(CREME, 0.98 * aR), coul(CREME, 0.98 * aR), q);
+    });
+    rL.mat.linewidth = 3 * LOGO.s0;
+    for (let i = 0; i < 500; i++) {
+      const d = FIN_POUS[i];
+      finPous.poser(i, add3(d.p, mul3(d.v, t - T.flashR)), coul(i % 5 === 0 ? MENTHE : C.lilas, d.k * (0.7 + 0.3 * Math.sin(t * 1.5 + d.ph))), d.tai, fen(t, T.flashR, T.flashR + 0.6), 0);
+    }
+    flou = Math.max(flou, 0.8 * (1 - fen(t, T.flashR, T.flashR + 0.5)));
+  } else { rN.toutCacher(); finPous.toutCacher(); }
+
+  const nuit = !jour;
+  monde.bloom.strength = t >= T.flashR ? 0.35 : (nuit ? 0.7 : 0);
+  monde.finition.uniforms.uVignette.value = nuit ? 0.5 : 0.16;
+  monde.finition.uniforms.uGrain.value = nuit ? 0.007 : 0.005;
+  return { flou: t >= T_R - 0.2 ? 0 : flou, aberration: nuit ? 0.002 + 0.006 * bosse(t, T.jour, T.jour + 0.5) + Math.min(0.008, vz / 3000) : 0.0008, expo: 1 };
+};
+
+/* ── Branchement sur HyperFrames ───────────────────────────── */
+let pret = false;
+function rendre(t) { if (pret) monde.image(Math.max(0, Math.min(DUREE - 1e-4, t))); }
+window.__rendre = rendre;
+window.addEventListener('hf-seek', (e) => rendre(e.detail.time));
+window.__hf = window.__hf || {};
+window.__hf.buildReady = window.__hf.buildReady || {};
+window.__hf.buildReady['reskope-monde'] = (async function () {
+  await Promise.all([document.fonts.load("600 100px 'Neue Einstellung'"), document.fonts.load("500 50px 'Neue Einstellung'"), document.fonts.load("400 40px 'Neue Einstellung'")]);
+  construire();
+  pret = true;
+  rendre(window.__hfThreeTime || 0);
+  window.__pret = true;
+})();
+</script>
+</body>
+</html>
