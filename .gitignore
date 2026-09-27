@@ -40,3 +40,6 @@ motion/v2/son/__pycache__/
 
 # Livrets : les pages HTML intermédiaires (régénérées par livrets.mjs)
 Impression/Livrets/html/
+
+# Direction artistique : les visuels intermédiaires (régénérés par visuels.py)
+scripts/direction-artistique/visuels/
