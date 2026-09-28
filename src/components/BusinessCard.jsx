@@ -51,7 +51,7 @@ const PERSONNES = {
   florian: {
     prenom: 'Florian',
     nom: 'Florian Bouchart',
-    tel: 'KzMzIDYgMjAgMjMgNTUgMjI=',
+    tel: 'KzMzIDYgMjAgMjMgNTUgMjA=',
     mail: 'Zmxvcmlhbi5ib3VjaGFydEBob3RtYWlsLmZy',
     fr: 'Cofondateur · discovery, sites et outils',
     en: 'Co-founder · discovery, websites and tools',

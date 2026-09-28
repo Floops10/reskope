@@ -27,7 +27,7 @@ TRAME = [(300, 82), (418, 110), (520, 88), (360, 180), (470, 198), (560, 178), (
 TRAME_LIENS = [(0, 1), (1, 2), (1, 3), (3, 4), (4, 5), (3, 6), (4, 7), (7, 8), (8, 9), (9, 10), (7, 11), (6, 7), (2, 5)]
 
 PERSONNES = {
-    'florian': dict(nom='Florian Bouchart', role='Cofondateur · discovery, sites et outils', tel='+33 6 20 23 55 22', mail='florian.bouchart@hotmail.fr'),
+    'florian': dict(nom='Florian Bouchart', role='Cofondateur · discovery, sites et outils', tel='+33 6 20 23 55 20', mail='florian.bouchart@hotmail.fr'),
     'thomy': dict(nom='Thomy Phanzu', role='Cofondatrice · business plan, marque et financement', tel='+33 7 61 25 44 65', mail='thomyphanzu@icloud.com'),
 }
 SLOGAN = 'On vous aide à décider, et on construit la suite.'
