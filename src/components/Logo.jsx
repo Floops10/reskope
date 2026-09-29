@@ -31,7 +31,9 @@ export const R_SCATTER = [
 export const linkD = (coords, [a, b]) =>
   `M${coords[a][0]} ${coords[a][1]} L${coords[b][0]} ${coords[b][1]}`;
 
-/* Marque statique (nav, footer, etc.) — hérite de la couleur via currentColor. */
+/* Marque statique (nav, footer, etc.) — hérite de la couleur via currentColor.
+   Le nœud de jonction (le plus gros) s'allume à la couleur de la marque de
+   la page : Create, Define ou Elevate (voir styles/marques.css). */
 export function LogoMark({ className = '', title = 'Reskope' }) {
   return (
     <svg
@@ -47,7 +49,7 @@ export function LogoMark({ className = '', title = 'Reskope' }) {
       </g>
       <g fill="currentColor">
         {R_NODES.map(([x, y], i) => (
-          <circle key={i} cx={x} cy={y} r={i === 3 ? 7 : 5.5} />
+          <circle key={i} cx={x} cy={y} r={i === 3 ? 7 : 5.5} className={i === 3 ? 'logomark__coeur' : undefined} />
         ))}
       </g>
     </svg>

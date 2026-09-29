@@ -1,5 +1,6 @@
 import { useRef, useMemo, useState, Fragment } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
+import { usePalette3d } from '../lib/palette3d';
 import * as THREE from 'three';
 import { ScrollTrigger, useGSAP } from '../lib/gsap';
 import { R_NODES, R_LINKS } from './Logo';
@@ -24,7 +25,7 @@ import InfoTip from './InfoTip';
    Fluide PC ET téléphone. reduced-motion => poster lisible.
    ============================================================ */
 
-const INK_BG = '#0e0b1f';
+/* La nuit de la scène et ses particules viennent de la marque (lib/palette3d.js). */
 const N = 620;
 const COLS = 5;
 const PER = N / COLS;                       // 124 par colonne
@@ -38,15 +39,15 @@ const prefersReduced = () =>
   typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /* ——— Les 6 états de la matière : positions, couleurs, échelles ——— */
-function buildStates() {
+function buildStates(pal) {
   const S = 6;
   const pos = Array.from({ length: S }, () => new Float32Array(N * 3));
   const col = Array.from({ length: S }, () => new Float32Array(N * 3));
   const scl = Array.from({ length: S }, () => new Float32Array(N));
 
-  const COLD = new THREE.Color('#3b3763');
-  const CREAM = new THREE.Color('#f0eee8');
-  const BRIGHT = new THREE.Color('#5b4be6');
+  const COLD = new THREE.Color(pal.froid);
+  const CREAM = new THREE.Color(pal.fond);
+  const BRIGHT = new THREE.Color(pal.vif);
   const mix = (a, b, t) => a.clone().lerp(b, t);
   const setC = (s, i, c) => { col[s][i * 3] = c.r; col[s][i * 3 + 1] = c.g; col[s][i * 3 + 2] = c.b; };
   const setP = (s, i, x, y, z) => { pos[s][i * 3] = x; pos[s][i * 3 + 1] = y; pos[s][i * 3 + 2] = z; };
@@ -147,6 +148,7 @@ function buildStates() {
 }
 
 function Matter({ states, progress, mouse }) {
+  const pal = usePalette3d();
   const meshRef = useRef();
   const groupRef = useRef();
   const lineMatRef = useRef();
@@ -204,7 +206,7 @@ function Matter({ states, progress, mouse }) {
         <meshBasicMaterial toneMapped={false} />
       </instancedMesh>
       <lineSegments geometry={lineGeo}>
-        <lineBasicMaterial ref={lineMatRef} color="#5b4be6" transparent opacity={0} toneMapped={false} />
+        <lineBasicMaterial ref={lineMatRef} color={pal.vif} transparent opacity={0} toneMapped={false} />
       </lineSegments>
     </group>
   );
@@ -250,7 +252,8 @@ export default function ConstatFlow({ cards, film, sourceLabel, calcLabel, local
   const [active, setActive] = useState(0);
   const reduced = prefersReduced();
 
-  const states = useMemo(buildStates, []);
+  const pal = usePalette3d();
+  const states = useMemo(() => buildStates(pal), [pal]);
   const whyCards = cards.filter((c) => ['apps', 'toggle', 'wow'].includes(c.id));
   const fmt = useMemo(() => new Intl.NumberFormat(locale === 'fr' ? 'fr-FR' : 'en-US'), [locale]);
   const fmt1 = useMemo(() => new Intl.NumberFormat(locale === 'fr' ? 'fr-FR' : 'en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 }), [locale]);
@@ -335,8 +338,8 @@ export default function ConstatFlow({ cards, film, sourceLabel, calcLabel, local
           camera={{ position: [0, 0, 9.2], fov: 50, near: 0.1, far: 60 }}
           gl={{ antialias: true, powerPreference: 'high-performance' }}
         >
-          <color attach="background" args={[INK_BG]} />
-          <fog attach="fog" args={[INK_BG, 11, 26]} />
+          <color attach="background" args={[pal.encre]} />
+          <fog attach="fog" args={[pal.encre, 11, 26]} />
           <Matter states={states} progress={progress} mouse={mouse} />
           <CamRig progress={progress} mouse={mouse} />
         </Canvas>

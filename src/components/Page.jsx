@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { SITE, fiche, url } from '../data/seo';
+import { marqueDeLaRouteDuSite, nomComplet } from '../data/marques';
 
 /* Enveloppe de page. Elle tient aussi les balises de référencement.
 
@@ -34,7 +35,9 @@ export default function Page({ children, title, description, className }) {
     const f = fiche(route);
     const t = f ? f.titre : title;
     const d = f ? f.description : description;
-    const complet = t ? `${t} · ${SITE.marque}` : `${SITE.marque} · On vous aide à décider, et on construit la suite`;
+    /* Le nom de la marque de la page : « · Reskope Create » dans l'espace en projet. */
+    const nom = nomComplet(marqueDeLaRouteDuSite(route));
+    const complet = t ? `${t} · ${nom}` : `${SITE.marque} · On vous aide à décider, et on construit la suite`;
 
     document.title = complet;
     if (d) {

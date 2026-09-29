@@ -11,6 +11,8 @@ import { CONTACT, AILLEURS } from '../data/site';
 import { useProfil, BASE } from '../profil';
 import { PAGES_PROFIL } from '../data/profils';
 import { EspacesTuiles } from './Espaces';
+import { MARQUES } from '../data/marques';
+import { useMarque } from '../lib/useMarque';
 
 /* FOOTER — L'UNIVERS de clôture (plein écran).
    On termine EN IMMERSION dans le réseau de la marque : une poussière
@@ -33,6 +35,8 @@ const DUST = Array.from({ length: 34 }, (_, i) => {
 });
 
 export default function Footer() {
+  /* La marque de la page signe la fin : « Define » en géant, et sa phrase. */
+  const marque = MARQUES[useMarque()] || null;
   const { profil } = useProfil();
   const visible = (to) => !PAGES_PROFIL[to] || PAGES_PROFIL[to] === profil;
   const [cardOpen, setCardOpen] = useState(false);
@@ -130,7 +134,7 @@ export default function Footer() {
     });
 
     return () => { split?.revert(); detacheVague?.(); };
-  }, { scope: rootRef });
+  }, { scope: rootRef, dependencies: [marque?.id], revertOnUpdate: true });
 
   return (
     <footer className="footer2 footer2--universe" ref={rootRef} data-cursor-dark data-nav-dark>
@@ -216,8 +220,9 @@ export default function Footer() {
           masque ET répondre au curseur, et un découpage qui se défait au
           démontage rendait les deux fragiles. */}
       <div className="footer2__word-wrap" aria-hidden="true">
+        {marque && <span className="footer2__mere">Reskope</span>}
         <span className="footer2__word" ref={wordRef}>
-          {'Reskope'.split('').map((l, i) => (
+          {(marque ? marque.nom : 'Reskope').split('').map((l, i) => (
             <span className="footer2__lettre" key={i}><i>{l}</i></span>
           ))}
         </span>
@@ -230,7 +235,7 @@ export default function Footer() {
           <Link to="/cgu">{f.terms}</Link>
           <Link to="/cgv">{f.sales}</Link>
         </nav>
-        <p>© {new Date().getFullYear()} Reskope · {f.rights}</p>
+        <p>© {new Date().getFullYear()} {marque ? `Reskope ${marque.nom} · ${(marque[lang] || marque.fr).signature}` : `Reskope · ${f.rights}`}</p>
       </div>
 
       {cardOpen && <BusinessCard onClose={() => setCardOpen(false)} />}

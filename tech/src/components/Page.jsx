@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useProfil } from '../profil';
-import { SITE, fiche, url } from '../data/seo';
+import { fiche, url } from '../data/seo';
+import { MARQUE_DE_L_ESPACE, nomComplet } from '../data/marques';
 
 /* Enveloppe de page : contenu toujours visible (les entrées sont portées par
    les <Reveal>). Elle tient aussi les balises de référencement.
@@ -38,7 +39,9 @@ export default function Page({ children, title, description }) {
     const f = fiche(profil || 'pme', route);
     const t = f ? f.titre : title;
     const d = f ? f.description : description;
-    const complet = t ? `${t} · ${SITE.marque}` : `${SITE.marque} · Conseil et ingénierie numérique`;
+    /* Le nom de la marque : « · Reskope Define » pour les TPE, « · Reskope Elevate » pour les PME. */
+    const nom = nomComplet(MARQUE_DE_L_ESPACE[profil]);
+    const complet = t ? `${t} · ${nom}` : `${nom} · Conseil et ingénierie numérique`;
 
     document.title = complet;
     if (d) {

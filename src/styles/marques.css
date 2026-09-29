@@ -1,0 +1,232 @@
+/* ════════════════════════════════════════════════════════════
+   LES TROIS MARQUES DE RESKOPE — même méthode, trois personnalités.
+
+   La page porte sa marque dans html[data-marque] (voir data/marques.js).
+   Tout le site est écrit avec les mêmes variables (--indigo pour l'action,
+   --cream pour le fond, --ink pour le texte) : il suffit de les redéfinir
+   pour que chaque espace change de peau, sans toucher aux composants.
+
+   Chaque marque a un ciel, une couleur d'action, une forme et un
+   mouvement :
+
+     Reskope          le carrefour     indigo électrique sur crème
+     Reskope Create   l'aube           ambre : l'optimisme de ceux qui se
+                                       lancent, la chaleur qui rassure
+     Reskope Define   le plein jour    menthe : la clarté, le feu vert,
+                                       l'air qu'on retrouve quand tout est rangé
+     Reskope Elevate  l'altitude       ciel sur nuit : la perspective, la
+                                       précision, la vue d'ensemble
+
+   Le R ne change jamais : il reste indigo, c'est la signature de la maison.
+   Chaque marque n'y allume qu'un nœud, celui de la jonction.
+
+   Contrastes vérifiés (WCAG AA) : texte courant 16:1, gris de lecture 5:1,
+   liens et boutons 5,2 à 8,9:1 selon la marque.
+
+   (Le même fichier vit dans tech/src/styles/marques.css : garder les deux
+   identiques.)
+   ════════════════════════════════════════════════════════════ */
+
+:root {
+  /* La maison : ne varie jamais, quelle que soit la marque de la page. */
+  --reskope: #1c0cb3;
+  --reskope-nuit: #8b7ff0;
+  --soleil: #f2a93b;
+  --menthe: #2fae8e;
+  --ciel: #3b9de8;
+  /* La nuit des scènes sombres (vitrine, constat) : suit la marque. */
+  --nuit: #0b0920;
+
+  /* Les palettes des trois marques, pour la page de la marque et pour
+     tout ce qui les montre côte à côte (l'accueil, le menu, le pied). */
+  --create-action: #9c4f06; --create-fonce: #7a3d03; --create-vif: #f2a93b; --create-clair: #f5c36b; --create-fond: #f6eee2; --create-surface: #fbf6ee; --create-ombre: #ecdfca; --create-encre: #1a1208; --create-gris: #6f6454;
+  --define-action: #0b6b52; --define-fonce: #07513e; --define-vif: #2fae8e; --define-clair: #7fe0c2; --define-fond: #edf4f0; --define-surface: #f7faf8; --define-ombre: #dcebe3; --define-encre: #0b1814; --define-gris: #56655e;
+  --elevate-action: #0b3d91; --elevate-fonce: #072a66; --elevate-vif: #3b9de8; --elevate-clair: #8cc8f5; --elevate-fond: #edf1f7; --elevate-surface: #f6f8fb; --elevate-ombre: #dce4f0; --elevate-encre: #0a1024; --elevate-gris: #566076;
+
+  /* Ce qui varie d'une marque à l'autre, en plus des couleurs. */
+  --m-titre-approche: -0.02em;
+  --m-titre-graisse: 500;
+  --m-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ── Reskope Create · l'aube ──────────────────────────────── */
+html[data-marque='create'] {
+  --nuit: #1a1208;
+  --indigo: var(--create-action);
+  --indigo-deep: var(--create-fonce);
+  --indigo-bright: var(--create-vif);
+  --indigo-nuit: var(--create-clair);
+  --cream: var(--create-fond);
+  --cream-light: var(--create-surface);
+  --cream-shade: var(--create-ombre);
+  --ink: var(--create-encre);
+  --muted: var(--create-gris);
+  --muted-fort: #5d5344;
+  --hairline: #e3d4bd;
+  --silver: #c7b79f;
+  --radius: 22px;
+  --radius-sm: 14px;
+  --m-titre-approche: -0.018em;
+  --m-ease: cubic-bezier(0.34, 1.4, 0.64, 1);
+  --trame: 214, 128, 22;
+  --trame-vive: 242, 169, 59;
+}
+
+/* ── Reskope Define · le plein jour ───────────────────────── */
+html[data-marque='define'] {
+  --nuit: #0b1814;
+  --indigo: var(--define-action);
+  --indigo-deep: var(--define-fonce);
+  --indigo-bright: var(--define-vif);
+  --indigo-nuit: var(--define-clair);
+  --cream: var(--define-fond);
+  --cream-light: var(--define-surface);
+  --cream-shade: var(--define-ombre);
+  --ink: var(--define-encre);
+  --muted: var(--define-gris);
+  --muted-fort: #47554f;
+  --hairline: #cddfd5;
+  --silver: #a9bdb3;
+  --radius: 10px;
+  --radius-sm: 6px;
+  --m-titre-approche: -0.03em;
+  --m-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --trame: 11, 107, 82;
+  --trame-vive: 47, 174, 142;
+}
+
+/* ── Reskope Elevate · l'altitude ─────────────────────────── */
+html[data-marque='elevate'] {
+  --nuit: #0a1024;
+  --indigo: var(--elevate-action);
+  --indigo-deep: var(--elevate-fonce);
+  --indigo-bright: var(--elevate-vif);
+  --indigo-nuit: var(--elevate-clair);
+  --cream: var(--elevate-fond);
+  --cream-light: var(--elevate-surface);
+  --cream-shade: var(--elevate-ombre);
+  --ink: var(--elevate-encre);
+  --muted: var(--elevate-gris);
+  --muted-fort: #475066;
+  --hairline: #ccd7e6;
+  --silver: #a3b1c6;
+  --radius: 6px;
+  --radius-sm: 4px;
+  --m-titre-approche: -0.035em;
+  --m-ease: cubic-bezier(0.65, 0, 0.35, 1);
+  --trame: 11, 61, 145;
+  --trame-vive: 59, 157, 232;
+}
+
+html[data-marque='reskope'],
+html:not([data-marque]) {
+  --trame: 28, 12, 179;
+  --trame-vive: 91, 75, 230;
+}
+
+/* Le fond change de ciel avec la page : une transition douce le jour où
+   l'on passe d'une marque à l'autre sans recharger. */
+body { transition: background-color 0.5s ease, color 0.5s ease; }
+
+h1, h2 { letter-spacing: var(--m-titre-approche); }
+
+::selection { background: color-mix(in srgb, var(--indigo-bright) 38%, transparent); color: var(--ink); }
+
+/* ── Le logo : le R de la maison, et le nom de la marque à côté ── */
+html[data-marque] .wordmark { color: var(--reskope); }
+.nav--dark .wordmark,
+html[data-marque] .nav--dark .wordmark { color: var(--cream); }
+.wordmark__marque {
+  font-weight: 500;
+  color: var(--indigo);
+  margin-left: -0.18em;
+  transition: color 0.4s ease, transform 0.45s var(--m-ease);
+}
+.wordmark:hover .wordmark__marque { transform: translateX(3px); }
+.nav--dark .wordmark__marque { color: var(--indigo-nuit); }
+.footer .wordmark__marque,
+.footer2 .wordmark__marque { color: var(--indigo-nuit); }
+.logomark__coeur { transition: fill 0.4s ease; }
+html[data-marque='create'] .logomark__coeur,
+html[data-marque='define'] .logomark__coeur,
+html[data-marque='elevate'] .logomark__coeur { fill: var(--indigo-bright); }
+
+/* ── Le ciel de chaque marque, derrière la trame ─────────────
+   Posé sur le fond fixe du site : il ne défile pas, il donne la lumière.
+   Jamais derrière un texte avec assez de force pour gêner la lecture. */
+.fond::before,
+.fond::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+/* L'aube : une lumière qui monte de l'horizon. */
+html[data-marque='create'] .fond::before {
+  opacity: 1;
+  background:
+    radial-gradient(90% 55% at 50% 118%, color-mix(in srgb, var(--soleil) 30%, transparent) 0%, transparent 70%),
+    radial-gradient(40% 30% at 85% 0%, color-mix(in srgb, var(--soleil) 10%, transparent) 0%, transparent 70%);
+}
+
+/* Le plein jour : un sol quadrillé qui fuit vers l'horizon, les fondations. */
+html[data-marque='define'] .fond::before {
+  opacity: 1;
+  top: 52%;
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--menthe) 22%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--menthe) 22%, transparent) 1px, transparent 1px);
+  background-size: 64px 64px;
+  transform: perspective(520px) rotateX(62deg) scale(2.2);
+  transform-origin: 50% 0%;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 40%, #000 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 40%, #000 100%);
+}
+html[data-marque='define'] .fond::after {
+  opacity: 1;
+  background: radial-gradient(70% 45% at 20% 0%, color-mix(in srgb, var(--menthe) 12%, transparent) 0%, transparent 70%);
+}
+
+/* L'altitude : le ciel au-dessus, la nuit qui commence en haut de l'écran. */
+html[data-marque='elevate'] .fond::before {
+  opacity: 1;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--ciel) 16%, transparent) 0%, transparent 38%),
+    radial-gradient(60% 40% at 80% 100%, color-mix(in srgb, #0b3d91 8%, transparent) 0%, transparent 70%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body, .fond::before, .fond::after, .wordmark__marque { transition: none; }
+}
+
+/* ── La transition entre deux pages : « Reskope Create » ────── */
+.page-transition__marque { font-weight: 500; color: var(--indigo-nuit); margin-left: 0.32em; }
+.page-transition__marque:empty { display: none; }
+
+/* ── Le pied de page : la marque signe la fin ────────────────
+   Le générique géant écrit le nom de la marque (Create, Define, Elevate)
+   dans l'alphabet réseau ; « Reskope » se pose au-dessus, comme dans le
+   logo. Sur la nuit du pied, le nom prend la couleur claire de la marque. */
+.footer2__mere {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-size: clamp(0.95rem, 1.6vw, 1.3rem);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: color-mix(in srgb, var(--cream) 72%, transparent);
+}
+html[data-marque='create'] .footer2__word,
+html[data-marque='define'] .footer2__word,
+html[data-marque='elevate'] .footer2__word { color: var(--indigo-nuit); }
+
+/* Les tuiles du menu et du pied : « Reskope » en petit, le nom en grand. */
+.espt__mere { font-weight: 500; opacity: 0.62; }
+
+/* Sur téléphone, l'en-tête ne garde que le R : le sélecteur, juste à côté,
+   dit déjà dans quelle marque on est. */
+@media (max-width: 720px) {
+  .nav__marque .wordmark__marque { display: none; }
+}

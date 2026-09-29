@@ -1,5 +1,6 @@
 import { useRef, useMemo, useState, useLayoutEffect, Fragment } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import { usePalette3d } from '../lib/palette3d';
 import * as THREE from 'three';
 import { ScrollTrigger, useGSAP } from '../lib/gsap';
 
@@ -16,9 +17,7 @@ import { ScrollTrigger, useGSAP } from '../lib/gsap';
    ScrollTrigger sur le smooth-scroll Lenis. reduced-motion => liste.
    ============================================================ */
 
-const CREAM = '#f0eee8';
-const INDIGO = new THREE.Color('#1c0cb3');
-const INDIGO_BRIGHT = new THREE.Color('#5b4be6');
+/* Les couleurs viennent de la marque de la page (voir lib/palette3d.js). */
 const TOTAL = 74;
 const CT = [0.15, 0.33, 0.51, 0.69, 0.86];          // profondeur (t) des 5 amas
 const SNAP = [0.02, ...CT, 0.99];                     // arrêts (intro + 5 + sortie)
@@ -90,11 +89,14 @@ function Network({ net, mouse, progress, activeCluster, hovered, setHovered }) {
   const groupRef = useRef();
   const { nodes, links } = net;
   const dummy = useMemo(() => new THREE.Object3D(), []);
+  const pal = usePalette3d();
+  const INDIGO = useMemo(() => new THREE.Color(pal.action), [pal]);
+  const INDIGO_BRIGHT = useMemo(() => new THREE.Color(pal.vif), [pal]);
 
   useLayoutEffect(() => {
     for (let i = 0; i < nodes.length; i++) meshRef.current.setColorAt(i, INDIGO);
     if (meshRef.current.instanceColor) meshRef.current.instanceColor.needsUpdate = true;
-  }, [nodes]);
+  }, [nodes, INDIGO]);
 
   const lineGeo = useMemo(() => {
     const pos = [];
@@ -174,6 +176,7 @@ function splitWords(text) {
 }
 
 export default function MethodeFlight({ jalons, film, labels }) {
+  const pal = usePalette3d();
   const rootRef = useRef(null);
   const hudFillRef = useRef(null);
   const synthRef = useRef(null);
@@ -263,8 +266,8 @@ export default function MethodeFlight({ jalons, film, labels }) {
           camera={{ position: [0, 0.4, 4], fov: 55, near: 0.1, far: 100 }}
           gl={{ antialias: true, powerPreference: 'high-performance' }}
         >
-          <color attach="background" args={[CREAM]} />
-          <fog attach="fog" args={[CREAM, 7, 34]} />
+          <color attach="background" args={[pal.fond]} />
+          <fog attach="fog" args={[pal.fond, 7, 34]} />
           <Network net={net} mouse={mouse} progress={progress} activeCluster={active - 1} hovered={hovered} setHovered={setHovered} />
           <Rig progress={progress} mouse={mouse} />
         </Canvas>

@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { gsap } from '../lib/gsap';
 import { useLang } from '../i18n';
 import { R_NODES, R_LINKS, R_SCATTER, linkD } from './Logo';
+import { MARQUES, poserMarque, marqueDeLaRouteDuSite } from '../data/marques';
 
 /* Une phrase par destination, tirée au hasard : le temps de chargement
    devient un micro-moment de marque (promesse, chiffre, ou invitation). */
@@ -31,13 +32,32 @@ const PHRASES = {
   },
 };
 
+/* Reskope Define (les TPE) : ses propres phrases là où celles des PME ne lui
+   ressemblent pas. Ailleurs, elle garde les phrases communes. */
+const PHRASES_DEFINE = {
+  fr: {
+    '/':        ['On construit ce qui vous manque.', 'Être trouvé, être joignable, gagner du temps.'],
+    _default:   ['On construit ce qui vous manque, et vous gardez les clés.'],
+  },
+  en: {
+    '/':        ['We build what you are missing.', 'Get found, be reachable, save time.'],
+    _default:   ['We build what you are missing, and you keep the keys.'],
+  },
+};
+
 /* Retire la base GitHub Pages pour retrouver la route applicative */
 const BASE_URL = import.meta.env.BASE_URL.replace(/\/$/, '');
 const routeOf = (pathname) => (pathname.startsWith(BASE_URL) ? pathname.slice(BASE_URL.length) : pathname) || '/';
 
-function pickPhrase(lang, pathname) {
+/* La marque d'une adresse de destination : un lien vers l'espace « en
+   projet » mène chez Create, vers l'accueil chez Reskope. */
+const marqueDeDestination = (pathname) => marqueDeLaRouteDuSite(routeOf(pathname), document.documentElement.dataset.marque);
+
+function pickPhrase(lang, pathname, marque) {
   const table = PHRASES[lang] || PHRASES.fr;
-  const list = table[routeOf(pathname)] || table._default;
+  const propre = marque === 'define' ? (PHRASES_DEFINE[lang] || PHRASES_DEFINE.fr) : null;
+  const route = routeOf(pathname).replace(/^\/(tpe|pme)(?=\/|$)/, '') || '/';
+  const list = propre?.[route] || table[route] || propre?._default || table._default;
   return list[Math.floor(Math.random() * list.length)];
 }
 
@@ -46,8 +66,17 @@ function pickPhrase(lang, pathname) {
    qui respire, wordmark qui monte), puis RÉVÉLATION de la nouvelle page :
    le logo grandit et s'efface pendant que le rideau se replie vers le haut. */
 
-const COVER = 'inset(0% 0% 0% 0%)';        // plein écran
-const HIDE_UP = 'inset(0% 0% 100% 0%)';    // replié vers le haut = page révélée
+/* Chaque marque a sa façon de révéler une page :
+   - Reskope et Elevate replient le rideau vers le haut (Elevate monte) ;
+   - Create le laisse se fondre dans l'horizon, comme la lumière de l'aube ;
+   - Define le range sur le côté, d'un seul geste. */
+const RIDEAUX = {
+  reskope: { plein: 'inset(0% 0% 0% 0%)', cache: 'inset(0% 0% 100% 0%)', ease: 'power4.inOut', monte: 0 },
+  create: { plein: 'circle(150% at 50% 100%)', cache: 'circle(0% at 50% 100%)', ease: 'power3.inOut', monte: 0 },
+  define: { plein: 'inset(0% 0% 0% 0%)', cache: 'inset(0% 0% 0% 100%)', ease: 'expo.inOut', monte: 0 },
+  elevate: { plein: 'inset(0% 0% 0% 0%)', cache: 'inset(0% 0% 100% 0%)', ease: 'power4.inOut', monte: -90 },
+};
+const rideau = () => RIDEAUX[document.documentElement.dataset.marque] || RIDEAUX.reskope;
 
 const reduced = () =>
   typeof window !== 'undefined' &&
@@ -58,6 +87,7 @@ export default function PageTransition() {
   const stageRef = useRef(null);
   const logoRef = useRef(null);
   const wordRef = useRef(null);
+  const motRef = useRef(null);
   const haloRef = useRef(null);
   const lineRef = useRef(null);
   const { pathname } = useLocation();
@@ -89,12 +119,17 @@ export default function PageTransition() {
 
       /* La phrase du chargement dépend de la page visée */
       if (lineRef.current) {
-        lineRef.current.textContent = pickPhrase(langRef.current, destination);
+        lineRef.current.textContent = pickPhrase(langRef.current, destination, marqueDeDestination(destination));
       }
 
+      /* La page d'arrivée change peut-être de marque (de l'accueil vers
+         Create, de Define vers Elevate) : le rideau prend tout de suite la
+         couleur de la destination, et le logo son nom. */
+      const m = poserMarque(marqueDeDestination(destination));
+      if (motRef.current) motRef.current.textContent = MARQUES[m] ? MARQUES[m].nom : '';
       /* Couverture INSTANTANÉE (aucun flash pendant le changement de route) */
-      gsap.set(overlay, { clipPath: COVER });
-      gsap.set(stageRef.current, { autoAlpha: 1, scale: 1 });
+      gsap.set(overlay, { clipPath: rideau().plein });
+      gsap.set(stageRef.current, { autoAlpha: 1, scale: 1, y: 0 });
       gsap.set(haloRef.current, { scale: 0.62, autoAlpha: 0 });
       gsap.set(wordRef.current, { autoAlpha: 0, yPercent: 65 });
       gsap.set(lineRef.current, { autoAlpha: 0, yPercent: 60 });
@@ -143,14 +178,15 @@ export default function PageTransition() {
     const overlay = overlayRef.current;
     if (!overlay) return;
 
+    const r = rideau();
     if (reduced()) {
-      gsap.set(overlay, { clipPath: HIDE_UP });
+      gsap.set(overlay, { clipPath: r.cache });
       return;
     }
 
     const tl = gsap.timeline({ delay: 0.58 });
-    tl.to(stageRef.current, { scale: 1.16, autoAlpha: 0, duration: 0.45, ease: 'power2.in' }, 0);
-    tl.to(overlay, { clipPath: HIDE_UP, duration: 0.62, ease: 'power4.inOut' }, 0.08);
+    tl.to(stageRef.current, { scale: 1.16, y: r.monte, autoAlpha: 0, duration: 0.45, ease: 'power2.in' }, 0);
+    tl.to(overlay, { clipPath: r.cache, duration: 0.62, ease: r.ease }, 0.08);
   }, [pathname]);
 
   return (
@@ -182,7 +218,7 @@ export default function PageTransition() {
             </g>
           </svg>
         </div>
-        <span className="page-transition__word" ref={wordRef}>Reskope</span>
+        <span className="page-transition__word" ref={wordRef}>Reskope<span className="page-transition__marque" ref={motRef} /></span>
         <p className="page-transition__line" ref={lineRef} />
       </div>
     </div>

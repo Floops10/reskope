@@ -401,7 +401,7 @@ textarea::selection {
 }
 
 .btn--primary {
-  box-shadow: 0 10px 26px -14px rgba(28, 12, 179, 0.55);
+  box-shadow: 0 10px 26px -14px color-mix(in srgb, var(--indigo) 55%, transparent);
 }
 .btn--ghost {
   --bb: transparent;
@@ -644,7 +644,7 @@ textarea::selection {
   border-radius: 999px;
   border: 1px solid var(--hairline);
   background: color-mix(in srgb, #ffffff 55%, var(--cream));
-  box-shadow: 0 6px 20px -14px rgba(14, 11, 31, 0.4);
+  box-shadow: 0 6px 20px -14px color-mix(in srgb, var(--ink) 40%, transparent);
 }
 .enav__tab {
   display: inline-flex;
@@ -761,7 +761,7 @@ html.eco-theme .enav__tab.is-active {
   background: color-mix(in srgb, var(--cream) 72%, transparent);
   -webkit-backdrop-filter: blur(12px) saturate(1.15);
   backdrop-filter: blur(12px) saturate(1.15);
-  box-shadow: 0 14px 34px -18px rgba(14, 11, 31, 0.4);
+  box-shadow: 0 14px 34px -18px color-mix(in srgb, var(--ink) 40%, transparent);
   color: var(--ink);
   cursor: pointer;
   opacity: 0;
@@ -776,7 +776,7 @@ html.eco-theme .enav__tab.is-active {
 }
 .nav-pill:hover { color: var(--indigo); }
 .nav-pill--dark {
-  background: color-mix(in srgb, #0b0920 55%, transparent);
+  background: color-mix(in srgb, var(--nuit) 55%, transparent);
   border-color: rgba(240, 238, 232, 0.18);
   color: var(--cream);
 }
@@ -787,7 +787,7 @@ html.eco-theme .enav__tab.is-active {
 .nav--dark .nav__menu-btn { color: var(--cream); }
 .nav--dark .nav__menu-btn:hover { color: var(--indigo-bright); }
 .nav--dark.is-scrolled {
-  background: color-mix(in srgb, #0b0920 62%, transparent);
+  background: color-mix(in srgb, var(--nuit) 62%, transparent);
   border-bottom-color: rgba(240, 238, 232, 0.12);
 }
 /* Garde absolue : un menu fermé ne doit JAMAIS intercepter un tap
@@ -1488,7 +1488,7 @@ html.eco-theme .enav__tab.is-active {
   text-transform: none;
   padding: 0.85rem 1rem;
   border-radius: var(--radius-sm);
-  box-shadow: 0 14px 34px rgba(14, 11, 31, 0.24);
+  box-shadow: 0 14px 34px color-mix(in srgb, var(--ink) 24%, transparent);
 }
 .infotip__pop strong {
   color: #fff;
@@ -2728,7 +2728,7 @@ html.eco-theme .scrollnet {
   width: min(560px, 100vw);
   background: var(--cream);
   border-left: 1px solid var(--hairline);
-  box-shadow: -30px 0 80px -45px rgba(14, 11, 31, 0.45);
+  box-shadow: -30px 0 80px -45px color-mix(in srgb, var(--ink) 45%, transparent);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -3472,8 +3472,8 @@ html.eco-theme .scrollnet {
   animation: jtPulse 1.9s ease-in-out infinite;
 }
 @keyframes jtPulse {
-  0%, 100% { filter: drop-shadow(0 0 1px rgba(28, 12, 179, 0.35)); }
-  50% { filter: drop-shadow(0 0 8px rgba(28, 12, 179, 0.65)); }
+  0%, 100% { filter: drop-shadow(0 0 1px color-mix(in srgb, var(--indigo) 35%, transparent)); }
+  50% { filter: drop-shadow(0 0 8px color-mix(in srgb, var(--indigo) 65%, transparent)); }
 }
 @keyframes countPop {
   from { opacity: 0; transform: translateY(12px); }
@@ -3774,7 +3774,7 @@ html.eco-theme .scrollnet {
 
 /* Ghost button : bordure indigo pour DA cohérente */
 .btn--ghost {
-  --bd: rgba(28, 12, 179, 0.38);
+  --bd: color-mix(in srgb, var(--indigo) 38%, transparent);
 }
 
 /* Hero compact mobile : réseau de fond */
@@ -3820,7 +3820,7 @@ html.eco-theme .scrollnet {
 .bcard-backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(14, 11, 31, 0.65);
+  background: color-mix(in srgb, var(--ink) 65%, transparent);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 }
@@ -3832,7 +3832,7 @@ html.eco-theme .scrollnet {
   background: var(--cream);
   border-radius: var(--radius);
   padding: clamp(1.5rem, 4vw, 2.5rem);
-  box-shadow: 0 48px 96px rgba(14, 11, 31, 0.36);
+  box-shadow: 0 48px 96px color-mix(in srgb, var(--ink) 36%, transparent);
   max-height: 92svh;
   overflow-y: auto;
 }
@@ -3885,7 +3885,7 @@ html.eco-theme .scrollnet {
   -webkit-backface-visibility: hidden;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 14px 36px rgba(28, 12, 179, 0.26);
+  box-shadow: 0 14px 36px color-mix(in srgb, var(--indigo) 26%, transparent);
 }
 .bcard-face--back {
   transform: rotateY(180deg);
@@ -4383,8 +4383,8 @@ html.eco-theme .scrollnet {
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 .target-card:hover {
-  border-color: rgba(28, 12, 179, 0.25);
-  box-shadow: 0 4px 20px rgba(28, 12, 179, 0.07);
+  border-color: color-mix(in srgb, var(--indigo) 25%, transparent);
+  box-shadow: 0 4px 20px color-mix(in srgb, var(--indigo) 7%, transparent);
 }
 .target-card__head {
   display: flex;
@@ -5297,6 +5297,13 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 
   .cursor-dot--hover {
     transform: translate(-50%, -50%) scale(2.2);
+    /* Un liseré de la couleur opposée : pendant que le bouton se remplit
+       d'une couleur à l'autre, le point reste visible sur les deux. */
+    box-shadow: 0 0 0 0.6px color-mix(in srgb, var(--cream) 92%, transparent);
+  }
+  .cursor-dot--hover.cursor-dot--dark,
+  .cursor-dot--hover.cursor-dot--encre {
+    box-shadow: 0 0 0 0.6px color-mix(in srgb, var(--indigo) 70%, transparent);
   }
 
   .cursor-dot--dark {
@@ -5305,6 +5312,12 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 
   .cursor-dot--hover.cursor-dot--dark {
     background: rgba(240, 238, 232, 0.85);
+  }
+
+  /* Sur un fond clair et vif où ni la couleur de la marque ni le crème ne
+     ressortent, le point passe à l'encre. */
+  .cursor-dot--encre {
+    background: var(--ink);
   }
 
   /* LA PRISE — sur un plateau qu'on fait tourner, le point s'ouvre en
@@ -5333,6 +5346,9 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   .cursor-dot--prise.cursor-dot--dark { border-color: var(--cream); }
   .cursor-dot--prise.cursor-dot--dark::before,
   .cursor-dot--prise.cursor-dot--dark::after { background: var(--cream); }
+  .cursor-dot--prise.cursor-dot--encre { border-color: var(--ink); }
+  .cursor-dot--prise.cursor-dot--encre::before,
+  .cursor-dot--prise.cursor-dot--encre::after { background: var(--ink); }
   .cursor-dot--prise.cursor-dot--hover { transform: translate(-50%, -50%) scale(1); }
   .cursor-dot--prise.cursor-dot--serre { transform: translate(-50%, -50%) scale(0.62); }
 
@@ -5356,6 +5372,11 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   .cursor-label--dark {
     background: var(--cream);
     color: var(--indigo);
+  }
+
+  .cursor-label--encre {
+    background: var(--ink);
+    color: var(--cream);
   }
 }
 
@@ -6948,7 +6969,7 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   justify-content: flex-end;
   background:
     radial-gradient(120% 90% at 78% 8%, color-mix(in srgb, var(--indigo-bright) 30%, transparent) 0%, transparent 52%),
-    radial-gradient(100% 90% at 10% 100%, color-mix(in srgb, #0e0b1f 65%, transparent) 0%, transparent 58%),
+    radial-gradient(100% 90% at 10% 100%, color-mix(in srgb, var(--ink) 65%, transparent) 0%, transparent 58%),
     var(--indigo);
 }
 .footer2__cosmos {
@@ -7514,17 +7535,17 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 .statcard--cream {
   background: var(--cream-light);
   border: 1px solid var(--hairline);
-  box-shadow: 0 24px 60px -42px rgba(14, 11, 31, 0.35);
+  box-shadow: 0 24px 60px -42px color-mix(in srgb, var(--ink) 35%, transparent);
 }
 .statcard--indigo {
   background: var(--indigo);
   color: var(--cream);
-  box-shadow: 0 28px 70px -40px rgba(28, 12, 179, 0.55);
+  box-shadow: 0 28px 70px -40px color-mix(in srgb, var(--indigo) 55%, transparent);
 }
 .statcard--ink {
   background: var(--ink);
   color: var(--cream);
-  box-shadow: 0 28px 70px -40px rgba(14, 11, 31, 0.6);
+  box-shadow: 0 28px 70px -40px color-mix(in srgb, var(--ink) 60%, transparent);
 }
 .statcard__inner {
   display: grid;
@@ -7704,7 +7725,7 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   overflow: hidden;
   background:
     radial-gradient(110% 90% at 82% 12%, color-mix(in srgb, var(--indigo-bright) 32%, transparent) 0%, transparent 55%),
-    radial-gradient(90% 80% at 8% 95%, color-mix(in srgb, #0e0b1f 55%, transparent) 0%, transparent 60%),
+    radial-gradient(90% 80% at 8% 95%, color-mix(in srgb, var(--ink) 55%, transparent) 0%, transparent 60%),
     var(--indigo);
   color: var(--cream);
   padding-block: clamp(5rem, 14vh, 9rem);
@@ -8286,7 +8307,7 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 .tgt:hover {
   transform: translateY(-7px);
   border-color: color-mix(in srgb, var(--indigo) 42%, transparent);
-  box-shadow: 0 34px 74px -46px rgba(28, 12, 179, 0.5);
+  box-shadow: 0 34px 74px -46px color-mix(in srgb, var(--indigo) 50%, transparent);
 }
 .tgt:hover::after {
   transform: scaleX(1);
@@ -8806,7 +8827,7 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 .mbld__plate.is-focus {
   background: color-mix(in srgb, var(--cream-light) 82%, transparent);
   border-color: color-mix(in srgb, var(--indigo) 42%, transparent);
-  box-shadow: 0 46px 100px -50px rgba(28, 12, 179, 0.6);
+  box-shadow: 0 46px 100px -50px color-mix(in srgb, var(--indigo) 60%, transparent);
 }
 .mbld__plate.is-live { border-color: var(--indigo-bright); }
 .mbld__hud-dot.is-on { opacity: 0.75; }
@@ -9033,20 +9054,20 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   /* Six panneaux : un écran de défilement chacun suffit à les lire. À
      1,1 écran, on poussait du vide entre deux idées. */
   height: 470vh;
-  background: #0e0b1f;
+  background: var(--ink);
   border-start-start-radius: var(--couture-r);
   border-start-end-radius: var(--couture-r);
   margin-top: calc(-1 * var(--couture-r));
   padding-top: var(--couture-r);
 }
-.cflw__holder { position: sticky; top: 0; width: 100%; height: 100svh; overflow: hidden; background: #0e0b1f; color: var(--cream); }
+.cflw__holder { position: sticky; top: 0; width: 100%; height: 100svh; overflow: hidden; background: var(--ink); color: var(--cream); }
 .cflw__canvas { position: absolute !important; inset: 0; }
-.cflw-loading { height: 100svh; background: #0e0b1f; }
+.cflw-loading { height: 100svh; background: var(--ink); }
 /* voile flouté derrière le texte */
 .cflw__scrim {
   position: absolute; inset: 0; z-index: 3; pointer-events: none; will-change: opacity;
   -webkit-backdrop-filter: blur(7px); backdrop-filter: blur(7px);
-  background: linear-gradient(100deg, rgba(14, 11, 31, 0.86) 0%, rgba(14, 11, 31, 0.5) 28%, transparent 54%);
+  background: linear-gradient(100deg, color-mix(in srgb, var(--ink) 86%, transparent) 0%, color-mix(in srgb, var(--ink) 50%, transparent) 28%, transparent 54%);
   -webkit-mask-image: linear-gradient(100deg, #000 0%, #000 32%, transparent 58%);
   mask-image: linear-gradient(100deg, #000 0%, #000 32%, transparent 58%);
 }
@@ -9110,7 +9131,7 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 .cflw__rail-dot.is-active { opacity: 1; }
 .cflw__rail-dot.is-active em { color: var(--indigo-nuit); font-weight: 600; }
 /* synthèse */
-.cflw__synth { position: absolute; inset: 0; z-index: 6; display: grid; place-items: center; padding-inline: var(--gutter); opacity: 0; pointer-events: none; background: radial-gradient(110% 100% at 50% 46%, rgba(14, 11, 31, 0.6) 0%, rgba(14, 11, 31, 0.92) 80%); }
+.cflw__synth { position: absolute; inset: 0; z-index: 6; display: grid; place-items: center; padding-inline: var(--gutter); opacity: 0; pointer-events: none; background: radial-gradient(110% 100% at 50% 46%, color-mix(in srgb, var(--ink) 60%, transparent) 0%, color-mix(in srgb, var(--ink) 92%, transparent) 80%); }
 .cflw__synth p { max-width: 22ch; text-align: center; font-size: clamp(1.9rem, 4.4vw, 4rem); font-weight: 600; line-height: 1.08; letter-spacing: -0.03em; color: var(--cream); margin: 0; }
 /* mobile : texte en bande basse, voile en bas */
 @media (max-width: 860px) {
@@ -9120,7 +9141,7 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   .cflw__body { max-width: none; }
   .cflw__rail-dot em { display: none; }
   .cflw__scrim {
-    background: linear-gradient(to top, rgba(14, 11, 31, 0.92) 0%, rgba(14, 11, 31, 0.55) 32%, transparent 62%);
+    background: linear-gradient(to top, color-mix(in srgb, var(--ink) 92%, transparent) 0%, color-mix(in srgb, var(--ink) 55%, transparent) 32%, transparent 62%);
     -webkit-mask-image: linear-gradient(to top, #000 0%, #000 42%, transparent 70%);
     mask-image: linear-gradient(to top, #000 0%, #000 42%, transparent 70%);
   }
@@ -9132,7 +9153,7 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 .ofg-section { padding-block: clamp(2rem, 5vh, 4rem) clamp(3rem, 8vh, 6rem); }
 .ofg__card.is-featured {
   border-color: var(--indigo);
-  box-shadow: 0 26px 54px -40px rgba(28, 12, 179, 0.45);
+  box-shadow: 0 26px 54px -40px color-mix(in srgb, var(--indigo) 45%, transparent);
 }
 .ofg__card.is-active { border-color: color-mix(in srgb, var(--indigo) 55%, transparent); }
 .ofg__cta.btn { justify-content: space-between; }
@@ -9145,13 +9166,13 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
 /* Six panneaux : l'intro, les quatre offres, la facturation. Un écran
    de défilement par panneau, et le calage magnétique fait le reste. */
 .ofs { position: relative; height: 480vh; }
-.ofs__holder { position: sticky; top: 0; width: 100%; height: 100svh; overflow: hidden; background: #0b0920; color: var(--cream); }
+.ofs__holder { position: sticky; top: 0; width: 100%; height: 100svh; overflow: hidden; background: var(--nuit); color: var(--cream); }
 .ofs__canvas { position: absolute !important; inset: 0; }
-.ofs-loading { height: 100svh; background: #0b0920; }
+.ofs-loading { height: 100svh; background: var(--nuit); }
 .ofs__scrim {
   position: absolute; inset: 0; z-index: 3; pointer-events: none;
   -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
-  background: linear-gradient(100deg, rgba(11, 9, 32, 0.9) 0%, rgba(11, 9, 32, 0.5) 30%, transparent 56%);
+  background: linear-gradient(100deg, color-mix(in srgb, var(--nuit) 90%, transparent) 0%, color-mix(in srgb, var(--nuit) 50%, transparent) 30%, transparent 56%);
   -webkit-mask-image: linear-gradient(100deg, #000 0%, #000 34%, transparent 60%);
   mask-image: linear-gradient(100deg, #000 0%, #000 34%, transparent 60%);
 }
@@ -9236,7 +9257,7 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   gap: 0.55rem;
   padding: 0.5rem 1rem 0.5rem 0.8rem;
   border-radius: 999px;
-  background: color-mix(in srgb, #0b0920 72%, transparent);
+  background: color-mix(in srgb, var(--nuit) 72%, transparent);
   -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
   font-size: 0.88rem;
@@ -9283,13 +9304,13 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
   .ofs__rail-dot em { display: none; }
   .ofs__rail-dot.is-active em { display: inline; }
   .ofs__scrim {
-    background: linear-gradient(to top, rgba(11, 9, 32, 0.94) 0%, rgba(11, 9, 32, 0.55) 34%, transparent 64%);
+    background: linear-gradient(to top, color-mix(in srgb, var(--nuit) 94%, transparent) 0%, color-mix(in srgb, var(--nuit) 55%, transparent) 34%, transparent 64%);
     -webkit-mask-image: linear-gradient(to top, #000 0%, #000 44%, transparent 72%);
     mask-image: linear-gradient(to top, #000 0%, #000 44%, transparent 72%);
   }
 }
 /* fallback lisible (reduced-motion) */
-.ofs-flat { padding: clamp(3rem, 7vh, 5rem) 0; background: #0b0920; color: var(--cream); }
+.ofs-flat { padding: clamp(3rem, 7vh, 5rem) 0; background: var(--nuit); color: var(--cream); }
 .ofs-flat__card { padding: 1.4rem 0; }
 .ofs-flat__top { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
 .ofs-flat__top h3, .ofs-flat__nom { margin: 0; font-size: 1.3rem; }
@@ -9351,7 +9372,7 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
     right: 0.8rem;
     bottom: 11vh;
     padding: 1.15rem 1.2rem 1.3rem;
-    background: color-mix(in srgb, #0b0920 80%, transparent);
+    background: color-mix(in srgb, var(--nuit) 80%, transparent);
     -webkit-backdrop-filter: blur(16px) saturate(1.1);
     backdrop-filter: blur(16px) saturate(1.1);
     border: 1px solid rgba(240, 238, 232, 0.14);
@@ -9376,7 +9397,7 @@ html.eco-theme .langtoggle__opt:not(.is-on):hover {
     right: 0.8rem;
     bottom: 12vh;
     padding: 1.15rem 1.2rem 1.3rem;
-    background: color-mix(in srgb, #0e0b1f 80%, transparent);
+    background: color-mix(in srgb, var(--ink) 80%, transparent);
     -webkit-backdrop-filter: blur(16px) saturate(1.1);
     backdrop-filter: blur(16px) saturate(1.1);
     border: 1px solid rgba(240, 238, 232, 0.14);
@@ -10284,7 +10305,7 @@ html.eco-theme .menu2__panel .langtoggle__opt:not(.is-on):hover { color: var(--i
   aspect-ratio: 4 / 5;
   border-radius: 18px;
   overflow: hidden;
-  box-shadow: 0 50px 100px -50px rgba(14, 11, 31, 0.45);
+  box-shadow: 0 50px 100px -50px color-mix(in srgb, var(--ink) 45%, transparent);
   will-change: clip-path;
 }
 .ahero__img {
@@ -10477,7 +10498,7 @@ html.eco-theme .menu2__panel .langtoggle__opt:not(.is-on):hover { color: var(--i
   border: 1px solid var(--hairline);
   border-radius: 22px;
   padding: clamp(1.5rem, 2.6vw, 2.2rem);
-  box-shadow: 0 46px 90px -50px rgba(14, 11, 31, 0.4);
+  box-shadow: 0 46px 90px -50px color-mix(in srgb, var(--ink) 40%, transparent);
   will-change: clip-path, transform;
 }
 .ctc__form { display: flex; flex-direction: column; gap: 1rem; }
@@ -11049,7 +11070,7 @@ html.eco-theme .crumb__node { background: rgba(125, 223, 168, 0.55); }
   padding: clamp(1.8rem, 4vw, 3rem);
   border-radius: 22px;
   background: var(--cream);
-  box-shadow: 0 40px 120px -50px rgba(14, 11, 31, 0.8);
+  box-shadow: 0 40px 120px -50px color-mix(in srgb, var(--ink) 80%, transparent);
   animation: chp-boite 0.72s cubic-bezier(0.22, 1, 0.36, 1) 0.12s both;
 }
 @keyframes chp-boite {
@@ -12091,7 +12112,7 @@ html.eco-theme .crumb__node { background: rgba(125, 223, 168, 0.55); }
   background: var(--cream);
   border-radius: clamp(1rem, 2.4vw, 1.8rem);
   overflow: hidden;
-  box-shadow: 0 60px 140px -60px rgba(14, 11, 31, 0.75);
+  box-shadow: 0 60px 140px -60px color-mix(in srgb, var(--ink) 75%, transparent);
   animation: expl3dEntree 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 @keyframes expl3dEntree {
@@ -12138,7 +12159,7 @@ html.eco-theme .crumb__node { background: rgba(125, 223, 168, 0.55); }
   color: var(--cream);
   font-size: 0.82rem;
   line-height: 1.2;
-  box-shadow: 0 8px 22px -12px rgba(14, 11, 31, 0.8);
+  box-shadow: 0 8px 22px -12px color-mix(in srgb, var(--ink) 80%, transparent);
   animation: expl3dMot 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 @keyframes expl3dMot {
@@ -12630,7 +12651,7 @@ html.eco-theme .crumb__node { background: rgba(125, 223, 168, 0.55); }
   color: var(--ink);
   font-size: 0.8rem;
   line-height: 1.2;
-  box-shadow: 0 8px 20px -14px rgba(14, 11, 31, 0.7);
+  box-shadow: 0 8px 20px -14px color-mix(in srgb, var(--ink) 70%, transparent);
   /* L'opacité et la position sont écrites image par image par la scène. */
   opacity: 0;
 }
@@ -12843,7 +12864,7 @@ a.esp__seg:hover { background: color-mix(in srgb, var(--indigo) 8%, transparent)
 .esp__point.esp--soleil { background: var(--soleil); }
 .esp__point.esp--menthe { background: var(--menthe); }
 .esp__point.esp--ciel { background: var(--ciel); }
-.nav--dark .esp { border-color: rgba(240, 238, 232, 0.3); background: rgba(14, 11, 31, 0.35); }
+.nav--dark .esp { border-color: rgba(240, 238, 232, 0.3); background: color-mix(in srgb, var(--ink) 35%, transparent); }
 .nav--dark .esp__seg { color: var(--cream); }
 .nav--dark .esp__seg.is-actif { background: var(--cream); color: var(--indigo); }
 .menu2__head .esp { background: transparent; }
@@ -13015,7 +13036,7 @@ a.espt__tuile:focus-visible {
   transform: translateY(-3px) rotateX(6deg);
   border-color: var(--tuile-acc);
   background: var(--tuile-pale);
-  box-shadow: 0 16px 30px -20px rgba(14, 11, 31, 0.55);
+  box-shadow: 0 16px 30px -20px color-mix(in srgb, var(--ink) 55%, transparent);
 }
 .espt__tuile.is-actif { border-color: var(--indigo); background: var(--indigo); color: var(--cream); }
 .espt__tuile.is-actif .espt__sous,
@@ -13193,7 +13214,7 @@ button:focus-visible .croix__bras { transform: translate(var(--dx), var(--dy)); 
    trop de traits sous les mots alourdissent la page. Au départ du survol,
    le fond redescend d'abord, puis le trait se retire.
    ════════════════════════════════════════════════════════════ */
-:root { --lien-fond: color-mix(in srgb, #1c0cb3 13%, transparent); }
+:root { --lien-fond: color-mix(in srgb, var(--indigo) 13%, transparent); }
 .footer2, .am--sombre, [data-nav-dark] { --lien-fond: rgba(240, 238, 232, 0.17); }
 
 .lien-fleche, .lien-souligne, .duo__lien, .ch__finlien, .link,

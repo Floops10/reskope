@@ -10,6 +10,8 @@ import SwapLabel from './SwapLabel';
 import { PORTES_CREATION } from '../data/offres';
 import { fiche } from '../data/seo';
 import Espaces, { EspacesTuiles } from './Espaces';
+import { MARQUES } from '../data/marques';
+import { useMarque } from '../lib/useMarque';
 import { openCalModal, isCalConfigured } from '../lib/cal';
 
 /* NAV — un en-tête minimal, et un menu qui tient dans un écran.
@@ -46,6 +48,8 @@ export default function Nav() {
      (contact, qui on est...) non plus. */
   const route = pathname !== '/' ? pathname.replace(/\/+$/, '') : '/';
   const espace = fiche(route)?.espace || null;
+  /* La marque de la page : « Reskope Create » dans l'espace en projet. */
+  const marque = MARQUES[useMarque()] || null;
   const aiguillage = route === '/';
 
   /* Deux intentions, deux boutons : écrire mène au formulaire, réserver
@@ -189,9 +193,10 @@ export default function Nav() {
       >
         <div className="container nav__inner">
           <div className="nav__marque">
-            <Link to={espace === 'creation' ? '/creation' : '/'} className="wordmark" aria-label="Reskope, accueil">
+            <Link to={marque ? '/creation' : '/'} className="wordmark" aria-label={marque ? `Reskope ${marque.nom}, accueil` : 'Reskope, accueil'}>
               <LogoMark className="wordmark__mark" />
               <span className="wordmark__text">Reskope</span>
+              {marque && <span className="wordmark__marque">{marque.nom}</span>}
             </Link>
             {/* Les trois espaces, toujours visibles : on sait où l'on est, et
                 on change en un geste. Sur l'aiguillage, la question suffit. */}

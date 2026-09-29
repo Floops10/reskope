@@ -1,13 +1,15 @@
 import { Link } from 'react-router-dom';
 import { ESPACES, adresseEspace } from '../data/espaces';
+import { MARQUES, MARQUE_DE_L_ESPACE } from '../data/marques';
 
 /* ════════════════════════════════════════════════════════════
-   LE SÉLECTEUR D'ESPACE — « En projet · TPE · PME », dans l'en-tête.
+   LE SÉLECTEUR DE MARQUE — « Create · Define · Elevate », dans l'en-tête.
 
    On voit en permanence qu'il y a trois espaces, lequel on regarde, et
    comment passer à un autre en un geste. La même pastille existe dans
    l'espace TPE et PME, à la même place : on ne se perd pas en changeant.
-   Chaque segment porte le point de couleur de son espace.
+   Chaque segment porte le nom de sa marque et son point de couleur ; le
+   survol dit à qui elle s'adresse.
    ════════════════════════════════════════════════════════════ */
 
 export default function Espaces({ actif, className = '' }) {
@@ -17,10 +19,11 @@ export default function Espaces({ actif, className = '' }) {
         const contenu = (
           <>
             <i className={`esp__point esp--${e.accent}`} aria-hidden="true" />
-            {e.court}
+            {MARQUES[MARQUE_DE_L_ESPACE[e.id]].nom}
           </>
         );
-        const titre = e.id === 'creation' ? 'Vous créez ou reprenez une entreprise' : `Entreprise de ${e.taille}`;
+        const m = MARQUES[MARQUE_DE_L_ESPACE[e.id]];
+        const titre = `Reskope ${m.nom} · ${m.fr.qui}`;
         if (e.id === actif) {
           return <span key={e.id} className="esp__seg is-actif" aria-current="true" title={titre}>{contenu}</span>;
         }
@@ -41,7 +44,7 @@ export default function Espaces({ actif, className = '' }) {
    que c'est un bouton, et à quoi il mène. Celle où l'on est est pleine.
    ════════════════════════════════════════════════════════════ */
 
-export function EspacesTuiles({ actif, className = '', label = 'Choisir votre espace' }) {
+export function EspacesTuiles({ actif, className = '', label = 'Choisir votre marque' }) {
   return (
     <nav className={`espt ${className}`} aria-label={label}>
       {ESPACES.map((e) => {
@@ -50,8 +53,8 @@ export function EspacesTuiles({ actif, className = '', label = 'Choisir votre es
         const contenu = (
           <>
             <i className={`esp__point esp--${e.accent}`} aria-hidden="true" />
-            <span className="espt__nom">{e.court}</span>
-            <span className="espt__sous">{e.sous}</span>
+            <span className="espt__nom"><span className="espt__mere">Reskope </span>{MARQUES[MARQUE_DE_L_ESPACE[e.id]].nom}</span>
+            <span className="espt__sous">{MARQUES[MARQUE_DE_L_ESPACE[e.id]].fr.pour}</span>
             <span className="espt__etat" aria-hidden="true">{ici ? 'Vous êtes ici' : 'Entrer →'}</span>
           </>
         );

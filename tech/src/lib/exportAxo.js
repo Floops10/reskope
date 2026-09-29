@@ -1,4 +1,5 @@
 import { pave, projeterPave, projeterSol, PR, tourner } from './axo';
+import { palette3d } from './palette3d';
 
 /* ════════════════════════════════════════════════════════════
    L'EXPORT — le schéma de l'atelier, dessiné comme une planche.
@@ -7,7 +8,7 @@ import { pave, projeterPave, projeterSol, PR, tourner } from './axo';
    l'emporter. On ne fait pas une capture d'écran du WebGL : on reprojette la
    même géométrie avec le moteur des livrets, à l'angle canonique. Le fichier
    qui sort est un vrai dessin vectoriel, à la bonne échelle, avec les trois
-   indigos de la charte — imprimable, et lisible par un banquier comme par un
+   teintes de la marque — imprimable, et lisible par un banquier comme par un
    prestataire.
 
    La police est embarquée en base64 dans le fichier : sans elle, le SVG
@@ -15,12 +16,12 @@ import { pave, projeterPave, projeterSol, PR, tourner } from './axo';
    partir de ce SVG aussi (une image ne charge aucune ressource externe).
    ════════════════════════════════════════════════════════════ */
 
-const TOP = '#5B4BE6';
-const DROITE = '#1C0CB3';
-const GAUCHE = '#130982';
-const TRAIT = '#130982';
-const CREME = '#F0EEE8';
-const ENCRE = '#0E0B1F';
+/* Les couleurs de la marque de la page, lues au moment de l'export : un
+   schéma composé chez Define sort en verts, chez Elevate en bleus. */
+const couleurs = () => {
+  const pal = palette3d();
+  return { TOP: pal.plein[0], DROITE: pal.plein[1], GAUCHE: pal.plein[2], TRAIT: pal.plein[2], CREME: pal.fond, ENCRE: pal.encre };
+};
 
 const ech = (v) => Number(v).toFixed(2);
 
@@ -52,6 +53,7 @@ function echapper(t) {
 /* Le dessin complet. `blocs` et `liens` sont ceux de l'atelier, en
    coordonnées de monde ; le reste n'est que mise en page. */
 export function svgSchema({ blocs, liens, sol, titre, note, police }) {
+  const { TOP, DROITE, GAUCHE, TRAIT, CREME, ENCRE } = couleurs();
   const cx = sol.W / 2;
   const cy = sol.D / 2;
   const theta = 0;
@@ -201,6 +203,7 @@ export function svgSchema({ blocs, liens, sol, titre, note, police }) {
    WebGL : la capture aurait rendu les étiquettes en HTML par-dessus, donc
    invisibles, et une image d'écran ne s'imprime pas. */
 export function svgVersPng(svg, echelle = 2) {
+  const { CREME } = couleurs();
   return new Promise((resolve, reject) => {
     const img = new Image();
     const m = svg.match(/width="(\d+)" height="(\d+)"/);

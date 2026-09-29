@@ -2,6 +2,7 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { SITE, PAGES, PROFILS, PORTE, META, url, fiche, adresses } from '../src/data/seo.js';
+import { MARQUES, MERE, MARQUE_DE_L_ESPACE, nomComplet } from '../src/data/marques.js';
 
 /* ════════════════════════════════════════════════════════════
    LE PRÉ-RENDU — écrire un vrai fichier par adresse.
@@ -107,7 +108,7 @@ function schemaDe(profil, route, f) {
       '@type': 'WebPage',
       '@id': `${adresse}#page`,
       url: adresse,
-      name: `${f.titre} · ${SITE.marque}`,
+      name: `${f.titre} · ${nomComplet(MARQUE_DE_L_ESPACE[profil])}`,
       description: f.description,
       inLanguage: 'fr',
       isPartOf: { '@type': 'WebSite', name: SITE.marque, url: `${SITE.origine}${SITE.base}/` },
@@ -170,7 +171,10 @@ function corps(profil, route, f) {
 
 function page(profil, route, f) {
   const adresse = url(profil, route);
-  const titre = `${f.titre} · ${SITE.marque}`;
+  /* Define pour les TPE, Elevate pour les PME : dans le titre, et posée sur
+     <html> pour que la page naisse dans ses couleurs. */
+  const marque = MARQUE_DE_L_ESPACE[profil] || 'reskope';
+  const titre = `${f.titre} · ${nomComplet(marque)}`;
   const tete = [
     `<meta name="description" content="${ech(f.description)}" />`,
     `<link rel="canonical" href="${adresse}" />`,
@@ -183,6 +187,8 @@ function page(profil, route, f) {
   ].join('\n    ');
 
   return base
+    .replace('<html lang="fr">', `<html lang="fr" data-marque="${marque}"${profil ? ` data-profil="${profil}"` : ''}>`)
+    .replace(/<meta name="theme-color" content="[^"]*" \/>/, `<meta name="theme-color" content="${(MARQUES[marque] || MERE).teinte}" />`)
     .replace('<!--TITRE-->', `<title>${ech(titre)}</title>\n    ${tete}`)
     .replace('<!--SCHEMA-->', `<script type="application/ld+json">${JSON.stringify(schemaDe(profil, route, f))}</script>`)
     .replace('<div id="root"></div>', `<div id="root">${corps(profil, route, f)}</div>`);

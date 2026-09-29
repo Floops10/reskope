@@ -1,5 +1,6 @@
 import { useRef, useMemo, useState, Fragment } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
+import { usePalette3d } from '../lib/palette3d';
 import { Link } from 'react-router-dom';
 import * as THREE from 'three';
 import { ScrollTrigger, useGSAP } from '../lib/gsap';
@@ -32,7 +33,7 @@ import { FIGURE_OFFRE, EXPL_MOTS } from '../lib/scenes';
    reduced-motion => liste lisible. Fond indigo profond.
    ============================================================ */
 
-const INK = '#0b0920';
+/* La nuit de la vitrine vient de la marque de la page (lib/palette3d.js). */
 const N = 512;
 const CD = [0.03, 0.21, 0.39, 0.57, 0.75, 0.93];       // 6 scènes
 const clamp01 = (v) => Math.min(Math.max(v, 0), 1);
@@ -114,8 +115,9 @@ function Matter({ states, progress, mouse }) {
   const groupRef = useRef();
   const dummy = useMemo(() => new THREE.Object3D(), []);
   const cc = useMemo(() => new THREE.Color(), []);
-  const A = useMemo(() => new THREE.Color('#5b4be6'), []);
-  const B = useMemo(() => new THREE.Color('#f0eee8'), []);
+  const pal = usePalette3d();
+  const A = useMemo(() => new THREE.Color(pal.vif), [pal]);
+  const B = useMemo(() => new THREE.Color(pal.fond), [pal]);
 
   useFrame((state) => {
     const time = state.clock.elapsedTime;
@@ -187,6 +189,7 @@ function splitWords(text) {
 }
 
 export default function OffersShowcase({ offers, prices, billing, badge, labels, intro, locale }) {
+  const pal = usePalette3d();
   const rootRef = useRef(null);
   const railFillRef = useRef(null);
   const progress = useRef(0);
@@ -293,8 +296,8 @@ export default function OffersShowcase({ offers, prices, billing, badge, labels,
           camera={{ position: [0, 0, 9], fov: 52, near: 0.1, far: 40 }}
           gl={{ antialias: true, powerPreference: 'high-performance' }}
         >
-          <color attach="background" args={[INK]} />
-          <fog attach="fog" args={[INK, 9, 20]} />
+          <color attach="background" args={[pal.encre]} />
+          <fog attach="fog" args={[pal.encre, 9, 20]} />
           <Matter states={states} progress={progress} mouse={mouse} />
           <CamRig progress={progress} mouse={mouse} />
         </Canvas>

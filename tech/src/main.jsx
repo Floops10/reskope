@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import './index.css';
+import './styles/marques.css';
 import App from './App.jsx';
 import { LangProvider } from './i18n.jsx';
 import { ProfilProvider, useProfil, BASE } from './profil.jsx';

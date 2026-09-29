@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Reskope Create · logo officiel (scripts/logo.py). Fond transparent, texte vectorisé.
+     R : traits 3, nœuds 5,5, jonction 7 pour 92 de haut. Ne pas épaissir les traits.
+     Indigo #1C0CB3 · nœud #F2A93B · nom #9C4F06 (sur clair), #F5C36B (sur sombre) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="13 8.5 112.5 135" width="112.5" height="135" role="img" aria-label="Reskope Create"><title>Reskope Create</title><g fill="none" stroke="#1C0CB3" stroke-width="3" stroke-linecap="round"><path d="M36 30L36 80"/><path d="M36 80L36 122"/><path d="M36 30L92 30"/><path d="M92 30L104 62"/><path d="M104 62L36 80"/><path d="M36 80L104 122"/></g><g fill="#1C0CB3"><circle cx="36" cy="30" r="5.5"/><circle cx="92" cy="30" r="5.5"/><circle cx="104" cy="62" r="5.5"/><circle cx="36" cy="80" r="7" fill="#F2A93B"/><circle cx="36" cy="122" r="5.5"/><circle cx="104" cy="122" r="5.5"/></g></svg>

@@ -1,4 +1,4 @@
-import { useEffect, lazy, Suspense } from 'react';
+import { useEffect, useLayoutEffect, lazy, Suspense } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { ScrollTrigger } from './lib/gsap';
 import { initSmoothScroll, destroySmoothScroll } from './lib/smoothScroll';
@@ -13,6 +13,8 @@ import Nav from './components/Nav';
 import Breadcrumb from './components/Breadcrumb';
 import Footer from './components/Footer';
 import Aiguillage from './pages/Aiguillage';
+import { poserMarque } from './data/marques';
+import { marqueDeLaRoute } from './lib/marqueRoute';
 
 /* L'aiguillage part avec le paquet principal ; toutes les autres pages ne
    sont demandées qu'à la visite. Qui arrive sur son téléphone, entre deux
@@ -49,6 +51,15 @@ function VersEntreprises() {
   return <main id="contenu" className="attente-page" />;
 }
 
+/* La marque de la page (Reskope, ou Reskope Create pour l'espace « en
+   projet ») : posée avant l'affichage, pour que la page naisse dans ses
+   couleurs. Voir lib/marqueRoute.js. */
+function MarqueDeLaPage() {
+  const { pathname } = useLocation();
+  useLayoutEffect(() => { poserMarque(marqueDeLaRoute(pathname)); }, [pathname]);
+  return null;
+}
+
 export default function App() {
   useEffect(() => {
     initSmoothScroll();
@@ -68,6 +79,7 @@ export default function App() {
   return (
     <>
       <a className="evitement" href="#contenu">Aller au contenu</a>
+      <MarqueDeLaPage />
       <ScrollToTop />
       {/* La trame de la marque, posée une seule fois derrière tout le site. */}
       <div className="fond" aria-hidden="true"><HeroNetwork /></div>

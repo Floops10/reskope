@@ -3,6 +3,8 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls, OrthographicCamera, Edges, Html } from '@react-three/drei';
 import * as THREE from 'three';
 import { SCENES } from '../lib/scenes';
+import { cubeColore } from '../lib/troisd';
+import { usePalette3d } from '../lib/palette3d';
 
 /* ============================================================
    L'UNIVERS D'UNE OFFRE — la planche du livret, montée en volume.
@@ -21,32 +23,6 @@ import { SCENES } from '../lib/scenes';
    le même ordre qu'à plat. Ce n'est pas un éclairage : ce sont les couleurs.
    ============================================================ */
 
-const TEINTES = {
-  /* [dessus, faces +x/+z, faces -x/-z] */
-  plein: ['#5B4BE6', '#1C0CB3', '#130982'],
-  neuf: ['#A79CF7', '#6B5BEA', '#4B3CC9'],
-  socle: ['#2A1E7A', '#190C5C', '#120741'],
-};
-const ARETE = { plein: '#130982', neuf: '#3A2BAE', socle: '#0D0535', creux: '#1C0CB3' };
-
-/* Un cube unité dont les couleurs sont cuites dans la géométrie. Une seule
-   matière par bloc suffit alors — donc un seul appel de dessin — au lieu des
-   six qu'il fallait pour peindre les faces une par une. C'est ce qui permet
-   de passer de neuf blocs à quarante sans que la scène traîne. */
-function cubeColore(teinte) {
-  const g = new THREE.BoxGeometry(1, 1, 1);
-  const [haut, cote, ombre] = TEINTES[teinte];
-  const c = [cote, ombre, haut, ombre, cote, ombre].map((h) => new THREE.Color(h));
-  const col = new Float32Array(g.attributes.position.count * 3);
-  for (let face = 0; face < 6; face++) {
-    for (let k = 0; k < 4; k++) {
-      const i = face * 4 + k;
-      col[i * 3] = c[face].r; col[i * 3 + 1] = c[face].g; col[i * 3 + 2] = c[face].b;
-    }
-  }
-  g.setAttribute('color', new THREE.BufferAttribute(col, 3));
-  return g;
-}
 
 /* Du monde des livrets (x, y au sol, z vers le haut) vers celui de three. */
 function enTrois(p, centre) {
@@ -61,6 +37,7 @@ function enTrois(p, centre) {
 const lerp = (a, b, t) => a + (b - a) * t;
 
 function Bloc({ bloc, geo, eteint, hauteur, montre, onClick }) {
+  const pal = usePalette3d();
   const maille = useRef(null);
   const mat = useRef(null);
   const aretes = useRef(null);
@@ -107,7 +84,7 @@ function Bloc({ bloc, geo, eteint, hauteur, montre, onClick }) {
       <mesh ref={maille} onClick={clic}>
         <boxGeometry args={[1, 1, 1]} />
         <meshBasicMaterial visible={false} />
-        <Edges ref={aretes} threshold={1} color={ARETE.creux} transparent />
+        <Edges ref={aretes} threshold={1} color={pal.arete.creux} transparent />
       </mesh>
     );
   }
@@ -115,7 +92,7 @@ function Bloc({ bloc, geo, eteint, hauteur, montre, onClick }) {
   return (
     <mesh ref={maille} geometry={geo} onClick={clic}>
       <meshBasicMaterial ref={mat} vertexColors toneMapped={false} />
-      <Edges ref={aretes} threshold={15} color={ARETE[bloc.etat] || ARETE.plein} transparent />
+      <Edges ref={aretes} threshold={15} color={pal.arete[bloc.etat] || pal.arete.plein} transparent />
     </mesh>
   );
 }
@@ -146,6 +123,7 @@ function pointsArc(a, c, z, pic, n) {
 }
 
 function Lien({ a, bDest, z, pose, pic = 0, seed }) {
+  const pal = usePalette3d();
   const point = useRef(null);
   const t = useRef(seed);
 
@@ -181,11 +159,11 @@ function Lien({ a, bDest, z, pose, pic = 0, seed }) {
     <>
       <mesh position={[deb[0], z, deb[1]]}>
         <boxGeometry args={[0.52, 0.52, 0.52]} />
-        <meshBasicMaterial color="#A79CF7" toneMapped={false} />
+        <meshBasicMaterial color={pal.clair} toneMapped={false} />
       </mesh>
       <mesh position={[fin[0], z, fin[1]]}>
         <boxGeometry args={[0.52, 0.52, 0.52]} />
-        <meshBasicMaterial color="#A79CF7" toneMapped={false} />
+        <meshBasicMaterial color={pal.clair} toneMapped={false} />
       </mesh>
     </>
   );
@@ -197,7 +175,7 @@ function Lien({ a, bDest, z, pose, pic = 0, seed }) {
         {perles.map((p, i) => (
           <mesh key={i} position={p}>
             <boxGeometry args={[0.42, 0.42, 0.42]} />
-            <meshBasicMaterial color="#5B4BE6" transparent opacity={0.55} toneMapped={false} />
+            <meshBasicMaterial color={pal.vif} transparent opacity={0.55} toneMapped={false} />
           </mesh>
         ))}
       </group>
@@ -209,12 +187,12 @@ function Lien({ a, bDest, z, pose, pic = 0, seed }) {
       {bouts}
       <mesh position={[(deb[0] + fin[0]) / 2, z, (deb[1] + fin[1]) / 2]} rotation={[0, -angle, 0]}>
         <boxGeometry args={[longueur, 0.3, 0.3]} />
-        <meshBasicMaterial color="#6B5BEA" toneMapped={false} />
-        <Edges threshold={15} color="#4B3CC9" />
+        <meshBasicMaterial color={pal.neuf[1]} toneMapped={false} />
+        <Edges threshold={15} color={pal.neuf[2]} />
       </mesh>
       <mesh ref={point}>
         <boxGeometry args={[0.62, 0.62, 0.62]} />
-        <meshBasicMaterial color="#F0EEE8" toneMapped={false} />
+        <meshBasicMaterial color={pal.fond} toneMapped={false} />
       </mesh>
     </group>
   );
@@ -225,6 +203,7 @@ function Lien({ a, bDest, z, pose, pic = 0, seed }) {
    blocs dont parle l'étape en cours — quinze étiquettes à l'écran ne se
    lisent pas, trois se lisent. */
 function Etiquette({ bloc, hauteur, texte, tige = 1.5 }) {
+  const pal = usePalette3d();
   const haut = bloc.base + hauteur;
   const geo = useMemo(() => {
     const g = new THREE.BufferGeometry();
@@ -234,7 +213,7 @@ function Etiquette({ bloc, hauteur, texte, tige = 1.5 }) {
   return (
     <group position={[bloc.cx, haut, bloc.cz]}>
       <lineSegments geometry={geo} scale={[1, tige, 1]}>
-        <lineBasicMaterial color="#1C0CB3" transparent opacity={0.6} />
+        <lineBasicMaterial color={pal.action} transparent opacity={0.6} />
       </lineSegments>
       <Html position={[0, tige + 0.42, 0]} center zIndexRange={[6, 0]} style={{ pointerEvents: 'none' }}>
         <span className="expl3d__mot">{texte}</span>
@@ -244,6 +223,7 @@ function Etiquette({ bloc, hauteur, texte, tige = 1.5 }) {
 }
 
 function Sol({ W, D, pas }) {
+  const pal = usePalette3d();
   const geo = useMemo(() => {
     const pts = [];
     const dx = -W / 2, dz = -D / 2;
@@ -257,18 +237,19 @@ function Sol({ W, D, pas }) {
   }, [W, D, pas]);
   return (
     <lineSegments geometry={geo}>
-      <lineBasicMaterial color="#1C0CB3" transparent opacity={0.26} />
+      <lineBasicMaterial color={pal.action} transparent opacity={0.26} />
     </lineSegments>
   );
 }
 
 function Plateau({ scene, blocs, etape, onBloc, tourne, lang }) {
+  const pal = usePalette3d();
   const groupe = useRef(null);
   const geos = useMemo(() => ({
-    plein: cubeColore('plein'),
-    neuf: cubeColore('neuf'),
-    socle: cubeColore('socle'),
-  }), []);
+    plein: cubeColore('plein', pal),
+    neuf: cubeColore('neuf', pal),
+    socle: cubeColore('socle', pal),
+  }), [pal]);
 
   useFrame((_, dt) => {
     if (tourne && groupe.current) groupe.current.rotation.y += dt * 0.16;

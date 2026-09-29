@@ -2,6 +2,7 @@ import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { SITE, PAGES, url, fiche, VERS_ENTREPRISES } from '../src/data/seo.js';
 import { OFFRES, OFFRE } from '../src/data/offres.js';
+import { MARQUES, MERE, marqueDeLaRouteDuSite, nomComplet } from '../src/data/marques.js';
 import { DOMAINE, BASE, URL_SITE } from '../site.config.mjs';
 
 /* ════════════════════════════════════════════════════════════
@@ -109,7 +110,7 @@ function schemaDe(route, f) {
       '@type': 'WebPage',
       '@id': `${adresse}#page`,
       url: adresse,
-      name: `${f.titre} · ${SITE.marque}`,
+      name: `${f.titre} · ${nomComplet(marqueDeLaRouteDuSite(route))}`,
       description: f.description,
       inLanguage: 'fr',
       isPartOf: { '@type': 'WebSite', name: SITE.marque, url: url('/') },
@@ -172,7 +173,10 @@ function corps(route, f) {
 
 function page(route, f) {
   const adresse = url(route);
-  const titre = `${f.titre} · ${SITE.marque}`;
+  /* La marque de la page (Create pour l'espace en projet) : dans le titre,
+     et posée sur <html> pour que la page naisse dans ses couleurs. */
+  const marque = marqueDeLaRouteDuSite(route);
+  const titre = `${f.titre} · ${nomComplet(marque)}`;
   const tete = [
     `<meta name="description" content="${ech(f.description)}" />`,
     `<link rel="canonical" href="${adresse}" />`,
@@ -185,6 +189,8 @@ function page(route, f) {
   ].join('\n    ');
 
   return base
+    .replace('<html lang="fr">', `<html lang="fr" data-marque="${marque}">`)
+    .replace(/<meta name="theme-color" content="[^"]*" \/>/, `<meta name="theme-color" content="${(MARQUES[marque] || MERE).teinte}" />`)
     .replace('<!--TITRE-->', `<title>${ech(titre)}</title>\n    ${tete}`)
     .replace('<!--SCHEMA-->', `<script type="application/ld+json">${JSON.stringify(schemaDe(route, f))}</script>`)
     .replace('<div id="root"></div>', `<div id="root">${corps(route, f)}</div>`);

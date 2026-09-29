@@ -3,7 +3,8 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { OrthographicCamera, Edges, Html } from '@react-three/drei';
 import * as THREE from 'three';
 import { SCENES } from '../lib/scenes';
-import { cubeColore, ARETE, graine } from '../lib/troisd';
+import { cubeColore, graine } from '../lib/troisd';
+import { usePalette3d } from '../lib/palette3d';
 import {
   QUARTIERS, phase, avanceQuartier, avanceNote, avanceRoute, voyageur, regard,
   clamp01, doux,
@@ -57,6 +58,7 @@ function annotationsDe(scene, lang, max = 2) {
 
 /* Un bloc : il vient du lointain pendant qu'on approche du quartier. */
 function Bloc({ bl, quartier, geos, avance }) {
+  const pal = usePalette3d();
   const maille = useRef(null);
   const depart = useMemo(() => {
     const a = graine(bl.i + quartier * 31, 3) * Math.PI * 2;
@@ -94,7 +96,7 @@ function Bloc({ bl, quartier, geos, avance }) {
       <mesh ref={maille}>
         <boxGeometry args={[1, 1, 1]} />
         <meshBasicMaterial visible={false} />
-        <Edges threshold={1} color={ARETE.creux} />
+        <Edges threshold={1} color={pal.arete.creux} />
       </mesh>
     );
   }
@@ -102,12 +104,13 @@ function Bloc({ bl, quartier, geos, avance }) {
   return (
     <mesh ref={maille} geometry={geos[teinte]}>
       <meshBasicMaterial vertexColors toneMapped={false} />
-      <Edges threshold={15} color={ARETE[teinte] || ARETE.plein} />
+      <Edges threshold={15} color={pal.arete[teinte] || pal.arete.plein} />
     </mesh>
   );
 }
 
 function Sol({ scene, avance }) {
+  const pal = usePalette3d();
   const ligne = useRef(null);
   const geo = useMemo(() => {
     const pts = [];
@@ -124,12 +127,13 @@ function Sol({ scene, avance }) {
   });
   return (
     <lineSegments ref={ligne} geometry={geo}>
-      <lineBasicMaterial color="#1C0CB3" transparent opacity={0} />
+      <lineBasicMaterial color={pal.action} transparent opacity={0} />
     </lineSegments>
   );
 }
 
 function Note({ bl, texte, avance, rang }) {
+  const pal = usePalette3d();
   const groupe = useRef(null);
   const tige = useRef(null);
   const mot = useRef(null);
@@ -168,7 +172,7 @@ function Note({ bl, texte, avance, rang }) {
   return (
     <group ref={groupe}>
       <lineSegments ref={tige} geometry={geo}>
-        <lineBasicMaterial color="#1C0CB3" transparent opacity={0} />
+        <lineBasicMaterial color={pal.action} transparent opacity={0} />
       </lineSegments>
       <Html position={[cote * 1.6, hauteur + 0.55, 0]} center zIndexRange={[6, 0]} style={{ pointerEvents: 'none' }}>
         <span className="seq__note" ref={mot}>{texte}</span>
@@ -179,6 +183,7 @@ function Note({ bl, texte, avance, rang }) {
 
 /* La route : une bande posée au sol qui se trace à mesure qu'on la parcourt. */
 function Route({ de, vers, avance }) {
+  const pal = usePalette3d();
   const maille = useRef(null);
   const { milieu, longueur, angle } = useMemo(() => {
     const dx = vers[0] - de[0];
@@ -202,13 +207,14 @@ function Route({ de, vers, avance }) {
   return (
     <mesh ref={maille} rotation={[0, -angle, 0]} position={milieu}>
       <boxGeometry args={[1, 0.12, 1.5]} />
-      <meshBasicMaterial color="#6B5BEA" transparent opacity={0.55} toneMapped={false} />
+      <meshBasicMaterial color={pal.neuf[1]} transparent opacity={0.55} toneMapped={false} />
     </mesh>
   );
 }
 
 /* Le voyageur : c'est lui qui dit où l'on se trouve. */
 function Voyageur({ avance }) {
+  const pal = usePalette3d();
   const cube = useRef(null);
   const ombre = useRef(null);
   useFrame(() => {
@@ -224,13 +230,13 @@ function Voyageur({ avance }) {
     <group>
       <mesh ref={cube}>
         <boxGeometry args={[1.5, 1.5, 1.5]} />
-        <meshBasicMaterial color="#F0EEE8" toneMapped={false} />
-        <Edges threshold={15} color="#1C0CB3" />
+        <meshBasicMaterial color={pal.fond} toneMapped={false} />
+        <Edges threshold={15} color={pal.action} />
       </mesh>
       {/* Le repère au sol : on sait toujours à l'aplomb de quoi il passe. */}
       <mesh ref={ombre} rotation={[-Math.PI / 2, 0, 0]}>
         <ringGeometry args={[1.5, 1.9, 24]} />
-        <meshBasicMaterial color="#1C0CB3" transparent opacity={0.45} />
+        <meshBasicMaterial color={pal.action} transparent opacity={0.45} />
       </mesh>
     </group>
   );
@@ -280,12 +286,13 @@ function Camera({ camRef, avance }) {
 }
 
 function Scene({ figures, lang, avance, onQuartier, onPret }) {
+  const pal = usePalette3d();
   const cam = useRef(null);
   const geos = useMemo(() => ({
-    plein: cubeColore('plein'),
-    neuf: cubeColore('neuf'),
-    socle: cubeColore('socle'),
-  }), []);
+    plein: cubeColore('plein', pal),
+    neuf: cubeColore('neuf', pal),
+    socle: cubeColore('socle', pal),
+  }), [pal]);
 
   /* Un porteur par valeur animée. Ils sont créés une fois et seulement
      écrits dans la boucle : aucun rendu React pendant le défilement. */

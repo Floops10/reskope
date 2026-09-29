@@ -3,20 +3,26 @@ import { useLocation } from 'react-router-dom';
 import { gsap } from '../lib/gsap';
 import { useLang } from '../i18n';
 import { R_NODES, R_LINKS, R_SCATTER, linkD } from './Logo';
+import { MARQUES, poserMarque } from '../data/marques';
+import { marqueDeLAdresse as marqueDeDestination } from '../lib/marqueRoute';
 
 /* Une phrase par destination, tirée au hasard : le temps de chargement
-   devient un micro-moment de marque (promesse, chiffre, ou invitation). */
+   devient un micro-moment de marque (promesse, chiffre, ou invitation).
+   Ici, celles de l'accueil et de Reskope Create, reprises de leurs pages. */
 const PHRASES = {
   fr: {
-    '/':                       ['Votre SI, enfin lisible.', 'On ouvre le capot.', 'Le désordre a un coût. On le chiffre.'],
-    '/pourquoi':               ['16,5 h perdues par personne, chaque semaine.', 'Un coût que personne ne voit.', 'Les chiffres, sourcés.'],
-    '/methode':                ['Cinq jalons, zéro angle mort.', 'Vous validez chaque étape.', 'Rien n’est imposé.'],
-    '/offres':                 ['Prix affichés, devis gratuit.', 'L’audit est déduit si on continue.', 'Bilan garanti ou non facturé.'],
-    '/exemple':                ['Le livrable, avant de payer.', 'Voici exactement ce que vous recevez.', 'Un audit réel, détaillé.'],
-    '/a-propos':               ['Deux personnes sur le même dossier.', 'Terrain d’abord, technique ensuite.', 'Pas de sous-traitance.'],
-    '/contact':                ['Réponse sous 24 h, par l’un de nous deux.', 'Trente minutes, sans engagement.', 'S’il n’y a rien à faire, on vous le dit.'],
-    '/numerique-responsable':  ['Moins d’outils, moins de serveurs.', 'Simplifier, c’est consommer moins.', 'Sobriété, sans greenwashing.'],
-    _default:                  ['Cartographier. Relier. Simplifier.', 'Reprenez le contrôle.'],
+    '/':                                ['Une méthode, trois moments.', 'On vous aide à décider, et on construit la suite.'],
+    '/creation':                        ['Avant d’investir, on va voir vos futurs clients.', 'On trouve le client qui fera vivre votre projet.'],
+    '/tester-une-idee':                 ['Des faits vécus, pas des intentions.', 'Votre idée, face à ceux qui l’achèteront.'],
+    '/construire-votre-business-plan':  ['Un business plan qui part de votre client.', 'Chaque chiffre a sa source.'],
+    '/comprendre-vos-clients':          ['Comprendre pourquoi vos clients achètent.', 'On part de ce que disent vos clients.'],
+    '/relire-votre-dossier':            ['Relu comme un financeur le lira.', 'Avant la banque, une relecture.'],
+    '/nos-offres':                      ['Un prix fixe, écrit avant de commencer.', 'On commence par une mission de départ.'],
+    '/comment-ca-se-passe':             ['Comment se déroule une mission.', 'Ce qu’on fait, et dans quel ordre.'],
+    '/exemple':                         ['Une mission complète, de bout en bout.', 'Un exemple, du premier échange au livrable.'],
+    '/qui-on-est':                      ['Thomy et Florian, à Valenciennes et à Lille.', 'Deux personnes sur votre projet.'],
+    '/contact':                         ['Réponse sous 24 h, par l’un de nous deux.', 'Trente minutes, sans engagement.', 'S’il n’y a rien à faire, on vous le dit.'],
+    _default:                           ['On vous aide à décider, et on construit la suite.'],
   },
   en: {
     '/':                       ['Your systems, finally legible.', 'We open the hood.', 'Clutter has a cost. We measure it.'],
@@ -47,8 +53,17 @@ function pickPhrase(lang, pathname) {
    qui respire, wordmark qui monte), puis RÉVÉLATION de la nouvelle page :
    le logo grandit et s'efface pendant que le rideau se replie vers le haut. */
 
-const COVER = 'inset(0% 0% 0% 0%)';        // plein écran
-const HIDE_UP = 'inset(0% 0% 100% 0%)';    // replié vers le haut = page révélée
+/* Chaque marque a sa façon de révéler une page :
+   - Reskope et Elevate replient le rideau vers le haut (Elevate monte) ;
+   - Create le laisse se fondre dans l'horizon, comme la lumière de l'aube ;
+   - Define le range sur le côté, d'un seul geste. */
+const RIDEAUX = {
+  reskope: { plein: 'inset(0% 0% 0% 0%)', cache: 'inset(0% 0% 100% 0%)', ease: 'power4.inOut', monte: 0 },
+  create: { plein: 'circle(150% at 50% 100%)', cache: 'circle(0% at 50% 100%)', ease: 'power3.inOut', monte: 0 },
+  define: { plein: 'inset(0% 0% 0% 0%)', cache: 'inset(0% 0% 0% 100%)', ease: 'expo.inOut', monte: 0 },
+  elevate: { plein: 'inset(0% 0% 0% 0%)', cache: 'inset(0% 0% 100% 0%)', ease: 'power4.inOut', monte: -90 },
+};
+const rideau = () => RIDEAUX[document.documentElement.dataset.marque] || RIDEAUX.reskope;
 
 const reduced = () =>
   typeof window !== 'undefined' &&
@@ -59,6 +74,7 @@ export default function PageTransition() {
   const stageRef = useRef(null);
   const logoRef = useRef(null);
   const wordRef = useRef(null);
+  const motRef = useRef(null);
   const haloRef = useRef(null);
   const lineRef = useRef(null);
   const { pathname } = useLocation();
@@ -93,9 +109,14 @@ export default function PageTransition() {
         lineRef.current.textContent = pickPhrase(langRef.current, destination);
       }
 
+      /* La page d'arrivée change peut-être de marque (de l'accueil vers
+         Create, de Define vers Elevate) : le rideau prend tout de suite la
+         couleur de la destination, et le logo son nom. */
+      const m = poserMarque(marqueDeDestination(destination));
+      if (motRef.current) motRef.current.textContent = MARQUES[m] ? MARQUES[m].nom : '';
       /* Couverture INSTANTANÉE (aucun flash pendant le changement de route) */
-      gsap.set(overlay, { clipPath: COVER });
-      gsap.set(stageRef.current, { autoAlpha: 1, scale: 1 });
+      gsap.set(overlay, { clipPath: rideau().plein });
+      gsap.set(stageRef.current, { autoAlpha: 1, scale: 1, y: 0 });
       gsap.set(haloRef.current, { scale: 0.62, autoAlpha: 0 });
       gsap.set(wordRef.current, { autoAlpha: 0, yPercent: 65 });
       gsap.set(lineRef.current, { autoAlpha: 0, yPercent: 60 });
@@ -144,14 +165,15 @@ export default function PageTransition() {
     const overlay = overlayRef.current;
     if (!overlay) return;
 
+    const r = rideau();
     if (reduced()) {
-      gsap.set(overlay, { clipPath: HIDE_UP });
+      gsap.set(overlay, { clipPath: r.cache });
       return;
     }
 
     const tl = gsap.timeline({ delay: 0.58 });
-    tl.to(stageRef.current, { scale: 1.16, autoAlpha: 0, duration: 0.45, ease: 'power2.in' }, 0);
-    tl.to(overlay, { clipPath: HIDE_UP, duration: 0.62, ease: 'power4.inOut' }, 0.08);
+    tl.to(stageRef.current, { scale: 1.16, y: r.monte, autoAlpha: 0, duration: 0.45, ease: 'power2.in' }, 0);
+    tl.to(overlay, { clipPath: r.cache, duration: 0.62, ease: r.ease }, 0.08);
   }, [pathname]);
 
   return (
@@ -183,7 +205,7 @@ export default function PageTransition() {
             </g>
           </svg>
         </div>
-        <span className="page-transition__word" ref={wordRef}>Reskope</span>
+        <span className="page-transition__word" ref={wordRef}>Reskope<span className="page-transition__marque" ref={motRef} /></span>
         <p className="page-transition__line" ref={lineRef} />
       </div>
     </div>

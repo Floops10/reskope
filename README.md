@@ -22,10 +22,37 @@ Commandes :
 Une page absente de `src/data/seo.js` n'est pas pré-rendue : Google ne la
 voit pas.
 
+## Une maison, trois marques
+
+Reskope fait une seule chose : aider à décider, puis construire la suite.
+Le site la raconte en trois marques, une par moment de la vie d'une
+entreprise, qui gardent la même méthode et le même R :
+
+| Marque | Pour qui | Moment | Couleur |
+|---|---|---|---|
+| Reskope Create | créer ou reprendre une entreprise | se lancer | ambre (l'aube) |
+| Reskope Define | entreprises de 1 à 10 personnes | prendre forme | menthe (le plein jour) |
+| Reskope Elevate | entreprises de 10 à 250 personnes | prendre de la hauteur | ciel (l'altitude) |
+
+- `src/data/marques.js` (et sa copie dans `tech/`) : les noms, les phrases,
+  et quelle adresse appartient à quelle marque.
+- `src/styles/marques.css` (et sa copie) : la page porte sa marque dans
+  `html[data-marque]`, qui redéfinit les couleurs, les formes et le ciel de
+  fond. Les composants n'ont pas à le savoir.
+- La trame animée de fond (`HeroNetwork.jsx`) change de comportement avec la
+  marque : dérive (Reskope), éclosion (Create), mise en ordre (Define),
+  étages en perspective (Elevate). Les scènes 3D prennent leurs couleurs dans
+  `src/lib/palette3d.js`.
+- L'accueil est le carrefour de la maison ; les pages « qui on est » et
+  « contact » gardent la marque d'où l'on vient.
+- Le R ne change jamais : seul son nœud de jonction prend la couleur de la
+  marque, et le nom de la marque s'écrit à côté.
+
 ## La marque
 
-- `logo/` : les fichiers officiels du logo, générés par `scripts/logo.py`.
-  Le R se réduit ou s'agrandit, ses traits ne s'épaississent jamais.
+- `logo/` : les fichiers officiels du logo, générés par `scripts/logo.py`,
+  dont les logos des trois marques (`reskope-create-logo.svg`…). Le R se
+  réduit ou s'agrandit, ses traits ne s'épaississent jamais.
 - `Typographie Sans/` : Reskope Sans, la police du texte, dessinée par
   `construire.py` (voir son LISEZ-MOI pour l'installer ou la régénérer).
 - `Typographie Reseau/` : Reskope Network, la police des titres en réseau.

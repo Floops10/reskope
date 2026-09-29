@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { MARQUE_DE_L_ESPACE, poserMarque } from './data/marques';
 
 /* ============================================================
    DEUX SITES DANS UN SITE.
@@ -52,6 +53,7 @@ export function ProfilProvider({ children }) {
      question à chaque arrivée par la racine, un lien profond l'évite). */
   useEffect(() => {
     document.documentElement.dataset.profil = profil || 'aucun';
+    poserMarque(MARQUE_DE_L_ESPACE[profil]);
   }, [profil]);
 
   /* Changer de version, c'est changer d'adresse. On reste sur la page où

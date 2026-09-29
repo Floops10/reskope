@@ -1,9 +1,10 @@
 import { useLang } from '../i18n';
 import { useProfil, cheminInterne, BASE } from '../profil';
 import { ESPACES } from '../data/espaces';
+import { MARQUES, MARQUE_DE_L_ESPACE } from '../data/marques';
 
 /* ════════════════════════════════════════════════════════════
-   LE SÉLECTEUR D'ESPACE — « En projet · TPE · PME », dans l'en-tête.
+   LE SÉLECTEUR DE MARQUE — « Create · Define · Elevate », dans l'en-tête.
 
    La même pastille que sur le reste du site, à la même place, à côté du
    logo : on voit en permanence qu'il y a trois espaces, lequel on regarde,
@@ -23,11 +24,12 @@ export default function Espaces({ className = '' }) {
   return (
     <nav className={`esp ${className}`} aria-label={lang === 'en' ? 'Your situation' : 'Votre situation'}>
       {ESPACES.map((e) => {
-        const m = e[lang] || e.fr;
+        const marque = MARQUES[MARQUE_DE_L_ESPACE[e.id]];
+        const m = { ...(e[lang] || e.fr), titre: `Reskope ${marque.nom} · ${(marque[lang] || marque.fr).qui}` };
         const contenu = (
           <>
             <i className={`esp__point esp--${e.accent}`} aria-hidden="true" />
-            {m.court}
+            {marque.nom}
           </>
         );
         if (e.id === profil) {
@@ -67,14 +69,14 @@ export function EspacesTuiles({ className = '' }) {
   return (
     <nav className={`espt ${className}`} aria-label={en ? 'Choose your space' : 'Choisir votre espace'}>
       {ESPACES.map((e) => {
-        const m = e[lang] || e.fr;
+        const marque = MARQUES[MARQUE_DE_L_ESPACE[e.id]];
         const ici = e.id === profil;
         const classe = `espt__tuile espt--${e.accent}${ici ? ' is-actif' : ''}`;
         const contenu = (
           <>
             <i className={`esp__point esp--${e.accent}`} aria-hidden="true" />
-            <span className="espt__nom">{m.court}</span>
-            <span className="espt__sous">{m.sous}</span>
+            <span className="espt__nom"><span className="espt__mere">Reskope </span>{marque.nom}</span>
+            <span className="espt__sous">{(marque[lang] || marque.fr).pour}</span>
             <span className="espt__etat" aria-hidden="true">
               {ici ? (en ? 'You are here' : 'Vous êtes ici') : (en ? 'Enter →' : 'Entrer →')}
             </span>

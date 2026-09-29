@@ -73,9 +73,9 @@ function bootstrap() {
     })(window, CAL_EMBED, 'init');
 
     window.Cal('init', { origin: 'https://cal.com' });
-    /* Habillage aux couleurs de la marque */
+    /* Habillage aux couleurs de la marque de la page (Create, Define, Elevate) */
     window.Cal('ui', {
-      styles: { branding: { brandColor: '#1c0cb3' } },
+      styles: { branding: { brandColor: getComputedStyle(document.documentElement).getPropertyValue('--indigo').trim() || '#1c0cb3' } },
       hideEventTypeDetails: false,
       layout: 'month_view',
     });

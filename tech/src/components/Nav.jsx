@@ -13,6 +13,8 @@ import Espaces, { EspacesTuiles } from './Espaces';
 import { PAGES_PROFIL } from '../data/profils';
 import { CONTACT } from '../data/site';
 import { openCalModal, isCalConfigured } from '../lib/cal';
+import { MARQUES } from '../data/marques';
+import { useMarque } from '../lib/useMarque';
 
 /* NAV — header minimal + MENU refait (exigence premium).
    Ouverture en couches : le voile s'assombrit, une lame indigo glisse,
@@ -23,6 +25,8 @@ import { openCalModal, isCalConfigured } from '../lib/cal';
    Survol d'un lien : la ligne s'indente, le numéro s'allume, la flèche
    arrive, un nœud-réseau pulse. Mobile : panneau plein écran, même soin. */
 export default function Nav() {
+  /* La marque de l'espace : Reskope Define pour les TPE, Reskope Elevate pour les PME. */
+  const marque = MARQUES[useMarque()] || null;
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [open, setOpen] = useState(false);
@@ -182,9 +186,10 @@ export default function Nav() {
           {/* Le logo, et à côté les trois espaces du site : on sait
               toujours où l'on est, et on change d'espace en un geste. */}
           <div className="nav__marque">
-            <Link to="/" className="wordmark" aria-label={lang === 'en' ? 'Reskope, home' : 'Reskope, accueil'}>
+            <Link to="/" className="wordmark" aria-label={marque ? `Reskope ${marque.nom}${lang === 'en' ? ', home' : ', accueil'}` : (lang === 'en' ? 'Reskope, home' : 'Reskope, accueil')}>
               <LogoMark className="wordmark__mark" />
               <span className="wordmark__text">Reskope</span>
+              {marque && <span className="wordmark__marque">{marque.nom}</span>}
             </Link>
             <Espaces className="nav__espaces" />
           </div>

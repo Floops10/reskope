@@ -59,28 +59,77 @@ export default function Cursor() {
       return null;
     };
 
-    /* Remonte le DOM jusqu'au premier fond non transparent */
-    const getComputedBg = (el) => {
-      let node = el;
-      while (node && node !== document.body) {
-        const bg = getComputedStyle(node).backgroundColor;
-        if (bg && bg !== 'rgba(0, 0, 0, 0)' && bg !== 'transparent') return bg;
-        node = node.parentElement;
-      }
+    /* LE CURSEUR RESTE VISIBLE SUR TOUT.
+       Il porte la couleur d'action de la marque (l'ambre de Create, le vert
+       de Define, le bleu d'Elevate). Sur un fond de la même famille (un
+       bouton, le pied de page, une scène de nuit), il disparaissait. On
+       mesure donc, sous le pointeur, le contraste entre sa couleur et le
+       fond réel ; s'il tombe sous 3:1 (le seuil des éléments graphiques),
+       il passe en crème, ou en encre si le crème ne se voit pas mieux. */
+    const lire = (txt) => {
+      if (!txt) return null;
+      let m = txt.match(/rgba?\(\s*([\d.]+)[,\s]+([\d.]+)[,\s]+([\d.]+)(?:[,\s/]+([\d.]+))?/);
+      if (m) return [+m[1], +m[2], +m[3], m[4] === undefined ? 1 : +m[4]];
+      m = txt.match(/color\(srgb\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)(?:\s*\/\s*([\d.]+))?\)/);
+      if (m) return [m[1] * 255, m[2] * 255, m[3] * 255, m[4] === undefined ? 1 : +m[4]];
+      m = txt.trim().match(/^#([0-9a-f]{6})$/i);
+      if (m) { const n = parseInt(m[1], 16); return [n >> 16, (n >> 8) & 255, n & 255, 1]; }
       return null;
     };
-
-    const isDark = (bg) => {
-      if (!bg) return false;
-      const m = bg.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
-      if (!m) return false;
-      return (0.299 * +m[1] + 0.587 * +m[2] + 0.114 * +m[3]) / 255 < 0.35;
+    const luminance = ([r, g, b]) => {
+      const f = (c) => { const v = c / 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; };
+      return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b);
+    };
+    const contraste = (a, b) => {
+      const [x, y] = [luminance(a), luminance(b)].sort((u, v) => v - u);
+      return (x + 0.05) / (y + 0.05);
     };
 
-    const applyDark = (el) => {
-      const dark = isDark(getComputedBg(el));
-      dot.classList.toggle('cursor-dot--dark', dark);
-      label.classList.toggle('cursor-label--dark', dark);
+    /* Le fond réel sous le pointeur : le premier fond assez couvrant en
+       remontant le DOM, et à défaut celui de la page. Un bouton survolé se
+       remplit d'une autre couleur par un pseudo-élément (le cercle qui
+       grandit depuis la flèche) : c'est ce remplissage qui compte. */
+    const couvrant = (c) => c && c[3] >= 0.5;
+    const fondSous = (el) => {
+      for (let node = el; node && node !== document.documentElement; node = node.parentElement) {
+        if (node.matches(':hover')) {
+          const avant = lire(getComputedStyle(node, '::before').backgroundColor);
+          if (couvrant(avant) && node.matches('.btn, [data-cursor-hover]')) return avant;
+        }
+        const c = lire(getComputedStyle(node).backgroundColor);
+        if (couvrant(c)) return c;
+      }
+      return lire(getComputedStyle(document.body).backgroundColor);
+    };
+
+    const TEINTES = ['cursor-dot--dark', 'cursor-dot--encre'];
+    const appliquer = (el) => {
+      const fond = fondSous(el);
+      const racine = getComputedStyle(document.documentElement);
+      const action = lire(racine.getPropertyValue('--indigo'));
+      let teinte = null;
+      if (fond && action && contraste(action, fond) < 3) {
+        const creme = lire(racine.getPropertyValue('--cream-light')) || [247, 245, 240, 1];
+        const encre = lire(racine.getPropertyValue('--ink')) || [14, 11, 31, 1];
+        teinte = contraste(creme, fond) >= contraste(encre, fond) ? 'dark' : 'encre';
+      }
+      TEINTES.forEach((t) => dot.classList.toggle(t, t === `cursor-dot--${teinte}`));
+      label.classList.toggle('cursor-label--dark', teinte === 'dark');
+      label.classList.toggle('cursor-label--encre', teinte === 'encre');
+    };
+
+    /* Une mesure par image, pas une par mouvement de souris. Et au survol,
+       deux mesures de plus, le temps que le remplissage du bouton se fasse. */
+    let attente = null;
+    let dernier = null;
+    let relances = [];
+    const mesurer = () => {
+      attente = null;
+      if (dernier) appliquer(document.elementFromPoint(dernier[0], dernier[1]));
+    };
+    const remesurer = () => {
+      relances.forEach(clearTimeout);
+      relances = [250, 620].map((d) => setTimeout(mesurer, d));
     };
 
     const onMove = (e) => {
@@ -90,14 +139,16 @@ export default function Cursor() {
         visible = true;
         gsap.to(dot, { autoAlpha: 1, duration: 0.35 });
       }
-      // Détecte fond sombre sous le curseur (pointer-events:none → retourne l'élément dessous)
-      const under = document.elementFromPoint(e.clientX, e.clientY);
-      applyDark(under);
+      // Le fond sous le curseur (pointer-events:none → l'élément dessous), mesuré à la prochaine image.
+      dernier = [e.clientX, e.clientY];
+      if (!attente) attente = requestAnimationFrame(mesurer);
     };
 
     const onOver = (e) => {
       const isHover = !!e.target.closest('a, button, .btn, [data-cursor-hover]');
       dot.classList.toggle('cursor-dot--hover', isHover);
+      if (!attente) attente = requestAnimationFrame(mesurer);
+      remesurer();
 
       /* Au-dessus d'une scène qu'on attrape, le point devient une prise :
          un anneau assez grand pour qu'on le voie sur le plateau, et qui se
@@ -131,6 +182,8 @@ export default function Cursor() {
     document.documentElement.addEventListener('mouseenter', show);
 
     return () => {
+      cancelAnimationFrame(attente);
+      relances.forEach(clearTimeout);
       document.removeEventListener('mousemove', onMove);
       document.removeEventListener('mouseover', onOver);
       document.removeEventListener('pointerdown', serrer);

@@ -3,6 +3,8 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls, OrthographicCamera, Edges, Html } from '@react-three/drei';
 import * as THREE from 'three';
 import { CASE, SOL, caseDe } from '../lib/atelier';
+import { cubeColore } from '../lib/troisd';
+import { usePalette3d } from '../lib/palette3d';
 
 /* ============================================================
    L'ATELIER — le plateau sur lequel on pose son propre système.
@@ -17,27 +19,9 @@ import { CASE, SOL, caseDe } from '../lib/atelier';
    sans calcul de collision.
    ============================================================ */
 
-const TEINTES = {
-  plein: ['#5B4BE6', '#1C0CB3', '#130982'],
-  neuf: ['#A79CF7', '#6B5BEA', '#4B3CC9'],
-};
-
-function cubeColore(teinte) {
-  const g = new THREE.BoxGeometry(1, 1, 1);
-  const [haut, cote, ombre] = TEINTES[teinte];
-  const c = [cote, ombre, haut, ombre, cote, ombre].map((h) => new THREE.Color(h));
-  const col = new Float32Array(g.attributes.position.count * 3);
-  for (let face = 0; face < 6; face++) {
-    for (let k = 0; k < 4; k++) {
-      const i = face * 4 + k;
-      col[i * 3] = c[face].r; col[i * 3 + 1] = c[face].g; col[i * 3 + 2] = c[face].b;
-    }
-  }
-  g.setAttribute('color', new THREE.BufferAttribute(col, 3));
-  return g;
-}
 
 function Bloc({ bl, geo, choisi, surLien, onDown, onEnter, onLeave }) {
+  const pal = usePalette3d();
   const plein = useRef(null);
   const cage = useRef(null);
   const noeud = useRef(null);
@@ -79,32 +63,33 @@ function Bloc({ bl, geo, choisi, surLien, onDown, onEnter, onLeave }) {
       {(choisi || surLien) && (
         <mesh position={[cx, 0.06, cz]} rotation={[-Math.PI / 2, 0, 0]}>
           <planeGeometry args={[bl.w + 1.1, bl.d + 1.1]} />
-          <meshBasicMaterial color={surLien ? '#A79CF7' : '#1C0CB3'} transparent opacity={0.3} />
+          <meshBasicMaterial color={surLien ? pal.clair : pal.action} transparent opacity={0.3} />
         </mesh>
       )}
 
       <mesh ref={plein} {...commun} geometry={geo}>
         <meshBasicMaterial vertexColors toneMapped={false} />
-        <Edges threshold={15} color={choisi ? '#F0EEE8' : '#130982'} />
+        <Edges threshold={15} color={choisi ? pal.fond : pal.plein[2]} />
       </mesh>
 
       <mesh ref={cage} {...commun}>
         <boxGeometry args={[1, 1, 1]} />
         <meshBasicMaterial visible={false} />
-        <Edges threshold={1} color={choisi ? '#F0EEE8' : '#5B4BE6'} />
+        <Edges threshold={1} color={choisi ? pal.fond : pal.vif} />
       </mesh>
 
       {/* Le nœud : c'est par lui que passent les liaisons. Un système
           d'information est un réseau autant qu'un parc de volumes. */}
       <mesh ref={noeud} {...commun}>
         <boxGeometry args={[0.5, 0.5, 0.5]} />
-        <meshBasicMaterial color={choisi ? '#F0EEE8' : '#A79CF7'} toneMapped={false} />
+        <meshBasicMaterial color={choisi ? pal.fond : pal.clair} toneMapped={false} />
       </mesh>
     </group>
   );
 }
 
 function Fil({ a, c }) {
+  const pal = usePalette3d();
   const ax = a.x + a.w / 2 - SOL.W / 2, ay = a.h + 0.55, az = a.y + a.d / 2 - SOL.D / 2;
   const bx = c.x + c.w / 2 - SOL.W / 2, by = c.h + 0.55, bz = c.y + c.d / 2 - SOL.D / 2;
   /* Un arc, pas une corde tendue : deux liaisons entre les mêmes rangées se
@@ -127,12 +112,13 @@ function Fil({ a, c }) {
 
   return (
     <lineSegments geometry={geo}>
-      <lineBasicMaterial color="#6B5BEA" transparent opacity={0.9} />
+      <lineBasicMaterial color={pal.neuf[1]} transparent opacity={0.9} />
     </lineSegments>
   );
 }
 
 function Sol({ onPlan }) {
+  const pal = usePalette3d();
   const geo = useMemo(() => {
     const pts = [];
     const dx = -SOL.W / 2, dz = -SOL.D / 2;
@@ -145,7 +131,7 @@ function Sol({ onPlan }) {
   return (
     <group>
       <lineSegments geometry={geo}>
-        <lineBasicMaterial color="#1C0CB3" transparent opacity={0.3} />
+        <lineBasicMaterial color={pal.action} transparent opacity={0.3} />
       </lineSegments>
       {/* Le plan de saisie : invisible, mais c'est lui qui reçoit les clics
           dans le vide et qui donne la case sous le curseur pendant qu'on
@@ -176,7 +162,8 @@ function Cadrage({ camRef }) {
 }
 
 function Plateau({ blocs, liens, choisi, lienDe, mode, onChoisir, onDeplacer, onPoser, onLier, onTraine }) {
-  const geo = useMemo(() => cubeColore('plein'), []);
+  const pal = usePalette3d();
+  const geo = useMemo(() => cubeColore('plein', pal), [pal]);
   const [survol, setSurvol] = useState(null);
   const [traine, setTraine] = useState(null);
   const bouge = useRef(false);
