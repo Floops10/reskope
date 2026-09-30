@@ -39,9 +39,36 @@ const pt = (v) => v * 3.5278; // un point typographique, en dixièmes de millim�
 const n2 = (v) => Number(v.toFixed(2));
 const echapper = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
-function texte(x, y, contenu, { taille, poids = 400, coul = CREME, op = 1, anc = 'start', ls = 0 }) {
-  return `<text x="${n2(x)}" y="${n2(y)}" font-family="${FONT}" font-size="${n2(taille)}" font-weight="${poids}" fill="${coul}"`
-    + `${op < 1 ? ` fill-opacity="${op}"` : ''}${anc !== 'start' ? ` text-anchor="${anc}"` : ''}${ls ? ` letter-spacing="${ls}"` : ''}>${echapper(contenu)}</text>`;
+function texte(x, y, contenu, { taille, poids = 400, coul = CREME, op = 1, anc = 'start', ls = 0, peinture = null }) {
+  return `<text x="${n2(x)}" y="${n2(y)}" font-family="${FONT}" font-size="${n2(taille)}" font-weight="${poids}" fill="${peinture || coul}"`
+    + `${op < 1 && !peinture ? ` fill-opacity="${op}"` : ''}${anc !== 'start' ? ` text-anchor="${anc}"` : ''}${ls ? ` letter-spacing="${ls}"` : ''}>${echapper(contenu)}</text>`;
+}
+
+/* ── Des couleurs pleines, jamais de transparence ──────────────
+   Un élément « crème à 30 % » est peint dans la couleur qu'il aurait sur le
+   fond, calculée d'avance : le fond est un dégradé, alors la peinture en est
+   un aussi, de même centre et de mêmes arrêts. À l'œil, rien ne change ; dans
+   le PDF, il n'y a plus aucune transparence (certains lecteurs et certains
+   imprimeurs la rendent mal), et ce qui passe derrière le grand R est caché
+   pour de vrai. */
+const rvb = (c) => [1, 3, 5].map((i) => parseInt(c.slice(i, i + 2), 16));
+const hexa = (t) => `#${t.map((v) => Math.round(v).toString(16).padStart(2, '0')).join('')}`;
+const melange = (dessus, dessous, op) => { const a = rvb(dessus), b = rvb(dessous); return hexa(a.map((v, i) => v * op + b[i] * (1 - op))); };
+
+function peintures(prefixe, { cx, cy, r, arrets }) {
+  const defs = new Map();
+  return {
+    fond: () => `url(#${prefixe}-fond)`,
+    peindre(coul, op) {
+      const id = `${prefixe}-${coul.slice(1)}-${Math.round(op * 1000)}`;
+      if (!defs.has(id)) defs.set(id, arrets.map(([o, c]) => `<stop offset="${o}" stop-color="${melange(coul, c, op)}"/>`).join(''));
+      return `url(#${id})`;
+    },
+    defs() {
+      const grad = (id, stops) => `<radialGradient id="${id}" gradientUnits="userSpaceOnUse" cx="${n2(cx)}" cy="${n2(cy)}" r="${r}">${stops}</radialGradient>`;
+      return `<defs>${grad(`${prefixe}-fond`, arrets.map(([o, c]) => `<stop offset="${o}" stop-color="${c}"/>`).join(''))}${[...defs].map(([id, stops]) => grad(id, stops)).join('')}</defs>`;
+    },
+  };
 }
 
 /* ── Le logo, tel que dans l'en-tête du site ─────────────────── */
@@ -79,19 +106,29 @@ function rSurCarte(geo, tx, ty, s) {
    un nœud du R ou à un autre nœud de la constellation, rien ne flotte. Trois
    plans de profondeur : devant, les nœuds sont plus gros et plus lumineux ;
    au fond, plus petits et plus pâles. Peu d'éléments, mais qui respirent. */
-function constellation({ R, satellites, liens, coul, fort = 1 }) {
+function constellation({ R, satellites, liens, coul, fort = 1, peindre }) {
   const plan = { devant: { r: 10.5, op: 0.46 }, milieu: { r: 6.8, op: 0.3 }, fond: { r: 4.2, op: 0.17 } };
   const pos = (k) => (typeof k === 'number' ? { p: R[k], z: 'r' } : { p: satellites[k].p, z: satellites[k].plan });
   const out = [];
   for (const [a, b] of liens) {
     const A = pos(a), B = pos(b);
     const z = [A.z, B.z].includes('fond') ? 'fond' : [A.z, B.z].includes('milieu') ? 'milieu' : 'devant';
-    out.push(`<line x1="${n2(A.p[0])}" y1="${n2(A.p[1])}" x2="${n2(B.p[0])}" y2="${n2(B.p[1])}" stroke="${coul}" stroke-opacity="${(plan[z].op * 0.62 * fort).toFixed(3)}" stroke-width="${z === 'devant' ? 2.6 : z === 'milieu' ? 2 : 1.5}" stroke-linecap="round"/>`);
+    out.push(`<line x1="${n2(A.p[0])}" y1="${n2(A.p[1])}" x2="${n2(B.p[0])}" y2="${n2(B.p[1])}" stroke="${peindre(coul, plan[z].op * 0.62 * fort)}" stroke-width="${z === 'devant' ? 2.6 : z === 'milieu' ? 2 : 1.5}" stroke-linecap="round"/>`);
   }
   for (const { p, plan: z } of Object.values(satellites)) {
-    out.push(`<circle cx="${n2(p[0])}" cy="${n2(p[1])}" r="${plan[z].r}" fill="${coul}" fill-opacity="${(plan[z].op * fort).toFixed(3)}"/>`);
+    out.push(`<circle cx="${n2(p[0])}" cy="${n2(p[1])}" r="${plan[z].r}" fill="${peindre(coul, plan[z].op * fort)}"/>`);
   }
   return out.join('');
+}
+
+/* Le R posé directement dans le repère de la carte (sans transformation), pour que sa
+   peinture en dégradé suive le fond exactement. Mêmes rapports : traits 3, nœuds 5,5,
+   jonction 7 pour 92, multipliés par l'échelle. */
+function rPeint(geo, tx, ty, s, peinture) {
+  const N = geo.rNodes.map(([x, y]) => [tx + x * s, ty + y * s]);
+  const liens = geo.rLinks.map(([a, b]) => `<line x1="${n2(N[a][0])}" y1="${n2(N[a][1])}" x2="${n2(N[b][0])}" y2="${n2(N[b][1])}"/>`).join('');
+  const noeuds = N.map(([x, y], i) => `<circle cx="${n2(x)}" cy="${n2(y)}" r="${n2((i === 3 ? geo.jonction : geo.noeud) * s)}"/>`).join('');
+  return `<g stroke="${peinture}" stroke-width="${n2(geo.trait * s)}" fill="none" stroke-linecap="round">${liens}</g><g fill="${peinture}">${noeuds}</g>`;
 }
 
 /* Le grand R du recto : sa jonction au milieu de la hauteur, sa jambe taillée par le bord droit. */
@@ -124,20 +161,15 @@ function recto(p, { geo, lang = 'fr', adresse = 'reskope.fr', pour = '', pourMot
   const { s, tx, ty } = grandR();
   const R = rSurCarte(geo, tx, ty, s).noeuds; // 0 haut du fût, 1 haut droite, 2 droite, 3 jonction, 4 bas du fût, 5 bas de la jambe
   const [jx, jy] = R[3];
-  const out = [
-    // L'indigo, et une lumière douce derrière le cœur du R : la carte a de la profondeur.
-    `<defs><radialGradient id="carte-lumiere" gradientUnits="userSpaceOnUse" cx="${n2(jx)}" cy="${n2(jy)}" r="430">`
-    + `<stop offset="0" stop-color="#5B4BE6" stop-opacity="0.55"/><stop offset="0.45" stop-color="#3A2AD0" stop-opacity="0.22"/><stop offset="1" stop-color="${INDIGO}" stop-opacity="0"/></radialGradient>`
-    + `<linearGradient id="carte-ombre" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#07023A" stop-opacity="0.28"/></linearGradient></defs>`,
-    `<rect x="${-B}" y="${-B}" width="${W + 2 * B}" height="${H + 2 * B}" fill="${INDIGO}"/>`,
-    `<rect x="${-B}" y="${-B}" width="${W + 2 * B}" height="${H + 2 * B}" fill="url(#carte-ombre)"/>`,
-    `<rect x="${-B}" y="${-B}" width="${W + 2 * B}" height="${H + 2 * B}" fill="url(#carte-lumiere)"/>`,
-  ];
+  // L'indigo, et une lumière douce derrière le cœur du R : la carte a de la profondeur.
+  const P = peintures('r', { cx: jx, cy: jy, r: 720, arrets: [[0, '#4B3BDB'], [0.3, '#2E1EC9'], [0.62, INDIGO], [1, '#16099C']] });
+  const out = [`<rect x="${-B}" y="${-B}" width="${W + 2 * B}" height="${H + 2 * B}" fill="${P.fond()}"/>`];
 
   // La constellation, qui prolonge le R vers le haut et vers le bas.
   out.push(constellation({
     R,
     coul: CREME,
+    peindre: P.peindre,
     satellites: {
       a: { p: [548, 118], plan: 'fond' },
       b: { p: [452, 52], plan: 'fond' },
@@ -149,17 +181,22 @@ function recto(p, { geo, lang = 'fr', adresse = 'reskope.fr', pour = '', pourMot
     },
     liens: [[0, 'a'], ['a', 'b'], [0, 'c'], [3, 'c'], ['c', 'd'], ['d', 1], [4, 'e'], ['e', 'f'], [4, 'g'], ['e', 3]],
   }));
-  out.push(`<g transform="translate(${n2(tx)},${n2(ty)}) scale(${s})" opacity="0.34">${rTrace(geo, CREME)}</g>`);
+  // Le grand R, opaque : ce qui passe derrière lui est caché. Sa peinture vit dans le repère
+  // de la carte, d'où la transformation inverse sur le dégradé : on peint le R au trait, à plat.
+  out.push(rPeint(geo, tx, ty, s, P.peindre(CREME, 0.34)));
 
   // Le logo et le lieu, puis la personne.
   out.push(logo(geo, M, 88, 40, CREME));
-  out.push(texte(M, 158, T.lieux, { taille: pt(5.6), op: 0.58, ls: 0.4 }));
-  if (pour) out.push(texte(M, 214, `${pourMot} ${pour}`, { taille: pt(6), op: 0.72 }));
+  out.push(texte(M, 158, T.lieux, { taille: pt(5.6), ls: 0.4, peinture: P.peindre(CREME, 0.58) }));
+  if (pour) out.push(texte(M, 214, `${pourMot} ${pour}`, { taille: pt(6), peinture: P.peindre(CREME, 0.72) }));
   out.push(`<text x="${M - 2}" y="324" font-family="${FONT}" font-size="${n2(pt(16))}" fill="${CREME}" letter-spacing="-1"><tspan font-weight="400">${echapper(p.prenom)}</tspan><tspan font-weight="600"> ${echapper(p.nom)}</tspan></text>`);
-  out.push(texte(M, 364, `${p.titre} · ${minusculeInitiale(p.domaine.join(' '))}`, { taille: pt(6), op: 0.8 }));
-  out.push(texte(M, 440, p.tel, { taille: pt(6.4), poids: 500 }));
-  out.push(texte(M, 468, p.mail, { taille: pt(6.2), op: 0.9 }));
-  out.push(texte(M, 496, adresse, { taille: pt(6.2), op: 0.62 }));
+  out.push(texte(M, 364, `${p.titre} · ${minusculeInitiale(p.domaine.join(' '))}`, { taille: pt(6), peinture: P.peindre(CREME, 0.8) }));
+
+  // Les coordonnées, en pied, un peu plus aérées.
+  out.push(texte(M, 430, p.tel, { taille: pt(6.4), poids: 500 }));
+  out.push(texte(M, 464, p.mail, { taille: pt(6.2), peinture: P.peindre(CREME, 0.9) }));
+  out.push(texte(M, 498, adresse, { taille: pt(6.2), peinture: P.peindre(CREME, 0.62) }));
+  out.push(P.defs());
   return out.join('');
 }
 
@@ -169,11 +206,8 @@ function recto(p, { geo, lang = 'fr', adresse = 'reskope.fr', pour = '', pourMot
 function verso({ geo, lang = 'fr' } = {}) {
   const T = TEXTES[lang] || TEXTES.fr;
   const { W, H, FOND_PERDU: B } = CARTE;
-  const out = [
-    `<defs><radialGradient id="carte-jour" gradientUnits="userSpaceOnUse" cx="${W / 2}" cy="190" r="560">`
-    + `<stop offset="0" stop-color="#FBFAF7"/><stop offset="0.6" stop-color="${CREME}"/><stop offset="1" stop-color="#E7E2D8"/></radialGradient></defs>`,
-    `<rect x="${-B}" y="${-B}" width="${W + 2 * B}" height="${H + 2 * B}" fill="url(#carte-jour)"/>`,
-  ];
+  const P = peintures('v', { cx: W / 2, cy: 190, r: 560, arrets: [[0, '#FBFAF7'], [0.6, CREME], [1, '#E7E2D8']] });
+  const out = [`<rect x="${-B}" y="${-B}" width="${W + 2 * B}" height="${H + 2 * B}" fill="${P.fond()}"/>`];
 
   // Le R, centré : ses rapports ne changent jamais, seule sa taille.
   const s = 2.15;
@@ -186,6 +220,7 @@ function verso({ geo, lang = 'fr' } = {}) {
     R,
     coul: INDIGO,
     fort: 0.62,
+    peindre: P.peindre,
     satellites: {
       a: { p: [268, 96], plan: 'milieu' },
       b: { p: [176, 176], plan: 'fond' },
@@ -200,8 +235,9 @@ function verso({ geo, lang = 'fr' } = {}) {
 
   // Le mot, la phrase, et les trois marques nommées sans plus.
   out.push(mot(geo, W / 2, 368, 50, INDIGO));
-  out.push(texte(W / 2, 426, `${T.slogan[0]} ${T.slogan[1]}`, { taille: pt(6.3), coul: INDIGO, op: 0.75, anc: 'middle' }));
-  out.push(texte(W / 2, H - 58, 'Create  ·  Define  ·  Elevate', { taille: pt(5.4), coul: INDIGO, op: 0.5, anc: 'middle', ls: 1.2 }));
+  out.push(texte(W / 2, 426, `${T.slogan[0]} ${T.slogan[1]}`, { taille: pt(6.3), anc: 'middle', peinture: P.peindre(INDIGO, 0.75) }));
+  out.push(texte(W / 2, H - 58, 'Create  ·  Define  ·  Elevate', { taille: pt(5.4), anc: 'middle', ls: 1.2, peinture: P.peindre(INDIGO, 0.5) }));
+  out.push(P.defs());
   return out.join('');
 }
 
