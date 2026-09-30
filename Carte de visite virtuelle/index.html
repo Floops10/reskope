@@ -53,12 +53,11 @@
       letter-spacing: -0.02em;
       margin-bottom: 1.4rem;
     }
-    /* La carte est verticale : 55 × 85 mm. */
     .flip-wrap {
-      width: min(100%, 320px);
-      aspect-ratio: 550 / 850;
+      width: 100%;
+      aspect-ratio: 850 / 550;
       perspective: 1800px;
-      margin: 0 auto 1.5rem;
+      margin-bottom: 1.5rem;
     }
     .flip-inner {
       width: 100%;
@@ -205,7 +204,7 @@
     .card-screen.active { display: flex; }
     .card-screen-card {
       width: 100%;
-      max-width: 340px;
+      max-width: 480px;
     }
     .card-screen-card svg {
       width: 100%;
@@ -315,16 +314,16 @@
 
       <!-- ——— RECTO ——— -->
       <div class="face face--front">
-        <svg id="svgFront" viewBox="0 0 550 850" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Carte de visite, recto">
-          <defs><clipPath id="clipFront"><rect width="550" height="850" rx="26"/></clipPath></defs>
+        <svg id="svgFront" viewBox="0 0 850 550" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Carte de visite, recto">
+          <defs><clipPath id="clipFront"><rect width="850" height="550" rx="20"/></clipPath></defs>
           <g id="corpsRecto" clip-path="url(#clipFront)"></g>
         </svg>
       </div>
 
       <!-- ——— VERSO ——— -->
       <div class="face face--back">
-        <svg id="svgBack" viewBox="0 0 550 850" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Carte de visite, verso">
-          <defs><clipPath id="clipBack"><rect width="550" height="850" rx="26"/></clipPath></defs>
+        <svg id="svgBack" viewBox="0 0 850 550" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Carte de visite, verso">
+          <defs><clipPath id="clipBack"><rect width="850" height="550" rx="20"/></clipPath></defs>
           <g id="corpsVerso" clip-path="url(#clipBack)"></g>
         </svg>
       </div>
@@ -420,7 +419,7 @@
     document.getElementById('corpsRecto').innerHTML = C.recto(
       { prenom: p.prenom, nom: p.nomFamille, titre: p.titre, domaine: p.domaine, tel: p.tel, mail: p.mail },
       { geo: C.GEO, adresse: SITE, pour: pourInput.value.trim(), pourMot: 'Pour' });
-    document.getElementById('corpsVerso').innerHTML = C.verso({ geo: C.GEO, adresse: SITE });
+    document.getElementById('corpsVerso').innerHTML = C.verso({ geo: C.GEO });
   }
   function appliquer() {
     var p = personne();

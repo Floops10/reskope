@@ -1,8 +1,8 @@
 /* ════════════════════════════════════════════════════════════
    LES CARTES DE VISITE, POUR L'IMPRIMEUR ET POUR L'ÉCRAN.
 
-   Format vertical européen : 55 × 85 mm, fond perdu de 3 mm (pages de
-   61 × 91 mm), PDF vectoriel recto verso, polices incorporées. Le dessin
+   Format standard : 85 × 55 mm, fond perdu de 3 mm (pages de 91 × 61 mm),
+   PDF vectoriel recto verso, polices incorporées. Le dessin
    vient de src/lib/carteVisite.js, le même que la fenêtre « Carte de
    visite » du site et la carte virtuelle.
 
@@ -53,7 +53,7 @@ const POLICES = [['ReskopeSans-Regular.woff2', 400], ['ReskopeSans-Medium.woff2'
 
 const { W, H, FOND_PERDU: B } = CARTE;
 const svgRogne = (corps, px) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${px}" height="${Math.round(px * H / W)}">${corps}</svg>`;
-const svgPerdu = (corps) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${-B} ${-B} ${W + 2 * B} ${H + 2 * B}" width="61mm" height="91mm">${corps}</svg>`;
+const svgPerdu = (corps) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${-B} ${-B} ${W + 2 * B} ${H + 2 * B}" width="91mm" height="61mm">${corps}</svg>`;
 
 /* ── Chrome sans tête : un profil jetable, effacé après chaque passage ── */
 function chrome(argsChrome, attendu) {
@@ -93,14 +93,14 @@ async function capture(corps, largeur, hauteur, png, style = '') {
 async function pdf(pages, sortie) {
   const f = join(tmpdir(), `carte-${process.pid}-${Math.random().toString(36).slice(2)}.html`);
   writeFileSync(f, html(pages.map((p) => `<div class="page">${p}</div>`).join(''),
-    '@page{size:61mm 91mm;margin:0}.page{width:61mm;height:91mm;overflow:hidden;break-after:page}.page:last-child{break-after:auto}.page svg{display:block}'));
+    '@page{size:91mm 61mm;margin:0}.page{width:91mm;height:61mm;overflow:hidden;break-after:page}.page:last-child{break-after:auto}.page svg{display:block}'));
   await chrome(['--no-pdf-header-footer', `--print-to-pdf=${sortie}`, `file://${f}`], sortie);
   rmSync(f);
 }
 
 /* Le masque du vernis sélectif (finition optionnelle) : ce qui est noir sera verni.
-   On vernit le grand R du verso et le mot, jamais le texte courant : sur le
-   crème mat, le R accroche la lumière quand on tourne la carte. */
+   On vernit le grand R ton sur ton du recto et le logo, jamais le texte : sur
+   l'indigo mat, le R apparaît quand la carte accroche la lumière. */
 function masqueVernis(corps) {
   return corps
     .replace(/<text[\s\S]*?<\/text>/g, '')
@@ -113,25 +113,25 @@ async function main() {
   mkdirSync(SORTIE, { recursive: true });
   const faces = {};
   for (const id of Object.keys(PERSONNES)) {
-    faces[id] = { recto: recto(personne(id), { geo: GEO, adresse: ADRESSE }), verso: verso({ geo: GEO, adresse: ADRESSE }) };
+    faces[id] = { recto: recto(personne(id), { geo: GEO, adresse: ADRESSE }), verso: verso({ geo: GEO }) };
   }
-  // Aperçus à 300 dpi, sans le fond perdu : 55 × 85 mm = 650 × 1004 px.
+  // Aperçus à 300 dpi, sans le fond perdu : 85 × 55 mm = 1004 × 650 px.
   for (const [id, f] of Object.entries(faces)) {
     for (const face of ['recto', 'verso']) {
-      await capture(svgRogne(f[face], 650), 650, 1004, join(SORTIE, `apercu-${id}-${face}.png`), 'svg{display:block}');
+      await capture(svgRogne(f[face], 1004), 1004, 650, join(SORTIE, `apercu-${id}-${face}.png`), 'svg{display:block}');
     }
   }
   // La planche : les deux rectos et le verso, côte à côte.
-  const carte = (c) => `<div class="c">${svgRogne(c, 360)}</div>`;
-  await capture(`<div class="pl">${carte(faces.florian.recto)}${carte(faces.thomy.recto)}${carte(faces.florian.verso)}</div>`, 1320, 700,
+  const carte = (c) => `<div class="c">${svgRogne(c, 520)}</div>`;
+  await capture(`<div class="pl"><div class="col">${carte(faces.florian.recto)}${carte(faces.thomy.recto)}</div>${carte(faces.florian.verso)}</div>`, 1240, 820,
     join(SORTIE, 'planche.png'),
-    'body{background:#e6e3dc}.pl{display:flex;gap:48px;justify-content:center;align-items:center;height:700px}.c{border-radius:14px;overflow:hidden;box-shadow:0 30px 60px -30px rgba(14,11,31,.55),0 2px 6px rgba(14,11,31,.12)}.c svg{display:block}');
+    'body{background:#e6e3dc}.pl{display:flex;gap:56px;justify-content:center;align-items:center;height:820px}.col{display:flex;flex-direction:column;gap:48px}.c{border-radius:16px;overflow:hidden;box-shadow:0 30px 60px -30px rgba(14,11,31,.55),0 2px 6px rgba(14,11,31,.12)}.c svg{display:block}');
   if (APERCU) return console.log('aperçus :', SORTIE);
 
   for (const [id, f] of Object.entries(faces)) {
     await pdf([svgPerdu(f.recto), svgPerdu(f.verso)], join(SORTIE, `reskope-carte-${id}.pdf`));
   }
-  await pdf([svgPerdu(masqueVernis(faces.florian.verso))], join(SORTIE, 'option-vernis-selectif-verso.pdf'));
+  await pdf([svgPerdu(masqueVernis(faces.florian.recto))], join(SORTIE, 'option-vernis-selectif-recto.pdf'));
   // La carte virtuelle : le même dessin, en script classique (la page s'ouvre aussi en double-cliquant).
   const module = readFileSync(join(DEPOT, 'src', 'lib', 'carteVisite.js'), 'utf8').replace(/^export /gm, '');
   writeFileSync(join(DEPOT, 'Carte de visite virtuelle', 'carte-visite.js'),
@@ -140,7 +140,7 @@ async function main() {
   for (const id of Object.keys(faces)) {
     for (const f of [`reskope-carte-${id}.pdf`, `apercu-${id}-recto.png`, `apercu-${id}-verso.png`]) copyFileSync(join(SORTIE, f), join(PLAQUETTES, f));
   }
-  for (const f of ['planche.png', 'option-vernis-selectif-verso.pdf', 'A LIRE avant impression.txt']) if (existsSync(join(SORTIE, f))) copyFileSync(join(SORTIE, f), join(PLAQUETTES, f));
+  for (const f of ['planche.png', 'option-vernis-selectif-recto.pdf', 'A LIRE avant impression.txt']) if (existsSync(join(SORTIE, f))) copyFileSync(join(SORTIE, f), join(PLAQUETTES, f));
   console.log('adresse imprimée :', ADRESSE, '· PDF et aperçus :', SORTIE, '· copie :', PLAQUETTES);
 }
 

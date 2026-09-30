@@ -1,5 +1,5 @@
 CARTES DE VISITE RESKOPE : Florian Bouchart et Thomy Phanzu
-Format vertical européen, version du 1er octobre 2026
+Version du 1er octobre 2026
 
 Recto, la personne, sur l'indigo. Verso, la marque, sur le crème.
 
@@ -8,15 +8,10 @@ Fichiers à envoyer à l'imprimeur
   reskope-carte-thomy.pdf     (page 1 : recto, page 2 : verso)
 
 Format
-  Carte finie : 55 × 85 mm, à la verticale (le format européen 85 × 55,
-  tourné d'un quart de tour). À l'imprimeur, dites « carte de visite
-  85 × 55 mm, orientation portrait ».
-  Fond perdu de 3 mm inclus : chaque page mesure 61 × 91 mm.
-  Aucun texte à moins de 4,5 mm du bord de coupe (contrôlé à chaque
-  fabrication, comme l'absence de texte touché par un trait).
+  Carte finie : 85 × 55 mm, le format standard en France.
+  Fond perdu de 3 mm inclus : chaque page mesure 91 × 61 mm.
+  Aucun texte à moins de 4,5 mm du bord de coupe.
   Polices incorporées, dessin vectoriel : aucune perte de netteté.
-  Le trait le plus fin (le fil des coordonnées, au recto) fait 0,24 mm,
-  soit 0,68 pt : bien au-dessus du minimum courant (0,25 pt).
 
 À demander à l'imprimeur
   Impression recto verso, couleurs.
@@ -26,12 +21,12 @@ Format
   L'indigo (#1C0CB3) peut ternir un peu : demandez un bon à tirer, ou un
   indigo « le plus vif possible » (C 100 M 90 J 0 N 0 est une bonne base).
 
-Option : vernis sélectif sur le verso
-  option-vernis-selectif-verso.pdf : le masque du vernis (noir = verni),
-  le même pour les deux cartes. Il couvre le grand R et le mot « Reskope » :
-  sur le pelliculage mat, le R accroche la lumière quand on tourne la
-  carte. Traits vernis de 1 mm, nœuds de 3,6 mm : toutes les machines les
-  tiennent.
+Option : vernis sélectif sur le recto
+  option-vernis-selectif-recto.pdf : le masque du vernis (noir = verni),
+  le même pour les deux cartes. Il couvre le grand R ton sur ton et le
+  logo : sur l'indigo mat, le R brille quand la carte accroche la lumière.
+  Sans vernis, le grand R reste imprimé ton sur ton : demandez un bon à
+  tirer pour vérifier qu'il se voit juste assez.
 
 Adresse imprimée
   reskope.fr : branchez le nom de domaine avant de distribuer les cartes,

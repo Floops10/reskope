@@ -1248,20 +1248,15 @@ textarea::selection {
   letter-spacing: -0.02em;
   margin: 0.35rem 0 1.4rem;
 }
-/* La carte est verticale (55 × 85 mm) : sur ordinateur, elle se pose à
-   gauche des réglages ; sur téléphone, au-dessus. */
+/* La carte : 85 × 55 mm, au-dessus des réglages. */
 .bcard-corps {
   display: grid;
   gap: 1.5rem;
 }
-@media (min-width: 760px) {
-  .bcard-panel { max-width: 760px; }
-  .bcard-corps { grid-template-columns: 300px minmax(0, 1fr); gap: 2.25rem; align-items: center; }
-}
 .bcard-flip {
   position: relative;
-  width: min(100%, 300px);
-  aspect-ratio: 550 / 850;
+  width: 100%;
+  aspect-ratio: 850 / 550;
   margin: 0 auto;
   perspective: 1800px;
 }

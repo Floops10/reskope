@@ -10,7 +10,7 @@ import { CARTE, recto, verso } from '../lib/carteVisite';
 /* ════════════════════════════════════════════════════════════
    LES CARTES DE VISITE — celle de Florian, ou celle de Thomy.
 
-   Format vertical européen, 55 × 85 mm. Le dessin est exactement celui des
+   Format standard, 85 × 55 mm. Le dessin est exactement celui des
    fichiers de l'imprimeur et de la carte virtuelle (lib/carteVisite.js) :
    au recto la personne sur l'indigo, au verso la marque sur le crème. On
    choisit d'abord la personne, on peut écrire pour qui est la carte, et on
@@ -78,7 +78,7 @@ function Face({ corps, clip, label, svgRef }) {
     <svg ref={svgRef} viewBox={`0 0 ${W} ${H}`} xmlns="http://www.w3.org/2000/svg" className="bcard__svg" role="img" aria-label={label}>
       <defs>
         <clipPath id={clip}>
-          <rect width={W} height={H} rx="26" />
+          <rect width={W} height={H} rx="20" />
         </clipPath>
       </defs>
       <g clipPath={`url(#${clip})`} dangerouslySetInnerHTML={{ __html: corps }} />
@@ -102,14 +102,14 @@ export default function BusinessCard({ onClose }) {
     { prenom: p.prenom, nom: p.nomFamille, tel: dec(p.tel), mail: dec(p.mail), ...(p[lang] || p.fr) },
     { geo: GEO, lang, adresse: ADRESSE_AFFICHEE, pour: pour.trim(), pourMot: t.pour },
   ), [p, lang, pour, t.pour]);
-  const faceVerso = useMemo(() => verso({ geo: GEO, lang, adresse: ADRESSE_AFFICHEE }), [lang]);
+  const faceVerso = useMemo(() => verso({ geo: GEO, lang }), [lang]);
 
   const downloadSVG = async () => {
     const svg = (side === 'front' ? frontRef : backRef).current;
     if (!svg) return;
     const copie = svg.cloneNode(true);
-    copie.setAttribute('width', '55mm');
-    copie.setAttribute('height', '85mm');
+    copie.setAttribute('width', '85mm');
+    copie.setAttribute('height', '55mm');
     /* Pour l'imprimeur : la carte à angles droits, sans l'arrondi de l'écran. */
     copie.querySelector('defs')?.remove();
     copie.querySelector('g[clip-path]')?.removeAttribute('clip-path');

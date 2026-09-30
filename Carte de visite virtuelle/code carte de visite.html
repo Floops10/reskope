@@ -53,12 +53,11 @@
       letter-spacing: -0.02em;
       margin-bottom: 1.4rem;
     }
-    /* La carte est verticale : 55 × 85 mm. */
     .flip-wrap {
-      width: min(100%, 320px);
-      aspect-ratio: 550 / 850;
+      width: 100%;
+      aspect-ratio: 850 / 550;
       perspective: 1800px;
-      margin: 0 auto 1.5rem;
+      margin-bottom: 1.5rem;
     }
     .flip-inner {
       width: 100%;
@@ -125,16 +124,16 @@
 
       <!-- ——— RECTO ——— -->
       <div class="face face--front">
-        <svg id="svgFront" viewBox="0 0 550 850" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Carte de visite, recto">
-          <defs><clipPath id="clipFront"><rect width="550" height="850" rx="26"/></clipPath></defs>
+        <svg id="svgFront" viewBox="0 0 850 550" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Carte de visite, recto">
+          <defs><clipPath id="clipFront"><rect width="850" height="550" rx="20"/></clipPath></defs>
           <g id="corpsRecto" clip-path="url(#clipFront)"></g>
         </svg>
       </div>
 
       <!-- ——— VERSO ——— -->
       <div class="face face--back">
-        <svg id="svgBack" viewBox="0 0 550 850" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Carte de visite, verso">
-          <defs><clipPath id="clipBack"><rect width="550" height="850" rx="26"/></clipPath></defs>
+        <svg id="svgBack" viewBox="0 0 850 550" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Carte de visite, verso">
+          <defs><clipPath id="clipBack"><rect width="850" height="550" rx="20"/></clipPath></defs>
           <g id="corpsVerso" clip-path="url(#clipBack)"></g>
         </svg>
       </div>
@@ -151,7 +150,7 @@
       <button id="btnFlip">Voir le verso ↺</button>
       <button id="btnDl">Télécharger le recto ↓</button>
     </div>
-    <p class="note">Fichier vectoriel · 55 × 85 mm, format vertical · recto &amp; verso · à ouvrir dans Illustrator, Figma ou chez votre imprimeur.</p>
+    <p class="note">Fichier vectoriel · 85 × 55 mm · recto &amp; verso · à ouvrir dans Illustrator, Figma ou chez votre imprimeur.</p>
   </div>
 </main>
 
@@ -176,7 +175,7 @@
     var C = window.CarteVisite;
     if (!C) return;
     document.getElementById('corpsRecto').innerHTML = C.recto(PERSONNES[qui], { geo: C.GEO, adresse: SITE, pour: pourInput.value.trim(), pourMot: 'Pour' });
-    document.getElementById('corpsVerso').innerHTML = C.verso({ geo: C.GEO, adresse: SITE });
+    document.getElementById('corpsVerso').innerHTML = C.verso({ geo: C.GEO });
   }
   dessiner();
   pourInput.addEventListener('input', dessiner);
