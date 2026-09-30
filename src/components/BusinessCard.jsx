@@ -1,36 +1,37 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useMemo } from 'react';
+import { createPortal } from 'react-dom';
 import { R_NODES, R_LINKS } from './Logo';
 import CroixReseau from './CroixReseau';
 import { MOT_LOGO, MOT_BOITE, R_BOITE, CORPS_MOT, BASE_MOT } from '../data/logoMot';
 import { useT, useLang } from '../i18n';
 import { ADRESSE_AFFICHEE } from '../data/site';
+import { CARTE, recto, verso } from '../lib/carteVisite';
 
 /* ════════════════════════════════════════════════════════════
    LES CARTES DE VISITE — celle de Florian, ou celle de Thomy.
 
-   85 × 54 mm, viewBox 850 × 540, recto indigo et verso crème, à
-   télécharger en SVG pour l'imprimeur. On choisit d'abord la personne ; le
-   recto porte son nom, ce qu'elle mène, et ses coordonnées.
+   Format vertical européen, 55 × 85 mm. Le dessin est exactement celui des
+   fichiers de l'imprimeur et de la carte virtuelle (lib/carteVisite.js) :
+   au recto la personne sur l'indigo, au verso la marque sur le crème. On
+   choisit d'abord la personne, on peut écrire pour qui est la carte, et on
+   la télécharge en SVG.
 
    Les coordonnées s'affichent sur la carte (elle est faite pour être
    partagée) mais n'apparaissent pas en clair dans le code livré : les
    robots qui moissonnent les adresses ne les trouvent pas.
 
-   Le logo y est celui de l'en-tête, aux mêmes proportions (R et mot
-   vectorisé, voir scripts/logo.py), et le fichier téléchargé embarque la
-   police : il ne s'ouvre plus en Helvetica chez l'imprimeur.
+   Le fichier téléchargé embarque la police : il ne s'ouvre plus en
+   Helvetica chez l'imprimeur.
    ════════════════════════════════════════════════════════════ */
 
-const W = 850;
-const H = 540;
-const FONT = "'Reskope Sans', 'Helvetica Neue', system-ui, sans-serif";
-const CREAM = '#F0EEE8';
-const INDIGO = '#1c0cb3';
+const { W, H } = CARTE;
+/* Le R et le mot du logo, aux proportions de l'en-tête (Logo.jsx, scripts/logo.py). */
+const GEO = { rNodes: R_NODES, rLinks: R_LINKS, trait: 3, noeud: 5.5, jonction: 7, motD: MOT_LOGO, rBoite: R_BOITE, motBoite: MOT_BOITE, corpsMot: CORPS_MOT, baseMot: BASE_MOT };
 
 const dec = (s) => (typeof atob !== 'undefined' ? atob(s) : '');
 
 /* La police de la marque, embarquée dans le fichier téléchargé. */
-const POLICES = [['ReskopeSans-Regular.woff2', 400], ['ReskopeSans-SemiBold.woff2', 600]];
+const POLICES = [['ReskopeSans-Regular.woff2', 400], ['ReskopeSans-Medium.woff2', 500], ['ReskopeSans-SemiBold.woff2', 600]];
 const enBase64 = (buf) => {
   const octets = new Uint8Array(buf);
   let bin = '';
@@ -50,180 +51,37 @@ async function policesEmbarquees() {
 const PERSONNES = {
   florian: {
     prenom: 'Florian',
-    nom: 'Florian Bouchart',
+    nomFamille: 'Bouchart',
     tel: 'KzMzIDYgMjAgMjMgNTUgMjA=',
     mail: 'Zmxvcmlhbi5ib3VjaGFydEBob3RtYWlsLmZy',
-    fr: 'Cofondateur · discovery, sites et outils',
-    en: 'Co-founder · discovery, websites and tools',
+    fr: { titre: 'Cofondateur', domaine: ['Discovery, sites et outils'] },
+    en: { titre: 'Co-founder', domaine: ['Discovery, websites and tools'] },
   },
   thomy: {
     prenom: 'Thomy',
-    nom: 'Thomy Phanzu',
+    nomFamille: 'Phanzu',
     tel: 'KzMzIDcgNjEgMjUgNDQgNjU=',
     mail: 'dGhvbXlwaGFuenVAaWNsb3VkLmNvbQ==',
-    fr: 'Cofondatrice · business plan, marque et financement',
-    en: 'Co-founder · business plan, brand and funding',
+    fr: { titre: 'Cofondatrice', domaine: ['Business plan, marque', 'et financement'] },
+    en: { titre: 'Co-founder', domaine: ['Business plan, brand', 'and funding'] },
   },
 };
 
 const MOTS = {
-  fr: { qui: 'La carte de', slogan: 'On vous aide à décider, et on construit la suite.', lieux: 'Valenciennes · Lille' },
-  en: { qui: 'Card of', slogan: 'We help you decide, and we build what comes next.', lieux: 'Valenciennes · Lille, France' },
+  fr: { qui: 'La carte de', recto: 'Carte de visite de', verso: 'Reskope : on vous aide à décider, et on construit la suite' },
+  en: { qui: 'Card of', recto: 'Business card of', verso: 'Reskope: we help you decide, and we build what comes next' },
 };
 
-/* Le R de la marque, toujours aux proportions du logo (Logo.jsx) : traits 3,
-   nœuds 5,5, jonction 7. On change sa taille, jamais ces rapports. */
-function RTrace({ color }) {
+/* Une face : le dessin partagé, dans une carte aux coins arrondis. */
+function Face({ corps, clip, label, svgRef }) {
   return (
-    <>
-      <g stroke={color} strokeWidth="3" fill="none" strokeLinecap="round">
-        {R_LINKS.map(([a, b], i) => (
-          <line key={i} x1={R_NODES[a][0]} y1={R_NODES[a][1]} x2={R_NODES[b][0]} y2={R_NODES[b][1]} />
-        ))}
-      </g>
-      <g fill={color}>
-        {R_NODES.map(([nx, ny], i) => (
-          <circle key={i} cx={nx} cy={ny} r={i === 3 ? 7 : 5.5} />
-        ))}
-      </g>
-    </>
-  );
-}
-
-function RMark({ x, y, scale = 1, color = CREAM, opacity = 1 }) {
-  return (
-    <g transform={`translate(${x}, ${y}) scale(${scale})`} opacity={opacity}>
-      <RTrace color={color} />
-    </g>
-  );
-}
-
-/* Le logo horizontal, posé comme dans l'en-tête. (x, y) : bord gauche du R
-   et centre des capitales ; corps : taille du mot. */
-function LogoCarte({ x, y, corps, color }) {
-  const s = corps / CORPS_MOT;
-  const tx = x - R_BOITE[0] * s;
-  const ty = y - 76 * s;
-  return (
-    <g transform={`translate(${tx.toFixed(2)}, ${ty.toFixed(2)}) scale(${s.toFixed(5)})`}>
-      <RTrace color={color} />
-      <path d={MOT_LOGO} fill={color} />
-    </g>
-  );
-}
-
-/* Le mot du logo seul, centré sur cx, posé sur sa ligne de base. */
-function MotCarte({ cx, base, corps, color }) {
-  const s = corps / CORPS_MOT;
-  const tx = cx - ((MOT_BOITE[0] + MOT_BOITE[2]) / 2) * s;
-  const ty = base - BASE_MOT * s;
-  return <path d={MOT_LOGO} fill={color} transform={`translate(${tx.toFixed(2)}, ${ty.toFixed(2)}) scale(${s.toFixed(5)})`} />;
-}
-
-/* La trame (12 nœuds), la même que sur toutes les cartes Reskope. */
-const TRAME = [
-  [300, 82], [418, 110], [520, 88], [360, 180],
-  [470, 198], [560, 178], [300, 252], [432, 268],
-  [540, 292], [500, 384], [560, 446], [430, 402],
-];
-const TRAME_LINKS = [
-  [0, 1], [1, 2], [1, 3], [3, 4], [4, 5],
-  [3, 6], [4, 7], [7, 8], [8, 9], [9, 10],
-  [7, 11], [6, 7], [2, 5],
-];
-
-function Trame({ color }) {
-  return (
-    <g stroke={color} fill={color}>
-      <g strokeWidth="1.4" opacity="0.5">
-        {TRAME_LINKS.map(([a, b], i) => (
-          <line key={i} x1={TRAME[a][0]} y1={TRAME[a][1]} x2={TRAME[b][0]} y2={TRAME[b][1]} />
-        ))}
-      </g>
-      {TRAME.map(([x, y], i) => (
-        <circle key={i} cx={x} cy={y} r="3.4" opacity="0.7" />
-      ))}
-    </g>
-  );
-}
-
-/* ——— RECTO ——— */
-function CardFront({ p, pour, t, m, lang, svgRef }) {
-  return (
-    <svg ref={svgRef} viewBox={`0 0 ${W} ${H}`} xmlns="http://www.w3.org/2000/svg" className="bcard__svg">
+    <svg ref={svgRef} viewBox={`0 0 ${W} ${H}`} xmlns="http://www.w3.org/2000/svg" className="bcard__svg" role="img" aria-label={label}>
       <defs>
-        <clipPath id="bcardClip">
-          <rect width={W} height={H} rx="20" />
+        <clipPath id={clip}>
+          <rect width={W} height={H} rx="26" />
         </clipPath>
       </defs>
-      <g clipPath="url(#bcardClip)">
-        <rect width={W} height={H} fill={INDIGO} />
-        <g opacity="0.18"><Trame color={CREAM} /></g>
-        <g stroke={CREAM} strokeWidth="1.4" opacity="0.22">
-          <line x1={560} y1={178} x2={668} y2={180} />
-          <line x1={540} y1={292} x2={668} y2={330} />
-          <line x1={560} y1={446} x2={668} y2={456} />
-        </g>
-        {/* Le grand R, en filigrane comme la trame : le logo, c'est celui du coin. */}
-        <RMark x={560} y={90} scale={3.0} color={CREAM} opacity={0.3} />
-
-        <LogoCarte x={60} y={77} corps={44} color={CREAM} />
-        <text x={58} y={140} fill={CREAM} fontSize={15} letterSpacing="0.04em" opacity="0.52" fontFamily={FONT}>
-          {m.lieux}
-        </text>
-        {pour && (
-          <text x={58} y={168} fill={CREAM} fontSize={16} opacity="0.65" fontFamily={FONT}>
-            {t.pour} {pour}
-          </text>
-        )}
-
-        <text x={58} y={292} fill={CREAM} fontSize={52} fontWeight="600" letterSpacing="-0.025em" fontFamily={FONT}>
-          {p.nom}
-        </text>
-        <text x={58} y={348} fill={CREAM} fontSize={18} opacity="0.78" fontFamily={FONT}>
-          {p[lang] || p.fr}
-        </text>
-        <text x={58} y={374} fill={CREAM} fontSize={16} opacity="0.55" fontFamily={FONT}>
-          {m.slogan}
-        </text>
-        <text x={58} y={454} fill={CREAM} fontSize={18} opacity="0.9" fontFamily={FONT}>
-          {dec(p.tel)}
-        </text>
-        <text x={58} y={482} fill={CREAM} fontSize={17} opacity="0.84" fontFamily={FONT}>
-          {dec(p.mail)}
-        </text>
-        <text x={W - 44} y={H - 26} textAnchor="end" fill={CREAM} fontSize={15} letterSpacing="0.06em" opacity="0.4" fontFamily={FONT}>
-          {ADRESSE_AFFICHEE}
-        </text>
-      </g>
-    </svg>
-  );
-}
-
-/* ——— VERSO ——— le R centré sur fond crème, commun aux deux cartes. */
-function CardBack({ m, svgRef }) {
-  const SC = 2.4;
-  const RX = W / 2 - 70 * SC;
-  const RY = 76 - 30 * SC;
-  return (
-    <svg ref={svgRef} viewBox={`0 0 ${W} ${H}`} xmlns="http://www.w3.org/2000/svg" className="bcard__svg">
-      <defs>
-        <clipPath id="bcardClipBack">
-          <rect width={W} height={H} rx="20" />
-        </clipPath>
-      </defs>
-      <g clipPath="url(#bcardClipBack)">
-        <rect width={W} height={H} fill={CREAM} />
-        <g opacity="0.07"><Trame color={INDIGO} /></g>
-        <RMark x={RX} y={RY} scale={SC} color={INDIGO} />
-        <MotCarte cx={W / 2} base={378} corps={52} color={INDIGO} />
-        <text x={W / 2} y={440} textAnchor="middle" fill={INDIGO} fontSize={19} opacity="0.66" fontFamily={FONT}>
-          {m.slogan}
-        </text>
-        <text x={W / 2} y={504} textAnchor="middle" fill={INDIGO} fontSize={15} letterSpacing="0.06em" opacity="0.4" fontFamily={FONT}>
-          {ADRESSE_AFFICHEE}
-        </text>
-      </g>
+      <g clipPath={`url(#${clip})`} dangerouslySetInnerHTML={{ __html: corps }} />
     </svg>
   );
 }
@@ -240,12 +98,21 @@ export default function BusinessCard({ onClose }) {
   const backRef = useRef(null);
   const p = PERSONNES[qui];
 
+  const faceRecto = useMemo(() => recto(
+    { prenom: p.prenom, nom: p.nomFamille, tel: dec(p.tel), mail: dec(p.mail), ...(p[lang] || p.fr) },
+    { geo: GEO, lang, adresse: ADRESSE_AFFICHEE, pour: pour.trim(), pourMot: t.pour },
+  ), [p, lang, pour, t.pour]);
+  const faceVerso = useMemo(() => verso({ geo: GEO, lang, adresse: ADRESSE_AFFICHEE }), [lang]);
+
   const downloadSVG = async () => {
     const svg = (side === 'front' ? frontRef : backRef).current;
     if (!svg) return;
     const copie = svg.cloneNode(true);
-    copie.setAttribute('width', '85mm');
-    copie.setAttribute('height', '54mm');
+    copie.setAttribute('width', '55mm');
+    copie.setAttribute('height', '85mm');
+    /* Pour l'imprimeur : la carte à angles droits, sans l'arrondi de l'écran. */
+    copie.querySelector('defs')?.remove();
+    copie.querySelector('g[clip-path]')?.removeAttribute('clip-path');
     try {
       const style = document.createElementNS('http://www.w3.org/2000/svg', 'style');
       style.textContent = await policesEmbarquees();
@@ -268,7 +135,9 @@ export default function BusinessCard({ onClose }) {
     URL.revokeObjectURL(url);
   };
 
-  return (
+  /* La fenêtre est rendue sur la page elle-même, pas dans le pied de page :
+     sinon elle hérite de son plan, et l'en-tête fixe passe devant. */
+  return createPortal(
     <div className="bcard-modal" role="dialog" aria-modal="true" aria-label="Reskope">
       <div className="bcard-backdrop" onClick={onClose} aria-hidden="true" />
       <div className="bcard-panel">
@@ -295,48 +164,51 @@ export default function BusinessCard({ onClose }) {
           ))}
         </div>
 
-        <div className={`bcard-flip${side === 'back' ? ' is-back' : ''}`}>
-          <div className="bcard-flip__inner">
-            <div className="bcard-face bcard-face--front">
-              <CardFront p={p} pour={pour} t={t} m={m} lang={lang} svgRef={frontRef} />
-            </div>
-            <div className="bcard-face bcard-face--back">
-              <CardBack m={m} svgRef={backRef} />
+        <div className="bcard-corps">
+          <div className={`bcard-flip${side === 'back' ? ' is-back' : ''}`}>
+            <div className="bcard-flip__inner">
+              <div className="bcard-face bcard-face--front">
+                <Face corps={faceRecto} clip="bcardClip" label={`${m.recto} ${p.prenom} ${p.nomFamille}`} svgRef={frontRef} />
+              </div>
+              <div className="bcard-face bcard-face--back">
+                <Face corps={faceVerso} clip="bcardClipBack" label={m.verso} svgRef={backRef} />
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="bcard-controls">
-          <label className="bcard-field">
-            <span>{t.forLabel}</span>
-            <input
-              type="text"
-              value={pour}
-              onChange={(e) => setPour(e.target.value)}
-              placeholder={t.forPh}
-              className="bcard-input"
-              maxLength={28}
-            />
-          </label>
+          <div className="bcard-controls">
+            <label className="bcard-field">
+              <span>{t.forLabel}</span>
+              <input
+                type="text"
+                value={pour}
+                onChange={(e) => setPour(e.target.value)}
+                placeholder={t.forPh}
+                className="bcard-input"
+                maxLength={24}
+              />
+            </label>
 
-          <div className="bcard-actions">
-            <button
-              type="button"
-              onClick={() => setSide((s) => (s === 'front' ? 'back' : 'front'))}
-              className="btn btn--ghost"
-            >
-              {side === 'front' ? t.seeBack : t.seeFront}
-              <span className="btn__arrow" aria-hidden="true">↺</span>
-            </button>
-            <button type="button" onClick={downloadSVG} className="btn btn--primary">
-              {side === 'front' ? t.dlFront : t.dlBack}
-              <span className="btn__arrow" aria-hidden="true">↓</span>
-            </button>
+            <div className="bcard-actions">
+              <button
+                type="button"
+                onClick={() => setSide((s) => (s === 'front' ? 'back' : 'front'))}
+                className="btn btn--ghost"
+              >
+                {side === 'front' ? t.seeBack : t.seeFront}
+                <span className="btn__arrow" aria-hidden="true">↺</span>
+              </button>
+              <button type="button" onClick={downloadSVG} className="btn btn--primary">
+                {side === 'front' ? t.dlFront : t.dlBack}
+                <span className="btn__arrow" aria-hidden="true">↓</span>
+              </button>
+            </div>
+
+            <p className="bcard-note">{t.note}</p>
           </div>
-
-          <p className="bcard-note">{t.note}</p>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }

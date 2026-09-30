@@ -1248,11 +1248,21 @@ textarea::selection {
   letter-spacing: -0.02em;
   margin: 0.35rem 0 1.4rem;
 }
+/* La carte est verticale (55 × 85 mm) : sur ordinateur, elle se pose à
+   gauche des réglages ; sur téléphone, au-dessus. */
+.bcard-corps {
+  display: grid;
+  gap: 1.5rem;
+}
+@media (min-width: 760px) {
+  .bcard-panel { max-width: 760px; }
+  .bcard-corps { grid-template-columns: 300px minmax(0, 1fr); gap: 2.25rem; align-items: center; }
+}
 .bcard-flip {
   position: relative;
-  width: 100%;
-  aspect-ratio: 850 / 540;
-  margin-bottom: 1.5rem;
+  width: min(100%, 300px);
+  aspect-ratio: 550 / 850;
+  margin: 0 auto;
   perspective: 1800px;
 }
 .bcard-flip__inner {
@@ -1269,9 +1279,9 @@ textarea::selection {
   inset: 0;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  border-radius: 12px;
+  border-radius: 14px;
   overflow: hidden;
-  box-shadow: 0 14px 36px color-mix(in srgb, var(--indigo) 26%, transparent);
+  box-shadow: 0 22px 44px -18px color-mix(in srgb, var(--ink) 55%, transparent), 0 2px 6px color-mix(in srgb, var(--ink) 12%, transparent);
 }
 .bcard-face--back {
   transform: rotateY(180deg);
