@@ -66,104 +66,31 @@ function mot(geo, cx, base, corps, coul) {
   return `<g transform="translate(${n2(cx - ((x0 + x1) / 2) * s)},${n2(base - geo.baseMot * s)}) scale(${s.toFixed(5)})"><path fill="${coul}" d="${geo.motD}"/></g>`;
 }
 
-/* ── Le réseau en profondeur ─────────────────────────────────
-   Comme la trame du site (HeroNetwork) : des nœuds posés dans un volume et
-   vus en perspective. Les plus proches sont plus gros et plus lumineux, les
-   plus lointains s'effacent. Chaque nœud est relié à ses deux voisins les
-   plus proches dans le volume, et le R de la carte est pris dedans : ses
-   nœuds sont reliés au réseau, rien ne flotte. Le réseau ne passe jamais
-   sous un texte : les zones de texte sont réservées.
-   Le tirage est fixe (graine) : la carte est la même à chaque fabrication. */
-function hasard(graine) {
-  let a = graine >>> 0;
-  return () => {
-    a = (a + 0x6D2B79F5) >>> 0;
-    let t = a;
-    t = Math.imul(t ^ (t >>> 15), t | 1);
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
-
-const dansRect = (x, y, [x0, y0, x1, y1], m = 0) => x > x0 - m && x < x1 + m && y > y0 - m && y < y1 + m;
-function coupeRect([ax, ay], [bx, by], r) {
-  for (let k = 0; k <= 40; k++) {
-    const t = k / 40;
-    if (dansRect(ax + (bx - ax) * t, ay + (by - ay) * t, r, 6)) return true;
-  }
-  return false;
-}
-const distSegment = ([px, py], [ax, ay], [bx, by]) => {
-  const dx = bx - ax, dy = by - ay, l = dx * dx + dy * dy;
-  const t = l ? Math.max(0, Math.min(1, ((px - ax) * dx + (py - ay) * dy) / l)) : 0;
-  return Math.hypot(px - ax - t * dx, py - ay - t * dy);
-};
-
-/* points : les nœuds tirés au hasard [x, y, profondeur] déjà projetés ; r : les
-   nœuds du R sur la carte, avec ses segments ; reserves : les rectangles des
-   textes ; voile(x, y) : 0 à 1, pour effacer le réseau vers le texte. */
-function reseauProfond({ points, rNoeuds, rSegments, reserves, voile, coul, fort }) {
-  const garde = points.filter(([x, y]) => !reserves.some((r) => dansRect(x, y, r, 10))
-    && !rSegments.some(([a, b]) => distSegment([x, y], a, b) < 22));
-  const liens = [];
-  const vu = new Set();
-  const d3 = (p, q) => Math.hypot(q[0] - p[0], q[1] - p[1], (q[2] - p[2]) * 260);
-  const relier = (i, j) => {
-    const cle = i < j ? `${i}-${j}` : `${j}-${i}`;
-    if (i !== j && !vu.has(cle)) { vu.add(cle); liens.push([garde[i], garde[j]]); }
-  };
-  // D'un seul tenant : l'arbre couvrant le plus court (Prim)…
-  if (garde.length) {
-    const dans = new Set([0]);
-    while (dans.size < garde.length) {
-      let best = null;
-      for (const i of dans) {
-        garde.forEach((q, j) => {
-          if (dans.has(j)) return;
-          const d = d3(garde[i], q);
-          if (!best || d < best.d) best = { i, j, d };
-        });
-      }
-      dans.add(best.j);
-      relier(best.i, best.j);
-    }
-  }
-  // … et chaque nœud rejoint aussi son plus proche voisin : des mailles, pas une ligne.
-  garde.forEach((p, i) => {
-    const v = garde.map((q, j) => ({ j, d: d3(p, q) })).filter(({ j }) => j !== i).sort((u, w) => u.d - w.d)[0];
-    if (v) relier(i, v.j);
-  });
-  // Le R est pris dans le réseau : chacun de ses nœuds rejoint le nœud le plus proche.
-  rNoeuds.forEach((n) => {
-    const q = garde.map((p) => ({ p, d: Math.hypot(p[0] - n[0], p[1] - n[1]) })).sort((u, v) => u.d - v.d)[0];
-    if (q && q.d < 190) liens.push([[n[0], n[1], 0.15], q.p]);
-  });
-  const proche = (z) => 1 - z; // 1 devant, 0 au fond
-  const out = [];
-  for (const [a, b] of liens) {
-    if (reserves.some((r) => coupeRect(a, b, r))) continue;
-    const f = proche((a[2] + b[2]) / 2);
-    const v = Math.min(voile(a[0], a[1]), voile(b[0], b[1]));
-    const op = (0.05 + fort * 0.6 * f * f) * v;
-    if (op < 0.012) continue;
-    out.push(`<line x1="${n2(a[0])}" y1="${n2(a[1])}" x2="${n2(b[0])}" y2="${n2(b[1])}" stroke="${coul}" stroke-opacity="${op.toFixed(3)}" stroke-width="${n2(0.8 + 1.7 * f)}" stroke-linecap="round"/>`);
-  }
-  for (const [x, y, z] of garde) {
-    const f = proche(z);
-    const op = (0.08 + fort * f * f) * voile(x, y);
-    if (op < 0.015) continue;
-    out.push(`<circle cx="${n2(x)}" cy="${n2(y)}" r="${n2(1.8 + 7.2 * f * f)}" fill="${coul}" fill-opacity="${Math.min(op, 0.95).toFixed(3)}"/>`);
-  }
-  return out.join('');
-}
-
 /* Les nœuds et les segments du R, sur la carte, pour une position et une échelle. */
 function rSurCarte(geo, tx, ty, s) {
   const N = geo.rNodes.map(([x, y]) => [tx + x * s, ty + y * s]);
   return { noeuds: N, segments: geo.rLinks.map(([a, b]) => [N[a], N[b]]) };
 }
-const lisser = (a, b, x) => { const t = Math.max(0, Math.min(1, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
-const largeurTexte = (t, taille) => t.length * taille * 0.55; // estimation, pour réserver la place
+
+/* ── La constellation ────────────────────────────────────────
+   Quelques nœuds placés à la main, qui prolongent le R : chacun est relié à
+   un nœud du R ou à un autre nœud de la constellation, rien ne flotte. Trois
+   plans de profondeur : devant, les nœuds sont plus gros et plus lumineux ;
+   au fond, plus petits et plus pâles. Peu d'éléments, mais qui respirent. */
+function constellation({ R, satellites, liens, coul, fort = 1 }) {
+  const plan = { devant: { r: 10.5, op: 0.46 }, milieu: { r: 6.8, op: 0.3 }, fond: { r: 4.2, op: 0.17 } };
+  const pos = (k) => (typeof k === 'number' ? { p: R[k], z: 'r' } : { p: satellites[k].p, z: satellites[k].plan });
+  const out = [];
+  for (const [a, b] of liens) {
+    const A = pos(a), B = pos(b);
+    const z = [A.z, B.z].includes('fond') ? 'fond' : [A.z, B.z].includes('milieu') ? 'milieu' : 'devant';
+    out.push(`<line x1="${n2(A.p[0])}" y1="${n2(A.p[1])}" x2="${n2(B.p[0])}" y2="${n2(B.p[1])}" stroke="${coul}" stroke-opacity="${(plan[z].op * 0.62 * fort).toFixed(3)}" stroke-width="${z === 'devant' ? 2.6 : z === 'milieu' ? 2 : 1.5}" stroke-linecap="round"/>`);
+  }
+  for (const { p, plan: z } of Object.values(satellites)) {
+    out.push(`<circle cx="${n2(p[0])}" cy="${n2(p[1])}" r="${plan[z].r}" fill="${coul}" fill-opacity="${(plan[z].op * fort).toFixed(3)}"/>`);
+  }
+  return out.join('');
+}
 
 /* Le grand R du recto : sa jonction au milieu de la hauteur, sa jambe taillée par le bord droit. */
 function grandR() {
@@ -192,41 +119,45 @@ const minusculeInitiale = (t) => t.charAt(0).toLowerCase() + t.slice(1);
 export function recto(p, { geo, lang = 'fr', adresse = 'reskope.fr', pour = '', pourMot = 'Pour' } = {}) {
   const T = TEXTES[lang] || TEXTES.fr;
   const { W, H, FOND_PERDU: B, MARGE: M } = CARTE;
-  const out = [`<rect x="${-B}" y="${-B}" width="${W + 2 * B}" height="${H + 2 * B}" fill="${INDIGO}"/>`];
-
-  // Les textes, et la place qu'ils occupent (le réseau n'y passe pas).
-  const nom = `${p.prenom} ${p.nom}`;
-  const role = `${p.titre} · ${minusculeInitiale(p.domaine.join(' '))}`;
-  const lignes = [
-    { t: T.lieux, x: M, y: 158, taille: pt(5.6), op: 0.58, ls: 0.4 },
-    ...(pour ? [{ t: `${pourMot} ${pour}`, x: M, y: 214, taille: pt(6), op: 0.72 }] : []),
-    { t: nom, x: M - 2, y: 322, taille: pt(15.5), poids: 600, ls: -1 },
-    { t: role, x: M, y: 362, taille: pt(6), op: 0.8 },
-    { t: p.tel, x: M, y: 440, taille: pt(6.4), poids: 500 },
-    { t: p.mail, x: M, y: 468, taille: pt(6.2), op: 0.9 },
-    { t: adresse, x: M, y: 496, taille: pt(6.2), op: 0.62 },
-  ];
-  const reserves = [[M - 10, 40, 300, 170], ...lignes.map((l) => [l.x - 6, l.y - l.taille * 0.8, l.x + largeurTexte(l.t, l.taille) + 16, l.y + l.taille * 0.3])];
-
-  // Le grand R, pris dans le réseau, taillé dans le bord droit.
   const { s, tx, ty } = grandR();
-  const R = rSurCarte(geo, tx, ty, s);
-  const alea = hasard(7);
-  const points = Array.from({ length: 84 }, () => {
-    const z = alea();
-    const f = 1 / (1 + z * 1.25);
-    const X = 380 + alea() * 580, Y = -50 + alea() * 650;
-    return [700 + (X - 700) * f, 275 + (Y - 275) * f, z];
-  });
-  out.push(reseauProfond({
-    points, rNoeuds: R.noeuds, rSegments: R.segments, reserves,
-    voile: (x) => lisser(380, 580, x), coul: CREME, fort: 0.5,
-  }));
-  out.push(`<g transform="translate(${n2(tx)},${n2(ty)}) scale(${s})" opacity="0.3">${rTrace(geo, CREME)}</g>`);
+  const R = rSurCarte(geo, tx, ty, s).noeuds; // 0 haut du fût, 1 haut droite, 2 droite, 3 jonction, 4 bas du fût, 5 bas de la jambe
+  const [jx, jy] = R[3];
+  const out = [
+    // L'indigo, et une lumière douce derrière le cœur du R : la carte a de la profondeur.
+    `<defs><radialGradient id="carte-lumiere" gradientUnits="userSpaceOnUse" cx="${n2(jx)}" cy="${n2(jy)}" r="430">`
+    + `<stop offset="0" stop-color="#5B4BE6" stop-opacity="0.55"/><stop offset="0.45" stop-color="#3A2AD0" stop-opacity="0.22"/><stop offset="1" stop-color="${INDIGO}" stop-opacity="0"/></radialGradient>`
+    + `<linearGradient id="carte-ombre" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#07023A" stop-opacity="0.28"/></linearGradient></defs>`,
+    `<rect x="${-B}" y="${-B}" width="${W + 2 * B}" height="${H + 2 * B}" fill="${INDIGO}"/>`,
+    `<rect x="${-B}" y="${-B}" width="${W + 2 * B}" height="${H + 2 * B}" fill="url(#carte-ombre)"/>`,
+    `<rect x="${-B}" y="${-B}" width="${W + 2 * B}" height="${H + 2 * B}" fill="url(#carte-lumiere)"/>`,
+  ];
 
-  // Le logo, puis les textes.
+  // La constellation, qui prolonge le R vers le haut et vers le bas.
+  out.push(constellation({
+    R,
+    coul: CREME,
+    satellites: {
+      a: { p: [548, 118], plan: 'fond' },
+      b: { p: [452, 52], plan: 'fond' },
+      c: { p: [748, 148], plan: 'milieu' },
+      d: { p: [812, 92], plan: 'fond' },
+      e: { p: [722, 392], plan: 'devant' },
+      f: { p: [806, 506], plan: 'milieu' },
+      g: { p: [572, 520], plan: 'fond' },
+    },
+    liens: [[0, 'a'], ['a', 'b'], [0, 'c'], [3, 'c'], ['c', 'd'], ['d', 1], [4, 'e'], ['e', 'f'], [4, 'g'], ['e', 3]],
+  }));
+  out.push(`<g transform="translate(${n2(tx)},${n2(ty)}) scale(${s})" opacity="0.34">${rTrace(geo, CREME)}</g>`);
+
+  // Le logo et le lieu, puis la personne.
   out.push(logo(geo, M, 88, 40, CREME));
-  for (const l of lignes) out.push(texte(l.x, l.y, l.t, { taille: l.taille, poids: l.poids || 400, op: l.op ?? 1, ls: l.ls || 0 }));
+  out.push(texte(M, 158, T.lieux, { taille: pt(5.6), op: 0.58, ls: 0.4 }));
+  if (pour) out.push(texte(M, 214, `${pourMot} ${pour}`, { taille: pt(6), op: 0.72 }));
+  out.push(`<text x="${M - 2}" y="324" font-family="${FONT}" font-size="${n2(pt(16))}" fill="${CREME}" letter-spacing="-1"><tspan font-weight="400">${echapper(p.prenom)}</tspan><tspan font-weight="600"> ${echapper(p.nom)}</tspan></text>`);
+  out.push(texte(M, 364, `${p.titre} · ${minusculeInitiale(p.domaine.join(' '))}`, { taille: pt(6), op: 0.8 }));
+  out.push(texte(M, 440, p.tel, { taille: pt(6.4), poids: 500 }));
+  out.push(texte(M, 468, p.mail, { taille: pt(6.2), op: 0.9 }));
+  out.push(texte(M, 496, adresse, { taille: pt(6.2), op: 0.62 }));
   return out.join('');
 }
 
@@ -236,26 +167,32 @@ export function recto(p, { geo, lang = 'fr', adresse = 'reskope.fr', pour = '', 
 export function verso({ geo, lang = 'fr' } = {}) {
   const T = TEXTES[lang] || TEXTES.fr;
   const { W, H, FOND_PERDU: B } = CARTE;
-  const out = [`<rect x="${-B}" y="${-B}" width="${W + 2 * B}" height="${H + 2 * B}" fill="${CREME}"/>`];
+  const out = [
+    `<defs><radialGradient id="carte-jour" gradientUnits="userSpaceOnUse" cx="${W / 2}" cy="190" r="560">`
+    + `<stop offset="0" stop-color="#FBFAF7"/><stop offset="0.6" stop-color="${CREME}"/><stop offset="1" stop-color="#E7E2D8"/></radialGradient></defs>`,
+    `<rect x="${-B}" y="${-B}" width="${W + 2 * B}" height="${H + 2 * B}" fill="url(#carte-jour)"/>`,
+  ];
 
   // Le R, centré : ses rapports ne changent jamais, seule sa taille.
   const s = 2.15;
   const [bx0, by0, bx1, by1] = geo.rBoite;
   const tx = W / 2 - ((bx0 + bx1) / 2) * s, ty = 172 - ((by0 + by1) / 2) * s;
-  const R = rSurCarte(geo, tx, ty, s);
+  const R = rSurCarte(geo, tx, ty, s).noeuds;
 
-  // Autour de lui, un réseau léger, qui s'efface avant les textes.
-  const reserves = [[W / 2 - 170, 300, W / 2 + 170, 380], [W / 2 - 300, 400, W / 2 + 300, 438], [W / 2 - 200, 470, W / 2 + 200, 500]];
-  const alea = hasard(11);
-  const points = Array.from({ length: 76 }, () => {
-    const a = alea() * Math.PI * 2;
-    const r = 0.4 + Math.sqrt(alea()) * 0.62;
-    const z = alea();
-    return [W / 2 + Math.cos(a) * r * 470, 172 + Math.sin(a) * r * 240, z];
-  });
-  out.push(reseauProfond({
-    points, rNoeuds: R.noeuds, rSegments: R.segments, reserves,
-    voile: (x, y) => 1 - lisser(240, 320, y), coul: INDIGO, fort: 0.24,
+  // Quelques nœuds autour de lui, reliés à lui : le R est un réseau qui s'ouvre.
+  out.push(constellation({
+    R,
+    coul: INDIGO,
+    fort: 0.62,
+    satellites: {
+      a: { p: [268, 96], plan: 'milieu' },
+      b: { p: [176, 176], plan: 'fond' },
+      c: { p: [246, 252], plan: 'fond' },
+      d: { p: [592, 70], plan: 'milieu' },
+      e: { p: [672, 168], plan: 'fond' },
+      f: { p: [604, 262], plan: 'fond' },
+    },
+    liens: [[0, 'a'], ['a', 'b'], [3, 'c'], ['b', 'c'], [1, 'd'], ['d', 'e'], [2, 'e'], [5, 'f'], ['e', 'f']],
   }));
   out.push(`<g transform="translate(${n2(tx)},${n2(ty)}) scale(${s})">${rTrace(geo, INDIGO)}</g>`);
 

@@ -15,11 +15,23 @@ Format
 
 À demander à l'imprimeur
   Impression recto verso, couleurs.
-  Papier conseillé : 350 à 400 g, couché mat, pelliculage mat « toucher
-  doux ». Coins droits ou arrondis de 3 mm : les deux vont au dessin.
   Les couleurs du fichier sont en RVB ; l'imprimeur les convertit en CMJN.
   L'indigo (#1C0CB3) peut ternir un peu : demandez un bon à tirer, ou un
   indigo « le plus vif possible » (C 100 M 90 J 0 N 0 est une bonne base).
+  Le halo de lumière derrière le grand R est un dégradé doux : sur le bon à
+  tirer, vérifiez qu'il reste doux, sans palier visible.
+
+Pour l'effet « waouh » en main (par ordre d'importance)
+  1. Un papier épais : 400 g au minimum, 600 g ou plus si possible.
+  2. Un pelliculage « soft touch » (toucher velours), recto et verso.
+  3. Le vernis sélectif sur le grand R du recto (fichier ci-dessous) : la
+     carte paraît sobre, puis le R brille quand elle accroche la lumière.
+     En vernis « 3D » (en relief), on le sent aussi sous le doigt.
+  4. Si l'imprimeur le propose : la tranche peinte en indigo.
+  Coins droits ou arrondis de 3 mm : les deux vont au dessin.
+  Pour demain, en boutique, 1 et 2 se font souvent dans la journée ; le
+  vernis en relief et la tranche peinte demandent en général quelques
+  jours : demandez-leur.
 
 Option : vernis sélectif sur le recto
   option-vernis-selectif-recto.pdf : le masque du vernis (noir = verni),
