@@ -165,6 +165,24 @@ function rSurCarte(geo, tx, ty, s) {
 const lisser = (a, b, x) => { const t = Math.max(0, Math.min(1, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
 const largeurTexte = (t, taille) => t.length * taille * 0.55; // estimation, pour réserver la place
 
+/* Le grand R du recto : sa jonction au milieu de la hauteur, sa jambe taillée par le bord droit. */
+function grandR() {
+  const { W, H } = CARTE;
+  const s = 4.1;
+  return { s, tx: W - 214 - 36 * s, ty: H / 2 - 80 * s };
+}
+
+/* Le masque du vernis sélectif (finition optionnelle) : le grand R du recto et
+   le logo, en noir plein sur blanc. Le réseau n'y est pas : ses traits sont
+   trop fins pour un vernis. */
+export function vernisRecto({ geo } = {}) {
+  const { W, H, FOND_PERDU: B, MARGE: M } = CARTE;
+  const { s, tx, ty } = grandR();
+  return `<rect x="${-B}" y="${-B}" width="${W + 2 * B}" height="${H + 2 * B}" fill="#FFFFFF"/>`
+    + `<g transform="translate(${n2(tx)},${n2(ty)}) scale(${s})">${rTrace(geo, '#000000')}</g>`
+    + logo(geo, M, 88, 40, '#000000');
+}
+
 /* ════════════════════════════════════════════════════════════
    RECTO : la personne, sur l'indigo
    p = { prenom, nom, titre, domaine: [lignes], tel, mail }
@@ -191,8 +209,7 @@ export function recto(p, { geo, lang = 'fr', adresse = 'reskope.fr', pour = '', 
   const reserves = [[M - 10, 40, 300, 170], ...lignes.map((l) => [l.x - 6, l.y - l.taille * 0.8, l.x + largeurTexte(l.t, l.taille) + 16, l.y + l.taille * 0.3])];
 
   // Le grand R, pris dans le réseau, taillé dans le bord droit.
-  const s = 4.1;
-  const tx = W - 214 - 36 * s, ty = H / 2 - 80 * s;
+  const { s, tx, ty } = grandR();
   const R = rSurCarte(geo, tx, ty, s);
   const alea = hasard(7);
   const points = Array.from({ length: 84 }, () => {

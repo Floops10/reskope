@@ -18,7 +18,7 @@ import { spawn } from 'node:child_process';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { homedir, tmpdir } from 'node:os';
-import { CARTE, recto, verso } from '../src/lib/carteVisite.js';
+import { CARTE, recto, verso, vernisRecto } from '../src/lib/carteVisite.js';
 
 const DEPOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const CHROME = join(homedir(), 'Library/Caches/ms-playwright/chromium_headless_shell-1223/chrome-headless-shell-mac-arm64/chrome-headless-shell');
@@ -98,17 +98,6 @@ async function pdf(pages, sortie) {
   rmSync(f);
 }
 
-/* Le masque du vernis sélectif (finition optionnelle) : ce qui est noir sera verni.
-   On vernit le grand R ton sur ton du recto et le logo, jamais le texte : sur
-   l'indigo mat, le R apparaît quand la carte accroche la lumière. */
-function masqueVernis(corps) {
-  return corps
-    .replace(/<text[\s\S]*?<\/text>/g, '')
-    .replace(/^<rect ([^>]*?)fill="#[0-9A-Fa-f]{6}"/, '<rect $1fill="#FFFFFF"')
-    .replace(/(fill|stroke)="#(?!FFFFFF)[0-9A-Fa-f]{6}"/g, '$1="#000000"')
-    .replace(/ (fill|stroke)-opacity="[\d.]+"/g, '');
-}
-
 async function main() {
   mkdirSync(SORTIE, { recursive: true });
   const faces = {};
@@ -131,7 +120,7 @@ async function main() {
   for (const [id, f] of Object.entries(faces)) {
     await pdf([svgPerdu(f.recto), svgPerdu(f.verso)], join(SORTIE, `reskope-carte-${id}.pdf`));
   }
-  await pdf([svgPerdu(masqueVernis(faces.florian.recto))], join(SORTIE, 'option-vernis-selectif-recto.pdf'));
+  await pdf([svgPerdu(vernisRecto({ geo: GEO }))], join(SORTIE, 'option-vernis-selectif-recto.pdf'));
   // La carte virtuelle : le même dessin, en script classique (la page s'ouvre aussi en double-cliquant).
   const module = readFileSync(join(DEPOT, 'src', 'lib', 'carteVisite.js'), 'utf8').replace(/^export /gm, '');
   writeFileSync(join(DEPOT, 'Carte de visite virtuelle', 'carte-visite.js'),
